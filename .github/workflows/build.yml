@@ -26,7 +26,7 @@ jobs:
 
       # The generated code is committed, the gir submodules are only needed to
       # regenerate it.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: Swatinem/rust-cache@v2
 
@@ -66,7 +66,7 @@ jobs:
             pkgconf:p
             rust:p
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build
         run: cargo build --workspace --locked
@@ -74,7 +74,7 @@ jobs:
       - name: Tests
         run: cargo test --workspace --locked
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: gimp-rs-examples-windows-x86_64
           path: |
