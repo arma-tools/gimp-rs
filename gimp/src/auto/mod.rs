@@ -87,12 +87,6 @@ pub use self::load_procedure::LoadProcedure;
 mod metadata;
 pub use self::metadata::Metadata;
 
-mod module;
-pub use self::module::Module;
-
-mod module_db;
-pub use self::module_db::ModuleDB;
-
 mod pdb;
 pub use self::pdb::PDB;
 
@@ -260,7 +254,6 @@ pub(crate) mod traits {
     pub use super::item::ItemExt;
     pub use super::layer::LayerExt;
     pub use super::load_procedure::LoadProcedureExt;
-    pub use super::module::ModuleExt;
     pub use super::plug_in::PlugInExt;
     pub use super::procedure::ProcedureExt;
     pub use super::procedure_config::ProcedureConfigExt;

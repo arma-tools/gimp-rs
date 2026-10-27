@@ -75,8 +75,6 @@ generate = [
     "Gimp.MetadataColorspace",
     "Gimp.MetadataLoadFlags",
     "Gimp.MetadataSaveFlags",
-    "Gimp.Module",
-    "Gimp.ModuleDB",
     "Gimp.ModuleError",
     "Gimp.ModuleState",
     "Gimp.OffsetType",
@@ -465,3 +463,13 @@ status = "generate"
   [[object.function]]
   name = "get_image"
   manual = true
+
+# libgimpmodule is the API for GIMP core modules, not plug-ins, and is only in
+# Libs.private of gimp-3.0.pc (so not linked on Windows).
+[[object]]
+name = "Gimp.Module"
+status = "ignore"
+
+[[object]]
+name = "Gimp.ModuleDB"
+status = "ignore"
