@@ -1,0 +1,27 @@
+[package]
+name = "gexiv2"
+version = "0.1.0"
+description = "GExiv2 Rust bindings, generated with gir"
+keywords = ["gexiv2", "exiv2", "glib", "gimp"]
+categories = ["api-bindings", "multimedia::images"]
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[features]
+v0_10_3 = ["ffi/v0_10_3"]
+v0_10_6 = ["ffi/v0_10_6", "v0_10_3"]
+v0_12_1 = ["ffi/v0_12_1", "v0_10_6"]
+v0_12_2 = ["ffi/v0_12_2", "v0_12_1"]
+v0_14 = ["ffi/v0_14", "v0_12_2"]
+
+[dependencies]
+ffi = { package = "gexiv2-sys", path = "sys", version = "0.1" }
+glib.workspace = true
+gio.workspace = true
+libc.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]

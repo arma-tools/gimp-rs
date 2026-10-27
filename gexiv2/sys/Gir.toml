@@ -1,0 +1,12 @@
+[options]
+library = "GExiv2"
+version = "0.10"
+min_cfg_version = "0.10"
+work_mode = "sys"
+target_path = "."
+girs_directories = ["../../gir-files", "../../gir-files-extra"]
+external_libraries = [
+    "GLib",
+    "GObject",
+    "Gio",
+]

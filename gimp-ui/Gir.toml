@@ -1,0 +1,237 @@
+[options]
+library = "GimpUi"
+version = "3.0"
+min_cfg_version = "3.0"
+target_path = "."
+work_mode = "normal"
+girs_directories = ["../gir-files", "../gir-files-extra"]
+deprecate_by_min_version = true
+single_version_file = true
+
+generate = [
+    "GimpUi.AspectPreview",
+    "GimpUi.AspectType",
+    "GimpUi.Browser",
+    "GimpUi.BrushChooser",
+    "GimpUi.BusyBox",
+    "GimpUi.CellRendererColor",
+    "GimpUi.CellRendererToggle",
+    "GimpUi.ChainButton",
+    "GimpUi.ChainPosition",
+    "GimpUi.ChannelComboBox",
+    "GimpUi.ColorArea",
+    "GimpUi.ColorAreaType",
+    "GimpUi.ColorDisplay",
+    "GimpUi.ColorHexEntry",
+    "GimpUi.ColorNotebook",
+    "GimpUi.ColorProfileChooserDialog",
+    "GimpUi.ColorProfileComboBox",
+    "GimpUi.ColorProfileStore",
+    "GimpUi.ColorProfileView",
+    "GimpUi.ColorScale",
+    "GimpUi.ColorScaleEntry",
+    "GimpUi.ColorScales",
+    "GimpUi.ColorSelect",
+    "GimpUi.ColorSelection",
+    "GimpUi.ColorSelectorChannel",
+    "GimpUi.ColorSelectorModel",
+    "GimpUi.DrawableChooser",
+    "GimpUi.DrawableComboBox",
+    "GimpUi.DrawablePreview",
+    "GimpUi.EnumComboBox",
+    "GimpUi.EnumLabel",
+    "GimpUi.EnumStore",
+    "GimpUi.ExportProcedureDialog",
+    "GimpUi.FileChooser",
+    "GimpUi.FontChooser",
+    "GimpUi.Frame",
+    "GimpUi.GradientChooser",
+    "GimpUi.HintBox",
+    "GimpUi.ImageChooser",
+    "GimpUi.ImageComboBox",
+    "GimpUi.IntComboBox",
+    "GimpUi.IntComboBoxLayout",
+    "GimpUi.IntStore",
+    "GimpUi.IntStoreColumns",
+    "GimpUi.ItemChooser",
+    "GimpUi.LabelColor",
+    "GimpUi.LabelEntry",
+    "GimpUi.LabelIntWidget",
+    "GimpUi.LabelSpin",
+    "GimpUi.LabelStringWidget",
+    "GimpUi.Labeled",
+    "GimpUi.LayerComboBox",
+    "GimpUi.MemsizeEntry",
+    "GimpUi.NumberPairEntry",
+    "GimpUi.OffsetArea",
+    "GimpUi.PageSelector",
+    "GimpUi.PageSelectorTarget",
+    "GimpUi.PaletteChooser",
+    "GimpUi.PathComboBox",
+    "GimpUi.PathEditor",
+    "GimpUi.PatternChooser",
+    "GimpUi.PickButton",
+    "GimpUi.Preview",
+    "GimpUi.ProcBrowserDialog",
+    "GimpUi.ProcedureDialog",
+    "GimpUi.ProgressBar",
+    "GimpUi.ResourceChooser",
+    "GimpUi.Ruler",
+    "GimpUi.ScaleEntry",
+    "GimpUi.ScrolledPreview",
+    "GimpUi.SizeEntry",
+    "GimpUi.SizeEntryUpdatePolicy",
+    "GimpUi.SpinButton",
+    "GimpUi.StringComboBox",
+    "GimpUi.UnitComboBox",
+    "GimpUi.UnitStore",
+    "GimpUi.VectorLoadProcedureDialog",
+    "GimpUi.WidgetsError",
+    "GimpUi.ZoomModel",
+    "GimpUi.ZoomType",
+]
+
+manual = [
+    "cairo.Context",
+    "cairo.Pattern",
+    "cairo.Surface",
+    "Gdk.Event",
+    "Gdk.EventButton",
+    "Gdk.EventKey",
+    "Gdk.ModifierType",
+    "Gdk.Rectangle",
+    "Gdk.RGBA",
+    "Gdk.Screen",
+    "Gdk.Window",
+    "GdkPixbuf.Pixbuf",
+    "GdkPixbuf.InterpType",
+    "Gegl.Buffer",
+    "Gegl.Color",
+    "Gegl.Rectangle",
+    "Gimp.ColorConfig",
+    "Gimp.ColorProfile",
+    "Gimp.ColorRenderingIntent",
+    "Gimp.Drawable",
+    "Gimp.Image",
+    "Gimp.ImageBaseType",
+    "Gimp.Item",
+    "Gimp.Procedure",
+    "Gimp.ProcedureConfig",
+    "Gio.File",
+    "Gio.ListModel",
+    "GLib.Error",
+    "GObject.Object",
+    "GObject.ParamSpec",
+    "GObject.Value",
+    "Gtk.Adjustment",
+    "Gtk.Bin",
+    "Gtk.Box",
+    "Gtk.Buildable",
+    "Gtk.Button",
+    "Gtk.CellRenderer",
+    "Gtk.ComboBox",
+    "Gtk.Container",
+    "Gtk.Dialog",
+    "Gtk.Entry",
+    "Gtk.Frame",
+    "Gtk.Grid",
+    "Gtk.IconSize",
+    "Gtk.Orientable",
+    "Gtk.Orientation",
+    "Gtk.Widget",
+    "Gtk.Window",
+    "Pango.Layout",
+]
+
+[[object]]
+name = "GimpUi.*"
+status = "generate"
+  # signal handler helpers taking gpointer data, use closures instead
+  [[object.function]]
+  name = "double_adjustment_update"
+  ignore = true
+  [[object.function]]
+  name = "float_adjustment_update"
+  ignore = true
+  [[object.function]]
+  name = "int_adjustment_update"
+  ignore = true
+  [[object.function]]
+  name = "uint_adjustment_update"
+  ignore = true
+  [[object.function]]
+  name = "radio_button_update"
+  ignore = true
+  [[object.function]]
+  name = "toggle_button_update"
+  ignore = true
+  [[object.function]]
+  name = "random_seed_new"
+  ignore = true
+  # cairo_t passed as mutable
+  [[object.function]]
+  name = "cairo_set_focus_line_pattern"
+  ignore = true
+  [[object.function]]
+  name = "cairo_set_source_color"
+  ignore = true
+
+[[object]]
+name = "GimpUi.ColorSelector"
+status = "generate"
+  [[object.function]]
+  name = "get_simulation"
+  ignore = true
+
+[[object]]
+name = "GimpUi.IntRadioFrame"
+status = "generate"
+  [[object.function]]
+  name = "set_sensitivity"
+  ignore = true
+
+[[object]]
+name = "GimpUi.SpinScale"
+status = "generate"
+  [[object.function]]
+  name = "get_scale_limits"
+  ignore = true
+
+[[object]]
+name = "GimpUi.ZoomPreview"
+status = "generate"
+  [[object.function]]
+  name = "get_source"
+  ignore = true
+
+[[object]]
+name = "GimpUi.PreviewArea"
+status = "generate"
+  [[object.function]]
+  name = "menu_popup"
+  ignore = true
+
+[[object]]
+name = "GimpUi.Button"
+status = "generate"
+# avoid clashing with gtk::prelude::ButtonExt
+trait_name = "GimpButtonExt"
+
+[[object]]
+name = "GimpUi.ColorButton"
+status = "generate"
+# avoid clashing with gtk::prelude::ColorButtonExt
+trait_name = "GimpColorButtonExt"
+
+[[object]]
+name = "GimpUi.Dialog"
+status = "generate"
+# avoid clashing with gtk::prelude::DialogExt
+trait_name = "GimpDialogExt"
+
+[[object]]
+name = "GimpUi.ColorDisplayStack"
+status = "generate"
+  [[object.function]]
+  name = "clone"
+  rename = "duplicate"

@@ -1,0 +1,31 @@
+[options]
+library = "GExiv2"
+version = "0.10"
+min_cfg_version = "0.10"
+target_path = "."
+work_mode = "normal"
+girs_directories = ["../gir-files", "../gir-files-extra"]
+deprecate_by_min_version = true
+single_version_file = true
+
+generate = [
+    "GExiv2.ByteOrder",
+    "GExiv2.LogLevel",
+    "GExiv2.Orientation",
+    "GExiv2.PreviewImage",
+    "GExiv2.PreviewProperties",
+    "GExiv2.StructureType",
+    "GExiv2.XmpFormatFlags",
+]
+
+manual = [
+    "GLib.Bytes",
+    "GLib.Error",
+    "Gio.File",
+    "Gio.InputStream",
+]
+
+[[object]]
+name = "GExiv2.Metadata"
+status = "generate"
+generate_builder = true

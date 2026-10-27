@@ -1,0 +1,30 @@
+[package]
+name = "gimp-ui"
+version = "0.1.0"
+description = "Rust bindings for libgimpui 3 (GIMP plug-in dialogs and widgets), generated with gir"
+keywords = ["gimp", "plugin", "gtk", "gui"]
+categories = ["api-bindings", "gui"]
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[features]
+v3_2 = ["ffi/v3_2", "gimp/v3_2"]
+
+[dependencies]
+ffi = { package = "gimp-ui-sys", path = "sys", version = "0.1" }
+cairo-rs.workspace = true
+gdk.workspace = true
+gdk-pixbuf.workspace = true
+gegl.workspace = true
+gimp = { path = "../gimp", version = "0.1" }
+gio.workspace = true
+glib.workspace = true
+gtk.workspace = true
+libc.workspace = true
+pango.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]

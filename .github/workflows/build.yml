@@ -1,0 +1,84 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    # Ubuntu only packages GIMP 2.10, Tumbleweed has GIMP 3.
+    container: opensuse/tumbleweed
+    steps:
+      - name: Install dependencies
+        run: >
+          zypper --non-interactive install --no-recommends
+          gcc git gzip tar curl pkgconf-pkg-config
+          gimp gimp-devel gimp-plugin-python3
+
+      # The generated code is committed, the gir submodules are only needed to
+      # regenerate it.
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: cargo build --workspace --locked
+
+      - name: Clippy
+        run: >
+          cargo clippy --workspace --locked
+          --exclude gimp-sys --exclude gimp-ui-sys --exclude gexiv2-sys
+          -- -D warnings
+
+      # Includes the sys crates' ABI tests against the C headers.
+      - name: Tests
+        run: cargo test --workspace --locked
+
+      - name: GIMP integration tests
+        timeout-minutes: 20
+        run: tests/run-gimp-tests.sh
+
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      # GIMP on Windows is built with MSYS2 (UCRT64).
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: git
+          pacboy: >-
+            gcc:p
+            gimp:p
+            pkgconf:p
+            rust:p
+
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: cargo build --workspace --locked
+
+      - name: Tests
+        run: cargo test --workspace --locked
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gimp-rs-examples-windows-x86_64
+          path: |
+            target/debug/gimp-rs-example.exe
+            target/debug/gimp-rs-test-plugin.exe

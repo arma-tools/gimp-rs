@@ -1,0 +1,467 @@
+[options]
+library = "Gimp"
+version = "3.0"
+min_cfg_version = "3.0"
+target_path = "."
+work_mode = "normal"
+girs_directories = ["../gir-files", "../gir-files-extra"]
+deprecate_by_min_version = true
+single_version_file = true
+
+generate = [
+    "Gimp.AddMaskType",
+    "Gimp.ArgumentSync",
+    "Gimp.Array",
+    "Gimp.BrushApplicationMode",
+    "Gimp.BrushGeneratedShape",
+    "Gimp.CapStyle",
+    "Gimp.Channel",
+    "Gimp.ChannelOps",
+    "Gimp.ChannelType",
+    "Gimp.CheckSize",
+    "Gimp.CheckType",
+    "Gimp.CloneType",
+    "Gimp.ColorConfig",
+    "Gimp.ColorManaged",
+    "Gimp.ColorManagementMode",
+    "Gimp.ColorRenderingIntent",
+    "Gimp.ColorTag",
+    "Gimp.ColorTransformFlags",
+    "Gimp.ComponentType",
+    "Gimp.ConfigError",
+    "Gimp.ConfigPathType",
+    "Gimp.ConvertDitherType",
+    "Gimp.ConvertPaletteType",
+    "Gimp.ConvolveType",
+    "Gimp.CpuAccelFlags",
+    "Gimp.Curve",
+    "Gimp.CurvePointType",
+    "Gimp.CurveType",
+    "Gimp.DesaturateMode",
+    "Gimp.Display",
+    "Gimp.DodgeBurnType",
+    "Gimp.DrawableFilter",
+    "Gimp.DrawableFilterConfig",
+    "Gimp.ExportCapabilities",
+    "Gimp.ExportReturn",
+    "Gimp.FileChooserAction",
+    "Gimp.FillType",
+    "Gimp.Font",
+    "Gimp.ForegroundExtractMode",
+    "Gimp.Gradient",
+    "Gimp.GradientBlendColorSpace",
+    "Gimp.GradientSegmentColor",
+    "Gimp.GradientSegmentType",
+    "Gimp.GradientType",
+    "Gimp.GridStyle",
+    "Gimp.GroupLayer",
+    "Gimp.HistogramChannel",
+    "Gimp.HueRange",
+    "Gimp.IconType",
+    "Gimp.ImageBaseType",
+    "Gimp.ImageType",
+    "Gimp.InkBlobType",
+    "Gimp.InterpolationType",
+    "Gimp.Item",
+    "Gimp.JoinStyle",
+    "Gimp.LayerColorSpace",
+    "Gimp.LayerCompositeMode",
+    "Gimp.LayerMask",
+    "Gimp.LayerMode",
+    "Gimp.LinkLayer",
+    "Gimp.MaskApplyMode",
+    "Gimp.MergeType",
+    "Gimp.MessageHandlerType",
+    "Gimp.MetadataColorspace",
+    "Gimp.MetadataLoadFlags",
+    "Gimp.MetadataSaveFlags",
+    "Gimp.Module",
+    "Gimp.ModuleDB",
+    "Gimp.ModuleError",
+    "Gimp.ModuleState",
+    "Gimp.OffsetType",
+    "Gimp.OrientationType",
+    "Gimp.PDB",
+    "Gimp.PDBErrorHandler",
+    "Gimp.PDBProcType",
+    "Gimp.PDBStatusType",
+    "Gimp.PaintApplicationMode",
+    "Gimp.Path",
+    "Gimp.PathStrokeType",
+    "Gimp.PixbufTransparency",
+    "Gimp.Precision",
+    "Gimp.ProcedureConfig",
+    "Gimp.ProcedureSensitivityMask",
+    "Gimp.ProgressCommand",
+    "Gimp.Rasterizable",
+    "Gimp.RepeatMode",
+    "Gimp.Resource",
+    "Gimp.RotationType",
+    "Gimp.RunMode",
+    "Gimp.SelectCriterion",
+    "Gimp.Selection",
+    "Gimp.SizeType",
+    "Gimp.StackTraceMode",
+    "Gimp.StrokeMethod",
+    "Gimp.TRCType",
+    "Gimp.TextDirection",
+    "Gimp.TextHintStyle",
+    "Gimp.TextJustification",
+    "Gimp.TextLayer",
+    "Gimp.TextOutline",
+    "Gimp.TextOutlineDirection",
+    "Gimp.TransferMode",
+    "Gimp.TransformDirection",
+    "Gimp.TransformResize",
+    "Gimp.Unit",
+    "Gimp.UnitID",
+    "Gimp.VectorLayer",
+]
+
+manual = [
+    "Gimp.ColorArray",
+    "Gimp.ConfigWriter",
+    "Gimp.Scanner",
+    "cairo.Context",
+    "cairo.Pattern",
+    "cairo.Surface",
+    "GdkPixbuf.Pixbuf",
+    "Gegl.AbyssPolicy",
+    "Gegl.Buffer",
+    "Gegl.Color",
+    "Gegl.DistanceMetric",
+    "Gegl.Node",
+    "Gegl.Rectangle",
+    "GExiv2.Metadata",
+    "GExiv2.Orientation",
+    "Gio.Cancellable",
+    "Gio.File",
+    "Gio.InputStream",
+    "Gio.ListModel",
+    "Gio.OutputStream",
+    "GLib.Bytes",
+    "GLib.DateTime",
+    "GLib.DestroyNotify",
+    "GLib.Error",
+    "GLib.HashTable",
+    "GLib.Quark",
+    "GObject.Object",
+    "GObject.ParamFlags",
+    "GObject.ParamSpec",
+    "GObject.Type",
+    "GObject.Value",
+    "GObject.ValueArray",
+    "Pango.FontDescription",
+]
+
+[[object]]
+name = "Gimp.*"
+status = "generate"
+  # cairo_t / cairo_surface_t in/out, not bindable as is
+  [[object.function]]
+  name = "cairo_checkerboard_create"
+  ignore = true
+  [[object.function]]
+  name = "cairo_surface_create_buffer"
+  ignore = true
+  [[object.function]]
+  name = "cairo_surface_get_buffer"
+  ignore = true
+  [[object.function]]
+  name = "cairo_surface_get_format"
+  ignore = true
+  # GimpColorArray / string+length APIs
+  [[object.function]]
+  name = "color_array_copy"
+  ignore = true
+  [[object.function]]
+  name = "color_array_free"
+  ignore = true
+  [[object.function]]
+  name = "color_array_get_length"
+  ignore = true
+  [[object.function]]
+  name = "color_list_names"
+  ignore = true
+  [[object.function]]
+  name = "color_parse_css_substring"
+  ignore = true
+  [[object.function]]
+  name = "color_parse_hex_substring"
+  ignore = true
+  [[object.function]]
+  name = "color_parse_name_substring"
+  ignore = true
+  [[object.function]]
+  name = "color_is_out_of_gamut"
+  ignore = true
+  [[object.function]]
+  name = "core_object_array_get_length"
+  ignore = true
+  # by-value GimpVector3
+  [[object.function]]
+  name = "vector_2d_to_3d_val"
+  ignore = true
+  # see src/main.rs
+  [[object.function]]
+  name = "main"
+  manual = true
+  # GType based introspection helpers
+  [[object.function]]
+  name = "enum_get_value"
+  ignore = true
+  [[object.function]]
+  name = "flags_get_first_value"
+  ignore = true
+  [[object.function]]
+  name = "pixbuf_get_format"
+  ignore = true
+  # GScanner based config (de)serialization
+  [[object.function]]
+  name = "config_deserialize_return"
+  ignore = true
+  [[object.function]]
+  name = "scanner_new_file"
+  ignore = true
+  [[object.function]]
+  name = "scanner_new_stream"
+  ignore = true
+  [[object.function]]
+  name = "scanner_new_string"
+  ignore = true
+
+[[object]]
+name = "Gimp.PlugIn"
+status = "generate"
+
+[[object]]
+name = "Gimp.Procedure"
+status = "generate"
+  # see src/procedure.rs
+  [[object.function]]
+  name = "new"
+  manual = true
+  [[object.function]]
+  name = "new_return_values"
+  manual = true
+
+[[object]]
+name = "Gimp.FileProcedure"
+status = "generate"
+
+[[object]]
+name = "Gimp.ImageProcedure"
+status = "generate"
+  # see src/procedure.rs
+  [[object.function]]
+  name = "new"
+  manual = true
+
+[[object]]
+name = "Gimp.LoadProcedure"
+status = "generate"
+  # see src/procedure.rs
+  [[object.function]]
+  name = "new"
+  manual = true
+
+[[object]]
+name = "Gimp.ExportProcedure"
+status = "generate"
+  # see src/procedure.rs
+  [[object.function]]
+  name = "new"
+  manual = true
+  [[object.property]]
+  name = "supports-comment"
+  ignore = true
+  [[object.property]]
+  name = "supports-exif"
+  ignore = true
+  [[object.property]]
+  name = "supports-iptc"
+  ignore = true
+  [[object.property]]
+  name = "supports-profile"
+  ignore = true
+  [[object.property]]
+  name = "supports-thumbnail"
+  ignore = true
+  [[object.property]]
+  name = "supports-xmp"
+  ignore = true
+
+[[object]]
+name = "Gimp.Image"
+status = "generate"
+  [[object.function]]
+  name = "metadata_save_prepare"
+  manual = true
+
+[[object]]
+name = "Gimp.Drawable"
+status = "generate"
+  # return babl::Format, see src/drawable.rs
+  [[object.function]]
+  name = "get_format"
+  manual = true
+  [[object.function]]
+  name = "get_thumbnail_format"
+  manual = true
+
+[[object]]
+name = "Gimp.Layer"
+status = "generate"
+  [[object.function]]
+  name = "new_from_surface"
+  ignore = true
+
+[[object]]
+name = "Gimp.Metadata"
+status = "generate"
+
+[[object]]
+name = "Gimp.ValueArray"
+status = "generate"
+  # see src/value_array.rs
+  [[object.function]]
+  name = "new_from_values"
+  manual = true
+
+[[object]]
+name = "Gimp.BatchProcedure"
+status = "generate"
+  [[object.function]]
+  name = "new"
+  manual = true
+
+[[object]]
+name = "Gimp.ThumbnailProcedure"
+status = "generate"
+  [[object.function]]
+  name = "new"
+  manual = true
+
+[[object]]
+name = "Gimp.VectorLoadProcedure"
+status = "generate"
+  [[object.function]]
+  name = "new"
+  manual = true
+  [[object.function]]
+  name = "extract_dimensions"
+  manual = true
+
+[[object]]
+name = "Gimp.Brush"
+status = "generate"
+  [[object.function]]
+  name = "get_buffer"
+  ignore = true
+  [[object.function]]
+  name = "get_mask"
+  ignore = true
+
+[[object]]
+name = "Gimp.Pattern"
+status = "generate"
+  [[object.function]]
+  name = "get_buffer"
+  ignore = true
+
+[[object]]
+name = "Gimp.Palette"
+status = "generate"
+  [[object.function]]
+  name = "get_colormap"
+  ignore = true
+  [[object.function]]
+  name = "set_colormap"
+  ignore = true
+
+[[object]]
+name = "Gimp.ColorProfile"
+status = "generate"
+  [[object.function]]
+  name = "get_format"
+  ignore = true
+  [[object.function]]
+  name = "get_lcms_format"
+  ignore = true
+  [[object.function]]
+  name = "get_space"
+  ignore = true
+
+[[object]]
+name = "Gimp.ColorTransform"
+status = "generate"
+  [[object.function]]
+  name = "new"
+  ignore = true
+  [[object.function]]
+  name = "new_proofing"
+  ignore = true
+  [[object.function]]
+  name = "process_pixels"
+  ignore = true
+
+[[object]]
+name = "Gimp.Choice"
+status = "generate"
+  [[object.function]]
+  name = "get_documentation"
+  ignore = true
+
+[[object]]
+name = "Gimp.ConfigInterface"
+status = "generate"
+  [[object.function]]
+  name = "deserialize_property"
+  ignore = true
+
+[[object]]
+name = "Gimp.Matrix3"
+status = "generate"
+boxed_inline = true
+  [[object.function]]
+  name = "transform_point"
+  ignore = true
+
+[[object]]
+name = "Gimp.Parasite"
+status = "generate"
+  # returns TRUE when equal, it is not a strcmp-like function
+  [[object.function]]
+  name = "compare"
+  ignore = true
+
+[[object]]
+name = "Gimp.Vector2"
+status = "generate"
+boxed_inline = true
+  # by-value struct math helpers
+  [[object.function]]
+  pattern = ".+"
+  ignore = true
+
+[[object]]
+name = "Gimp.Vector3"
+status = "generate"
+boxed_inline = true
+  # by-value struct math helpers
+  [[object.function]]
+  pattern = ".+"
+  ignore = true
+
+[[object]]
+name = "Gimp.Matrix2"
+status = "generate"
+boxed_inline = true
+
+[[object]]
+name = "Gimp.ExportOptions"
+status = "generate"
+  # in/out GimpImage**, see src/export_options.rs
+  [[object.function]]
+  name = "get_image"
+  manual = true

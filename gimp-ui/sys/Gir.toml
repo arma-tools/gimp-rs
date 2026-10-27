@@ -1,0 +1,19 @@
+[options]
+library = "GimpUi"
+version = "3.0"
+min_cfg_version = "3.0"
+work_mode = "sys"
+target_path = "."
+girs_directories = ["../../gir-files", "../../gir-files-extra"]
+external_libraries = [
+    "Babl",
+    "GLib",
+    "GObject",
+    "GdkPixbuf",
+    "Gegl",
+    "Gimp",
+    "Gio",
+    "Gtk",
+    "Gdk",
+    "cairo",
+]

@@ -1,0 +1,79 @@
+[package]
+name = "gimp-ui-sys"
+version = "0.1.0"
+description = "GIMP 3 (libgimpui) FFI bindings"
+build = "build.rs"
+
+[package.edition]
+workspace = true
+
+[package.rust-version]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.metadata.system-deps.gimpui_3_0]
+name = "gimpui-3.0"
+version = "3"
+
+[package.metadata.system-deps.gimpui_3_0.v3_2]
+version = "3.2"
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--generate-link-to-definition"]
+all-features = true
+
+[lib]
+name = "gimp_ui_sys"
+
+[dependencies]
+libc = "0.2"
+
+[dependencies.babl-sys]
+workspace = true
+
+[dependencies.gexiv2-sys]
+path = "../../gexiv2/sys"
+version = "0.1"
+
+[dependencies.glib-sys]
+workspace = true
+
+[dependencies.gobject-sys]
+workspace = true
+
+[dependencies.gdk-pixbuf-sys]
+workspace = true
+
+[dependencies.gegl-sys]
+workspace = true
+
+[dependencies.gimp-sys]
+path = "../../gimp/sys"
+version = "0.1"
+
+[dependencies.gio-sys]
+workspace = true
+
+[dependencies.gtk-sys]
+workspace = true
+
+[dependencies.gdk-sys]
+workspace = true
+
+[dependencies.pango-sys]
+workspace = true
+
+[dependencies.cairo-sys-rs]
+workspace = true
+
+[build-dependencies]
+system-deps = "7"
+
+[dev-dependencies]
+shell-words = "1.0.0"
+tempfile = "3"
+
+[features]
+v3_2 = []

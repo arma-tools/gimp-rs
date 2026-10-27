@@ -1,0 +1,22 @@
+[package]
+name = "gimp-rs-examples"
+version = "0.0.0"
+publish = false
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+gimp = { path = "../gimp" }
+gio.workspace = true
+glib.workspace = true
+
+# GIMP requires plug-ins/<name>/<name>, see `install.sh`.
+[[bin]]
+name = "gimp-rs-example"
+path = "src/main.rs"
+
+# Used by tests/run-gimp-tests.sh
+[[bin]]
+name = "gimp-rs-test-plugin"
+path = "src/bin/test_plugin.rs"

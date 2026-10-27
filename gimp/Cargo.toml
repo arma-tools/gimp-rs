@@ -1,0 +1,32 @@
+[package]
+name = "gimp"
+version = "0.1.0"
+description = "Rust bindings for libgimp 3, generated with gir, for writing GIMP plug-ins"
+keywords = ["gimp", "plugin", "gegl", "glib", "gnome"]
+categories = ["api-bindings", "multimedia::images"]
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[features]
+v3_0_8 = ["ffi/v3_0_8"]
+v3_1 = ["ffi/v3_1", "v3_0_8"]
+v3_2 = ["ffi/v3_2", "v3_1"]
+v3_2_4 = ["ffi/v3_2_4", "v3_2"]
+
+[dependencies]
+ffi = { package = "gimp-sys", path = "sys", version = "0.1" }
+babl.workspace = true
+cairo-rs.workspace = true
+gdk-pixbuf.workspace = true
+gegl.workspace = true
+gexiv2 = { path = "../gexiv2", version = "0.1" }
+gio.workspace = true
+glib.workspace = true
+libc.workspace = true
+pango.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]

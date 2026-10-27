@@ -1,0 +1,66 @@
+[package]
+name = "gexiv2-sys"
+version = "0.1.0"
+description = "GExiv2 FFI bindings"
+build = "build.rs"
+
+[package.edition]
+workspace = true
+
+[package.rust-version]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.metadata.system-deps.gexiv2]
+name = "gexiv2"
+version = "0.10"
+
+[package.metadata.system-deps.gexiv2.v0_10_3]
+version = "0.10.3"
+
+[package.metadata.system-deps.gexiv2.v0_10_6]
+version = "0.10.6"
+
+[package.metadata.system-deps.gexiv2.v0_12_1]
+version = "0.12.1"
+
+[package.metadata.system-deps.gexiv2.v0_12_2]
+version = "0.12.2"
+
+[package.metadata.system-deps.gexiv2.v0_14]
+version = "0.14"
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--generate-link-to-definition"]
+all-features = true
+
+[lib]
+name = "gexiv2_sys"
+
+[dependencies]
+libc = "0.2"
+
+[dependencies.glib-sys]
+workspace = true
+
+[dependencies.gobject-sys]
+workspace = true
+
+[dependencies.gio-sys]
+workspace = true
+
+[build-dependencies]
+system-deps = "7"
+
+[dev-dependencies]
+shell-words = "1.0.0"
+tempfile = "3"
+
+[features]
+v0_10_3 = []
+v0_10_6 = ["v0_10_3"]
+v0_12_1 = ["v0_10_6"]
+v0_12_2 = ["v0_12_1"]
+v0_14 = ["v0_12_2"]

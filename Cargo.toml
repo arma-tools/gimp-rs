@@ -1,0 +1,39 @@
+[workspace]
+resolver = "2"
+members = [
+    "gexiv2",
+    "gexiv2/sys",
+    "gimp",
+    "gimp/sys",
+    "gimp-ui",
+    "gimp-ui/sys",
+    "examples",
+]
+exclude = ["gir"]
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.83"
+license = "MIT"
+
+[workspace.dependencies]
+babl = "0.1"
+babl-sys = "0.1"
+gegl = "0.4"
+gegl-sys = "0.4"
+glib = "0.22"
+glib-sys = "0.22"
+gobject-sys = "0.22"
+gio = "0.22"
+gio-sys = "0.22"
+gdk-pixbuf = "0.22"
+gdk-pixbuf-sys = "0.22"
+cairo-rs = "0.22"
+cairo-sys-rs = "0.22"
+pango = "0.22"
+pango-sys = "0.22"
+gtk = "0.19"
+gtk-sys = "0.19"
+gdk = "0.19"
+gdk-sys = "0.19"
+libc = "0.2"
