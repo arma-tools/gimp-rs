@@ -12,6 +12,331 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A widget providing a frame with title, containing grouped radio
+    /// buttons, each associated with an integer value and random user data.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `store`
+    ///  The `GimpIntStore` from which the radio frame takes the values shown
+    /// in the list.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `value`
+    ///  The active value
+    ///
+    /// Readable | Writeable
+    /// <details><summary><h4>Frame</h4></summary>
+    ///
+    ///
+    /// #### `label`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `label-widget`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `label-xalign`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `label-yalign`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `shadow-type`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Container</h4></summary>
+    ///
+    ///
+    /// #### `border-width`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `child`
+    ///  Writeable
+    ///
+    ///
+    /// #### `resize-mode`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`FrameExt`][trait@crate::prelude::FrameExt], [`trait@gtk::prelude::FrameExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpIntRadioFrame")]
     pub struct IntRadioFrame(Object<ffi::GimpIntRadioFrame, ffi::GimpIntRadioFrameClass>) @extends Frame, gtk::Frame, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -26,6 +351,14 @@ impl IntRadioFrame {
     //    unsafe { TODO: call ffi:gimp_int_radio_frame_new() }
     //}
 
+    /// A variant of `gimp_int_radio_frame_new()` that takes an array of labels.
+    /// The array indices are used as values.
+    /// ## `labels`
+    /// a [`None`]-terminated array of labels.
+    ///
+    /// # Returns
+    ///
+    /// a new [`IntRadioFrame`][crate::IntRadioFrame].
     #[doc(alias = "gimp_int_radio_frame_new_array")]
     pub fn new_array(labels: &[&str]) -> IntRadioFrame {
         unsafe {
@@ -36,6 +369,22 @@ impl IntRadioFrame {
         }
     }
 
+    /// Creates a `GimpIntRadioFrame` containing radio buttons for each item
+    /// in the `store`. The created widget takes ownership of `store`.
+    ///
+    /// If you need to construct an empty [`IntRadioFrame`][crate::IntRadioFrame], it's best to use
+    /// g_object_new (GIMP_TYPE_INT_RADIO_FRAME, NULL).
+    ///
+    /// If you want to have a frame title with a mnemonic, set `title` to
+    /// [`None`] instead and call [`set_title()`][Self::set_title()] instead.
+    /// ## `title`
+    /// the frame label.
+    /// ## `store`
+    /// the `GimpIntStore` to generate radio buttons from.
+    ///
+    /// # Returns
+    ///
+    /// a new [`IntRadioFrame`][crate::IntRadioFrame].
     #[doc(alias = "gimp_int_radio_frame_new_from_store")]
     #[doc(alias = "new_from_store")]
     pub fn from_store(title: &str, store: &impl IsA<IntStore>) -> IntRadioFrame {
@@ -58,6 +407,10 @@ impl IntRadioFrame {
     //    unsafe { TODO: call ffi:gimp_int_radio_frame_append() }
     //}
 
+    ///
+    /// # Returns
+    ///
+    /// the value of the active item.
     #[doc(alias = "gimp_int_radio_frame_get_active")]
     #[doc(alias = "get_active")]
     pub fn active(&self) -> i32 {
@@ -75,6 +428,15 @@ impl IntRadioFrame {
     //    unsafe { TODO: call ffi:gimp_int_radio_frame_prepend() }
     //}
 
+    /// Looks up the item that belongs to the given `value` and makes it the
+    /// selected item in the `self`.
+    /// ## `value`
+    /// an integer value
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success (value changed or not) or [`false`] if there
+    ///  was no item for this value.
     #[doc(alias = "gimp_int_radio_frame_set_active")]
     pub fn set_active(&self, value: i32) -> bool {
         unsafe {
@@ -90,6 +452,11 @@ impl IntRadioFrame {
     //    unsafe { TODO: call ffi:gimp_int_radio_frame_set_active_by_user_data() }
     //}
 
+    /// Change the `self`'s title, possibly with a mnemonic.
+    /// ## `title`
+    /// the frame title or [`None`] for none.
+    /// ## `with_mnemonic`
+    /// whether `title` has a mnemonic.
     #[doc(alias = "gimp_int_radio_frame_set_title")]
     pub fn set_title(&self, title: &str, with_mnemonic: bool) {
         unsafe {
@@ -101,18 +468,24 @@ impl IntRadioFrame {
         }
     }
 
+    /// The `GimpIntStore` from which the radio frame takes the values shown
+    /// in the list.
     pub fn store(&self) -> Option<IntStore> {
         ObjectExt::property(self, "store")
     }
 
+    /// The `GimpIntStore` from which the radio frame takes the values shown
+    /// in the list.
     pub fn set_store<P: IsA<IntStore>>(&self, store: Option<&P>) {
         ObjectExt::set_property(self, "store", store)
     }
 
+    /// The active value
     pub fn value(&self) -> i32 {
         ObjectExt::property(self, "value")
     }
 
+    /// The active value
     pub fn set_value(&self, value: i32) {
         ObjectExt::set_property(self, "value", value)
     }

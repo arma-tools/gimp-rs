@@ -6,6 +6,7 @@
 use crate::ffi;
 
 glib::wrapper! {
+    /// A two dimensional vector.
     pub struct Vector2(BoxedInline<ffi::GimpVector2>);
 
     match fn {

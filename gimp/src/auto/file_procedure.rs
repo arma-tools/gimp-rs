@@ -7,6 +7,16 @@ use crate::{ffi, Procedure};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// File procedures implement file support. They cannot be created directly.
+    /// Instead, you will create an instance of one of the subclasses (such as export
+    /// or load procedures). This provides a common interface for file-related
+    /// functions on these objects.
+    ///
+    /// This is an Abstract Base Class, you cannot instantiate it.
+    ///
+    /// # Implements
+    ///
+    /// [`FileProcedureExt`][trait@crate::prelude::FileProcedureExt], [`ProcedureExt`][trait@crate::prelude::ProcedureExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpFileProcedure")]
     pub struct FileProcedure(Object<ffi::GimpFileProcedure, ffi::GimpFileProcedureClass>) @extends Procedure;
 
@@ -19,7 +29,18 @@ impl FileProcedure {
     pub const NONE: Option<&'static FileProcedure> = None;
 }
 
+/// Trait containing all [`struct@FileProcedure`] methods.
+///
+/// # Implementors
+///
+/// [`ExportProcedure`][struct@crate::ExportProcedure], [`FileProcedure`][struct@crate::FileProcedure], [`LoadProcedure`][struct@crate::LoadProcedure]
 pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
+    /// Returns the procedure's extensions as set with
+    /// [`set_extensions()`][Self::set_extensions()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's registered extensions.
     #[doc(alias = "gimp_file_procedure_get_extensions")]
     #[doc(alias = "get_extensions")]
     fn extensions(&self) -> Option<glib::GString> {
@@ -30,6 +51,12 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Returns the procedure's format name, as set with
+    /// [`set_format_name()`][Self::set_format_name()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's format name.
     #[doc(alias = "gimp_file_procedure_get_format_name")]
     #[doc(alias = "get_format_name")]
     fn format_name(&self) -> Option<glib::GString> {
@@ -40,6 +67,12 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Returns the procedure's 'handles remote' flags as set with
+    /// [`set_handles_remote()`][Self::set_handles_remote()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's 'handles remote' flag
     #[doc(alias = "gimp_file_procedure_get_handles_remote")]
     #[doc(alias = "get_handles_remote")]
     fn is_handles_remote(&self) -> bool {
@@ -50,6 +83,11 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Returns the procedure's magics as set with [`set_magics()`][Self::set_magics()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's registered magics.
     #[doc(alias = "gimp_file_procedure_get_magics")]
     #[doc(alias = "get_magics")]
     fn magics(&self) -> Option<glib::GString> {
@@ -60,25 +98,42 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Returns whether `self` is a meta file procedure as set with
+    /// [`set_meta()`][Self::set_meta()]. If `meta_extensions` is not [`None`],
+    /// the generic extensions will be returned too.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] is `self` is a meta file procedure.
+    ///
+    /// ## `meta_extensions`
+    /// The generic meta extensions,
+    ///  optionally.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_file_procedure_get_meta")]
     #[doc(alias = "get_meta")]
     fn meta(&self) -> Option<Option<glib::GString>> {
         unsafe {
-            let mut meta_extensions = std::ptr::null_mut();
+            let mut meta_extensions = std::ptr::null();
             let ret = from_glib(ffi::gimp_file_procedure_get_meta(
                 self.as_ref().to_glib_none().0,
                 &mut meta_extensions,
             ));
             if ret {
-                Some(from_glib_full(meta_extensions))
+                Some(from_glib_none(meta_extensions))
             } else {
                 None
             }
         }
     }
 
+    /// Returns the procedure's mime-type as set with
+    /// [`set_mime_types()`][Self::set_mime_types()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's registered mime-types.
     #[doc(alias = "gimp_file_procedure_get_mime_types")]
     #[doc(alias = "get_mime_types")]
     fn mime_types(&self) -> Option<glib::GString> {
@@ -89,6 +144,12 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Returns the procedure's prefixes as set with
+    /// [`set_prefixes()`][Self::set_prefixes()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's registered prefixes.
     #[doc(alias = "gimp_file_procedure_get_prefixes")]
     #[doc(alias = "get_prefixes")]
     fn prefixes(&self) -> Option<glib::GString> {
@@ -99,12 +160,23 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Returns the procedure's priority as set with
+    /// [`set_priority()`][Self::set_priority()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's registered priority.
     #[doc(alias = "gimp_file_procedure_get_priority")]
     #[doc(alias = "get_priority")]
     fn priority(&self) -> i32 {
         unsafe { ffi::gimp_file_procedure_get_priority(self.as_ref().to_glib_none().0) }
     }
 
+    /// Registers the given list of extensions as something this procedure can
+    /// handle.
+    /// ## `extensions`
+    /// A comma separated list of extensions this procedure can
+    ///  handle (i.e. "jpg,jpeg").
     #[doc(alias = "gimp_file_procedure_set_extensions")]
     fn set_extensions(&self, extensions: &str) {
         unsafe {
@@ -115,6 +187,26 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Associates a format name with a file handler procedure.
+    ///
+    /// This name can be used for any public-facing strings, such as
+    /// graphical interface labels. An example usage would be
+    /// `GimpExportProcedureDialog` title looking like "Export Image as `s`".
+    ///
+    /// Note that since the format name is public-facing, it is recommended
+    /// to localize it at runtime, for instance through gettext, like:
+    ///
+    /// **⚠️ The following code is in c ⚠️**
+    ///
+    /// ```c
+    /// gimp_file_procedure_set_format_name (procedure, _("JPEG"));
+    /// ```
+    ///
+    /// Some language would indeed localize even some technical terms or
+    /// acronyms, even if sometimes just to rewrite them with the local
+    /// writing system.
+    /// ## `format_name`
+    /// A public-facing name for the format, e.g. "PNG".
     #[doc(alias = "gimp_file_procedure_set_format_name")]
     fn set_format_name(&self, format_name: &str) {
         unsafe {
@@ -125,6 +217,18 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Registers a file procedure as capable of handling arbitrary remote
+    /// URIs via GIO.
+    ///
+    /// When `handles_remote` is set to [`true`], the procedure will get a
+    /// [`gio::File`][crate::gio::File] passed that can point to a remote file.
+    ///
+    /// When `handles_remote` is set to [`false`], the procedure will get a
+    /// local [`gio::File`][crate::gio::File] passed and can use [`FileExtManual::path()`][crate::gio::prelude::FileExtManual::path()] to get
+    /// to a filename that can be used with whatever non-GIO means of dealing with
+    /// the file.
+    /// ## `handles_remote`
+    /// The procedure's 'handles remote' flag.
     #[doc(alias = "gimp_file_procedure_set_handles_remote")]
     fn set_handles_remote(&self, handles_remote: bool) {
         unsafe {
@@ -135,6 +239,9 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Registers the list of magic file information this procedure can handle.
+    /// ## `magics`
+    /// A comma-separated list of magic file information (i.e. "0,string,GIF").
     #[doc(alias = "gimp_file_procedure_set_magics")]
     fn set_magics(&self, magics: &str) {
         unsafe {
@@ -145,6 +252,22 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Some [`LoadProcedure`][crate::LoadProcedure] or [`ExportProcedure`][crate::ExportProcedure] may
+    /// actually be a *meta* procedure. Meta procedures are typically
+    /// supporting container formats which will call another procedure for
+    /// the actual format within the container.
+    ///
+    /// Note that you should still call [`set_extensions()`][Self::set_extensions()],
+    /// usually with a list of standard full formats, such as "xcf.gz,xcfgz",
+    /// or again "hgt.zip". Nevertheless the `meta_extensions` should be only
+    /// "gz" or "zip" respectively. This would allow this meta format to work
+    /// even on less common combinations. For instance, I could export an
+    /// image as "png.gz" even though it is not explicitly listed.
+    /// ## `is_meta`
+    /// Whether `self` is a meta file procedure.
+    /// ## `meta_extensions`
+    /// A comma separated list of generic extensions this procedure can
+    ///  handle (i.e. "gz").
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_file_procedure_set_meta")]
@@ -158,6 +281,16 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Associates MIME types with a file handler procedure.
+    ///
+    /// Registers MIME types for a file handler procedure. This allows GIMP
+    /// to determine the MIME type of the file opened or saved using this
+    /// procedure. It is recommended that only one MIME type is registered
+    /// per file procedure; when registering more than one MIME type, GIMP
+    /// will associate the first one with files opened or saved with this
+    /// procedure.
+    /// ## `mime_types`
+    /// A comma-separated list of MIME types, such as "image/jpeg".
     #[doc(alias = "gimp_file_procedure_set_mime_types")]
     fn set_mime_types(&self, mime_types: &str) {
         unsafe {
@@ -168,6 +301,11 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// It should almost never be necessary to register prefixes with file
+    /// procedures, because most sorts of URIs should be handled by GIO.
+    /// ## `prefixes`
+    /// A comma separated list of prefixes this procedure can
+    ///  handle (i.e. "http:,ftp:").
     #[doc(alias = "gimp_file_procedure_set_prefixes")]
     fn set_prefixes(&self, prefixes: &str) {
         unsafe {
@@ -178,6 +316,14 @@ pub trait FileProcedureExt: IsA<FileProcedure> + 'static {
         }
     }
 
+    /// Sets the priority of a file handler procedure.
+    ///
+    /// When more than one procedure matches a given file, the procedure with the
+    /// lowest priority is used; if more than one procedure has the lowest priority,
+    /// it is unspecified which one of them is used. The default priority for file
+    /// handler procedures is 0.
+    /// ## `priority`
+    /// The procedure's priority.
     #[doc(alias = "gimp_file_procedure_set_priority")]
     fn set_priority(&self, priority: i32) {
         unsafe {

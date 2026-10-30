@@ -6,6 +6,11 @@
 use crate::{ffi, ResourceChooser};
 
 glib::wrapper! {
+    /// A button which pops up a gradient select dialog.
+    ///
+    /// # Implements
+    ///
+    /// [`ResourceChooserExt`][trait@crate::prelude::ResourceChooserExt], [`trait@gtk::prelude::BoxExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpGradientChooser")]
     pub struct GradientChooser(Object<ffi::GimpGradientChooser, ffi::GimpGradientChooserClass>) @extends ResourceChooser, gtk::Box, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 

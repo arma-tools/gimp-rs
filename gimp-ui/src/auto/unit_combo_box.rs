@@ -7,6 +7,11 @@ use crate::{ffi, UnitStore};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// [`UnitComboBox`][crate::UnitComboBox] selects units stored in a [`UnitStore`][crate::UnitStore].
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::ComboBoxExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpUnitComboBox")]
     pub struct UnitComboBox(Object<ffi::GimpUnitComboBox, ffi::GimpUnitComboBoxClass>) @extends gtk::ComboBox, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -16,11 +21,21 @@ glib::wrapper! {
 }
 
 impl UnitComboBox {
+    ///
+    /// # Returns
+    ///
+    /// a new [`UnitComboBox`][crate::UnitComboBox].
     #[doc(alias = "gimp_unit_combo_box_new")]
     pub fn new() -> UnitComboBox {
         unsafe { gtk::Widget::from_glib_none(ffi::gimp_unit_combo_box_new()).unsafe_cast() }
     }
 
+    /// ## `model`
+    /// a [`UnitStore`][crate::UnitStore]
+    ///
+    /// # Returns
+    ///
+    /// a new [`UnitComboBox`][crate::UnitComboBox].
     #[doc(alias = "gimp_unit_combo_box_new_with_model")]
     #[doc(alias = "new_with_model")]
     pub fn with_model(model: &impl IsA<UnitStore>) -> UnitComboBox {

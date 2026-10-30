@@ -7,6 +7,13 @@ use crate::{ffi, ColorSelector};
 use glib::translate::*;
 
 glib::wrapper! {
+    /// The [`ColorNotebook`][crate::ColorNotebook] widget is an implementation of a
+    /// [`ColorSelector`][crate::ColorSelector]. It serves as a container for
+    /// `GimpColorSelectors`.
+    ///
+    /// # Implements
+    ///
+    /// [`ColorSelectorExt`][trait@crate::prelude::ColorSelectorExt], [`trait@gtk::prelude::BoxExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpColorNotebook")]
     pub struct ColorNotebook(Object<ffi::GimpColorNotebook, ffi::GimpColorNotebookClass>) @extends ColorSelector, gtk::Box, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 
@@ -23,6 +30,10 @@ impl ColorNotebook {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The active page's [`ColorSelector`][crate::ColorSelector].
     #[doc(alias = "gimp_color_notebook_get_current_selector")]
     #[doc(alias = "get_current_selector")]
     pub fn current_selector(&self) -> Option<ColorSelector> {
@@ -39,6 +50,11 @@ impl ColorNotebook {
     //    unsafe { TODO: call ffi:gimp_color_notebook_get_notebook() }
     //}
 
+    ///
+    /// # Returns
+    ///
+    /// The
+    ///  notebook's list of [`ColorSelector`][crate::ColorSelector]'s.
     #[doc(alias = "gimp_color_notebook_get_selectors")]
     #[doc(alias = "get_selectors")]
     pub fn selectors(&self) -> Vec<ColorSelector> {
@@ -54,6 +70,17 @@ impl ColorNotebook {
     //    unsafe { TODO: call ffi:gimp_color_notebook_set_format() }
     //}
 
+    /// This function adds and removed pages to / from a [`ColorNotebook`][crate::ColorNotebook].
+    /// The `page_type` passed must be a [`ColorSelector`][crate::ColorSelector] subtype.
+    /// ## `page_type`
+    /// The `GType` of the notebook page to add or remove.
+    /// ## `has_page`
+    /// Whether the page should be added or removed.
+    ///
+    /// # Returns
+    ///
+    /// The new page widget, if `has_page` was
+    ///  [`true`], or [`None`] if `has_page` was [`false`].
     #[doc(alias = "gimp_color_notebook_set_has_page")]
     pub fn set_has_page(
         &self,
@@ -69,6 +96,13 @@ impl ColorNotebook {
         }
     }
 
+    /// Updates all selectors with the current simulation settings.
+    /// ## `profile`
+    /// A [`gimp::ColorProfile`][crate::gimp::ColorProfile] object.
+    /// ## `intent`
+    /// A [`gimp::ColorRenderingIntent`][crate::gimp::ColorRenderingIntent] enum.
+    /// ## `bpc`
+    /// A gboolean.
     #[doc(alias = "gimp_color_notebook_set_simulation")]
     pub fn set_simulation(
         &self,

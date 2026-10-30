@@ -7,6 +7,11 @@ use crate::{ffi, ConfigInterface, Resource};
 use glib::translate::*;
 
 glib::wrapper! {
+    /// Installable object used by text tools.
+    ///
+    /// # Implements
+    ///
+    /// [`ResourceExt`][trait@crate::prelude::ResourceExt], [`trait@glib::ObjectExt`], [`ConfigInterfaceExt`][trait@crate::prelude::ConfigInterfaceExt]
     #[doc(alias = "GimpFont")]
     pub struct Font(Object<ffi::GimpFont, ffi::GimpFontClass>) @extends Resource, @implements ConfigInterface;
 
@@ -16,6 +21,11 @@ glib::wrapper! {
 }
 
 impl Font {
+    /// Returns a [`pango::FontDescription`][crate::pango::FontDescription] representing `self`.
+    ///
+    /// # Returns
+    ///
+    /// a [`pango::FontDescription`][crate::pango::FontDescription] representing `self`.
     #[doc(alias = "gimp_font_get_pango_font_description")]
     #[doc(alias = "get_pango_font_description")]
     pub fn pango_font_description(&self) -> Option<pango::FontDescription> {
@@ -26,6 +36,21 @@ impl Font {
         }
     }
 
+    /// Returns a font with the given name.
+    ///
+    /// If several fonts are named identically, the one which is returned by
+    /// this function should be considered random. This can be used when you
+    /// know you won't have multiple fonts of this name or that you don't
+    /// want to choose (non-interactive scripts, etc.).
+    /// If you need more control, you should use [`fonts_get_list()`][crate::fonts_get_list()]
+    /// instead.
+    /// Returns [`None`] when no font exists of that name.
+    /// ## `name`
+    /// The name of the font.
+    ///
+    /// # Returns
+    ///
+    /// The font.
     #[doc(alias = "gimp_font_get_by_name")]
     #[doc(alias = "get_by_name")]
     pub fn by_name(name: &str) -> Option<Font> {

@@ -17,6 +17,42 @@ the generator of the [gtk-rs](https://gtk-rs.org) crates, and builds on the gtk-
   `gegl::Buffer` in any babl format (`GeglBufferExtManual`),
 - `ExportOptions::image()`, which deletes the converted export copy on drop.
 
+The documentation of the generated API is taken from the GIR file, see also
+the [libgimp reference](https://developer.gimp.org/api/3.0/libgimp/). Dialogs
+and widgets for plug-ins are in the [`gimp-ui`](https://crates.io/crates/gimp-ui)
+crate.
+
+## Requirements
+
+The GIMP 3 development files (`gimp-3.0.pc`), for example the `gimp-devel`
+package on openSUSE and Fedora, `libgimp-3.0-dev` on Debian and Ubuntu, `gimp`
+on Arch Linux, or `mingw-w64-ucrt-x86_64-gimp` in MSYS2 (UCRT64) on Windows.
+
+```toml
+[dependencies]
+gimp = "0.1"
+glib = "0.22"
+```
+
+`glib` is needed for the `glib::wrapper!` and `#[glib::object_subclass]`
+macros. `gimp` re-exports the versions of `glib`, `gio`, `gegl`, `babl`,
+`gexiv2`, `gdk_pixbuf`, `cairo` and `pango` it uses.
+
+## Features
+
+Without features, only the API of GIMP 3.0 is available. API added in later
+versions is enabled with these features, each requires at least that GIMP
+version at build and run time:
+
+| feature  | GIMP  |
+|----------|-------|
+| `v3_0_8` | 3.0.8 |
+| `v3_1`   | 3.1   |
+| `v3_2`   | 3.2   |
+| `v3_2_4` | 3.2.4 |
+
+## Example
+
 ```rust,ignore
 use gimp::{prelude::*, subclass::prelude::*};
 
@@ -65,5 +101,24 @@ glib::wrapper! {
 gimp::main!(HelloPlugIn);
 ```
 
-GIMP finds plug-ins in `~/.config/GIMP/3.x/plug-ins/<name>/<name>`, the
-executable has to have the same name as its directory.
+A larger example, with a file loader and exporter, is in the
+[repository](https://github.com/arma-tools/gimp-rs/blob/main/examples/src/main.rs).
+
+## Installing a plug-in
+
+GIMP looks for plug-ins in the `plug-ins` folder of the user's profile, each in
+a directory of the same name as the executable:
+
+- Linux: `~/.config/GIMP/3.x/plug-ins/<name>/<name>`
+- Windows: `%APPDATA%\GIMP\3.x\plug-ins\<name>\<name>.exe`
+- macOS: `~/Library/Application Support/GIMP/3.x/plug-ins/<name>/<name>`
+
+Other folders can be added in Preferences → Folders → Plug-ins. GIMP runs
+plug-ins without a console, on Windows add `#![windows_subsystem = "windows"]`
+to keep a console window from opening.
+
+## Panics
+
+Unwinding into libgimp is not allowed. Panics in the `run` closures of
+procedures are caught and returned to GIMP as execution errors, panics
+elsewhere (for example in `PlugInImpl` methods) abort the plug-in.

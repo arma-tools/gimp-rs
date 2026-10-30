@@ -7,6 +7,13 @@ use crate::{ffi, LabelSpin, Labeled};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// This widget is a [`gtk::Grid`][crate::gtk::Grid] showing a `GtkSpinButton` and a `GtkScale`
+    /// bound together. It also displays a `GtkLabel` which is used as
+    /// mnemonic on the `GtkSpinButton`.
+    ///
+    /// # Implements
+    ///
+    /// [`ScaleEntryExt`][trait@crate::prelude::ScaleEntryExt], [`LabelSpinExt`][trait@crate::prelude::LabelSpinExt], [`LabeledExt`][trait@crate::prelude::LabeledExt], [`trait@gtk::prelude::GridExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpScaleEntry")]
     pub struct ScaleEntry(Object<ffi::GimpScaleEntry, ffi::GimpScaleEntryClass>) @extends LabelSpin, Labeled, gtk::Grid, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 
@@ -18,6 +25,23 @@ glib::wrapper! {
 impl ScaleEntry {
     pub const NONE: Option<&'static ScaleEntry> = None;
 
+    /// This function creates a `GtkLabel`, a `GtkHScale` and a `GtkSpinButton` and
+    /// attaches them to a 3-column [`gtk::Grid`][crate::gtk::Grid].
+    /// ## `text`
+    /// The text for the `GtkLabel` which will appear left of
+    ///  the `GtkHScale`.
+    /// ## `value`
+    /// The initial value.
+    /// ## `lower`
+    /// The lower boundary.
+    /// ## `upper`
+    /// The upper boundary.
+    /// ## `digits`
+    /// The number of decimal digits.
+    ///
+    /// # Returns
+    ///
+    /// The new [`ScaleEntry`][crate::ScaleEntry].
     #[doc(alias = "gimp_scale_entry_new")]
     pub fn new(text: &str, value: f64, lower: f64, upper: f64, digits: u32) -> ScaleEntry {
         unsafe {
@@ -33,7 +57,17 @@ impl ScaleEntry {
     }
 }
 
+/// Trait containing all [`struct@ScaleEntry`] methods.
+///
+/// # Implementors
+///
+/// [`ColorScaleEntry`][struct@crate::ColorScaleEntry], [`ScaleEntry`][struct@crate::ScaleEntry]
 pub trait ScaleEntryExt: IsA<ScaleEntry> + 'static {
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `self`'s scale widget will behave in
+    ///  logarithmic fashion, [`false`] for linear behavior.
     #[doc(alias = "gimp_scale_entry_get_logarithmic")]
     #[doc(alias = "get_logarithmic")]
     fn is_logarithmic(&self) -> bool {
@@ -50,6 +84,35 @@ pub trait ScaleEntryExt: IsA<ScaleEntry> + 'static {
     //    unsafe { TODO: call ffi:gimp_scale_entry_get_range() }
     //}
 
+    /// By default the `GtkSpinButton` and `GtkScale` will have the same range.
+    /// In some case, you want to set a different range. In particular when
+    /// the finale range is huge, the `GtkScale` might become nearly useless
+    /// as every tiny slider move would dramatically update the value. In
+    /// this case, it is common to set the `GtkScale` to a smaller common
+    /// range, while the `GtkSpinButton` would allow for the full allowed
+    /// range.
+    /// This function allows this. Obviously the [`gtk::Adjustment`][crate::gtk::Adjustment] of both
+    /// widgets would be synced but if the set value is out of the `GtkScale`
+    /// range, the slider would simply show at one extreme.
+    ///
+    /// If `limit_scale` is [`false`] though, it would sync back both widgets
+    /// range to the new values.
+    ///
+    /// Note that the step and page increments are updated when the range is
+    /// updated according to some common usage algorithm which should work if
+    /// you don't have very specific needs. If you want to customize the step
+    /// increments yourself, you may call [`LabelSpinExt::set_increments()`][crate::prelude::LabelSpinExt::set_increments()]
+    /// ## `lower`
+    /// the lower value for the whole widget if `limit_scale` is
+    ///  [`false`], or only for the `GtkScale` if [`true`].
+    /// ## `upper`
+    /// the upper value for the whole widget if `limit_scale` is
+    ///  [`false`], or only for the `GtkSpinButton` if [`true`].
+    /// ## `limit_scale`
+    /// Whether the range should only apply to the `GtkScale` or
+    ///  if it should share its `GtkAdjustement` with the
+    ///  `GtkSpinButton`. If [`true`], both `lower` and `upper` must be
+    ///  included in current `GtkSpinButton` range.
     #[doc(alias = "gimp_scale_entry_set_bounds")]
     fn set_bounds(&self, lower: f64, upper: f64, limit_scale: bool) {
         unsafe {
@@ -62,6 +125,13 @@ pub trait ScaleEntryExt: IsA<ScaleEntry> + 'static {
         }
     }
 
+    /// Sets whether `self`'s scale widget will behave in a linear
+    /// or logarithmic fashion. Useful when an entry has to attend large
+    /// ranges, but smaller selections on that range require a finer
+    /// adjustment.
+    /// ## `logarithmic`
+    /// a boolean value to set or reset logarithmic behavior
+    ///  of the scale widget
     #[doc(alias = "gimp_scale_entry_set_logarithmic")]
     fn set_logarithmic(&self, logarithmic: bool) {
         unsafe {

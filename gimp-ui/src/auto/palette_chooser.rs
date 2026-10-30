@@ -6,6 +6,11 @@
 use crate::{ffi, ResourceChooser};
 
 glib::wrapper! {
+    /// A button which pops up a palette selection dialog.
+    ///
+    /// # Implements
+    ///
+    /// [`ResourceChooserExt`][trait@crate::prelude::ResourceChooserExt], [`trait@gtk::prelude::BoxExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpPaletteChooser")]
     pub struct PaletteChooser(Object<ffi::GimpPaletteChooser, ffi::GimpPaletteChooserClass>) @extends ResourceChooser, gtk::Box, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 

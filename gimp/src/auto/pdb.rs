@@ -7,6 +7,11 @@ use crate::{ffi, PDBStatusType, Procedure};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// Provides access to the Procedural DataBase (PDB).
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpPDB")]
     pub struct PDB(Object<ffi::GimpPDB, ffi::GimpPDBClass>);
 
@@ -16,6 +21,17 @@ glib::wrapper! {
 }
 
 impl PDB {
+    /// Dumps the current contents of the procedural database
+    ///
+    /// This procedure dumps the contents of the procedural database to the
+    /// specified `file`. The file will contain all of the information
+    /// provided for each registered procedure.
+    /// ## `file`
+    /// The dump file.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_pdb_dump_to_file")]
     pub fn dump_to_file(&self, file: &impl IsA<gio::File>) -> bool {
         unsafe {
@@ -26,18 +42,47 @@ impl PDB {
         }
     }
 
+    /// Retrieves the error message from the last procedure call.
+    ///
+    /// If a procedure call fails, then it might pass an error message with
+    /// the return values. Plug-ins that are using the libgimp C wrappers
+    /// don't access the procedure return values directly. Thus [`PDB`][crate::PDB]
+    /// stores the error message and makes it available with this
+    /// function. The next procedure call unsets the error message again.
+    ///
+    /// The returned string is owned by `self` and must not be freed or
+    /// modified.
+    ///
+    /// # Returns
+    ///
+    /// the error message
     #[doc(alias = "gimp_pdb_get_last_error")]
     #[doc(alias = "get_last_error")]
     pub fn last_error(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::gimp_pdb_get_last_error(self.to_glib_none().0)) }
     }
 
+    /// Retrieves the status from the last procedure call.
+    ///
+    /// # Returns
+    ///
+    /// the [`PDBStatusType`][crate::PDBStatusType].
     #[doc(alias = "gimp_pdb_get_last_status")]
     #[doc(alias = "get_last_status")]
     pub fn last_status(&self) -> PDBStatusType {
         unsafe { from_glib(ffi::gimp_pdb_get_last_status(self.to_glib_none().0)) }
     }
 
+    /// This function returns the [`Procedure`][crate::Procedure] which is registered
+    /// with `procedure_name` if it exists, or returns [`None`] otherwise.
+    ///
+    /// The returned [`Procedure`][crate::Procedure] is owned by `self` and must not be modified.
+    /// ## `procedure_name`
+    /// A procedure name
+    ///
+    /// # Returns
+    ///
+    /// A [`Procedure`][crate::Procedure], or [`None`].
     #[doc(alias = "gimp_pdb_lookup_procedure")]
     pub fn lookup_procedure(&self, procedure_name: &str) -> Option<Procedure> {
         unsafe {
@@ -48,6 +93,14 @@ impl PDB {
         }
     }
 
+    /// This function checks if a procedure exists in the procedural
+    /// database.
+    /// ## `procedure_name`
+    /// A procedure name
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the procedure exists, [`false`] otherwise.
     #[doc(alias = "gimp_pdb_procedure_exists")]
     pub fn procedure_exists(&self, procedure_name: &str) -> bool {
         unsafe {
@@ -58,6 +111,44 @@ impl PDB {
         }
     }
 
+    /// Queries the procedural database for its contents using regular
+    /// expression matching.
+    ///
+    /// This function queries the contents of the procedural database. It
+    /// is supplied with eight arguments matching procedures on
+    ///
+    /// { name, blurb, help, help-id, authors, copyright, date, procedure type}.
+    ///
+    /// This is accomplished using regular expression matching. For
+    /// instance, to find all procedures with "jpeg" listed in the blurb,
+    /// all seven arguments can be supplied as ".*", except for the second,
+    /// which can be supplied as ".*jpeg.*". There are two return arguments
+    /// for this procedure. The first is the number of procedures matching
+    /// the query. The second is a concatenated list of procedure names
+    /// corresponding to those matching the query. If no matching entries
+    /// are found, then the returned string is NULL and the number of
+    /// entries is 0.
+    /// ## `name`
+    /// The regex for procedure name.
+    /// ## `blurb`
+    /// The regex for procedure blurb.
+    /// ## `help`
+    /// The regex for procedure help.
+    /// ## `help_id`
+    /// The regex for procedure help-id.
+    /// ## `authors`
+    /// The regex for procedure authors.
+    /// ## `copyright`
+    /// The regex for procedure copyright.
+    /// ## `date`
+    /// The regex for procedure date.
+    /// ## `proc_type`
+    /// The regex for procedure type: { 'Internal GIMP procedure', 'GIMP Plug-in', 'GIMP Extension', 'Temporary Procedure' }.
+    ///
+    /// # Returns
+    ///
+    /// The list
+    ///  of procedure names. Free with `g_strfreev()`.
     #[doc(alias = "gimp_pdb_query_procedures")]
     pub fn query_procedures(
         &self,
@@ -85,6 +176,16 @@ impl PDB {
         }
     }
 
+    /// Generates a unique temporary PDB name.
+    ///
+    /// This function generates a temporary PDB entry name that is
+    /// guaranteed to be unique.
+    ///
+    /// # Returns
+    ///
+    /// A unique temporary name for a temporary
+    ///  PDB entry. The returned value must be freed with
+    ///  `g_free()`.
     #[doc(alias = "gimp_pdb_temp_procedure_name")]
     pub fn temp_procedure_name(&self) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_pdb_temp_procedure_name(self.to_glib_none().0)) }

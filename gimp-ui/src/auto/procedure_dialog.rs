@@ -12,6 +12,523 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    ///
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `config`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `procedure`
+    ///  Readable | Writeable | Construct Only
+    /// <details><summary><h4>Dialog</h4></summary>
+    ///
+    ///
+    /// #### `help-func`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `help-id`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `parent`
+    ///  Writeable | Construct Only
+    /// </details>
+    /// <details><summary><h4>Dialog</h4></summary>
+    ///
+    ///
+    /// #### `use-header-bar`
+    ///  [`true`] if the dialog uses a `GtkHeaderBar` for action buttons
+    /// instead of the action-area.
+    ///
+    /// For technical reasons, this property is declared as an integer
+    /// property, but you should only set it to [`true`] or [`false`].
+    ///
+    /// Readable | Writeable | Construct Only
+    /// </details>
+    /// <details><summary><h4>Window</h4></summary>
+    ///
+    ///
+    /// #### `accept-focus`
+    ///  Whether the window should receive the input focus.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `application`
+    ///  The `GtkApplication` associated with the window.
+    ///
+    /// The application will be kept alive for at least as long as it
+    /// has any windows associated with it (see `g_application_hold()`
+    /// for a way to keep it alive without windows).
+    ///
+    /// Normally, the connection between the application and the window
+    /// will remain until the window is destroyed, but you can explicitly
+    /// remove it by setting the :application property to [`None`].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `attached-to`
+    ///  The widget to which this window is attached.
+    /// See [`WindowExtManual::set_attached_to()`][crate::gtk::prelude::WindowExtManual::set_attached_to()].
+    ///
+    /// Examples of places where specifying this relation is useful are
+    /// for instance a `GtkMenu` created by a [`gtk::ComboBox`][crate::gtk::ComboBox], a completion
+    /// popup window created by [`gtk::Entry`][crate::gtk::Entry] or a typeahead search entry
+    /// created by `GtkTreeView`.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `decorated`
+    ///  Whether the window should be decorated by the window manager.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `default-height`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `default-width`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `deletable`
+    ///  Whether the window frame should have a close button.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `destroy-with-parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-map`
+    ///  Whether the window should receive the input focus when mapped.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-visible`
+    ///  Whether 'focus rectangles' are currently visible in this window.
+    ///
+    /// This property is maintained by GTK+ based on user input
+    /// and should not be set by applications.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `gravity`
+    ///  The window gravity of the window. See [`WindowExtManual::move_()`][crate::gtk::prelude::WindowExtManual::move_()] and `GdkGravity` for
+    /// more details about window gravity.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-resize-grip`
+    ///  Whether the window has a corner resize grip.
+    ///
+    /// Note that the resize grip is only shown if the window is
+    /// actually resizable and not maximized. Use
+    /// [`resize-grip-visible`][struct@crate::gtk::Window#resize-grip-visible] to find out if the resize
+    /// grip is currently shown.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-toplevel-focus`
+    ///  Readable
+    ///
+    ///
+    /// #### `hide-titlebar-when-maximized`
+    ///  Whether the titlebar should be hidden during maximization.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `icon`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `icon-name`
+    ///  The :icon-name property specifies the name of the themed icon to
+    /// use as the window icon. See `GtkIconTheme` for more details.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-active`
+    ///  Readable
+    ///
+    ///
+    /// #### `is-maximized`
+    ///  Readable
+    ///
+    ///
+    /// #### `mnemonics-visible`
+    ///  Whether mnemonics are currently visible in this window.
+    ///
+    /// This property is maintained by GTK+ based on user input,
+    /// and should not be set by applications.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `modal`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `resizable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `resize-grip-visible`
+    ///  Whether a corner resize grip is currently shown.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `role`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `screen`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `skip-pager-hint`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `skip-taskbar-hint`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `startup-id`
+    ///  The :startup-id is a write-only property for setting window's
+    /// startup notification identifier. See [`WindowExtManual::set_startup_id()`][crate::gtk::prelude::WindowExtManual::set_startup_id()]
+    /// for more details.
+    ///
+    /// Writeable
+    ///
+    ///
+    /// #### `title`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `transient-for`
+    ///  The transient parent of the window. See [`WindowExtManual::set_transient_for()`][crate::gtk::prelude::WindowExtManual::set_transient_for()] for
+    /// more details about transient windows.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `type`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `type-hint`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `urgency-hint`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window-position`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Container</h4></summary>
+    ///
+    ///
+    /// #### `border-width`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `child`
+    ///  Writeable
+    ///
+    ///
+    /// #### `resize-mode`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`ProcedureDialogExt`][trait@crate::prelude::ProcedureDialogExt], [`GimpDialogExt`][trait@crate::prelude::GimpDialogExt], [`trait@gtk::prelude::DialogExt`], [`trait@gtk::prelude::WindowExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpProcedureDialog")]
     pub struct ProcedureDialog(Object<ffi::GimpProcedureDialog, ffi::GimpProcedureDialogClass>) @extends Dialog, gtk::Dialog, gtk::Window, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -23,6 +540,28 @@ glib::wrapper! {
 impl ProcedureDialog {
     pub const NONE: Option<&'static ProcedureDialog> = None;
 
+    /// Creates a new dialog for `procedure` using widgets generated from
+    /// properties of `config`.
+    /// A [`None`] title will only be accepted if a menu label was set with
+    /// [`ProcedureExtManual::set_menu_label()`][crate::gimp::prelude::ProcedureExtManual::set_menu_label()] (this menu label will then be used as
+    /// dialog title instead). If neither an explicit label nor a `procedure`
+    /// menu label was set, the call will fail.
+    ///
+    /// As for all [`gtk::Window`][crate::gtk::Window], the returned [`ProcedureDialog`][crate::ProcedureDialog] object is
+    /// owned by GTK and its initial reference is stored in an internal list
+    /// of top-level windows. To delete the dialog, call
+    /// `gtk_widget_destroy()`.
+    /// ## `procedure`
+    /// the associated [`gimp::Procedure`][crate::gimp::Procedure].
+    /// ## `config`
+    /// a [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig] from which properties will be
+    ///  turned into widgets.
+    /// ## `title`
+    /// a dialog title.
+    ///
+    /// # Returns
+    ///
+    /// the newly created [`ProcedureDialog`][crate::ProcedureDialog].
     #[doc(alias = "gimp_procedure_dialog_new")]
     pub fn new(
         procedure: &impl IsA<gimp::Procedure>,
@@ -40,6 +579,11 @@ impl ProcedureDialog {
     }
 }
 
+/// Trait containing all [`struct@ProcedureDialog`] methods.
+///
+/// # Implementors
+///
+/// [`ExportProcedureDialog`][struct@crate::ExportProcedureDialog], [`ProcedureDialog`][struct@crate::ProcedureDialog], [`VectorLoadProcedureDialog`][struct@crate::VectorLoadProcedureDialog]
 pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
     //#[doc(alias = "gimp_procedure_dialog_fill")]
     //fn fill(&self, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
@@ -51,6 +595,28 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
     //    unsafe { TODO: call ffi:gimp_procedure_dialog_fill_box() }
     //}
 
+    /// Creates and populates a new [`gtk::Box`][crate::gtk::Box] with widgets corresponding to
+    /// every listed `properties`. If the list is empty, the created box will
+    /// be filled by the whole list of properties of the associated
+    /// [`gimp::Procedure`][crate::gimp::Procedure], in the defined order. This is similar of how
+    /// `gimp_procedure_dialog_fill()` works except that it creates a new
+    /// widget which is not inside `self` itself.
+    ///
+    /// The `container_id` must be a unique ID which is neither the name of a
+    /// property of the [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig] associated to `self`, nor is it
+    /// the ID of any previously created container. This ID can later be used
+    /// together with property names to be packed in other containers or
+    /// inside `self` itself.
+    /// ## `container_id`
+    /// a container identifier.
+    /// ## `properties`
+    /// the list of property names.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Box`][crate::gtk::Box] representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_fill_box_list")]
     fn fill_box_list(&self, container_id: &str, properties: &[&str]) -> Option<gtk::Widget> {
         unsafe {
@@ -62,6 +628,32 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new `GtkExpander` and packs `title_id` as its title
+    /// and `contents_id` as content.
+    /// If `title_id` represents a boolean property, its value will be used to
+    /// expand the `GtkExpander`. If `invert_title` is TRUE, then expand binding is
+    /// inverted.
+    ///
+    /// The `container_id` must be a unique ID which is neither the name of a
+    /// property of the [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig] associated to `self`, nor is it
+    /// the ID of any previously created container. This ID can later be used
+    /// together with property names to be packed in other containers or
+    /// inside `self` itself.
+    /// ## `container_id`
+    /// a container identifier.
+    /// ## `title_id`
+    /// the identifier for the title widget.
+    /// ## `invert_title`
+    /// whether to use the opposite value of `title_id` if it
+    ///  represents a boolean widget.
+    /// ## `contents_id`
+    /// the identifier for the contents.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `container_id`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_fill_expander")]
     fn fill_expander(
         &self,
@@ -86,6 +678,28 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
     //    unsafe { TODO: call ffi:gimp_procedure_dialog_fill_flowbox() }
     //}
 
+    /// Creates and populates a new `GtkFlowBox` with widgets corresponding to
+    /// every listed `properties`. If the list is empty, the created flowbox
+    /// will be filled by the whole list of properties of the associated
+    /// [`gimp::Procedure`][crate::gimp::Procedure], in the defined order. This is similar of how
+    /// `gimp_procedure_dialog_fill()` works except that it creates a new
+    /// widget which is not inside `self` itself.
+    ///
+    /// The `container_id` must be a unique ID which is neither the name of a
+    /// property of the [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig] associated to `self`, nor is it
+    /// the ID of any previously created container. This ID can later be used
+    /// together with property names to be packed in other containers or
+    /// inside `self` itself.
+    /// ## `container_id`
+    /// a container identifier.
+    /// ## `properties`
+    /// the list of property names.
+    ///
+    /// # Returns
+    ///
+    /// the `GtkFlowBox` representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_fill_flowbox_list")]
     fn fill_flowbox_list(&self, container_id: &str, properties: &[&str]) -> Option<gtk::Widget> {
         unsafe {
@@ -97,6 +711,32 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new [`gtk::Frame`][crate::gtk::Frame] and packs `title_id` as its title and
+    /// `contents_id` as its child.
+    /// If `title_id` represents a boolean property, its value will be used to
+    /// renders `contents_id` sensitive or not. If `invert_title` is TRUE, then
+    /// sensitivity binding is inverted.
+    ///
+    /// The `container_id` must be a unique ID which is neither the name of a
+    /// property of the [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig] associated to `self`, nor is it
+    /// the ID of any previously created container. This ID can later be used
+    /// together with property names to be packed in other containers or
+    /// inside `self` itself.
+    /// ## `container_id`
+    /// a container identifier.
+    /// ## `title_id`
+    /// the identifier for the title widget.
+    /// ## `invert_title`
+    /// whether to use the opposite value of `title_id` if it
+    ///  represents a boolean widget.
+    /// ## `contents_id`
+    /// the identifier for the contents.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `container_id`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_fill_frame")]
     fn fill_frame(
         &self,
@@ -116,6 +756,35 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Populate `self` with the widgets corresponding to every listed
+    /// properties. If the list is [`None`], `self` will be filled by the whole
+    /// list of properties of the associated [`gimp::Procedure`][crate::gimp::Procedure], in the defined
+    /// order:
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// gimp_procedure_dialog_fill_list (dialog, NULL);
+    /// ```
+    /// Nevertheless if you only wish to display a partial list of
+    /// properties, or if you wish to change the display order, then you have
+    /// to give an explicit list:
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// gimp_procedure_dialog_fill (dialog, "property-1", "property-2", NULL);
+    /// ```
+    ///
+    /// Note: you do not have to call [`widget()`][Self::widget()] on
+    /// every property before calling this function unless you want a given
+    /// property to be represented by an alternative widget type. By default,
+    /// each property will get a default representation according to its
+    /// type.
+    /// ## `properties`
+    /// the list of property names.
     #[doc(alias = "gimp_procedure_dialog_fill_list")]
     fn fill_list(&self, properties: &[&str]) {
         unsafe {
@@ -131,6 +800,28 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
     //    unsafe { TODO: call ffi:gimp_procedure_dialog_fill_notebook() }
     //}
 
+    /// Creates and populates a new `GtkNotebook` with widgets corresponding to every
+    /// listed properties.
+    /// This is similar of how [`fill_list()`][Self::fill_list()] works except that it
+    /// creates a new widget which is not inside `self` itself.
+    ///
+    /// The `container_id` must be a unique ID which is neither the name of a
+    /// property of the [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig] associated to `self`, nor is it
+    /// the ID of any previously created container. This ID can later be used
+    /// together with property names to be packed in other containers or
+    /// inside `self` itself.
+    /// ## `container_id`
+    /// a container identifier.
+    /// ## `label_list`
+    /// the list of label IDs.
+    /// ## `page_list`
+    /// the list of page IDs.
+    ///
+    /// # Returns
+    ///
+    /// the `GtkNotebook` representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_fill_notebook_list")]
     fn fill_notebook_list(
         &self,
@@ -148,6 +839,28 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates and populates a new `GtkPaned` containing widgets corresponding to
+    /// `child1_id` and `child2_id`.
+    /// This is similar of how `gimp_procedure_dialog_fill()` works except that it
+    /// creates a new widget which is not inside `self` itself.
+    ///
+    /// The `container_id` must be a unique ID which is neither the name of a
+    /// property of the [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig] associated to `self`, nor is it
+    /// the ID of any previously created container. This ID can later be used
+    /// together with property names to be packed in other containers or
+    /// inside `self` itself.
+    /// ## `container_id`
+    /// a container identifier.
+    /// ## `child1_id`
+    /// the first child's ID.
+    /// ## `child2_id`
+    /// the second child's ID.
+    ///
+    /// # Returns
+    ///
+    /// the `GtkPaned` representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_fill_paned")]
     fn fill_paned(
         &self,
@@ -167,6 +880,24 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates and populates a new `GtkScrolledWindow` with a widget corresponding
+    /// to the declared content id.
+    ///
+    /// The `container_id` must be a unique ID which is neither the name of a
+    /// property of the [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig] associated to `self`, nor is it
+    /// the ID of any previously created container. This ID can later be used
+    /// together with property names to be packed in other containers or
+    /// inside `self` itself.
+    /// ## `container_id`
+    /// a container identifier.
+    /// ## `contents_id`
+    /// The identifier for the contents.
+    ///
+    /// # Returns
+    ///
+    /// the `GtkScrolledWindow` representing `contents_id`.
+    ///  The object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_fill_scrolled_window")]
     fn fill_scrolled_window(&self, container_id: &str, contents_id: &str) -> Option<gtk::Widget> {
         unsafe {
@@ -178,6 +909,28 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new widget for `property` which must necessarily be a
+    /// [`gegl::Color`][crate::gegl::Color] property.
+    /// This must be used instead of [`widget()`][Self::widget()] when
+    /// you want a [`LabelColor`][crate::LabelColor] which is not customizable for a color
+    /// property, or when to set a specific `type_`.
+    ///
+    /// If a widget has already been created for this procedure, it will be
+    /// returned instead (whatever its actual widget type).
+    /// ## `property`
+    /// name of the [`gegl::Color`][crate::gegl::Color] property to build a widget for. It
+    ///  must be a property of the [`gimp::Procedure`][crate::gimp::Procedure] `self` has been
+    ///  created for.
+    /// ## `editable`
+    /// whether the color can be edited or is only for display.
+    /// ## `type_`
+    /// the [`ColorAreaType`][crate::ColorAreaType].
+    ///
+    /// # Returns
+    ///
+    /// a [`LabelColor`][crate::LabelColor] representing `property`.
+    ///  The object belongs to `self` and must not
+    ///  be freed.
     #[doc(alias = "gimp_procedure_dialog_get_color_widget")]
     #[doc(alias = "get_color_widget")]
     fn color_widget(
@@ -196,6 +949,36 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new `GimpCoordinates` for `x_property` and `y_property` which
+    /// must necessarily be an integer or double property.
+    /// The associated `unit_property` must be a GimpUnit property.
+    ///
+    /// If a widget has already been created for this procedure, it will be
+    /// returned instead (whatever its actual widget type).
+    /// ## `coordinates_id`
+    /// Identifier for `GimpCoordinates` widget.
+    /// ## `x_property`
+    /// Name of int or double property for X coordinate.
+    /// ## `y_property`
+    /// Name of int or double property for Y coordinate.
+    /// ## `unit_property`
+    /// Name of unit property.
+    /// ## `unit_format`
+    /// A printf-like unit-format string as is used with
+    ///  `gimp_unit_menu_new()`.
+    /// ## `update_policy`
+    /// How the automatic pixel `<->` real-world-unit
+    ///  calculations should be done.
+    /// ## `x_resolution`
+    /// The resolution (in dpi) for the X coordinate.
+    /// ## `y_resolution`
+    /// The resolution (in dpi) for the Y coordinate.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `coordinates_id`.
+    ///  The object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_get_coordinates")]
     #[doc(alias = "get_coordinates")]
     fn coordinates(
@@ -224,6 +1007,22 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Gets or creates a new [`DrawablePreview`][crate::DrawablePreview] for `drawable`.
+    /// If a widget with the `preview_id` has already been created for
+    /// this procedure, it will be returned instead.
+    ///
+    /// The `preview_id` ID can later be used together with property names
+    /// to be packed in other containers or inside `self` itself.
+    /// ## `preview_id`
+    /// the ID of [`DrawablePreview`][crate::DrawablePreview].
+    /// ## `drawable`
+    /// the [`gimp::Drawable`][crate::gimp::Drawable].
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `preview_id`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_get_drawable_preview")]
     #[doc(alias = "get_drawable_preview")]
     fn drawable_preview(
@@ -240,6 +1039,25 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new [`LabelIntWidget`][crate::LabelIntWidget] for `property` which must
+    /// necessarily be an integer or boolean property.
+    /// This must be used instead of [`widget()`][Self::widget()] when
+    /// you want to create a combo box from an integer property.
+    ///
+    /// If a widget has already been created for this procedure, it will be
+    /// returned instead (whatever its actual widget type).
+    /// ## `property`
+    /// name of the int property to build a combo for. It must be
+    ///  a property of the [`gimp::Procedure`][crate::gimp::Procedure] `self` has been created
+    ///  for.
+    /// ## `store`
+    /// the [`IntStore`][crate::IntStore] which will be used.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_get_int_combo")]
     #[doc(alias = "get_int_combo")]
     fn int_combo(&self, property: &str, store: impl IsA<IntStore>) -> Option<gtk::Widget> {
@@ -252,6 +1070,26 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new `GimpLabelIntRadioFrame` for `property` which must
+    /// necessarily be an integer, enum or boolean property.
+    /// This must be used instead of [`widget()`][Self::widget()] when
+    /// you want to create a group of `GtkRadioButton`-s from an integer
+    /// property.
+    ///
+    /// If a widget has already been created for this procedure, it will be
+    /// returned instead (whatever its actual widget type).
+    /// ## `property`
+    /// name of the int property to build radio buttons for. It
+    ///  must be a property of the [`gimp::Procedure`][crate::gimp::Procedure] `self` has been
+    ///  created for.
+    /// ## `store`
+    /// the [`IntStore`][crate::IntStore] which will be used.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_get_int_radio")]
     #[doc(alias = "get_int_radio")]
     fn int_radio(&self, property: &str, store: impl IsA<IntStore>) -> Option<gtk::Widget> {
@@ -264,6 +1102,32 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new `GtkLabel` with `text`. It can be useful for packing
+    /// textual information in between property settings.
+    ///
+    /// If `label_id` is an existing string property of the [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig]
+    /// associated to `self`, then it will sync to the property value. In this case,
+    /// `text` should be [`None`].
+    ///
+    /// If `label_id` is a unique ID which is neither the name of a property of the
+    /// [`gimp::ProcedureConfig`][crate::gimp::ProcedureConfig] associated to `self`, nor is it the ID of any
+    /// previously created label or container, it will be initialized to `text`. This
+    /// ID can later be used together with property names to be packed in other
+    /// containers or inside `self` itself.
+    /// ## `label_id`
+    /// the label for the `GtkLabel`.
+    /// ## `text`
+    /// the text for the label.
+    /// ## `is_markup`
+    /// whether `text` is formatted with Pango markup.
+    /// ## `with_mnemonic`
+    /// whether `text` contains a mnemonic character.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `label_id`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_get_label")]
     #[doc(alias = "get_label")]
     fn label(
@@ -284,6 +1148,26 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new [`ScaleEntry`][crate::ScaleEntry] for `property` which must necessarily be
+    /// an integer or double property.
+    /// This can be used instead of [`widget()`][Self::widget()] in
+    /// particular if you want to tweak the display factor. A typical example
+    /// is showing a [0.0, 1.0] range as [0.0, 100.0] instead (`factor` = 100.0).
+    ///
+    /// If a widget has already been created for this procedure, it will be
+    /// returned instead (whatever its actual widget type).
+    /// ## `property`
+    /// name of the int property to build a combo for. It must be
+    ///  a property of the [`gimp::Procedure`][crate::gimp::Procedure] `self` has been created
+    ///  for.
+    /// ## `factor`
+    /// a display factor for the range shown by the widget.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_get_scale_entry")]
     #[doc(alias = "get_scale_entry")]
     fn scale_entry(&self, property: &str, factor: f64) -> Option<gtk::Widget> {
@@ -296,6 +1180,35 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new [`SizeEntry`][crate::SizeEntry] for `property` which must necessarily be
+    /// an integer or double property. The associated `unit_property` must be
+    /// a GimpUnit or integer property.
+    ///
+    /// If a widget has already been created for this procedure, it will be
+    /// returned instead (whatever its actual widget type).
+    /// ## `property`
+    /// name of the int property to build an entry for.
+    ///  It must be a property of the [`gimp::Procedure`][crate::gimp::Procedure] `self`
+    ///  has been created for.
+    /// ## `property_is_pixel`
+    /// when [`true`], the property value is in pixels,
+    ///  and in the selected unit otherwise.
+    /// ## `unit_property`
+    /// name of unit property.
+    /// ## `unit_format`
+    /// a printf-like unit-format string used for unit
+    ///  labels.
+    /// ## `update_policy`
+    /// how the automatic pixel `<->` real-world-unit
+    ///  calculations should be done.
+    /// ## `resolution`
+    /// the resolution (in dpi) for the field.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_get_size_entry")]
     #[doc(alias = "get_size_entry")]
     fn size_entry(
@@ -320,6 +1233,27 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new [`SpinScale`][crate::SpinScale] for `property` which must necessarily be
+    /// an integer or double property.
+    /// This can be used instead of [`widget()`][Self::widget()] in
+    /// particular if you want to tweak the display factor. A typical example
+    /// is showing a [0.0, 1.0] range as [0.0, 100.0] instead (`factor` = 100.0).
+    ///
+    /// If a widget has already been created for this procedure, it will be
+    /// returned instead (whatever its actual widget type).
+    /// ## `property`
+    /// name of the int or double property to build a
+    ///  [`SpinScale`][crate::SpinScale] for. It must be a property of the
+    ///  [`gimp::Procedure`][crate::gimp::Procedure] `self` has been created for.
+    /// ## `factor`
+    /// a display factor for the range shown by the widget.
+    ///  It must be set to 1.0 for integer properties.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_get_spin_scale")]
     #[doc(alias = "get_spin_scale")]
     fn spin_scale(&self, property: &str, factor: f64) -> Option<gtk::Widget> {
@@ -332,6 +1266,77 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Creates a new [`gtk::Widget`][crate::gtk::Widget] for `property` according to the property
+    /// type. The following types are possible:
+    ///
+    /// - `G_TYPE_PARAM_BOOLEAN`:
+    ///  * `GTK_TYPE_CHECK_BUTTON` (default)
+    ///  * `GTK_TYPE_SWITCH`
+    /// - `G_TYPE_PARAM_INT`, `G_TYPE_PARAM_UINT`, or `G_TYPE_PARAM_DOUBLE`:
+    ///  * `GIMP_TYPE_LABEL_SPIN` (default): a spin button with a label.
+    ///  * `GIMP_TYPE_SCALE_ENTRY`: a scale entry with label.
+    ///  * `GIMP_TYPE_SPIN_SCALE`: a spin scale with label embedded.
+    ///  * `GIMP_TYPE_SPIN_BUTTON`: a spin button with no label.
+    /// - `G_TYPE_PARAM_STRING`:
+    ///  * `GIMP_TYPE_LABEL_ENTRY` (default): an entry with a label.
+    ///  * `GTK_TYPE_ENTRY`: an entry with no label.
+    ///  * `GTK_TYPE_TEXT_VIEW`: a text view with no label.
+    /// - `GIMP_TYPE_CHOICE` (default will depend on the number of choices):
+    ///  * `GTK_TYPE_COMBO_BOX`: a combo box displaying every
+    ///  choice.
+    ///  * `GIMP_TYPE_INT_RADIO_FRAME`: a frame with radio buttons.
+    /// - `GEGL_TYPE_COLOR`:
+    ///  * `GIMP_TYPE_LABEL_COLOR` (default): a color button with a label.
+    ///  Please use [`color_widget()`][Self::color_widget()] for a
+    ///  non-editable color area with a label.
+    ///  * `GIMP_TYPE_COLOR_BUTTON`: a color button with no label.
+    ///  * `GIMP_TYPE_COLOR_AREA`: a color area with no label.
+    /// - `GIMP_TYPE_PARAM_FILE`:
+    ///  * `GTK_FILE_CHOOSER_BUTTON` (default): generic file chooser widget
+    ///  using the action mode of the param spec.
+    ///  Note that it won't work with a `GIMP_FILE_CHOOSER_ACTION_ANY`
+    ///  action. If you intend to display a widget for a file param
+    ///  spec, you should always set it to a more specific action.
+    ///  See [`ProcedureExtManual::add_file_argument()`][crate::gimp::prelude::ProcedureExtManual::add_file_argument()].
+    /// - `G_TYPE_PARAM_UNIT`:
+    ///  * `GIMP_TYPE_UNIT_COMBO_BOX`
+    /// - `GIMP_TYPE_PARAM_ITEM` (any subtype, such as layer, channel or path):
+    ///  * `GIMP_TYPE_ITEM_CHOOSER` (default): a widget allowing to choose
+    ///  among items of the specific subtype, within all images opened in
+    ///  GIMP.
+    ///  * `GIMP_TYPE_DRAWABLE_CHOOSER` (deprecated): this type of widget
+    ///  is now deprecated. You should update your code to request a
+    ///  `GimpItemChooser` instead.
+    /// - `GIMP_TYPE_PARAM_IMAGE`:
+    ///  * `GIMP_TYPE_IMAGE_CHOOSER`: a widget allowing to choose among
+    ///  images opened in GIMP.
+    ///
+    /// If the `widget_type` is not supported for the actual type of
+    /// `property`, the function will fail. To keep the default, set to
+    /// `G_TYPE_NONE`.
+    ///
+    /// Note that this function will not ensure that its default returned
+    /// widget type will always be the same. If you want to make sure that no
+    /// breakage will ensure in your code, in particular if you are further
+    /// tweaking the widget with `GTK` or `libgimpui` API, you should always
+    /// call with the specific `widget_type`.
+    ///
+    /// If a widget has already been created for this procedure, it will be
+    /// returned instead (even if with a different `widget_type`).
+    /// ## `property`
+    /// name of the property to build a widget for. It must be
+    ///  a property of the [`gimp::Procedure`][crate::gimp::Procedure] `self` has been
+    ///  created for.
+    /// ## `widget_type`
+    /// alternative widget type. `G_TYPE_NONE` will create the
+    ///  default type of widget for the associated property
+    ///  type.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] representing `property`. The
+    ///  object belongs to `self` and must not be
+    ///  freed.
     #[doc(alias = "gimp_procedure_dialog_get_widget")]
     #[doc(alias = "get_widget")]
     fn widget(&self, property: &str, widget_type: glib::types::Type) -> Option<gtk::Widget> {
@@ -344,6 +1349,12 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Show `self` and only returns when the user finished interacting with
+    /// it (either validating choices or canceling).
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the dialog was validated, [`false`] otherwise.
     #[doc(alias = "gimp_procedure_dialog_run")]
     fn run(&self) -> bool {
         unsafe {
@@ -353,6 +1364,9 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Changes the "OK" button's label of `self` to `ok_label`.
+    /// ## `ok_label`
+    /// a label to replace the OK button's text.
     #[doc(alias = "gimp_procedure_dialog_set_ok_label")]
     fn set_ok_label(&self, ok_label: &str) {
         unsafe {
@@ -363,6 +1377,23 @@ pub trait ProcedureDialogExt: IsA<ProcedureDialog> + 'static {
         }
     }
 
+    /// Sets sensitivity of the widget associated to `property` in `self`. If
+    /// `config` is [`None`], then it is set to the value of `sensitive`.
+    /// Otherwise `sensitive` is ignored and sensitivity is bound to the value
+    /// of `config_property` of `config` (or the negation of this value
+    /// if `config_reverse` is [`true`]).
+    /// ## `property`
+    /// name of a property of the [`gimp::Procedure`][crate::gimp::Procedure] `self`
+    ///  has been created for.
+    /// ## `sensitive`
+    /// whether the widget associated to `property` should
+    ///  be sensitive.
+    /// ## `config`
+    /// an optional config object.
+    /// ## `config_property`
+    /// name of a property of `config`.
+    /// ## `config_invert`
+    /// whether to negate the value of `config_property`.
     #[doc(alias = "gimp_procedure_dialog_set_sensitive")]
     fn set_sensitive(
         &self,

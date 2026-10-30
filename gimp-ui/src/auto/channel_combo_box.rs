@@ -8,6 +8,11 @@ use glib::{prelude::*, translate::*};
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`IntComboBoxExt`][trait@crate::prelude::IntComboBoxExt], [`trait@gtk::prelude::ComboBoxExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpChannelComboBox")]
     pub struct ChannelComboBox(Object<ffi::GimpChannelComboBox>) @extends IntComboBox, gtk::ComboBox, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -17,6 +22,16 @@ glib::wrapper! {
 }
 
 impl ChannelComboBox {
+    /// Creates a new [`IntComboBox`][crate::IntComboBox] filled with all currently opened
+    /// channels. See [`DrawableComboBox::new()`][crate::DrawableComboBox::new()] for more information.
+    /// ## `constraint`
+    /// A `GimpItemConstraintFunc` or [`None`]
+    /// ## `data_destroy`
+    /// Destroy function for `data`
+    ///
+    /// # Returns
+    ///
+    /// a new [`IntComboBox`][crate::IntComboBox].
     #[doc(alias = "gimp_channel_combo_box_new")]
     pub fn new(
         constraint: Option<Box_<dyn Fn(&gimp::Image, &gimp::Item) -> bool + 'static>>,

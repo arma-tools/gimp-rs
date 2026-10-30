@@ -7,6 +7,11 @@ use crate::ffi;
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`ConfigInterfaceExt`][trait@crate::prelude::ConfigInterfaceExt]
     #[doc(alias = "GimpConfigInterface")]
     pub struct ConfigInterface(Interface<ffi::GimpConfigInterface>);
 
@@ -18,21 +23,75 @@ glib::wrapper! {
 impl ConfigInterface {
     pub const NONE: Option<&'static ConfigInterface> = None;
 
+    /// Creates a search path as it is used in the gimprc file. The path
+    /// returned by [`build_data_path()`][Self::build_data_path()] includes a directory
+    /// below the user's gimp directory and one in the system-wide data
+    /// directory.
+    ///
+    /// Note that you cannot use this path directly with `gimp_path_parse()`.
+    /// As it is in the gimprc notation, you first need to expand and
+    /// recode it using `gimp_config_path_expand()`.
+    /// ## `name`
+    /// directory name (in UTF-8 encoding)
+    ///
+    /// # Returns
+    ///
+    /// a newly allocated string
     #[doc(alias = "gimp_config_build_data_path")]
     pub fn build_data_path(name: &str) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_config_build_data_path(name.to_glib_none().0)) }
     }
 
+    /// Creates a search path as it is used in the gimprc file. The path
+    /// returned by [`build_plug_in_path()`][Self::build_plug_in_path()] includes a directory
+    /// below the user's gimp directory and one in the system-wide plug-in
+    /// directory.
+    ///
+    /// Note that you cannot use this path directly with `gimp_path_parse()`.
+    /// As it is in the gimprc notation, you first need to expand and
+    /// recode it using `gimp_config_path_expand()`.
+    /// ## `name`
+    /// directory name (in UTF-8 encoding)
+    ///
+    /// # Returns
+    ///
+    /// a newly allocated string
     #[doc(alias = "gimp_config_build_plug_in_path")]
     pub fn build_plug_in_path(name: &str) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_config_build_plug_in_path(name.to_glib_none().0)) }
     }
 
+    /// Creates a search path as it is used in the gimprc file. The path
+    /// returned by [`build_system_path()`][Self::build_system_path()] is just the read-only
+    /// parts of the search path constructed by [`build_plug_in_path()`][Self::build_plug_in_path()].
+    ///
+    /// Note that you cannot use this path directly with `gimp_path_parse()`.
+    /// As it is in the gimprc notation, you first need to expand and
+    /// recode it using `gimp_config_path_expand()`.
+    /// ## `name`
+    /// directory name (in UTF-8 encoding)
+    ///
+    /// # Returns
+    ///
+    /// a newly allocated string
     #[doc(alias = "gimp_config_build_system_path")]
     pub fn build_system_path(name: &str) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_config_build_system_path(name.to_glib_none().0)) }
     }
 
+    /// Creates a search path as it is used in the gimprc file. The path
+    /// returned by [`build_writable_path()`][Self::build_writable_path()] is just the writable
+    /// parts of the search path constructed by [`build_data_path()`][Self::build_data_path()].
+    ///
+    /// Note that you cannot use this path directly with `gimp_path_parse()`.
+    /// As it is in the gimprc notation, you first need to expand and
+    /// recode it using `gimp_config_path_expand()`.
+    /// ## `name`
+    /// directory name (in UTF-8 encoding)
+    ///
+    /// # Returns
+    ///
+    /// a newly allocated string
     #[doc(alias = "gimp_config_build_writable_path")]
     pub fn build_writable_path(name: &str) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_config_build_writable_path(name.to_glib_none().0)) }
@@ -43,6 +102,22 @@ impl ConfigInterface {
     //    unsafe { TODO: call ffi:gimp_config_deserialize_return() }
     //}
 
+    /// Compares all properties of `a` and `b` that have all `flags` set. If
+    /// `flags` is 0, all properties are compared.
+    ///
+    /// If the two objects are not of the same type, only properties that
+    /// exist in both object classes and are of the same value_type are
+    /// compared.
+    /// ## `a`
+    /// a [`glib::Object`][crate::glib::Object]
+    /// ## `b`
+    /// another [`glib::Object`][crate::glib::Object] object
+    /// ## `flags`
+    /// a mask of GParamFlags
+    ///
+    /// # Returns
+    ///
+    /// a GList of differing GParamSpecs.
     #[doc(alias = "gimp_config_diff")]
     pub fn diff(
         a: &impl IsA<glib::Object>,
@@ -58,6 +133,14 @@ impl ConfigInterface {
         }
     }
 
+    /// Creates an exact copy of `pspec`, with all its properties, returns
+    /// [`None`] if `pspec` is of an unknown type that can't be duplicated.
+    /// ## `pspec`
+    /// the [`glib::ParamSpec`][crate::glib::ParamSpec] to duplicate
+    ///
+    /// # Returns
+    ///
+    /// The new [`glib::ParamSpec`][crate::glib::ParamSpec], or [`None`].
     #[doc(alias = "gimp_config_param_spec_duplicate")]
     pub fn param_spec_duplicate(pspec: impl AsRef<glib::ParamSpec>) -> Option<glib::ParamSpec> {
         unsafe {
@@ -67,6 +150,13 @@ impl ConfigInterface {
         }
     }
 
+    /// Resets all writable properties of `object` to the default values as
+    /// defined in their [`glib::ParamSpec`][crate::glib::ParamSpec]. Properties marked as "construct-only"
+    /// are not touched.
+    ///
+    /// If you want to reset a `GimpConfig` object, please use `gimp_config_reset()`.
+    /// ## `object`
+    /// a [`glib::Object`][crate::glib::Object]
     #[doc(alias = "gimp_config_reset_properties")]
     pub fn reset_properties(object: &impl IsA<glib::Object>) {
         unsafe {
@@ -74,6 +164,12 @@ impl ConfigInterface {
         }
     }
 
+    /// Resets the property named `property_name` to its default value. The
+    /// property must be writable and must not be marked as "construct-only".
+    /// ## `object`
+    /// a [`glib::Object`][crate::glib::Object]
+    /// ## `property_name`
+    /// name of the property to reset
     #[doc(alias = "gimp_config_reset_property")]
     pub fn reset_property(object: &impl IsA<glib::Object>, property_name: &str) {
         unsafe {
@@ -94,6 +190,25 @@ impl ConfigInterface {
     //    unsafe { TODO: call ffi:gimp_config_string_append_escaped() }
     //}
 
+    /// Compares all read- and write-able properties from `src` and `dest`
+    /// that have all `flags` set. Differing values are then copied from
+    /// `src` to `dest`. If `flags` is 0, all differing read/write properties.
+    ///
+    /// Properties marked as "construct-only" are not touched.
+    ///
+    /// If the two objects are not of the same type, only properties that
+    /// exist in both object classes and are of the same value_type are
+    /// synchronized
+    /// ## `src`
+    /// a [`glib::Object`][crate::glib::Object]
+    /// ## `dest`
+    /// another [`glib::Object`][crate::glib::Object]
+    /// ## `flags`
+    /// a mask of GParamFlags
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `dest` was modified, [`false`] otherwise
     #[doc(alias = "gimp_config_sync")]
     pub fn sync(
         src: &impl IsA<glib::Object>,
@@ -109,6 +224,20 @@ impl ConfigInterface {
         }
     }
 
+    /// This function is a fancy wrapper around `g_type_register_static()`.
+    /// It creates a new object type as subclass of `parent_type`, installs
+    /// `pspecs` on it and makes the new type implement the `GimpConfig`
+    /// interface.
+    /// ## `parent_type`
+    /// type from which this type will be derived
+    /// ## `type_name`
+    /// string used as the name of the new type
+    /// ## `pspecs`
+    /// array of [`glib::ParamSpec`][crate::glib::ParamSpec] to install as properties on the new type
+    ///
+    /// # Returns
+    ///
+    /// the newly registered `GType`
     #[doc(alias = "gimp_config_type_register")]
     pub fn type_register(
         parent_type: glib::types::Type,
@@ -127,6 +256,11 @@ impl ConfigInterface {
     }
 }
 
+/// Trait containing all [`struct@ConfigInterface`] methods.
+///
+/// # Implementors
+///
+/// [`Brush`][struct@crate::Brush], [`ColorConfig`][struct@crate::ColorConfig], [`ConfigInterface`][struct@crate::ConfigInterface], [`Font`][struct@crate::Font], [`Gradient`][struct@crate::Gradient], [`Palette`][struct@crate::Palette], [`Pattern`][struct@crate::Pattern], [`Resource`][struct@crate::Resource]
 pub trait ConfigInterfaceExt: IsA<ConfigInterface> + 'static {}
 
 impl<O: IsA<ConfigInterface>> ConfigInterfaceExt for O {}

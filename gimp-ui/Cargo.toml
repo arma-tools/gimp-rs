@@ -7,6 +7,8 @@ categories = ["api-bindings", "gui"]
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
+repository.workspace = true
+readme = "README.md"
 
 [features]
 v3_2 = ["ffi/v3_2", "gimp/v3_2"]

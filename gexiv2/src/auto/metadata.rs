@@ -11,6 +11,23 @@ use crate::{ffi, Orientation, PreviewImage, PreviewProperties, StructureType, Xm
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// An object holding all the Exiv2 metadata. Previews, if present, are also available.
+    ///
+    /// As gexiv2 is only a wrapper around Exiv2, it's better to read its documentation to understand
+    /// the full scope of what it offers: <http://www.exiv2.org/>
+    ///
+    /// In particular, rather than providing a getter/setter method pair for every metadata value
+    /// available for images (of which there are thousands), Exiv2 uses a dotted addressing scheme.
+    /// For example, to access a photo's EXIF Orientation field, the caller passes to Exiv2
+    /// "Exif.Photo.Orientation". These `<emphasis>`tags`</emphasis>` (in Exiv2 parlance) are key to using Exiv2 (and
+    /// therefore gexiv2) to its fullest.
+    ///
+    /// A full reference for all supported Exiv2 tags can be found at
+    /// <http://www.exiv2.org/metadata.html>
+    ///
+    /// # Implements
+    ///
+    /// [`MetadataExt`][trait@crate::prelude::MetadataExt]
     #[doc(alias = "GExiv2Metadata")]
     pub struct Metadata(Object<ffi::GExiv2Metadata, ffi::GExiv2MetadataClass>);
 
@@ -22,11 +39,26 @@ glib::wrapper! {
 impl Metadata {
     pub const NONE: Option<&'static Metadata> = None;
 
+    ///
+    /// # Returns
+    ///
+    /// A fully constructed [`Metadata`][crate::Metadata] ready to be used
     #[doc(alias = "gexiv2_metadata_new")]
     pub fn new() -> Metadata {
         unsafe { from_glib_full(ffi::gexiv2_metadata_new()) }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_tag_description()`][Self::try_get_tag_description()] instead.
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// The tag's description
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_tag_description")]
@@ -39,6 +71,17 @@ impl Metadata {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_tag_label()`][Self::try_get_tag_label()] instead.
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// The tag's label
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_tag_label")]
@@ -47,6 +90,20 @@ impl Metadata {
         unsafe { from_glib_none(ffi::gexiv2_metadata_get_tag_label(tag.to_glib_none().0)) }
     }
 
+    /// The names of the various Exiv2 tag types can be found at Exiv2::TypeId,
+    /// <http://exiv2.org/doc/namespaceExiv2.html`a5153319711f35fe81cbc13f4b852450c`>
+    ///
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_tag_type()`][Self::try_get_tag_type()] instead.
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// The tag's type name.
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_tag_type")]
@@ -55,6 +112,16 @@ impl Metadata {
         unsafe { from_glib_none(ffi::gexiv2_metadata_get_tag_type(tag.to_glib_none().0)) }
     }
 
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_xmp_namespace_for_tag()`][Self::try_get_xmp_namespace_for_tag()] instead.
+    /// ## `tag`
+    /// Full tag name (e.g. "Xmp.dc.subject") or XMP namespace identifier (e.g. "dc")
+    ///
+    /// # Returns
+    ///
+    /// [`None`] if there was no namespace registered for the tag, the URI of the namespace otherwise.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
@@ -69,21 +136,54 @@ impl Metadata {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the Exiv2 tag is for the EXIF domain.
     #[doc(alias = "gexiv2_metadata_is_exif_tag")]
     pub fn is_exif_tag(tag: &str) -> bool {
         unsafe { from_glib(ffi::gexiv2_metadata_is_exif_tag(tag.to_glib_none().0)) }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the Exiv2 tag is for the IPTC domain.
     #[doc(alias = "gexiv2_metadata_is_iptc_tag")]
     pub fn is_iptc_tag(tag: &str) -> bool {
         unsafe { from_glib(ffi::gexiv2_metadata_is_iptc_tag(tag.to_glib_none().0)) }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the Exiv2 tag is for the XMP domain.
     #[doc(alias = "gexiv2_metadata_is_xmp_tag")]
     pub fn is_xmp_tag(tag: &str) -> bool {
         unsafe { from_glib(ffi::gexiv2_metadata_is_xmp_tag(tag.to_glib_none().0)) }
     }
 
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_register_xmp_namespace()`][Self::try_register_xmp_namespace()] instead.
+    /// ## `name`
+    /// XMP URI name (should end in /)
+    /// ## `prefix`
+    /// XMP namespace prefix
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_register_xmp_namespace")]
@@ -96,6 +196,13 @@ impl Metadata {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// The tag's description
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_tag_description")]
@@ -112,6 +219,13 @@ impl Metadata {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// The tag's label
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_tag_label")]
@@ -127,6 +241,16 @@ impl Metadata {
         }
     }
 
+    /// The names of the various Exiv2 tag types can be found at Exiv2::TypeId,
+    /// <http://exiv2.org/doc/namespaceExiv2.html`a5153319711f35fe81cbc13f4b852450c`>
+    ///
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// The tag's type name.
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_tag_type")]
@@ -142,6 +266,12 @@ impl Metadata {
         }
     }
 
+    /// ## `tag`
+    /// Full tag name (e.g. "Xmp.dc.subject") or XMP namespace identifier (e.g. "dc")
+    ///
+    /// # Returns
+    ///
+    /// [`None`] if there was no namespace registered for the tag, the URI of the namespace otherwise.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_xmp_namespace_for_tag")]
@@ -160,6 +290,14 @@ impl Metadata {
         }
     }
 
+    /// ## `name`
+    /// XMP URI name (should end in /)
+    /// ## `prefix`
+    /// XMP namespace prefix
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_register_xmp_namespace")]
@@ -195,6 +333,12 @@ impl Metadata {
         }
     }
 
+    /// ## `name`
+    /// XMP URI name (should end in /)
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_unregister_xmp_namespace")]
@@ -214,6 +358,10 @@ impl Metadata {
         }
     }
 
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_unregister_all_xmp_namespaces()`][Self::try_unregister_all_xmp_namespaces()] instead.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_unregister_all_xmp_namespaces")]
@@ -223,6 +371,16 @@ impl Metadata {
         }
     }
 
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_unregister_xmp_namespace()`][Self::try_unregister_xmp_namespace()] instead.
+    /// ## `name`
+    /// XMP URI name (should end in /)
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_unregister_xmp_namespace")]
@@ -241,7 +399,13 @@ impl Default for Metadata {
     }
 }
 
+/// Trait containing all [`struct@Metadata`] methods.
+///
+/// # Implementors
+///
+/// [`Metadata`][struct@crate::Metadata]
 pub trait MetadataExt: IsA<Metadata> + 'static {
+    /// Removes all tags for all domains (EXIF, IPTC, and XMP).
     #[doc(alias = "gexiv2_metadata_clear")]
     fn clear(&self) {
         unsafe {
@@ -249,6 +413,8 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// This is a composite clear method that will clear a number of fields. See
+    /// `gexiv2_metadata_get_comment` for more information.
     #[doc(alias = "gexiv2_metadata_clear_comment")]
     fn clear_comment(&self) {
         unsafe {
@@ -256,6 +422,7 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Clears all EXIF metadata from the loaded image.
     #[doc(alias = "gexiv2_metadata_clear_exif")]
     fn clear_exif(&self) {
         unsafe {
@@ -263,6 +430,7 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Clears all IPTC metadata from the loaded image.
     #[doc(alias = "gexiv2_metadata_clear_iptc")]
     fn clear_iptc(&self) {
         unsafe {
@@ -270,6 +438,19 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Removes the Exiv2 tag from the metadata object.
+    ///
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_clear_tag()`][Self::try_clear_tag()] instead.
+    /// ## `tag`
+    /// Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the tag was present.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_clear_tag")]
@@ -282,6 +463,7 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Clears all XMP metadata from the loaded image.
     #[doc(alias = "gexiv2_metadata_clear_xmp")]
     fn clear_xmp(&self) {
         unsafe {
@@ -289,6 +471,11 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Removes all GPS metadata from the loaded image
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_delete_gps_info()`][Self::try_delete_gps_info()] instead.
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_delete_gps_info")]
@@ -298,6 +485,11 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Removes the EXIF thumbnail from the loaded image.
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_erase_exif_thumbnail()`][Self::try_erase_exif_thumbnail()] instead.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_erase_exif_thumbnail")]
@@ -307,6 +499,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Load only an EXIF buffer, typically stored in a JPEG's APP1 segment.
+    /// ## `data`
+    /// A buffer containing the data to be read
+    ///
+    /// # Returns
+    ///
+    /// Boolean success indicator.
     #[doc(alias = "gexiv2_metadata_from_app1_segment")]
     fn from_app1_segment(&self, data: &[u8]) -> Result<(), glib::Error> {
         let n_data = data.len() as _;
@@ -327,6 +526,7 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// This function does not work and will be removed in a future release.
     #[doc(alias = "gexiv2_metadata_from_stream")]
     fn from_stream(&self, stream: &impl IsA<gio::InputStream>) -> Result<(), glib::Error> {
         unsafe {
@@ -345,6 +545,19 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Encode the XMP packet as a [`None`]-terminated string.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_generate_xmp_packet()`][Self::try_generate_xmp_packet()] instead.
+    /// ## `xmp_format_flags`
+    /// One of [`XmpFormatFlags`][crate::XmpFormatFlags]
+    /// ## `padding`
+    /// The padding (FIXME: Add documentation)
+    ///
+    /// # Returns
+    ///
+    /// Encode the XMP packet and return as a [`None`]-terminated string.
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_generate_xmp_packet")]
@@ -362,6 +575,35 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// A composite accessor that uses the first available metadata field from a list of well-known
+    /// locations to find the photo's comment (or description).
+    ///
+    /// MWG guidelines refer to these as `<emphasis>`Description`</emphasis>`: a textual description of a resource's content.
+    ///
+    /// These fields are:
+    ///
+    /// - Exif.Image.ImageDescription (MWG Guidelines)
+    /// - Exif.Photo.UserComment
+    /// - Exif.Image.XPComment
+    /// - Iptc.Application2.Caption (MWG Guidelines)
+    /// - Xmp.dc.description (MWG Guidelines)
+    /// - Xmp.acdsee.notes (Commonly requested, read only)
+    ///
+    /// `<note>`Note that in the EXIF specification Exif.Image.ImageDescription is
+    /// described as "the title of the image". Also, it does not support
+    /// two-byte character codes for encoding. However, it's still used here for legacy reasons.
+    /// `</note>`
+    ///
+    /// For fine-grained control, it's recommended to use Exiv2 tags directly rather than this method,
+    /// which is more useful for quick or casual use.
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_comment()`][Self::try_get_comment()] instead.
+    ///
+    /// # Returns
+    ///
+    /// The photo's comment field.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_comment")]
@@ -374,6 +616,12 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// ## `byte_order`
+    /// Whether to export the data in little or big endian format
+    ///
+    /// # Returns
+    ///
+    /// The content of the EXIF data or [`None`] on error
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_get_exif_data")]
@@ -394,6 +642,24 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Fetch EXIF `tag` represented by a fraction. `nom` will contain the numerator,
+    /// `den` the denominator of the fraction on successful return.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_exif_tag_rational()`][Self::try_get_exif_tag_rational()] instead.
+    /// ## `tag`
+    /// The tag you want the rational value for
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `nom`
+    /// The numerator
+    ///
+    /// ## `den`
+    /// The denominator
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_exif_tag_rational")]
@@ -416,6 +682,12 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Query `self` for a list of available EXIF tags
+    ///
+    /// # Returns
+    ///
+    /// A unique list of the available EXIF tags in the
+    /// loaded image
     #[doc(alias = "gexiv2_metadata_get_exif_tags")]
     #[doc(alias = "get_exif_tags")]
     fn exif_tags(&self) -> Vec<glib::GString> {
@@ -426,6 +698,14 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Get the thumbnail stored in the EXIF data of `self`
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `buffer`
+    /// Where to store the thumbnail data
     #[doc(alias = "gexiv2_metadata_get_exif_thumbnail")]
     #[doc(alias = "get_exif_thumbnail")]
     fn exif_thumbnail(&self) -> Option<Vec<u8>> {
@@ -448,6 +728,22 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Returns the exposure time in seconds (shutter speed, `<emphasis>`not`</emphasis>` date-time of exposure) as a
+    /// rational. See <https://en.wikipedia.org/wiki/Shutter_speed> for more information.
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_exposure_time()`][Self::try_get_exposure_time()] instead.
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `nom`
+    /// The numerator
+    ///
+    /// ## `den`
+    /// The denominator
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_exposure_time")]
@@ -469,6 +765,17 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// See <https://en.wikipedia.org/wiki/F-number> for more information.
+    /// If Exif.Photo.FNumber does not exist, it will fall back to calculating the FNumber from
+    /// Exif.Photo.ApertureValue (if available);
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_fnumber()`][Self::try_get_fnumber()] instead.
+    ///
+    /// # Returns
+    ///
+    /// The exposure Fnumber as a gdouble, or -1.0 if tag is not present or invalid.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_fnumber")]
@@ -477,6 +784,15 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         unsafe { ffi::gexiv2_metadata_get_fnumber(self.as_ref().to_glib_none().0) }
     }
 
+    /// See <https://en.wikipedia.org/wiki/Flange_focal_distance> for more information.
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_focal_length()`][Self::try_get_focal_length()] instead.
+    ///
+    /// # Returns
+    ///
+    /// The focal length as a gdouble, or -1.0 if tag is not present or invalid.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_focal_length")]
@@ -485,6 +801,19 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         unsafe { ffi::gexiv2_metadata_get_focal_length(self.as_ref().to_glib_none().0) }
     }
 
+    /// Convenience function to query the altitude stored in the GPS tags of the
+    /// image
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_gps_altitude()`][Self::try_get_gps_altitude()] instead.
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `altitude`
+    /// Variable to store the altitude value
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_gps_altitude")]
@@ -504,6 +833,24 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Convenience function to query all available GPS information at once.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_gps_info()`][Self::try_get_gps_info()] instead.
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value.
+    ///
+    /// ## `longitude`
+    /// Storage for longitude value
+    ///
+    /// ## `latitude`
+    /// Storage for latitude value
+    ///
+    /// ## `altitude`
+    /// Storage for altitude value
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_gps_info")]
@@ -531,6 +878,18 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Query the latitude stored in the GPS tags of `self`
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_gps_latitude()`][Self::try_get_gps_latitude()] instead.
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `latitude`
+    /// Variable to store the latitude value
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_gps_latitude")]
@@ -550,6 +909,18 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Query the longitude stored in the GPS tags of `self`
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_gps_longitude()`][Self::try_get_gps_longitude()] instead.
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `longitude`
+    /// Variable to store the longitude value
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_gps_longitude")]
@@ -569,6 +940,11 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Query `self` for a list of available IPTC tags
+    ///
+    /// # Returns
+    ///
+    /// A unique list of the available IPTC tags
     #[doc(alias = "gexiv2_metadata_get_iptc_tags")]
     #[doc(alias = "get_iptc_tags")]
     fn iptc_tags(&self) -> Vec<glib::GString> {
@@ -579,6 +955,15 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// See <https://en.wikipedia.org/wiki/Iso_speed> for more information.
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_iso_speed()`][Self::try_get_iso_speed()] instead.
+    ///
+    /// # Returns
+    ///
+    /// The ISO speed rating as a gint, or 0 if tag is not present or invalid.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_iso_speed")]
@@ -587,6 +972,17 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         unsafe { ffi::gexiv2_metadata_get_iso_speed(self.as_ref().to_glib_none().0) }
     }
 
+    /// Composite accessor to query the pixel with stored in the metadata. This
+    /// might differ from the height of image that is available through
+    /// [`pixel_height()`][Self::pixel_height()]
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_metadata_pixel_height()`][Self::try_get_metadata_pixel_height()] instead.
+    ///
+    /// # Returns
+    ///
+    /// Height of images in pixels as stored in the metadata
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_metadata_pixel_height")]
@@ -595,6 +991,17 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         unsafe { ffi::gexiv2_metadata_get_metadata_pixel_height(self.as_ref().to_glib_none().0) }
     }
 
+    /// Composite accessor to query the pixel with stored in the metadata. This
+    /// might differ from the width of image that is available through
+    /// [`pixel_width()`][Self::pixel_width()]
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_metadata_pixel_width()`][Self::try_get_metadata_pixel_width()] instead.
+    ///
+    /// # Returns
+    ///
+    /// Width of images in pixels as stored in the metadata
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_metadata_pixel_width")]
@@ -603,6 +1010,11 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         unsafe { ffi::gexiv2_metadata_get_metadata_pixel_width(self.as_ref().to_glib_none().0) }
     }
 
+    /// Query mime type of currently loaded image.
+    ///
+    /// # Returns
+    ///
+    /// The MIME type of the loaded image, [`None`] if not loaded or unknown.
     #[doc(alias = "gexiv2_metadata_get_mime_type")]
     #[doc(alias = "get_mime_type")]
     fn mime_type(&self) -> Option<glib::GString> {
@@ -613,6 +1025,16 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The EXIF Orientation field
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_orientation()`][Self::try_get_orientation()] instead.
+    ///
+    /// # Returns
+    ///
+    /// A [`Orientation`][crate::Orientation] value representing the EXIF orientation
+    /// value.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_orientation")]
@@ -625,18 +1047,42 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Get the `<emphasis>`actual`</emphasis>` unoriented display height in pixels of the loaded image. This may
+    /// be different than the height reported by various metadata tags, i.e. "Exif.Photo.PixelYDimension".
+    ///
+    /// # Returns
+    ///
+    /// Pixel height of current image
     #[doc(alias = "gexiv2_metadata_get_pixel_height")]
     #[doc(alias = "get_pixel_height")]
     fn pixel_height(&self) -> i32 {
         unsafe { ffi::gexiv2_metadata_get_pixel_height(self.as_ref().to_glib_none().0) }
     }
 
+    /// Get the `<emphasis>`actual`</emphasis>` unoriented display width in pixels of the loaded
+    /// image. May be different than the width reported by various metadata tags,
+    /// i.e. "Exif.Photo.PixelXDimension".
+    ///
+    /// # Returns
+    ///
+    /// Pixel width of current image
     #[doc(alias = "gexiv2_metadata_get_pixel_width")]
     #[doc(alias = "get_pixel_width")]
     fn pixel_width(&self) -> i32 {
         unsafe { ffi::gexiv2_metadata_get_pixel_width(self.as_ref().to_glib_none().0) }
     }
 
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_get_preview_image()`][Self::try_get_preview_image()] instead.
+    /// ## `props`
+    /// A [`PreviewProperties`][crate::PreviewProperties] instance
+    ///
+    /// # Returns
+    ///
+    /// A [`PreviewImage`][crate::PreviewImage] instance for the particular
+    /// [`PreviewProperties`][crate::PreviewProperties].
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_preview_image")]
@@ -650,6 +1096,15 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// An image may have stored one or more previews, often of different qualities, sometimes of
+    /// different image formats than the containing image. This call returns the properties of all
+    /// previews Exiv2 finds within the loaded image. Use `gexiv2_metadata_get_preview_image` to
+    /// load a particular preview into memory.
+    ///
+    /// # Returns
+    ///
+    /// An array of
+    /// [`PreviewProperties`][crate::PreviewProperties] instances, one for each preview present in the loaded image.
     #[doc(alias = "gexiv2_metadata_get_preview_properties")]
     #[doc(alias = "get_preview_properties")]
     fn preview_properties(&self) -> Vec<PreviewProperties> {
@@ -660,6 +1115,11 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Query `self` whether it supports writing EXIF metadata.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the loaded image type supports writing EXIF metadata.
     #[doc(alias = "gexiv2_metadata_get_supports_exif")]
     #[doc(alias = "get_supports_exif")]
     fn supports_exif(&self) -> bool {
@@ -670,6 +1130,11 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Query `self` whether it supports writing IPTC metadata.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the loaded image type supports writing IPTC metadata.
     #[doc(alias = "gexiv2_metadata_get_supports_iptc")]
     #[doc(alias = "get_supports_iptc")]
     fn supports_iptc(&self) -> bool {
@@ -680,6 +1145,11 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Query `self` whether it supports writing XMP metadata.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the loaded image type supports writing XMP metadata.
     #[doc(alias = "gexiv2_metadata_get_supports_xmp")]
     #[doc(alias = "get_supports_xmp")]
     fn supports_xmp(&self) -> bool {
@@ -690,6 +1160,22 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// An interpreted string is one fit for user display. It may display units or use formatting
+    /// appropriate to the type of data the tag holds.
+    ///
+    /// Tags that support multiple values are returned as a single string, with elements separated by ", ".
+    ///
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_tag_interpreted_string()`][Self::try_get_tag_interpreted_string()] instead.
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The tag's interpreted value as a string
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_tag_interpreted_string")]
@@ -703,6 +1189,17 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_tag_long()`][Self::try_get_tag_long()] instead.
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The tag's value as a glong
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_tag_long")]
@@ -713,6 +1210,26 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// In case of error, a GLib warning will be logged. Use instead
+    /// [`try_get_tag_multiple()`][Self::try_get_tag_multiple()] if you want to avoid this and
+    /// control if and how the error is outputted.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_tag_multiple()`][Self::try_get_tag_multiple()] instead.
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The multiple string values of
+    /// the tag. Returns [`None`] if parameters are [`None`] or `tag` does not begin with recognised type of
+    /// metadata ("Exif.", "Xmp." or "Iptc."). For a well formed `tag`, returns array[0] = [`None`] if `tag`
+    /// is undefined or is not set in the current metadata.
+    /// (Note: [xmpText/langAlt bug](https://gitlab.gnome.org/GNOME/gexiv2/-/issues/61)
+    ///  is fixed in [`try_get_tag_multiple()`][Self::try_get_tag_multiple()])
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_tag_multiple")]
@@ -726,6 +1243,20 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// Tags that support multiple values may bereturned as a single byte array, with records separated
+    /// by 4x INFORMATION SEPARATOR FOUR (ASCII 0x1c)
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_tag_raw()`][Self::try_get_tag_raw()] instead.
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The tag's raw value as a byte array
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_tag_raw")]
@@ -739,6 +1270,23 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// Tags that support multiple values are returned as a single string, with elements separated by ", ".
+    ///
+    /// In case of error, a GLib warning will be logged. Use instead
+    /// [`try_get_tag_string()`][Self::try_get_tag_string()] if you want to avoid this and
+    /// control if and how the error is outputted.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_tag_string()`][Self::try_get_tag_string()] instead.
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The tag's value as a string
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_tag_string")]
@@ -752,6 +1300,14 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_get_xmp_packet()`][Self::try_get_xmp_packet()] instead.
+    ///
+    /// # Returns
+    ///
+    /// The currently-encoded XMP packet (see gexiv2_metadata_generate_xmp_packet).
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_get_xmp_packet")]
@@ -764,6 +1320,10 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// A unique list of the available XMP tags
     #[doc(alias = "gexiv2_metadata_get_xmp_tags")]
     #[doc(alias = "get_xmp_tags")]
     fn xmp_tags(&self) -> Vec<glib::GString> {
@@ -774,6 +1334,10 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// TRUE if EXIF metadata is present in the loaded image
     #[doc(alias = "gexiv2_metadata_has_exif")]
     fn has_exif(&self) -> bool {
         unsafe {
@@ -783,6 +1347,10 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// TRUE if IPTC metadata is present in the loaded image
     #[doc(alias = "gexiv2_metadata_has_iptc")]
     fn has_iptc(&self) -> bool {
         unsafe {
@@ -792,6 +1360,17 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_has_tag()`][Self::try_has_tag()] instead.
+    /// ## `tag`
+    /// Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the tag is present.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_has_tag")]
@@ -804,11 +1383,27 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// TRUE if XMP metadata is present in the loaded image
     #[doc(alias = "gexiv2_metadata_has_xmp")]
     fn has_xmp(&self) -> bool {
         unsafe { from_glib(ffi::gexiv2_metadata_has_xmp(self.as_ref().to_glib_none().0)) }
     }
 
+    /// The buffer must be an image format supported by Exiv2.
+    ///
+    /// When called on an already filled meta-data object (i.e. one that has already
+    /// been filled by a previous call of [`open_path()`][Self::open_path()]) and the
+    /// opening of the new path fails, the object will not revert to its previous
+    /// state but be in a similar state after calling [`Metadata::new()`][crate::Metadata::new()].
+    /// ## `data`
+    /// A buffer containing the data to be read
+    ///
+    /// # Returns
+    ///
+    /// Boolean success indicator
     #[doc(alias = "gexiv2_metadata_open_buf")]
     fn open_buf(&self, data: &[u8]) -> Result<(), glib::Error> {
         let n_data = data.len() as _;
@@ -829,6 +1424,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The file must be an image format supported by Exiv2.
+    /// ## `path`
+    /// Path to the file you want to open
+    ///
+    /// # Returns
+    ///
+    /// Boolean success indicator
     #[doc(alias = "gexiv2_metadata_open_path")]
     fn open_path(&self, path: &str) -> Result<(), glib::Error> {
         unsafe {
@@ -847,6 +1449,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Saves the metadata to the specified using an XMP sidecar file.
+    /// ## `path`
+    /// Path to the file you want to save to.
+    ///
+    /// # Returns
+    ///
+    /// Boolean success indicator.
     #[cfg(feature = "v0_10_6")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_10_6")))]
     #[doc(alias = "gexiv2_metadata_save_external")]
@@ -867,6 +1476,14 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Saves the metadata to the specified file by reading the file into memory,copying this object's
+    /// metadata into the image, then writing the image back out.
+    /// ## `path`
+    /// Path to the file you want to save to.
+    ///
+    /// # Returns
+    ///
+    /// Boolean success indicator.
     #[doc(alias = "gexiv2_metadata_save_file")]
     fn save_file(&self, path: &str) -> Result<(), glib::Error> {
         unsafe {
@@ -885,6 +1502,14 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// This is a composite setter that will set a number of fields to the supplied value. See
+    /// `gexiv2_metadata_get_comment` for more information.
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_set_comment()`][Self::try_set_comment()] instead.
+    /// ## `comment`
+    /// Comment string to set. Must not be [`None`]
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_comment")]
@@ -897,6 +1522,22 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Set EXIF `tag` represented by a fraction, with `nom` being the numerator,
+    /// `den` the denominator of the fraction.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_set_exif_tag_rational()`][Self::try_set_exif_tag_rational()] instead.
+    /// ## `tag`
+    /// The Exiv2 tag
+    /// ## `nom`
+    /// Rational numerator
+    /// ## `den`
+    /// Rational denominator
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_exif_tag_rational")]
@@ -911,6 +1552,12 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_set_exif_thumbnail_from_buffer()`][Self::try_set_exif_thumbnail_from_buffer()] instead.
+    /// ## `buffer`
+    /// A buffer containing thumbnail data
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_exif_thumbnail_from_buffer")]
@@ -925,6 +1572,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Sets or replaces the EXIF thumbnail with the image in the file
+    /// ## `path`
+    /// Path of image file
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
     #[doc(alias = "gexiv2_metadata_set_exif_thumbnail_from_file")]
     fn set_exif_thumbnail_from_file(&self, path: &str) -> Result<(), glib::Error> {
         unsafe {
@@ -943,6 +1597,23 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Convenience function to create a new set of simple GPS data. Warning: Will remove any other
+    /// GPS information that is currently set. See [`update_gps_info()`][Self::update_gps_info()] for
+    /// just modifying the GPS data.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_set_gps_info()`][Self::try_set_gps_info()] instead.
+    /// ## `longitude`
+    /// Longitude value to set or replace current value
+    /// ## `latitude`
+    /// Latitude value to set or replace current value
+    /// ## `altitude`
+    /// Altitude value to set or replace current value
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value.
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_gps_info")]
@@ -957,6 +1628,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Update the image's metadata with `height`
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_set_metadata_pixel_height()`][Self::try_set_metadata_pixel_height()] instead.
+    /// ## `height`
+    /// The width of the image as it should be put into the metadata.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_metadata_pixel_height")]
@@ -966,6 +1644,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Composite setter to update the image's metadata with `width`
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_set_metadata_pixel_width()`][Self::try_set_metadata_pixel_width()] instead.
+    /// ## `width`
+    /// The width of the image as it should be put into the metadata
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_metadata_pixel_width")]
@@ -975,6 +1660,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The orientation must be valid and cannot be [`Orientation::Unspecified`][crate::Orientation::Unspecified].
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_set_orientation()`][Self::try_set_orientation()] instead.
+    /// ## `orientation`
+    /// The new [`Orientation`][crate::Orientation] for the image.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_orientation")]
@@ -987,6 +1679,19 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_set_tag_long()`][Self::try_set_tag_long()] instead.
+    /// ## `tag`
+    /// Exiv2 tag name
+    /// ## `value`
+    /// The value to set or replace the existing value
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_tag_long")]
@@ -1000,6 +1705,27 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// All previous `tag` values are erased. For multiple value tags, each of the non [`None`]
+    /// entries in `values` is stored. For single value tags, only the last non [`None`] value
+    /// is assigned.
+    ///
+    /// In case of error, a GLib warning will be logged. Use instead
+    /// [`try_set_tag_multiple()`][Self::try_set_tag_multiple()] if you want to avoid this and
+    /// control if and how the error is outputted.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_set_tag_multiple()`][Self::try_set_tag_multiple()] instead.
+    /// ## `tag`
+    /// Exiv2 tag name
+    /// ## `values`
+    /// An array of values to set or replace the existing value(s)
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_tag_multiple")]
@@ -1013,6 +1739,26 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// If a tag supports multiple values, then `value` is added to any existing values. For single
+    /// value tags, `value` replaces the value.
+    ///
+    /// In case of error, a GLib warning will be logged. Use instead
+    /// [`try_set_tag_string()`][Self::try_set_tag_string()] if you want to avoid this and
+    /// control if and how the error is outputted.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_set_tag_string()`][Self::try_set_tag_string()] instead.
+    /// ## `tag`
+    /// Exiv2 tag name
+    /// ## `value`
+    /// The value to set or replace the existing value
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_tag_string")]
@@ -1026,6 +1772,19 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_set_xmp_tag_struct()`][Self::try_set_xmp_tag_struct()] instead.
+    /// ## `tag`
+    /// Exiv2 tag name
+    /// ## `type_`
+    /// The GExiv2StructureType specifying the type of structure
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_metadata_set_xmp_tag_struct")]
@@ -1039,6 +1798,15 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Removes the Exiv2 tag from the metadata object.
+    ///
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the tag was present.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_clear_tag")]
@@ -1059,6 +1827,7 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Removes all GPS metadata from the loaded image
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_delete_gps_info")]
@@ -1077,6 +1846,7 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Removes the EXIF thumbnail from the loaded image.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_erase_exif_thumbnail")]
@@ -1095,6 +1865,15 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Encode the XMP packet as a [`None`]-terminated string.
+    /// ## `xmp_format_flags`
+    /// One of [`XmpFormatFlags`][crate::XmpFormatFlags]
+    /// ## `padding`
+    /// The padding (FIXME: Add documentation)
+    ///
+    /// # Returns
+    ///
+    /// Encode the XMP packet and return as a [`None`]-terminated string.
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_generate_xmp_packet")]
@@ -1119,6 +1898,31 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// A composite accessor that uses the first available metadata field from a list of well-known
+    /// locations to find the photo's comment (or description).
+    ///
+    /// MWG guidelines refer to these as `<emphasis>`Description`</emphasis>`: a textual description of a resource's content.
+    ///
+    /// These fields are:
+    ///
+    /// - Exif.Image.ImageDescription (MWG Guidelines)
+    /// - Exif.Photo.UserComment
+    /// - Exif.Image.XPComment
+    /// - Iptc.Application2.Caption (MWG Guidelines)
+    /// - Xmp.dc.description (MWG Guidelines)
+    /// - Xmp.acdsee.notes (Commonly requested, read only)
+    ///
+    /// `<note>`Note that in the EXIF specification Exif.Image.ImageDescription is
+    /// described as "the title of the image". Also, it does not support
+    /// two-byte character codes for encoding. However, it's still used here for legacy reasons.
+    /// `</note>`
+    ///
+    /// For fine-grained control, it's recommended to use Exiv2 tags directly rather than this method,
+    /// which is more useful for quick or casual use.
+    ///
+    /// # Returns
+    ///
+    /// The photo's comment field.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_comment")]
@@ -1135,6 +1939,20 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Fetch EXIF `tag` represented by a fraction. `nom` will contain the numerator,
+    /// `den` the denominator of the fraction on successful return.
+    /// ## `tag`
+    /// The tag you want the rational value for
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `nom`
+    /// The numerator
+    ///
+    /// ## `den`
+    /// The denominator
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_exif_tag_rational")]
@@ -1159,6 +1977,18 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Returns the exposure time in seconds (shutter speed, `<emphasis>`not`</emphasis>` date-time of exposure) as a
+    /// rational. See <https://en.wikipedia.org/wiki/Shutter_speed> for more information.
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `nom`
+    /// The numerator
+    ///
+    /// ## `den`
+    /// The denominator
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_exposure_time")]
@@ -1182,6 +2012,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// See <https://en.wikipedia.org/wiki/F-number> for more information.
+    /// If Exif.Photo.FNumber does not exist, it will fall back to calculating the FNumber from
+    /// Exif.Photo.ApertureValue (if available);
+    ///
+    /// # Returns
+    ///
+    /// The exposure Fnumber as a gdouble, or -1.0 if tag is not present or invalid.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_fnumber")]
@@ -1198,6 +2035,11 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// See <https://en.wikipedia.org/wiki/Flange_focal_distance> for more information.
+    ///
+    /// # Returns
+    ///
+    /// The focal length as a gdouble, or -1.0 if tag is not present or invalid.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_focal_length")]
@@ -1216,6 +2058,15 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Convenience function to query the altitude stored in the GPS tags of the
+    /// image
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `altitude`
+    /// Variable to store the altitude value
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_gps_altitude")]
@@ -1237,6 +2088,20 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Convenience function to query all available GPS information at once.
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value.
+    ///
+    /// ## `longitude`
+    /// Storage for longitude value
+    ///
+    /// ## `latitude`
+    /// Storage for latitude value
+    ///
+    /// ## `altitude`
+    /// Storage for altitude value
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_gps_info")]
@@ -1266,6 +2131,14 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Query the latitude stored in the GPS tags of `self`
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `latitude`
+    /// Variable to store the latitude value
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_gps_latitude")]
@@ -1287,6 +2160,14 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Query the longitude stored in the GPS tags of `self`
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
+    ///
+    /// ## `longitude`
+    /// Variable to store the longitude value
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_gps_longitude")]
@@ -1308,6 +2189,11 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// See <https://en.wikipedia.org/wiki/Iso_speed> for more information.
+    ///
+    /// # Returns
+    ///
+    /// The ISO speed rating as a gint, or 0 if tag is not present or invalid.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_iso_speed")]
@@ -1324,6 +2210,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Composite accessor to query the pixel with stored in the metadata. This
+    /// might differ from the height of image that is available through
+    /// [`pixel_height()`][Self::pixel_height()]
+    ///
+    /// # Returns
+    ///
+    /// Height of images in pixels as stored in the metadata
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_metadata_pixel_height")]
@@ -1342,6 +2235,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Composite accessor to query the pixel with stored in the metadata. This
+    /// might differ from the width of image that is available through
+    /// [`pixel_width()`][Self::pixel_width()]
+    ///
+    /// # Returns
+    ///
+    /// Width of images in pixels as stored in the metadata
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_metadata_pixel_width")]
@@ -1360,6 +2260,12 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The EXIF Orientation field
+    ///
+    /// # Returns
+    ///
+    /// A [`Orientation`][crate::Orientation] value representing the EXIF orientation
+    /// value.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_orientation")]
@@ -1378,6 +2284,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// ## `props`
+    /// A [`PreviewProperties`][crate::PreviewProperties] instance
+    ///
+    /// # Returns
+    ///
+    /// A [`PreviewImage`][crate::PreviewImage] instance for the particular
+    /// [`PreviewProperties`][crate::PreviewProperties].
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_get_preview_image")]
@@ -1400,6 +2313,18 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// An interpreted string is one fit for user display. It may display units or use formatting
+    /// appropriate to the type of data the tag holds.
+    ///
+    /// Tags that support multiple values are returned as a single string, with elements separated by ", ".
+    ///
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The tag's interpreted value as a string
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_tag_interpreted_string")]
@@ -1422,6 +2347,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The tag's value as a glong
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_tag_long")]
@@ -1441,6 +2373,16 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The multiple string values of
+    /// `tag`. Returns [`None`] if parameters are [`None`] or `tag` does not begin with recognised type of
+    /// metadata ("Exif.", "Xmp." or "Iptc."). For a well formed `tag`, returns array[0] = [`None`] if `tag`
+    /// is undefined or is not set in the current metadata.
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_tag_multiple")]
@@ -1460,6 +2402,16 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// Tags that support multiple values may be returned as a single byte array, with records separated
+    /// by 4x INFORMATION SEPARATOR FOUR (ASCII 0x1c)
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The tag's raw value as a byte array
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_tag_raw")]
@@ -1479,6 +2431,15 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// Tags that support multiple values are returned as a single string, with elements separated by ", ".
+    /// ## `tag`
+    /// Exiv2 tag name
+    ///
+    /// # Returns
+    ///
+    /// The tag's value as a string
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_tag_string")]
@@ -1498,6 +2459,10 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The currently-encoded XMP packet (see gexiv2_metadata_generate_xmp_packet).
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_get_xmp_packet")]
@@ -1514,6 +2479,13 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the tag is present.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_has_tag")]
@@ -1534,6 +2506,10 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// This is a composite setter that will set a number of fields to the supplied value. See
+    /// `gexiv2_metadata_get_comment` for more information.
+    /// ## `comment`
+    /// Comment string to set. Must not be [`None`]
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_set_comment")]
@@ -1553,6 +2529,18 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Set EXIF `tag` represented by a fraction, with `nom` being the numerator,
+    /// `den` the denominator of the fraction.
+    /// ## `tag`
+    /// The Exiv2 tag
+    /// ## `nom`
+    /// Rational numerator
+    /// ## `den`
+    /// Rational denominator
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_set_exif_tag_rational")]
@@ -1575,6 +2563,8 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// ## `buffer`
+    /// A buffer containing thumbnail data
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_set_exif_thumbnail_from_buffer")]
@@ -1596,6 +2586,19 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Convenience function to create a new set of simple GPS data. Warning: Will remove any other
+    /// GPS information that is currently set. See [`update_gps_info()`][Self::update_gps_info()] for
+    /// just modifying the GPS data.
+    /// ## `longitude`
+    /// Longitude value to set or replace current value
+    /// ## `latitude`
+    /// Latitude value to set or replace current value
+    /// ## `altitude`
+    /// Altitude value to set or replace current value
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value.
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_set_gps_info")]
@@ -1623,6 +2626,9 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Update the image's metadata with `height`
+    /// ## `height`
+    /// The width of the image as it should be put into the metadata.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_set_metadata_pixel_height")]
@@ -1642,6 +2648,9 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Composite setter to update the image's metadata with `width`
+    /// ## `width`
+    /// The width of the image as it should be put into the metadata
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_set_metadata_pixel_width")]
@@ -1661,6 +2670,9 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The orientation must be valid and cannot be [`Orientation::Unspecified`][crate::Orientation::Unspecified].
+    /// ## `orientation`
+    /// The new [`Orientation`][crate::Orientation] for the image.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_set_orientation")]
@@ -1680,6 +2692,15 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// Exiv2 tag name
+    /// ## `value`
+    /// The value to set or replace the existing value
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_set_tag_long")]
@@ -1701,6 +2722,19 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    ///
+    /// All previous `tag` values are erased. For multiple value tags, each of the non [`None`]
+    /// entries in `values` is stored. For single value tags, only the last non [`None`] value
+    /// is assigned.
+    /// ## `tag`
+    /// Exiv2 tag name
+    /// ## `values`
+    /// An array of values to set or replace the existing value(s)
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_set_tag_multiple")]
@@ -1722,6 +2756,18 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// If a tag supports multiple values, then `value` is added to any existing values. For single
+    /// tags, `value` replaces the value.
+    ///
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// Exiv2 tag name
+    /// ## `value`
+    /// The value to set or replace the existing value
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_set_tag_string")]
@@ -1743,6 +2789,15 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <http://exiv2.org/metadata.html>
+    /// ## `tag`
+    /// Exiv2 tag name
+    /// ## `type_`
+    /// The GExiv2StructureType specifying the type of structure
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_set_xmp_tag_struct")]
@@ -1764,6 +2819,18 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// The Exiv2 Tag Reference can be found at <https://www.exiv2.org/metadata.html>
+    ///
+    /// Multiple value tags are Xmp tags of type "XmpAlt", "XmpBag", "XmpSeq" or "LangAlt", or Iptc
+    /// tags marked as Repeatable (which can be of any Iptc type). There are no multiple value Exif
+    /// tags.
+    /// ## `tag`
+    /// An Exiv2 tag
+    ///
+    /// # Returns
+    ///
+    /// Whether `tag` is capable of storing multiple values or not. If `tag` is undefined
+    /// (i.e. not built-in and not added to `self`), then `error` is set and [`false`] is returned.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_metadata_try_tag_supports_multiple_values")]
@@ -1784,6 +2851,17 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Convenience function to update longitude, latitude and altitude at once.
+    /// ## `longitude`
+    /// Longitude value to set or replace current value
+    /// ## `latitude`
+    /// Latitude value to set or replace current value
+    /// ## `altitude`
+    /// Altitude value to set or replace current value
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value.
     #[cfg(feature = "v0_12_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_2")))]
     #[doc(alias = "gexiv2_metadata_try_update_gps_info")]
@@ -1811,6 +2889,21 @@ pub trait MetadataExt: IsA<Metadata> + 'static {
         }
     }
 
+    /// Convenience function to update longitude, latitude and altitude at once.
+    ///
+    /// # Deprecated since 0.12.2
+    ///
+    /// Use [`try_update_gps_info()`][Self::try_update_gps_info()] instead.
+    /// ## `longitude`
+    /// Longitude value to set or replace current value
+    /// ## `latitude`
+    /// Latitude value to set or replace current value
+    /// ## `altitude`
+    /// Altitude value to set or replace current value
+    ///
+    /// # Returns
+    ///
+    /// Boolean success value.
     #[cfg_attr(feature = "v0_12_2", deprecated = "Since 0.12.2")]
     #[cfg(feature = "v0_12_1")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_12_1")))]

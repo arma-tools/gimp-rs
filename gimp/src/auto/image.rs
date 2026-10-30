@@ -12,6 +12,18 @@ use crate::{
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// Operations on complete images: creation, resizing/rescaling, and
+    /// operations involving multiple layers.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `id`
+    ///  Readable | Writeable | Construct Only
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpImage")]
     pub struct Image(Object<ffi::GimpImage, ffi::GimpImageClass>);
 
@@ -21,11 +33,52 @@ glib::wrapper! {
 }
 
 impl Image {
+    /// Creates a new image with the specified width, height, and type.
+    ///
+    /// Creates a new image, undisplayed, with the specified extents and
+    /// type. A layer should be created and added before this image is
+    /// displayed, or subsequent calls to [`Display::new()`][crate::Display::new()] with this
+    /// image as an argument will fail. Layers can be created using the
+    /// [`Layer::new()`][crate::Layer::new()] command. They can be added to an image using
+    /// the [`insert_layer()`][Self::insert_layer()] command.
+    ///
+    /// If your image's type is INDEXED, a palette must also be set with
+    /// [`set_palette()`][Self::set_palette()]. An indexed image without a palette
+    /// will output unexpected colors.
+    /// ## `width`
+    /// The width of the image.
+    /// ## `height`
+    /// The height of the image.
+    /// ## `type_`
+    /// The type of image.
+    ///
+    /// # Returns
+    ///
+    /// The newly created image.
     #[doc(alias = "gimp_image_new")]
     pub fn new(width: i32, height: i32, type_: ImageBaseType) -> Image {
         unsafe { from_glib_none(ffi::gimp_image_new(width, height, type_.into_glib())) }
     }
 
+    /// Creates a new image with the specified width, height, type and
+    /// precision.
+    ///
+    /// Creates a new image, undisplayed with the specified extents, type
+    /// and precision. Indexed images can only be created at
+    /// [`Precision::U8NonLinear`][crate::Precision::U8NonLinear] precision. See
+    /// [`new()`][Self::new()] for further details.
+    /// ## `width`
+    /// The width of the image.
+    /// ## `height`
+    /// The height of the image.
+    /// ## `type_`
+    /// The type of image.
+    /// ## `precision`
+    /// The precision.
+    ///
+    /// # Returns
+    ///
+    /// The newly created image.
     #[doc(alias = "gimp_image_new_with_precision")]
     #[doc(alias = "new_with_precision")]
     pub fn with_precision(
@@ -44,21 +97,66 @@ impl Image {
         }
     }
 
+    /// Add a horizontal guide to an image.
+    ///
+    /// This procedure adds a horizontal guide to an image. It takes the
+    /// input image and the y-position of the new guide as parameters. It
+    /// returns the guide ID of the new guide.
+    /// ## `yposition`
+    /// The guide's y-offset from top of image.
+    ///
+    /// # Returns
+    ///
+    /// The new guide.
     #[doc(alias = "gimp_image_add_hguide")]
     pub fn add_hguide(&self, yposition: i32) -> u32 {
         unsafe { ffi::gimp_image_add_hguide(self.to_glib_none().0, yposition) }
     }
 
+    /// Add a sample point to an image.
+    ///
+    /// This procedure adds a sample point to an image. It takes the input
+    /// image and the position of the new sample points as parameters. It
+    /// returns the sample point ID of the new sample point.
+    /// ## `position_x`
+    /// The sample point's x-offset from left of image.
+    /// ## `position_y`
+    /// The sample point's y-offset from top of image.
+    ///
+    /// # Returns
+    ///
+    /// The new sample point.
     #[doc(alias = "gimp_image_add_sample_point")]
     pub fn add_sample_point(&self, position_x: i32, position_y: i32) -> u32 {
         unsafe { ffi::gimp_image_add_sample_point(self.to_glib_none().0, position_x, position_y) }
     }
 
+    /// Add a vertical guide to an image.
+    ///
+    /// This procedure adds a vertical guide to an image. It takes the input
+    /// image and the x-position of the new guide as parameters. It returns
+    /// the guide ID of the new guide.
+    /// ## `xposition`
+    /// The guide's x-offset from left of image.
+    ///
+    /// # Returns
+    ///
+    /// The new guide.
     #[doc(alias = "gimp_image_add_vguide")]
     pub fn add_vguide(&self, xposition: i32) -> u32 {
         unsafe { ffi::gimp_image_add_vguide(self.to_glib_none().0, xposition) }
     }
 
+    /// Add a parasite to an image.
+    ///
+    /// This procedure attaches a parasite to an image. It has no return
+    /// values.
+    /// ## `parasite`
+    /// The parasite to attach to an image.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_attach_parasite")]
     pub fn attach_parasite(&self, parasite: &Parasite) -> bool {
         unsafe {
@@ -69,6 +167,21 @@ impl Image {
         }
     }
 
+    /// Remove empty borders from the image
+    ///
+    /// Remove empty borders from the `self` based on empty borders of the
+    /// input `drawable`.
+    ///
+    /// The input drawable serves as a base for detecting cropping extents
+    /// (transparency or background color).
+    /// With a [`None`] input drawable, the image itself will serve as a base
+    /// for detecting cropping extents.
+    /// ## `drawable`
+    /// Input drawable.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_autocrop")]
     pub fn autocrop(&self, drawable: Option<&impl IsA<Drawable>>) -> bool {
         unsafe {
@@ -79,6 +192,22 @@ impl Image {
         }
     }
 
+    /// Crop the selected layers based on empty borders of the input
+    /// drawable
+    ///
+    /// Crop the selected layers of the input `self` based on empty borders
+    /// of the input `drawable`.
+    /// The input drawable serves as a base for detecting cropping extents
+    /// (transparency or background color), and is not necessarily among the
+    /// cropped layers (the current selected layers).
+    /// With a [`None`] input drawable, the image itself will serve as a base
+    /// for detecting cropping extents.
+    /// ## `drawable`
+    /// Input drawable.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_autocrop_selected_layers")]
     pub fn autocrop_selected_layers(&self, drawable: Option<&impl IsA<Drawable>>) -> bool {
         unsafe {
@@ -89,11 +218,39 @@ impl Image {
         }
     }
 
+    /// Set the image dirty count to 0.
+    ///
+    /// This procedure sets the specified image's dirty count to 0, allowing
+    /// operations to occur without having a 'dirtied' image. This is
+    /// especially useful for creating and loading images which should not
+    /// initially be considered dirty, even though layers must be created,
+    /// filled, and installed in the image. Note that save plug-ins must NOT
+    /// call this function themselves after saving the image.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_clean_all")]
     pub fn clean_all(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_clean_all(self.to_glib_none().0)) }
     }
 
+    /// This procedure converts from the image's color profile (or the
+    /// built-in profile if none is set) to the given color profile.
+    ///
+    /// Make sure you use a valid color profile, according to the image's
+    /// type (e.g. RGB or grayscale color profiles respectively for RGB or
+    /// grayscale images).
+    /// ## `profile`
+    /// The color profile to convert to.
+    /// ## `intent`
+    /// Rendering intent.
+    /// ## `bpc`
+    /// Black point compensation.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success.
     #[doc(alias = "gimp_image_convert_color_profile")]
     pub fn convert_color_profile(
         &self,
@@ -111,6 +268,22 @@ impl Image {
         }
     }
 
+    /// Convert the image's layers to a color profile
+    ///
+    /// This procedure converts from the image's color profile (or the
+    /// default RGB or grayscale profile if none is set) to an ICC profile
+    /// specified by 'file'. Only RGB and grayscale color profiles are
+    /// accepted, according to the image's type.
+    /// ## `file`
+    /// The file containing the new color profile.
+    /// ## `intent`
+    /// Rendering intent.
+    /// ## `bpc`
+    /// Black point compensation.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_convert_color_profile_from_file")]
     pub fn convert_color_profile_from_file(
         &self,
@@ -128,11 +301,50 @@ impl Image {
         }
     }
 
+    /// Convert specified image to grayscale
+    ///
+    /// This procedure converts the specified image to grayscale. This
+    /// process requires an image in RGB or Indexed color mode.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_convert_grayscale")]
     pub fn convert_grayscale(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_convert_grayscale(self.to_glib_none().0)) }
     }
 
+    /// Convert specified image to and Indexed image
+    ///
+    /// This procedure converts the specified image to 'indexed' color. This
+    /// process requires an image in RGB or Grayscale mode. The
+    /// 'palette_type' specifies what kind of palette to use, A type of '0'
+    /// means to use an optimal palette of 'num_cols' generated from the
+    /// colors in the image. A type of '1' means to re-use the previous
+    /// palette (not currently implemented). A type of '2' means to use the
+    /// so-called WWW-optimized palette. Type '3' means to use only black
+    /// and white colors. A type of '4' means to use a palette from the gimp
+    /// palettes directories. The 'dither type' specifies what kind of
+    /// dithering to use. '0' means no dithering, '1' means standard
+    /// Floyd-Steinberg error diffusion, '2' means Floyd-Steinberg error
+    /// diffusion with reduced bleeding, '3' means dithering based on pixel
+    /// location ('Fixed' dithering).
+    /// ## `dither_type`
+    /// The dither type to use.
+    /// ## `palette_type`
+    /// The type of palette to use.
+    /// ## `num_cols`
+    /// The number of colors to quantize to, ignored unless (palette_type == GIMP_CONVERT_PALETTE_GENERATE).
+    /// ## `alpha_dither`
+    /// Dither transparency to fake partial opacity.
+    /// ## `remove_unused`
+    /// Remove unused or duplicate color entries from final palette, ignored if (palette_type == GIMP_CONVERT_PALETTE_GENERATE).
+    /// ## `palette`
+    /// The name of the custom palette to use, ignored unless (palette_type == GIMP_CONVERT_PALETTE_CUSTOM).
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_convert_indexed")]
     pub fn convert_indexed(
         &self,
@@ -156,6 +368,17 @@ impl Image {
         }
     }
 
+    /// Convert the image to the specified precision
+    ///
+    /// This procedure converts the image to the specified precision. Note
+    /// that indexed images cannot be converted and are always in
+    /// GIMP_PRECISION_U8.
+    /// ## `precision`
+    /// The new precision.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_convert_precision")]
     pub fn convert_precision(&self, precision: Precision) -> bool {
         unsafe {
@@ -166,11 +389,41 @@ impl Image {
         }
     }
 
+    /// Convert specified image to RGB color
+    ///
+    /// This procedure converts the specified image to RGB color. This
+    /// process requires an image in Grayscale or Indexed color mode. No
+    /// image content is lost in this process aside from the colormap for an
+    /// indexed image.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_convert_rgb")]
     pub fn convert_rgb(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_convert_rgb(self.to_glib_none().0)) }
     }
 
+    /// Crop the image to the specified extents.
+    ///
+    /// This procedure crops the image so that it's new width and height are
+    /// equal to the supplied parameters. Offsets are also provided which
+    /// describe the position of the previous image's content. All channels
+    /// and layers within the image are cropped to the new image extents;
+    /// this includes the image selection mask. If any parameters are out of
+    /// range, an error is returned.
+    /// ## `new_width`
+    /// New image width: (0 < new_width <= width).
+    /// ## `new_height`
+    /// New image height: (0 < new_height <= height).
+    /// ## `offx`
+    /// X offset: (0 <= offx <= (width - new_width)).
+    /// ## `offy`
+    /// Y offset: (0 <= offy <= (height - new_height)).
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_crop")]
     pub fn crop(&self, new_width: i32, new_height: i32, offx: i32, offy: i32) -> bool {
         unsafe {
@@ -184,16 +437,48 @@ impl Image {
         }
     }
 
+    /// Delete the specified image.
+    ///
+    /// If there are no displays associated with this image it will be
+    /// deleted. This means that you can not delete an image through the PDB
+    /// that was created by the user. If the associated display was however
+    /// created through the PDB and you know the display ID, you may delete
+    /// the display. Removal of the last associated display will then delete
+    /// the image.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_delete")]
     pub fn delete(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_delete(self.to_glib_none().0)) }
     }
 
+    /// Deletes a guide from an image.
+    ///
+    /// This procedure takes an image and a guide ID as input and removes
+    /// the specified guide from the specified image.
+    /// ## `guide`
+    /// The ID of the guide to be removed.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_delete_guide")]
     pub fn delete_guide(&self, guide: u32) -> bool {
         unsafe { from_glib(ffi::gimp_image_delete_guide(self.to_glib_none().0, guide)) }
     }
 
+    /// Deletes a sample point from an image.
+    ///
+    /// This procedure takes an image and a sample point ID as input and
+    /// removes the specified sample point from the specified image.
+    /// ## `sample_point`
+    /// The ID of the sample point to be removed.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_delete_sample_point")]
     pub fn delete_sample_point(&self, sample_point: u32) -> bool {
         unsafe {
@@ -204,6 +489,19 @@ impl Image {
         }
     }
 
+    /// Removes a parasite from an image.
+    ///
+    /// This procedure detaches a parasite from an image.
+    ///
+    /// It will return [`false`] if `name` is invalid ([`None`] or empty string)
+    /// and [`true`] otherwise (even if there was no parasite removed, because
+    /// no parasite was named like this).
+    /// ## `name`
+    /// The name of the parasite to detach from an image.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_detach_parasite")]
     pub fn detach_parasite(&self, name: &str) -> bool {
         unsafe {
@@ -214,12 +512,34 @@ impl Image {
         }
     }
 
+    /// Duplicate the specified image
+    ///
+    /// This procedure duplicates the specified image, copying all layers,
+    /// channels, and image information.
+    ///
+    /// # Returns
+    ///
+    /// The new, duplicated image.
     #[doc(alias = "gimp_image_duplicate")]
     #[must_use]
     pub fn duplicate(&self) -> Option<Image> {
         unsafe { from_glib_none(ffi::gimp_image_duplicate(self.to_glib_none().0)) }
     }
 
+    /// save a path as an SVG file.
+    ///
+    /// This procedure creates an SVG file to save a Path object, that is, a
+    /// path. The resulting file can be edited using a vector graphics
+    /// application, or later reloaded into GIMP. Pass [`None`] as the 'path'
+    /// argument to export all paths in the image.
+    /// ## `file`
+    /// The SVG file to create.
+    /// ## `path`
+    /// The path object to export, or [`None`] for all in the image.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_export_path_to_file")]
     pub fn export_path_to_file(&self, file: &impl IsA<gio::File>, path: Option<&Path>) -> bool {
         unsafe {
@@ -231,6 +551,20 @@ impl Image {
         }
     }
 
+    /// Save a path as an SVG string.
+    ///
+    /// This procedure works like [`export_path_to_file()`][Self::export_path_to_file()]
+    /// but creates a string rather than a file. The string is
+    /// NULL-terminated and holds a complete XML document. Pass [`None`] as the
+    /// 'path' argument to export all paths in the image.
+    /// ## `path`
+    /// The path object to export, or [`None`] for all in the image.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  A string whose contents are a complete SVG document.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_image_export_path_to_string")]
     pub fn export_path_to_string(&self, path: Option<&Path>) -> Option<glib::GString> {
         unsafe {
@@ -241,21 +575,68 @@ impl Image {
         }
     }
 
+    /// Find next guide on an image.
+    ///
+    /// This procedure takes an image and a guide ID as input and finds the
+    /// guide ID of the successor of the given guide ID in the image's guide
+    /// list. If the supplied guide ID is 0, the procedure will return the
+    /// first Guide. The procedure will return 0 if given the final guide ID
+    /// as an argument or the image has no guides.
+    /// ## `guide`
+    /// The ID of the current guide (0 if first invocation).
+    ///
+    /// # Returns
+    ///
+    /// The next guide's ID.
     #[doc(alias = "gimp_image_find_next_guide")]
     pub fn find_next_guide(&self, guide: i32) -> u32 {
         unsafe { ffi::gimp_image_find_next_guide(self.to_glib_none().0, guide) }
     }
 
+    /// Find next sample point on an image.
+    ///
+    /// This procedure takes an image and a sample point ID as input and
+    /// finds the sample point ID of the successor of the given sample point
+    /// ID in the image's sample point list. If the supplied sample point ID
+    /// is 0, the procedure will return the first sample point. The
+    /// procedure will return 0 if given the final sample point ID as an
+    /// argument or the image has no sample points.
+    /// ## `sample_point`
+    /// The ID of the current sample point (0 if first invocation).
+    ///
+    /// # Returns
+    ///
+    /// The next sample point's ID.
     #[doc(alias = "gimp_image_find_next_sample_point")]
     pub fn find_next_sample_point(&self, sample_point: u32) -> u32 {
         unsafe { ffi::gimp_image_find_next_sample_point(self.to_glib_none().0, sample_point) }
     }
 
+    /// Flatten all visible layers into a single layer. Discard all
+    /// invisible layers.
+    ///
+    /// This procedure combines the visible layers in a manner analogous to
+    /// merging with the [`MergeType::ClipToImage`][crate::MergeType::ClipToImage] merge type.
+    /// Non-visible layers are discarded, and the resulting image is
+    /// stripped of its alpha channel.
+    ///
+    /// # Returns
+    ///
+    /// The resulting layer.
     #[doc(alias = "gimp_image_flatten")]
     pub fn flatten(&self) -> Option<Layer> {
         unsafe { from_glib_none(ffi::gimp_image_flatten(self.to_glib_none().0)) }
     }
 
+    /// Flips the image horizontally or vertically.
+    ///
+    /// This procedure flips (mirrors) the image.
+    /// ## `flip_type`
+    /// Type of flip.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_flip")]
     pub fn flip(&self, flip_type: OrientationType) -> bool {
         unsafe {
@@ -266,6 +647,16 @@ impl Image {
         }
     }
 
+    /// Return the drawable the floating selection is attached to.
+    ///
+    /// This procedure returns the drawable the image's floating selection
+    /// is attached to, if it exists. If it doesn't exist, -1 is returned as
+    /// the drawable ID.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The drawable the floating selection is attached to.
     #[doc(alias = "gimp_image_floating_sel_attached_to")]
     pub fn floating_sel_attached_to(&self) -> Option<Drawable> {
         unsafe {
@@ -275,27 +666,87 @@ impl Image {
         }
     }
 
+    /// Freeze the image's channel list.
+    ///
+    /// This procedure freezes the channel list of the image, suppressing
+    /// any updates to the Channels dialog in response to changes to the
+    /// image's channels. This can significantly improve performance while
+    /// applying changes affecting the channel list.
+    ///
+    /// Each call to [`freeze_channels()`][Self::freeze_channels()] should be matched by a
+    /// corresponding call to [`thaw_channels()`][Self::thaw_channels()], undoing its
+    /// effects.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_freeze_channels")]
     pub fn freeze_channels(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_freeze_channels(self.to_glib_none().0)) }
     }
 
+    /// Freeze the image's layer list.
+    ///
+    /// This procedure freezes the layer list of the image, suppressing any
+    /// updates to the Layers dialog in response to changes to the image's
+    /// layers. This can significantly improve performance while applying
+    /// changes affecting the layer list.
+    ///
+    /// Each call to [`freeze_layers()`][Self::freeze_layers()] should be matched by a
+    /// corresponding call to [`thaw_layers()`][Self::thaw_layers()], undoing its
+    /// effects.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_freeze_layers")]
     pub fn freeze_layers(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_freeze_layers(self.to_glib_none().0)) }
     }
 
+    /// Freeze the image's path list.
+    ///
+    /// This procedure freezes the path list of the image, suppressing any
+    /// updates to the Paths dialog in response to changes to the image's
+    /// path. This can significantly improve performance while applying
+    /// changes affecting the path list.
+    ///
+    /// Each call to [`freeze_paths()`][Self::freeze_paths()] should be matched by a
+    /// corresponding call to [`thaw_paths()`][Self::thaw_paths()], undoing its
+    /// effects.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_freeze_paths")]
     pub fn freeze_paths(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_freeze_paths(self.to_glib_none().0)) }
     }
 
+    /// Get the base type of the image.
+    ///
+    /// This procedure returns the image's base type. Layers in the image
+    /// must be of this subtype, but can have an optional alpha channel.
+    ///
+    /// # Returns
+    ///
+    /// The image's base type.
     #[doc(alias = "gimp_image_get_base_type")]
     #[doc(alias = "get_base_type")]
     pub fn base_type(&self) -> ImageBaseType {
         unsafe { from_glib(ffi::gimp_image_get_base_type(self.to_glib_none().0)) }
     }
 
+    /// Find a channel with a given name in an image.
+    ///
+    /// This procedure returns the channel with the given name in the
+    /// specified image.
+    /// ## `name`
+    /// The name of the channel to find.
+    ///
+    /// # Returns
+    ///
+    /// The channel with the specified name.
     #[doc(alias = "gimp_image_get_channel_by_name")]
     #[doc(alias = "get_channel_by_name")]
     pub fn channel_by_name(&self, name: &str) -> Option<Channel> {
@@ -307,6 +758,16 @@ impl Image {
         }
     }
 
+    /// Find a channel with a given tattoo in an image.
+    ///
+    /// This procedure returns the channel with the given tattoo in the
+    /// specified image.
+    /// ## `tattoo`
+    /// The tattoo of the channel to find.
+    ///
+    /// # Returns
+    ///
+    /// The channel with the specified tattoo.
     #[doc(alias = "gimp_image_get_channel_by_tattoo")]
     #[doc(alias = "get_channel_by_tattoo")]
     pub fn channel_by_tattoo(&self, tattoo: u32) -> Option<Channel> {
@@ -318,6 +779,19 @@ impl Image {
         }
     }
 
+    /// Returns the list of channels contained in the specified image.
+    ///
+    /// This procedure returns the list of channels contained in the
+    /// specified image. This does not include the selection mask, or layer
+    /// masks. The order is from topmost to bottommost. Note that
+    /// \"channels\" are custom channels and do not include the image's
+    /// color components.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of channels contained in the image.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_image_get_channels")]
     #[doc(alias = "get_channels")]
     pub fn channels(&self) -> Vec<Channel> {
@@ -328,12 +802,35 @@ impl Image {
         }
     }
 
+    /// This procedure returns the image's color profile, or [`None`] if the
+    /// image uses the built-in color profile.
+    ///
+    /// See also [`effective_color_profile()`][Self::effective_color_profile()] if you want
+    /// the effective color profile and don't want to have to deal with [`None`]
+    /// return values.
+    ///
+    /// # Returns
+    ///
+    /// The image's color profile. The
+    ///  returned value must be freed with `g_object_unref()`.
     #[doc(alias = "gimp_image_get_color_profile")]
     #[doc(alias = "get_color_profile")]
     pub fn color_profile(&self) -> Option<ColorProfile> {
         unsafe { from_glib_full(ffi::gimp_image_get_color_profile(self.to_glib_none().0)) }
     }
 
+    /// Returns if the specified image's image component is active.
+    ///
+    /// This procedure returns if the specified image's image component
+    /// (i.e. Red, Green, Blue intensity channels in an RGB image) is active
+    /// or inactive -- whether or not it can be modified. If the specified
+    /// component is not valid for the image type, an error is returned.
+    /// ## `component`
+    /// The image component.
+    ///
+    /// # Returns
+    ///
+    /// Component is active.
     #[doc(alias = "gimp_image_get_component_active")]
     #[doc(alias = "get_component_active")]
     pub fn is_component_active(&self, component: ChannelType) -> bool {
@@ -345,6 +842,19 @@ impl Image {
         }
     }
 
+    /// Returns if the specified image's image component is visible.
+    ///
+    /// This procedure returns if the specified image's image component
+    /// (i.e. Red, Green, Blue intensity channels in an RGB image) is
+    /// visible or invisible -- whether or not it can be seen. If the
+    /// specified component is not valid for the image type, an error is
+    /// returned.
+    /// ## `component`
+    /// The image component.
+    ///
+    /// # Returns
+    ///
+    /// Component is visible.
     #[doc(alias = "gimp_image_get_component_visible")]
     #[doc(alias = "get_component_visible")]
     pub fn is_component_visible(&self, component: ChannelType) -> bool {
@@ -356,6 +866,13 @@ impl Image {
         }
     }
 
+    /// Get the default mode for newly created layers of this image.
+    ///
+    /// Returns the default mode for newly created layers of this image.
+    ///
+    /// # Returns
+    ///
+    /// The layer mode.
     #[doc(alias = "gimp_image_get_default_new_layer_mode")]
     #[doc(alias = "get_default_new_layer_mode")]
     pub fn default_new_layer_mode(&self) -> LayerMode {
@@ -366,6 +883,15 @@ impl Image {
         }
     }
 
+    /// This procedure returns the color profile that is actually used for
+    /// this image, which is the profile returned by
+    /// [`color_profile()`][Self::color_profile()] if the image has a profile
+    /// assigned, or a built-in profile for the given color space otherwise.
+    ///
+    /// # Returns
+    ///
+    /// The color profile. The returned value must
+    ///  be freed with `g_object_unref()`.
     #[doc(alias = "gimp_image_get_effective_color_profile")]
     #[doc(alias = "get_effective_color_profile")]
     pub fn effective_color_profile(&self) -> Option<ColorProfile> {
@@ -376,24 +902,64 @@ impl Image {
         }
     }
 
+    /// Returns the exported file for the specified image.
+    ///
+    /// This procedure returns the file associated with the specified image
+    /// if the image was exported a non-native GIMP format. If the image was
+    /// not exported, this procedure returns [`None`].
+    ///
+    /// # Returns
+    ///
+    /// The exported file.
     #[doc(alias = "gimp_image_get_exported_file")]
     #[doc(alias = "get_exported_file")]
     pub fn exported_file(&self) -> Option<gio::File> {
         unsafe { from_glib_full(ffi::gimp_image_get_exported_file(self.to_glib_none().0)) }
     }
 
+    /// Returns the file for the specified image.
+    ///
+    /// This procedure returns the file associated with the specified image.
+    /// The image has a file only if it was loaded or imported from a file
+    /// or has since been saved or exported. Otherwise, this function
+    /// returns [`None`]. See also gimp-image-get-imported-file to get the
+    /// current file if it was imported from a non-GIMP file format and not
+    /// yet saved, or gimp-image-get-exported-file if the image has been
+    /// exported to a non-GIMP file format.
+    ///
+    /// # Returns
+    ///
+    /// The file.
     #[doc(alias = "gimp_image_get_file")]
     #[doc(alias = "get_file")]
     pub fn file(&self) -> Option<gio::File> {
         unsafe { from_glib_full(ffi::gimp_image_get_file(self.to_glib_none().0)) }
     }
 
+    /// Return the floating selection of the image.
+    ///
+    /// This procedure returns the image's floating selection, if it exists.
+    /// If it doesn't exist, -1 is returned as the layer ID.
+    ///
+    /// # Returns
+    ///
+    /// The image's floating selection.
     #[doc(alias = "gimp_image_get_floating_sel")]
     #[doc(alias = "get_floating_sel")]
     pub fn floating_sel(&self) -> Option<Layer> {
         unsafe { from_glib_none(ffi::gimp_image_get_floating_sel(self.to_glib_none().0)) }
     }
 
+    /// Get orientation of a guide on an image.
+    ///
+    /// This procedure takes an image and a guide ID as input and returns
+    /// the orientations of the guide.
+    /// ## `guide`
+    /// The guide.
+    ///
+    /// # Returns
+    ///
+    /// The guide's orientation.
     #[doc(alias = "gimp_image_get_guide_orientation")]
     #[doc(alias = "get_guide_orientation")]
     pub fn guide_orientation(&self, guide: u32) -> OrientationType {
@@ -405,30 +971,74 @@ impl Image {
         }
     }
 
+    /// Get position of a guide on an image.
+    ///
+    /// This procedure takes an image and a guide ID as input and returns
+    /// the position of the guide relative to the top or left of the image.
+    /// ## `guide`
+    /// The guide.
+    ///
+    /// # Returns
+    ///
+    /// The guide's position relative to top or left of image.
     #[doc(alias = "gimp_image_get_guide_position")]
     #[doc(alias = "get_guide_position")]
     pub fn guide_position(&self, guide: u32) -> i32 {
         unsafe { ffi::gimp_image_get_guide_position(self.to_glib_none().0, guide) }
     }
 
+    /// Return the height of the image
+    ///
+    /// This procedure returns the image's height. This value is independent
+    /// of any of the layers in this image. This is the \"canvas\" height.
+    ///
+    /// # Returns
+    ///
+    /// The image's height.
     #[doc(alias = "gimp_image_get_height")]
     #[doc(alias = "get_height")]
     pub fn height(&self) -> i32 {
         unsafe { ffi::gimp_image_get_height(self.to_glib_none().0) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the image ID.
     #[doc(alias = "gimp_image_get_id")]
     #[doc(alias = "get_id")]
     pub fn id(&self) -> i32 {
         unsafe { ffi::gimp_image_get_id(self.to_glib_none().0) }
     }
 
+    /// Returns the imported file for the specified image.
+    ///
+    /// This procedure returns the file associated with the specified image
+    /// if the image was imported from a non-native Gimp format. If the
+    /// image was not imported, or has since been saved in the native Gimp
+    /// format, this procedure returns [`None`].
+    ///
+    /// # Returns
+    ///
+    /// The imported file.
     #[doc(alias = "gimp_image_get_imported_file")]
     #[doc(alias = "get_imported_file")]
     pub fn imported_file(&self) -> Option<gio::File> {
         unsafe { from_glib_full(ffi::gimp_image_get_imported_file(self.to_glib_none().0)) }
     }
 
+    /// Returns the position of the item in its level of its item tree.
+    ///
+    /// This procedure determines the position of the specified item in its
+    /// level in its item tree in the image. If the item doesn't exist in
+    /// the image, or the item is not part of an item tree, an error is
+    /// returned.
+    /// ## `item`
+    /// The item.
+    ///
+    /// # Returns
+    ///
+    /// The position of the item in its level in the item tree.
     #[doc(alias = "gimp_image_get_item_position")]
     #[doc(alias = "get_item_position")]
     pub fn item_position(&self, item: &impl IsA<Item>) -> i32 {
@@ -437,6 +1047,16 @@ impl Image {
         }
     }
 
+    /// Find a layer with a given name in an image.
+    ///
+    /// This procedure returns the layer with the given name in the
+    /// specified image.
+    /// ## `name`
+    /// The name of the layer to find.
+    ///
+    /// # Returns
+    ///
+    /// The layer with the specified name.
     #[doc(alias = "gimp_image_get_layer_by_name")]
     #[doc(alias = "get_layer_by_name")]
     pub fn layer_by_name(&self, name: &str) -> Option<Layer> {
@@ -448,6 +1068,16 @@ impl Image {
         }
     }
 
+    /// Find a layer with a given tattoo in an image.
+    ///
+    /// This procedure returns the layer with the given tattoo in the
+    /// specified image.
+    /// ## `tattoo`
+    /// The tattoo of the layer to find.
+    ///
+    /// # Returns
+    ///
+    /// The layer with the specified tattoo.
     #[doc(alias = "gimp_image_get_layer_by_tattoo")]
     #[doc(alias = "get_layer_by_tattoo")]
     pub fn layer_by_tattoo(&self, tattoo: u32) -> Option<Layer> {
@@ -459,6 +1089,22 @@ impl Image {
         }
     }
 
+    /// Returns the list of root layers contained in the specified image.
+    ///
+    /// This procedure returns the list of root layers contained in the
+    /// specified image. The order of layers is from topmost to bottommost.
+    /// Note that this is not the full list of layers, but only the root
+    /// layers, i.e. layers with no parents themselves. If you need all
+    /// layers, it is up to you to verify that any of these layers is a
+    /// group layer with [`ItemExt::is_group()`][crate::prelude::ItemExt::is_group()] and to obtain its children
+    /// with [`ItemExt::children()`][crate::prelude::ItemExt::children()] (possibly recursively checking if
+    /// these have children too).
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of layers contained in the image.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_image_get_layers")]
     #[doc(alias = "get_layers")]
     pub fn layers(&self) -> Vec<Layer> {
@@ -469,24 +1115,65 @@ impl Image {
         }
     }
 
+    /// Returns the image's metadata.
+    ///
+    /// Returns exif/iptc/xmp metadata from the image.
+    ///
+    /// # Returns
+    ///
+    /// The exif/ptc/xmp metadata,
+    ///  or [`None`] if there is none.
     #[doc(alias = "gimp_image_get_metadata")]
     #[doc(alias = "get_metadata")]
     pub fn metadata(&self) -> Option<Metadata> {
         unsafe { from_glib_full(ffi::gimp_image_get_metadata(self.to_glib_none().0)) }
     }
 
+    /// Returns the specified image's name.
+    ///
+    /// This procedure returns the image's name. If the image has a filename
+    /// or an URI, then the returned name contains the filename's or URI's
+    /// base name (the last component of the path). Otherwise it is the
+    /// translated string \"Untitled\". The returned name is formatted like
+    /// the image name in the image window title, it may contain '[]',
+    /// '(imported)' etc. and should only be used to label user interface
+    /// elements. Never use it to construct filenames.
+    ///
+    /// # Returns
+    ///
+    /// The name.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_image_get_name")]
     #[doc(alias = "get_name")]
     pub fn name(&self) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_image_get_name(self.to_glib_none().0)) }
     }
 
+    /// Returns the image's colormap
+    ///
+    /// This procedure returns the image's colormap as a
+    /// [`Palette`][crate::Palette]. If the image is not in Indexed color mode,
+    /// [`None`] is returned.
+    ///
+    /// # Returns
+    ///
+    /// The image's colormap palette.
     #[doc(alias = "gimp_image_get_palette")]
     #[doc(alias = "get_palette")]
     pub fn palette(&self) -> Option<Palette> {
         unsafe { from_glib_none(ffi::gimp_image_get_palette(self.to_glib_none().0)) }
     }
 
+    /// Look up a parasite in an image
+    ///
+    /// Finds and returns the parasite that was previously attached to an
+    /// image.
+    /// ## `name`
+    /// The name of the parasite to find.
+    ///
+    /// # Returns
+    ///
+    /// The found parasite.
     #[doc(alias = "gimp_image_get_parasite")]
     #[doc(alias = "get_parasite")]
     pub fn parasite(&self, name: &str) -> Option<Parasite> {
@@ -498,6 +1185,17 @@ impl Image {
         }
     }
 
+    /// List all parasites.
+    ///
+    /// Returns a list of the names of all currently attached parasites.
+    /// These names can later be used to get the actual [`Parasite`][crate::Parasite] with
+    /// [`parasite()`][Self::parasite()] when needed.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The names of currently attached parasites.
+    ///  The returned value must be freed with `g_strfreev()`.
     #[doc(alias = "gimp_image_get_parasite_list")]
     #[doc(alias = "get_parasite_list")]
     pub fn parasite_list(&self) -> Vec<glib::GString> {
@@ -508,6 +1206,16 @@ impl Image {
         }
     }
 
+    /// Find a path with a given name in an image.
+    ///
+    /// This procedure returns the path with the given name in the specified
+    /// image.
+    /// ## `name`
+    /// The name of the path to find.
+    ///
+    /// # Returns
+    ///
+    /// The path with the specified name.
     #[doc(alias = "gimp_image_get_path_by_name")]
     #[doc(alias = "get_path_by_name")]
     pub fn path_by_name(&self, name: &str) -> Option<Path> {
@@ -519,6 +1227,16 @@ impl Image {
         }
     }
 
+    /// Find a path with a given tattoo in an image.
+    ///
+    /// This procedure returns the path with the given tattoo in the
+    /// specified image.
+    /// ## `tattoo`
+    /// The tattoo of the path to find.
+    ///
+    /// # Returns
+    ///
+    /// The path with the specified tattoo.
     #[doc(alias = "gimp_image_get_path_by_tattoo")]
     #[doc(alias = "get_path_by_tattoo")]
     pub fn path_by_tattoo(&self, tattoo: u32) -> Option<Path> {
@@ -530,6 +1248,16 @@ impl Image {
         }
     }
 
+    /// Returns the list of paths contained in the specified image.
+    ///
+    /// This procedure returns the list of paths contained in the specified
+    /// image.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of paths contained in the image.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_image_get_paths")]
     #[doc(alias = "get_paths")]
     pub fn paths(&self) -> Vec<Path> {
@@ -540,12 +1268,33 @@ impl Image {
         }
     }
 
+    /// Get the precision of the image.
+    ///
+    /// This procedure returns the image's precision.
+    ///
+    /// # Returns
+    ///
+    /// The image's precision.
     #[doc(alias = "gimp_image_get_precision")]
     #[doc(alias = "get_precision")]
     pub fn precision(&self) -> Precision {
         unsafe { from_glib(ffi::gimp_image_get_precision(self.to_glib_none().0)) }
     }
 
+    /// Returns the specified image's resolution.
+    ///
+    /// This procedure returns the specified image's resolution in dots per
+    /// inch. This value is independent of any of the layers in this image.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `xresolution`
+    /// The resolution in the x-axis, in dots per inch.
+    ///
+    /// ## `yresolution`
+    /// The resolution in the y-axis, in dots per inch.
     #[doc(alias = "gimp_image_get_resolution")]
     #[doc(alias = "get_resolution")]
     pub fn resolution(&self) -> Option<(f64, f64)> {
@@ -565,6 +1314,20 @@ impl Image {
         }
     }
 
+    /// Get position of a sample point on an image.
+    ///
+    /// This procedure takes an image and a sample point ID as input and
+    /// returns the position of the sample point relative to the top and
+    /// left of the image.
+    /// ## `sample_point`
+    /// The guide.
+    ///
+    /// # Returns
+    ///
+    /// The sample point's x-offset relative to left of image.
+    ///
+    /// ## `position_y`
+    /// The sample point's y-offset relative to top of image.
     #[doc(alias = "gimp_image_get_sample_point_position")]
     #[doc(alias = "get_sample_point_position")]
     pub fn sample_point_position(&self, sample_point: u32) -> (i32, i32) {
@@ -579,6 +1342,16 @@ impl Image {
         }
     }
 
+    /// Returns the specified image's selected channels.
+    ///
+    /// This procedure returns the list of selected channels in the
+    /// specified image.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of selected channels in the image.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_image_get_selected_channels")]
     #[doc(alias = "get_selected_channels")]
     pub fn selected_channels(&self) -> Vec<Channel> {
@@ -589,6 +1362,21 @@ impl Image {
         }
     }
 
+    /// Get the image's selected drawables
+    ///
+    /// This procedure returns the list of selected drawable in the
+    /// specified image. This can be either layers, channels, or a layer
+    /// mask.
+    /// The active drawables are the active image channels. If there are
+    /// none, these are the active image layers. If the active image layer
+    /// has a layer mask and the layer mask is in edit mode, then the layer
+    /// mask is the active drawable.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of selected drawables in the image.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_image_get_selected_drawables")]
     #[doc(alias = "get_selected_drawables")]
     pub fn selected_drawables(&self) -> Vec<Drawable> {
@@ -599,6 +1387,16 @@ impl Image {
         }
     }
 
+    /// Returns the specified image's selected layers.
+    ///
+    /// This procedure returns the list of selected layers in the specified
+    /// image.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of selected layers in the image.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_image_get_selected_layers")]
     #[doc(alias = "get_selected_layers")]
     pub fn selected_layers(&self) -> Vec<Layer> {
@@ -609,6 +1407,16 @@ impl Image {
         }
     }
 
+    /// Returns the specified image's selected paths.
+    ///
+    /// This procedure returns the list of selected paths in the specified
+    /// image.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of selected paths in the image.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_image_get_selected_paths")]
     #[doc(alias = "get_selected_paths")]
     pub fn selected_paths(&self) -> Vec<Path> {
@@ -619,24 +1427,55 @@ impl Image {
         }
     }
 
+    /// Returns the specified image's selection.
+    ///
+    /// This will always return a valid ID for a selection -- which is
+    /// represented as a channel internally.
+    ///
+    /// # Returns
+    ///
+    /// The selection channel.
     #[doc(alias = "gimp_image_get_selection")]
     #[doc(alias = "get_selection")]
     pub fn selection(&self) -> Option<Selection> {
         unsafe { from_glib_none(ffi::gimp_image_get_selection(self.to_glib_none().0)) }
     }
 
+    /// Returns whether the image has Black Point Compensation enabled for
+    /// its simulation
+    ///
+    /// This procedure returns whether the image has Black Point
+    /// Compensation enabled for its simulation
+    ///
+    /// # Returns
+    ///
+    /// The Black Point Compensation status.
     #[doc(alias = "gimp_image_get_simulation_bpc")]
     #[doc(alias = "get_simulation_bpc")]
     pub fn is_simulation_bpc(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_get_simulation_bpc(self.to_glib_none().0)) }
     }
 
+    /// Returns the image's simulation rendering intent
+    ///
+    /// This procedure returns the image's simulation rendering intent.
+    ///
+    /// # Returns
+    ///
+    /// The image's simulation rendering intent.
     #[doc(alias = "gimp_image_get_simulation_intent")]
     #[doc(alias = "get_simulation_intent")]
     pub fn simulation_intent(&self) -> ColorRenderingIntent {
         unsafe { from_glib(ffi::gimp_image_get_simulation_intent(self.to_glib_none().0)) }
     }
 
+    /// This procedure returns the image's simulation color profile, or [`None`] if
+    /// the image has no simulation color profile assigned.
+    ///
+    /// # Returns
+    ///
+    /// The image's simulation color profile. The
+    ///  returned value must be freed with `g_object_unref()`.
     #[doc(alias = "gimp_image_get_simulation_profile")]
     #[doc(alias = "get_simulation_profile")]
     pub fn simulation_profile(&self) -> Option<ColorProfile> {
@@ -647,12 +1486,33 @@ impl Image {
         }
     }
 
+    /// Returns the tattoo state associated with the image.
+    ///
+    /// This procedure returns the tattoo state of the image. Use only by
+    /// save/load plug-ins that wish to preserve an images tattoo state.
+    /// Using this function at other times will produce unexpected results.
+    ///
+    /// # Returns
+    ///
+    /// The tattoo state.
     #[doc(alias = "gimp_image_get_tattoo_state")]
     #[doc(alias = "get_tattoo_state")]
     pub fn tattoo_state(&self) -> u32 {
         unsafe { ffi::gimp_image_get_tattoo_state(self.to_glib_none().0) }
     }
 
+    /// Retrieves a thumbnail pixbuf for `self`.
+    /// The thumbnail will be not larger than the requested size.
+    /// ## `width`
+    /// the requested thumbnail width (<= 1024 pixels)
+    /// ## `height`
+    /// the requested thumbnail height (<= 1024 pixels)
+    /// ## `alpha`
+    /// how to handle an alpha channel
+    ///
+    /// # Returns
+    ///
+    /// a new [`gdk_pixbuf::Pixbuf`][crate::gdk_pixbuf::Pixbuf]
     #[doc(alias = "gimp_image_get_thumbnail")]
     #[doc(alias = "get_thumbnail")]
     pub fn thumbnail(
@@ -671,6 +1531,23 @@ impl Image {
         }
     }
 
+    /// Get a thumbnail of an image.
+    ///
+    /// This function gets data from which a thumbnail of an image preview
+    /// can be created. Maximum x or y dimension is 1024 pixels. The pixels
+    /// are returned in RGB[A] or GRAY[A] format. The bpp return value
+    /// gives the number of bytes per pixel in the image.
+    /// ## `width`
+    /// The requested thumbnail width.
+    /// ## `height`
+    /// The requested thumbnail height.
+    ///
+    /// # Returns
+    ///
+    /// the thumbnail data.
+    ///
+    /// ## `bpp`
+    /// The previews bpp.
     #[doc(alias = "gimp_image_get_thumbnail_data")]
     #[doc(alias = "get_thumbnail_data")]
     pub fn thumbnail_data(&self, width: &mut i32, height: &mut i32) -> (glib::Bytes, i32) {
@@ -686,24 +1563,57 @@ impl Image {
         }
     }
 
+    /// Returns the specified image's unit.
+    ///
+    /// This procedure returns the specified image's unit. This value is
+    /// independent of any of the layers in this image. See the
+    /// gimp_unit_*() procedure definitions for the valid range of unit IDs
+    /// and a description of the unit system.
+    ///
+    /// # Returns
+    ///
+    /// The unit.
     #[doc(alias = "gimp_image_get_unit")]
     #[doc(alias = "get_unit")]
     pub fn unit(&self) -> Option<Unit> {
         unsafe { from_glib_none(ffi::gimp_image_get_unit(self.to_glib_none().0)) }
     }
 
+    /// Return the width of the image
+    ///
+    /// This procedure returns the image's width. This value is independent
+    /// of any of the layers in this image. This is the \"canvas\" width.
+    ///
+    /// # Returns
+    ///
+    /// The image's width.
     #[doc(alias = "gimp_image_get_width")]
     #[doc(alias = "get_width")]
     pub fn width(&self) -> i32 {
         unsafe { ffi::gimp_image_get_width(self.to_glib_none().0) }
     }
 
+    /// Returns the XCF file for the specified image.
+    ///
+    /// This procedure returns the XCF file associated with the image. If
+    /// there is no such file, this procedure returns [`None`].
+    ///
+    /// # Returns
+    ///
+    /// The imported XCF file.
     #[doc(alias = "gimp_image_get_xcf_file")]
     #[doc(alias = "get_xcf_file")]
     pub fn xcf_file(&self) -> Option<gio::File> {
         unsafe { from_glib_full(ffi::gimp_image_get_xcf_file(self.to_glib_none().0)) }
     }
 
+    /// Sets the background color of an image's grid.
+    ///
+    /// This procedure gets the background color of an image's grid.
+    ///
+    /// # Returns
+    ///
+    /// The image's grid background color.
     #[doc(alias = "gimp_image_grid_get_background_color")]
     pub fn grid_get_background_color(&self) -> Option<gegl::Color> {
         unsafe {
@@ -713,6 +1623,13 @@ impl Image {
         }
     }
 
+    /// Sets the foreground color of an image's grid.
+    ///
+    /// This procedure gets the foreground color of an image's grid.
+    ///
+    /// # Returns
+    ///
+    /// The image's grid foreground color.
     #[doc(alias = "gimp_image_grid_get_foreground_color")]
     pub fn grid_get_foreground_color(&self) -> Option<gegl::Color> {
         unsafe {
@@ -722,6 +1639,20 @@ impl Image {
         }
     }
 
+    /// Gets the offset of an image's grid.
+    ///
+    /// This procedure retrieves the horizontal and vertical offset of an
+    /// image's grid. It takes the image as parameter.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `xoffset`
+    /// The image's grid horizontal offset.
+    ///
+    /// ## `yoffset`
+    /// The image's grid vertical offset.
     #[doc(alias = "gimp_image_grid_get_offset")]
     pub fn grid_get_offset(&self) -> Option<(f64, f64)> {
         unsafe {
@@ -740,6 +1671,20 @@ impl Image {
         }
     }
 
+    /// Gets the spacing of an image's grid.
+    ///
+    /// This procedure retrieves the horizontal and vertical spacing of an
+    /// image's grid. It takes the image as parameter.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `xspacing`
+    /// The image's grid horizontal spacing.
+    ///
+    /// ## `yspacing`
+    /// The image's grid vertical spacing.
     #[doc(alias = "gimp_image_grid_get_spacing")]
     pub fn grid_get_spacing(&self) -> Option<(f64, f64)> {
         unsafe {
@@ -758,11 +1703,27 @@ impl Image {
         }
     }
 
+    /// Gets the style of an image's grid.
+    ///
+    /// This procedure retrieves the style of an image's grid.
+    ///
+    /// # Returns
+    ///
+    /// The image's grid style.
     #[doc(alias = "gimp_image_grid_get_style")]
     pub fn grid_get_style(&self) -> GridStyle {
         unsafe { from_glib(ffi::gimp_image_grid_get_style(self.to_glib_none().0)) }
     }
 
+    /// Gets the background color of an image's grid.
+    ///
+    /// This procedure sets the background color of an image's grid.
+    /// ## `bgcolor`
+    /// The new background color.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_grid_set_background_color")]
     pub fn grid_set_background_color(&self, bgcolor: &impl IsA<gegl::Color>) -> bool {
         unsafe {
@@ -773,6 +1734,15 @@ impl Image {
         }
     }
 
+    /// Gets the foreground color of an image's grid.
+    ///
+    /// This procedure sets the foreground color of an image's grid.
+    /// ## `fgcolor`
+    /// The new foreground color.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_grid_set_foreground_color")]
     pub fn grid_set_foreground_color(&self, fgcolor: &impl IsA<gegl::Color>) -> bool {
         unsafe {
@@ -783,6 +1753,18 @@ impl Image {
         }
     }
 
+    /// Sets the offset of an image's grid.
+    ///
+    /// This procedure sets the horizontal and vertical offset of an image's
+    /// grid.
+    /// ## `xoffset`
+    /// The image's grid horizontal offset.
+    /// ## `yoffset`
+    /// The image's grid vertical offset.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_grid_set_offset")]
     pub fn grid_set_offset(&self, xoffset: f64, yoffset: f64) -> bool {
         unsafe {
@@ -794,6 +1776,18 @@ impl Image {
         }
     }
 
+    /// Sets the spacing of an image's grid.
+    ///
+    /// This procedure sets the horizontal and vertical spacing of an
+    /// image's grid.
+    /// ## `xspacing`
+    /// The image's grid horizontal spacing.
+    /// ## `yspacing`
+    /// The image's grid vertical spacing.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_grid_set_spacing")]
     pub fn grid_set_spacing(&self, xspacing: f64, yspacing: f64) -> bool {
         unsafe {
@@ -805,6 +1799,16 @@ impl Image {
         }
     }
 
+    /// Sets the style unit of an image's grid.
+    ///
+    /// This procedure sets the style of an image's grid. It takes the image
+    /// and the new style as parameters.
+    /// ## `style`
+    /// The image's grid style.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_grid_set_style")]
     pub fn grid_set_style(&self, style: GridStyle) -> bool {
         unsafe {
@@ -815,6 +1819,23 @@ impl Image {
         }
     }
 
+    /// Import paths from an SVG file.
+    ///
+    /// This procedure imports paths from an SVG file. SVG elements other
+    /// than paths and basic shapes are ignored.
+    /// ## `file`
+    /// The SVG file to import.
+    /// ## `merge`
+    /// Merge paths into a single path object.
+    /// ## `scale`
+    /// Scale the SVG to image dimensions.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `paths`
+    /// The list of newly created paths.
     #[doc(alias = "gimp_image_import_paths_from_file")]
     pub fn import_paths_from_file(
         &self,
@@ -839,6 +1860,26 @@ impl Image {
         }
     }
 
+    /// Import paths from an SVG string.
+    ///
+    /// This procedure works like [`import_paths_from_file()`][Self::import_paths_from_file()]
+    /// but takes a string rather than reading the SVG from a file. This
+    /// allows you to write scripts that generate SVG and feed it to GIMP.
+    /// ## `string`
+    /// A string that must be a complete and valid SVG document.
+    /// ## `length`
+    /// Number of bytes in string or -1 if the string is NULL terminated.
+    /// ## `merge`
+    /// Merge paths into a single path object.
+    /// ## `scale`
+    /// Scale the SVG to image dimensions.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `paths`
+    /// The list of newly created paths.
     #[doc(alias = "gimp_image_import_paths_from_string")]
     pub fn import_paths_from_string(
         &self,
@@ -865,6 +1906,24 @@ impl Image {
         }
     }
 
+    /// Add the specified channel to the image.
+    ///
+    /// This procedure adds the specified channel to the image at the given
+    /// position. Since channel groups are not currently supported, the
+    /// parent argument must always be 0. The position argument specifies
+    /// the location of the channel inside the stack, starting from the top
+    /// (0) and increasing. If the position is specified as -1, then the
+    /// channel is inserted above the active channel.
+    /// ## `channel`
+    /// The channel.
+    /// ## `parent`
+    /// The parent channel.
+    /// ## `position`
+    /// The channel position.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_insert_channel")]
     pub fn insert_channel(
         &self,
@@ -882,6 +1941,29 @@ impl Image {
         }
     }
 
+    /// Add the specified layer to the image.
+    ///
+    /// This procedure adds the specified layer to the image at the given
+    /// position. If the specified parent is a valid layer group (See
+    /// [`ItemExt::is_group()`][crate::prelude::ItemExt::is_group()] and [`GroupLayer::new()`][crate::GroupLayer::new()]) then the
+    /// layer is added inside the group. If the parent is 0, the layer is
+    /// added inside the main stack, outside of any group. The position
+    /// argument specifies the location of the layer inside the stack (or
+    /// the group, if a valid parent was supplied), starting from the top
+    /// (0) and increasing. If the position is specified as -1 and the
+    /// parent is specified as 0, then the layer is inserted above the
+    /// active layer, or inside the group if the active layer is a layer
+    /// group. The layer type must be compatible with the image base type.
+    /// ## `layer`
+    /// The layer.
+    /// ## `parent`
+    /// The parent layer.
+    /// ## `position`
+    /// The layer position.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_insert_layer")]
     pub fn insert_layer(
         &self,
@@ -899,6 +1981,24 @@ impl Image {
         }
     }
 
+    /// Add the specified path to the image.
+    ///
+    /// This procedure adds the specified path to the image at the given
+    /// position. Since path groups are not currently supported, the parent
+    /// argument must always be 0. The position argument specifies the
+    /// location of the path inside the stack, starting from the top (0) and
+    /// increasing. If the position is specified as -1, then the path is
+    /// inserted above the active path.
+    /// ## `path`
+    /// The path.
+    /// ## `parent`
+    /// The parent path.
+    /// ## `position`
+    /// The path position.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_insert_path")]
     pub fn insert_path(&self, path: &Path, parent: Option<&Path>, position: i32) -> bool {
         unsafe {
@@ -911,16 +2011,54 @@ impl Image {
         }
     }
 
+    /// Checks if the image has unsaved changes.
+    ///
+    /// This procedure checks the specified image's dirty count to see if it
+    /// needs to be saved. Note that saving the image does not automatically
+    /// set the dirty count to 0, you need to call
+    /// [`clean_all()`][Self::clean_all()] after calling a save procedure to make
+    /// the image clean.
+    ///
+    /// When loading an image using e.g. [`file_load()`][crate::file_load()], or when
+    /// created by a [`LoadProcedure`][crate::LoadProcedure], the image will be marked as
+    /// clean. In other cases, it may sometimes be useful to clean
+    /// programmatically created image yourself.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the image has unsaved changes.
     #[doc(alias = "gimp_image_is_dirty")]
     pub fn is_dirty(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_is_dirty(self.to_glib_none().0)) }
     }
 
+    /// Returns TRUE if the image is valid.
+    ///
+    /// This procedure checks if the given image is valid and refers to
+    /// an existing image.
+    ///
+    /// # Returns
+    ///
+    /// Whether the image is valid.
     #[doc(alias = "gimp_image_is_valid")]
     pub fn is_valid(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_is_valid(self.to_glib_none().0)) }
     }
 
+    /// Returns the list of channels contained in the specified image.
+    ///
+    /// This procedure returns the list of channels contained in the
+    /// specified image. This does not include the selection mask, or layer
+    /// masks. The order is from topmost to bottommost. Note that
+    /// "channels" are custom channels and do not include the image's
+    /// color components.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of channels contained in the image.
+    ///  The returned list must be freed with `g_list_free()`. Channel
+    ///  elements belong to libgimp and must not be freed.
     #[doc(alias = "gimp_image_list_channels")]
     pub fn list_channels(&self) -> Vec<Channel> {
         unsafe {
@@ -930,6 +2068,17 @@ impl Image {
         }
     }
 
+    /// Returns the list of layers contained in the specified image.
+    ///
+    /// This procedure returns the list of layers contained in the specified
+    /// image. The order of layers is from topmost to bottommost.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of layers contained in the image.
+    ///  The returned list must be freed with `g_list_free()`. Layer
+    ///  elements belong to libgimp and must not be freed.
     #[doc(alias = "gimp_image_list_layers")]
     pub fn list_layers(&self) -> Vec<Layer> {
         unsafe {
@@ -939,6 +2088,17 @@ impl Image {
         }
     }
 
+    /// Returns the list of paths contained in the specified image.
+    ///
+    /// This procedure returns the list of paths contained in the
+    /// specified image.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of paths contained in the image.
+    ///  The returned value must be freed with `g_list_free()`. Path
+    ///  elements belong to libgimp and must not be freed.
     #[doc(alias = "gimp_image_list_paths")]
     pub fn list_paths(&self) -> Vec<Path> {
         unsafe {
@@ -948,6 +2108,17 @@ impl Image {
         }
     }
 
+    /// Returns the list of channels selected in the specified image.
+    ///
+    /// This procedure returns the list of channels selected in the specified
+    /// image.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of selected channels in the image.
+    ///  The returned list must be freed with `g_list_free()`. Layer
+    ///  elements belong to libgimp and must not be freed.
     #[doc(alias = "gimp_image_list_selected_channels")]
     pub fn list_selected_channels(&self) -> Vec<Channel> {
         unsafe {
@@ -957,6 +2128,21 @@ impl Image {
         }
     }
 
+    /// Returns the list of drawables selected in the specified image.
+    ///
+    /// This procedure returns the list of drawables selected in the specified
+    /// image.
+    /// These can be either a list of layers or a list of channels (a list mixing
+    /// layers and channels is not possible), or it can be a layer mask (a list
+    /// containing only a layer mask as single item), if a layer mask is in edit
+    /// mode.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of selected drawables in the image.
+    ///  The returned list must be freed with `g_list_free()`. Layer
+    ///  elements belong to libgimp and must not be freed.
     #[doc(alias = "gimp_image_list_selected_drawables")]
     pub fn list_selected_drawables(&self) -> Vec<Item> {
         unsafe {
@@ -966,6 +2152,17 @@ impl Image {
         }
     }
 
+    /// Returns the list of layers selected in the specified image.
+    ///
+    /// This procedure returns the list of layers selected in the specified
+    /// image.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of selected layers in the image.
+    ///  The returned list must be freed with `g_list_free()`. Layer
+    ///  elements belong to libgimp and must not be freed.
     #[doc(alias = "gimp_image_list_selected_layers")]
     pub fn list_selected_layers(&self) -> Vec<Layer> {
         unsafe {
@@ -975,6 +2172,17 @@ impl Image {
         }
     }
 
+    /// Returns the list of paths selected in the specified image.
+    ///
+    /// This procedure returns the list of paths selected in the specified
+    /// image.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of selected paths in the image.
+    ///  The returned list must be freed with `g_list_free()`.
+    ///  Path elements belong to libgimp and must not be freed.
     #[doc(alias = "gimp_image_list_selected_paths")]
     pub fn list_selected_paths(&self) -> Vec<Path> {
         unsafe {
@@ -984,6 +2192,16 @@ impl Image {
         }
     }
 
+    /// Lower the specified item in its level in its item tree
+    ///
+    /// This procedure lowers the specified item one step in the item tree.
+    /// The procedure call will fail if there is no item below it.
+    /// ## `item`
+    /// The item to lower.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_lower_item")]
     pub fn lower_item(&self, item: &impl IsA<Item>) -> bool {
         unsafe {
@@ -994,6 +2212,17 @@ impl Image {
         }
     }
 
+    /// Lower the specified item to the bottom of its level in its item tree
+    ///
+    /// This procedure lowers the specified item to bottom of its level in
+    /// the item tree. It will not move the layer if there is no layer below
+    /// it.
+    /// ## `item`
+    /// The item to lower to bottom.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_lower_item_to_bottom")]
     pub fn lower_item_to_bottom(&self, item: &impl IsA<Item>) -> bool {
         unsafe {
@@ -1004,6 +2233,24 @@ impl Image {
         }
     }
 
+    /// Merge the layer passed and the first visible layer below.
+    ///
+    /// This procedure combines the passed layer and the first visible layer
+    /// below it using the specified merge type. A merge type of
+    /// [`MergeType::ExpandAsNecessary`][crate::MergeType::ExpandAsNecessary] expands the final layer to
+    /// encompass the areas of the visible layers. A merge type of
+    /// [`MergeType::ClipToImage`][crate::MergeType::ClipToImage] clips the final layer to the
+    /// extents of the image. A merge type of
+    /// [`MergeType::ClipToBottomLayer`][crate::MergeType::ClipToBottomLayer] clips the final layer to
+    /// the size of the bottommost layer.
+    /// ## `merge_layer`
+    /// The layer to merge down from.
+    /// ## `merge_type`
+    /// The type of merge.
+    ///
+    /// # Returns
+    ///
+    /// The resulting layer.
     #[doc(alias = "gimp_image_merge_down")]
     pub fn merge_down(
         &self,
@@ -1019,6 +2266,22 @@ impl Image {
         }
     }
 
+    /// Merge the visible image layers into one.
+    ///
+    /// This procedure combines the visible layers into a single layer using
+    /// the specified merge type. A merge type of
+    /// [`MergeType::ExpandAsNecessary`][crate::MergeType::ExpandAsNecessary] expands the final layer to
+    /// encompass the areas of the visible layers. A merge type of
+    /// [`MergeType::ClipToImage`][crate::MergeType::ClipToImage] clips the final layer to the
+    /// extents of the image. A merge type of
+    /// [`MergeType::ClipToBottomLayer`][crate::MergeType::ClipToBottomLayer] clips the final layer to
+    /// the size of the bottommost layer.
+    /// ## `merge_type`
+    /// The type of merge.
+    ///
+    /// # Returns
+    ///
+    /// The resulting layer.
     #[doc(alias = "gimp_image_merge_visible_layers")]
     pub fn merge_visible_layers(&self, merge_type: MergeType) -> Option<Layer> {
         unsafe {
@@ -1029,6 +2292,35 @@ impl Image {
         }
     }
 
+    /// Filters the `metadata` retrieved from the image with
+    /// [`metadata_save_prepare()`][Self::metadata_save_prepare()], taking into account the
+    /// passed `flags`.
+    ///
+    /// *Note: There is normally no need to call this function because it's
+    /// already called by [`ExportProcedure`][crate::ExportProcedure] after the ``run()``
+    /// callback.*
+    ///
+    /// Note that the `self` passed to this function might be different
+    /// from the image passed to `[`metadata_save_prepare()`][Self::metadata_save_prepare()]`, due
+    /// to whatever file export conversion happened in the meantime
+    ///
+    /// This can be used as an alternative to core metadata handling when you
+    /// want to save metadata yourself and you need only filtering
+    /// processing.
+    /// ## `mime_type`
+    /// The saved file's mime-type
+    /// ## `metadata`
+    /// The metadata to export
+    /// ## `flags`
+    /// Flags to specify what of the metadata to save
+    /// ## `file`
+    /// The file `self` was saved to or NULL if file was not saved yet
+    ///
+    /// # Returns
+    ///
+    /// Filtered metadata or [`None`] in case of failure.
+    ///  Use [GObject.Object.unref] when returned metadata are no
+    ///  longer needed
     #[doc(alias = "gimp_image_metadata_save_filter")]
     pub fn metadata_save_filter(
         &self,
@@ -1055,6 +2347,42 @@ impl Image {
         }
     }
 
+    /// Determine the color at the given coordinates
+    ///
+    /// This tool determines the color at the specified coordinates. The
+    /// returned color is an RGB triplet even for grayscale and indexed
+    /// drawables. If the coordinates lie outside of the extents of the
+    /// specified drawables, then an error is returned. All drawables must
+    /// belong to the image and be of the same type.
+    /// If only one drawable is given and it has an alpha channel, the
+    /// algorithm examines the alpha value of the drawable at the
+    /// coordinates. If the alpha value is completely transparent (0), then
+    /// an error is returned. With several drawables specified, the
+    /// composite image with only these drawables is used.
+    /// If the sample_merged parameter is TRUE, the data of the composite
+    /// image will be used instead of that for the specified drawables. This
+    /// is equivalent to sampling for colors after merging all visible
+    /// layers. In the case of a merged sampling, the supplied drawables are
+    /// ignored.
+    /// ## `drawables`
+    /// The drawables to pick from.
+    /// ## `x`
+    /// x coordinate of upper-left corner of rectangle.
+    /// ## `y`
+    /// y coordinate of upper-left corner of rectangle.
+    /// ## `sample_merged`
+    /// Use the composite image, not the drawables.
+    /// ## `sample_average`
+    /// Average the color of all the pixels in a specified radius.
+    /// ## `average_radius`
+    /// The radius of pixels to average.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `color`
+    /// The return color.
     #[doc(alias = "gimp_image_pick_color")]
     pub fn pick_color(
         &self,
@@ -1085,6 +2413,21 @@ impl Image {
         }
     }
 
+    /// Find the layer visible at the specified coordinates.
+    ///
+    /// This procedure finds the layer which is visible at the specified
+    /// coordinates. Layers which do not qualify are those whose extents do
+    /// not pass within the specified coordinates, or which are transparent
+    /// at the specified coordinates. This procedure will return -1 if no
+    /// layer is found.
+    /// ## `x`
+    /// The x coordinate for the pick.
+    /// ## `y`
+    /// The y coordinate for the pick.
+    ///
+    /// # Returns
+    ///
+    /// The layer found at the specified coordinates.
     #[doc(alias = "gimp_image_pick_correlate_layer")]
     pub fn pick_correlate_layer(&self, x: i32, y: i32) -> Option<Layer> {
         unsafe {
@@ -1096,6 +2439,31 @@ impl Image {
         }
     }
 
+    /// Execute the color profile conversion policy.
+    ///
+    /// Process the image according to the color profile policy as set in
+    /// Preferences.
+    /// If GIMP is running as a GUI and interactive is TRUE, a dialog may be
+    /// presented to the user depending on the policy. Otherwise, if the
+    /// policy does not mandate the conversion to perform, the conversion to
+    /// the preferred RGB or grayscale profile will happen, defaulting to
+    /// built-in profiles if no preferred profiles were set in
+    /// `Preferences`.
+    /// This function should be used only if you want to follow user
+    /// settings. If you intend to convert to a specific profile, call
+    /// preferably [`convert_color_profile()`][Self::convert_color_profile()]. And if you wish to
+    /// leave whatever profile an image has, do not call any of these
+    /// functions.
+    /// Finally it is unnecessary to call this function in a format load
+    /// procedure because this is called automatically by the core code when
+    /// loading any image. You should only call this function explicitly
+    /// when loading an image through a PDB call.
+    /// ## `interactive`
+    /// Querying the user through a dialog is a possibility.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_policy_color_profile")]
     pub fn policy_color_profile(&self, interactive: bool) -> bool {
         unsafe {
@@ -1106,6 +2474,27 @@ impl Image {
         }
     }
 
+    /// Execute the \"Orientation\" metadata policy.
+    ///
+    /// Process the image according to the rotation policy as set in
+    /// Preferences. If GIMP is running as a GUI and interactive is TRUE, a
+    /// dialog may be presented to the user depending on the set policy.
+    /// Otherwise, if the policy does not mandate the action to perform, the
+    /// image will be rotated following the Orientation metadata.
+    /// If you wish absolutely to rotate a loaded image following the
+    /// Orientation metadata, do not use this function and process the
+    /// metadata yourself. Indeed even with `interactive` to FALSE, user
+    /// settings may leave the image unrotated.
+    /// Finally it is unnecessary to call this function in a format load
+    /// procedure because this is called automatically by the core code when
+    /// loading any image. You should only call this function explicitly
+    /// when loading an image through a PDB call.
+    /// ## `interactive`
+    /// Querying the user through a dialog is a possibility.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_policy_rotate")]
     pub fn policy_rotate(&self, interactive: bool) -> bool {
         unsafe {
@@ -1116,6 +2505,16 @@ impl Image {
         }
     }
 
+    /// Raise the specified item in its level in its item tree
+    ///
+    /// This procedure raises the specified item one step in the item tree.
+    /// The procedure call will fail if there is no item above it.
+    /// ## `item`
+    /// The item to raise.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_raise_item")]
     pub fn raise_item(&self, item: &impl IsA<Item>) -> bool {
         unsafe {
@@ -1126,6 +2525,16 @@ impl Image {
         }
     }
 
+    /// Raise the specified item to the top of its level in its item tree
+    ///
+    /// This procedure raises the specified item to top of its level in the
+    /// item tree. It will not move the item if there is no item above it.
+    /// ## `item`
+    /// The item to raise to top.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_raise_item_to_top")]
     pub fn raise_item_to_top(&self, item: &impl IsA<Item>) -> bool {
         unsafe {
@@ -1136,6 +2545,16 @@ impl Image {
         }
     }
 
+    /// Remove the specified channel from the image.
+    ///
+    /// This procedure removes the specified channel from the image. If the
+    /// channel doesn't exist, an error is returned.
+    /// ## `channel`
+    /// The channel.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_remove_channel")]
     pub fn remove_channel(&self, channel: &impl IsA<Channel>) -> bool {
         unsafe {
@@ -1146,6 +2565,19 @@ impl Image {
         }
     }
 
+    /// Remove the specified layer from the image.
+    ///
+    /// This procedure removes the specified layer from the image. If the
+    /// layer doesn't exist, an error is returned. If there are no layers
+    /// left in the image, this call will fail. If this layer is the last
+    /// layer remaining, the image will become empty and have no active
+    /// layer.
+    /// ## `layer`
+    /// The layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_remove_layer")]
     pub fn remove_layer(&self, layer: &impl IsA<Layer>) -> bool {
         unsafe {
@@ -1156,6 +2588,16 @@ impl Image {
         }
     }
 
+    /// Remove the specified path from the image.
+    ///
+    /// This procedure removes the specified path from the image. If the
+    /// path doesn't exist, an error is returned.
+    /// ## `path`
+    /// The path object.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_remove_path")]
     pub fn remove_path(&self, path: &Path) -> bool {
         unsafe {
@@ -1166,6 +2608,29 @@ impl Image {
         }
     }
 
+    /// Reorder the specified item within its item tree
+    ///
+    /// Reorders or moves item within an item tree. Requires parent is [`None`]
+    /// or a GroupLayer, else returns error. When parent is not [`None`] and
+    /// item is in parent, reorders item within parent group. When parent is
+    /// not [`None`] and item is not in parent, moves item into parent group.
+    /// When parent is [`None`], moves item from current parent to top level.
+    ///
+    /// Requires item is in same tree as not [`None`] parent, else returns
+    /// error. Layers, Channels, and Paths are in separate trees.
+    ///
+    /// Requires item is not ancestor of parent, else returns error, to
+    /// preclude cycles.
+    /// ## `item`
+    /// The item to reorder.
+    /// ## `parent`
+    /// The new parent item.
+    /// ## `position`
+    /// The new position of the item.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_reorder_item")]
     pub fn reorder_item(
         &self,
@@ -1183,6 +2648,27 @@ impl Image {
         }
     }
 
+    /// Resize the image to the specified extents.
+    ///
+    /// This procedure resizes the image so that it's new width and height
+    /// are equal to the supplied parameters. Offsets are also provided
+    /// which describe the position of the previous image's content. All
+    /// channels within the image are resized according to the specified
+    /// parameters; this includes the image selection mask. All layers
+    /// within the image are repositioned according to the specified
+    /// offsets.
+    /// ## `new_width`
+    /// New image width.
+    /// ## `new_height`
+    /// New image height.
+    /// ## `offx`
+    /// x offset between upper left corner of old and new images: (new - old).
+    /// ## `offy`
+    /// y offset between upper left corner of old and new images: (new - old).
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_resize")]
     pub fn resize(&self, new_width: i32, new_height: i32, offx: i32, offy: i32) -> bool {
         unsafe {
@@ -1196,11 +2682,30 @@ impl Image {
         }
     }
 
+    /// Resize the image to fit all layers.
+    ///
+    /// This procedure resizes the image to the bounding box of all layers
+    /// of the image. All channels within the image are resized to the new
+    /// size; this includes the image selection mask. All layers within the
+    /// image are repositioned to the new image area.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_resize_to_layers")]
     pub fn resize_to_layers(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_resize_to_layers(self.to_glib_none().0)) }
     }
 
+    /// Rotates the image by the specified degrees.
+    ///
+    /// This procedure rotates the image.
+    /// ## `rotate_type`
+    /// Angle of rotation.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_rotate")]
     pub fn rotate(&self, rotate_type: RotationType) -> bool {
         unsafe {
@@ -1211,6 +2716,21 @@ impl Image {
         }
     }
 
+    /// Scale the image using the default interpolation method.
+    ///
+    /// This procedure scales the image so that its new width and height are
+    /// equal to the supplied parameters. All layers and channels within the
+    /// image are scaled according to the specified parameters; this
+    /// includes the image selection mask. The interpolation method used can
+    /// be set with [`context_set_interpolation()`][crate::context_set_interpolation()].
+    /// ## `new_width`
+    /// New image width.
+    /// ## `new_height`
+    /// New image height.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_scale")]
     pub fn scale(&self, new_width: i32, new_height: i32) -> bool {
         unsafe {
@@ -1222,6 +2742,35 @@ impl Image {
         }
     }
 
+    /// Create a selection by selecting all pixels (in the specified
+    /// drawable) with the same (or similar) color to that specified.
+    ///
+    /// This tool creates a selection over the specified image. A by-color
+    /// selection is determined by the supplied color under the constraints
+    /// of the current context settings. Essentially, all pixels (in the
+    /// drawable) that have color sufficiently close to the specified color
+    /// (as determined by the threshold and criterion context values) are
+    /// included in the selection. To select transparent regions, the color
+    /// specified must also have minimum alpha.
+    ///
+    /// This procedure is affected by the following context setters:
+    /// [`context_set_antialias()`][crate::context_set_antialias()], [`context_set_feather()`][crate::context_set_feather()],
+    /// [`context_set_feather_radius()`][crate::context_set_feather_radius()], [`context_set_sample_merged()`][crate::context_set_sample_merged()],
+    /// [`context_set_sample_criterion()`][crate::context_set_sample_criterion()],
+    /// [`context_set_sample_threshold()`][crate::context_set_sample_threshold()],
+    /// [`context_set_sample_transparent()`][crate::context_set_sample_transparent()].
+    ///
+    /// In the case of a merged sampling, the supplied drawable is ignored.
+    /// ## `operation`
+    /// The selection operation.
+    /// ## `drawable`
+    /// The affected drawable.
+    /// ## `color`
+    /// The color to select.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_select_color")]
     pub fn select_color(
         &self,
@@ -1239,6 +2788,46 @@ impl Image {
         }
     }
 
+    /// Create a selection by selecting all pixels around specified
+    /// coordinates with the same (or similar) color to that at the
+    /// coordinates.
+    ///
+    /// This tool creates a contiguous selection over the specified image. A
+    /// contiguous color selection is determined by a seed fill under the
+    /// constraints of the current context settings. Essentially, the color
+    /// at the specified coordinates (in the drawable) is measured and the
+    /// selection expands outwards from that point to any adjacent pixels
+    /// which are not significantly different (as determined by the
+    /// threshold and criterion context settings). This process continues
+    /// until no more expansion is possible. If antialiasing is turned on,
+    /// the final selection mask will contain intermediate values based on
+    /// close misses to the threshold bar at pixels along the seed fill
+    /// boundary.
+    ///
+    /// This procedure is affected by the following context setters:
+    /// [`context_set_antialias()`][crate::context_set_antialias()], [`context_set_feather()`][crate::context_set_feather()],
+    /// [`context_set_feather_radius()`][crate::context_set_feather_radius()], [`context_set_sample_merged()`][crate::context_set_sample_merged()],
+    /// [`context_set_sample_criterion()`][crate::context_set_sample_criterion()],
+    /// [`context_set_sample_threshold()`][crate::context_set_sample_threshold()],
+    /// [`context_set_sample_transparent()`][crate::context_set_sample_transparent()],
+    /// [`context_set_diagonal_neighbors()`][crate::context_set_diagonal_neighbors()].
+    ///
+    /// In the case of a merged sampling, the supplied drawable is ignored.
+    /// If the sample is merged, the specified coordinates are relative to
+    /// the image origin; otherwise, they are relative to the drawable's
+    /// origin.
+    /// ## `operation`
+    /// The selection operation.
+    /// ## `drawable`
+    /// The affected drawable.
+    /// ## `x`
+    /// x coordinate of initial seed fill point: (image coordinates).
+    /// ## `y`
+    /// y coordinate of initial seed fill point: (image coordinates).
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_select_contiguous_color")]
     pub fn select_contiguous_color(
         &self,
@@ -1258,6 +2847,29 @@ impl Image {
         }
     }
 
+    /// Create an elliptical selection over the specified image.
+    ///
+    /// This tool creates an elliptical selection over the specified image.
+    /// The elliptical region can be either added to, subtracted from, or
+    /// replace the contents of the previous selection mask.
+    ///
+    /// This procedure is affected by the following context setters:
+    /// [`context_set_antialias()`][crate::context_set_antialias()], [`context_set_feather()`][crate::context_set_feather()],
+    /// [`context_set_feather_radius()`][crate::context_set_feather_radius()].
+    /// ## `operation`
+    /// The selection operation.
+    /// ## `x`
+    /// x coordinate of upper-left corner of ellipse bounding box.
+    /// ## `y`
+    /// y coordinate of upper-left corner of ellipse bounding box.
+    /// ## `width`
+    /// The width of the ellipse.
+    /// ## `height`
+    /// The height of the ellipse.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_select_ellipse")]
     pub fn select_ellipse(
         &self,
@@ -1279,6 +2891,24 @@ impl Image {
         }
     }
 
+    /// Transforms the specified item into a selection
+    ///
+    /// This procedure renders the item's outline into the current selection
+    /// of the image the item belongs to. What exactly the item's outline is
+    /// depends on the item type: for layers, it's the layer's alpha
+    /// channel, for paths the path's shape.
+    ///
+    /// This procedure is affected by the following context setters:
+    /// [`context_set_antialias()`][crate::context_set_antialias()], [`context_set_feather()`][crate::context_set_feather()],
+    /// [`context_set_feather_radius()`][crate::context_set_feather_radius()].
+    /// ## `operation`
+    /// The desired operation with current selection.
+    /// ## `item`
+    /// The item to render to the selection.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_select_item")]
     pub fn select_item(&self, operation: ChannelOps, item: &impl IsA<Item>) -> bool {
         unsafe {
@@ -1290,6 +2920,28 @@ impl Image {
         }
     }
 
+    /// Create a polygonal selection over the specified image.
+    ///
+    /// This tool creates a polygonal selection over the specified image.
+    /// The polygonal region can be either added to, subtracted from, or
+    /// replace the contents of the previous selection mask. The polygon is
+    /// specified through an array of floating point numbers and its length.
+    /// The length of array must be 2n, where n is the number of points.
+    /// Each point is defined by 2 floating point values which correspond to
+    /// the x and y coordinates. If the final point does not connect to the
+    /// starting point, a connecting segment is automatically added.
+    ///
+    /// This procedure is affected by the following context setters:
+    /// [`context_set_antialias()`][crate::context_set_antialias()], [`context_set_feather()`][crate::context_set_feather()],
+    /// [`context_set_feather_radius()`][crate::context_set_feather_radius()].
+    /// ## `operation`
+    /// The selection operation.
+    /// ## `segs`
+    /// Array of points: { p1.x, p1.y, p2.x, p2.y, ..., pn.x, pn.y}.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_select_polygon")]
     pub fn select_polygon(&self, operation: ChannelOps, segs: &[f64]) -> bool {
         let num_segs = segs.len() as _;
@@ -1303,6 +2955,28 @@ impl Image {
         }
     }
 
+    /// Create a rectangular selection over the specified image;
+    ///
+    /// This tool creates a rectangular selection over the specified image.
+    /// The rectangular region can be either added to, subtracted from, or
+    /// replace the contents of the previous selection mask.
+    ///
+    /// This procedure is affected by the following context setters:
+    /// [`context_set_feather()`][crate::context_set_feather()], [`context_set_feather_radius()`][crate::context_set_feather_radius()].
+    /// ## `operation`
+    /// The selection operation.
+    /// ## `x`
+    /// x coordinate of upper-left corner of rectangle.
+    /// ## `y`
+    /// y coordinate of upper-left corner of rectangle.
+    /// ## `width`
+    /// The width of the rectangle.
+    /// ## `height`
+    /// The height of the rectangle.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_select_rectangle")]
     pub fn select_rectangle(
         &self,
@@ -1324,6 +2998,35 @@ impl Image {
         }
     }
 
+    /// Create a rectangular selection with round corners over the specified
+    /// image;
+    ///
+    /// This tool creates a rectangular selection with round corners over
+    /// the specified image. The rectangular region can be either added to,
+    /// subtracted from, or replace the contents of the previous selection
+    /// mask.
+    ///
+    /// This procedure is affected by the following context setters:
+    /// [`context_set_antialias()`][crate::context_set_antialias()], [`context_set_feather()`][crate::context_set_feather()],
+    /// [`context_set_feather_radius()`][crate::context_set_feather_radius()].
+    /// ## `operation`
+    /// The selection operation.
+    /// ## `x`
+    /// x coordinate of upper-left corner of rectangle.
+    /// ## `y`
+    /// y coordinate of upper-left corner of rectangle.
+    /// ## `width`
+    /// The width of the rectangle.
+    /// ## `height`
+    /// The height of the rectangle.
+    /// ## `corner_radius_x`
+    /// The corner radius in X direction.
+    /// ## `corner_radius_y`
+    /// The corner radius in Y direction.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_select_round_rectangle")]
     pub fn select_round_rectangle(
         &self,
@@ -1349,6 +3052,16 @@ impl Image {
         }
     }
 
+    /// This procedure sets the image's color profile.
+    ///
+    /// If [`None`] is passed as `profile`, then the built-in profile for
+    /// `self`'s color model is set.
+    /// ## `profile`
+    /// A [`ColorProfile`][crate::ColorProfile], or [`None`].
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success.
     #[doc(alias = "gimp_image_set_color_profile")]
     pub fn set_color_profile(&self, profile: Option<&ColorProfile>) -> bool {
         unsafe {
@@ -1359,6 +3072,20 @@ impl Image {
         }
     }
 
+    /// Sets the image's color profile from an ICC file
+    ///
+    /// This procedure sets the image's color profile from a file containing
+    /// an ICC profile, or unsets it if NULL is passed as 'file'. This
+    /// procedure does no color conversion. However, it will change the
+    /// pixel format of all layers to contain the babl space matching the
+    /// profile. You must call this procedure before adding layers to the
+    /// image.
+    /// ## `file`
+    /// The file containing the new color profile.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_color_profile_from_file")]
     pub fn set_color_profile_from_file(&self, file: &impl IsA<gio::File>) -> bool {
         unsafe {
@@ -1369,6 +3096,20 @@ impl Image {
         }
     }
 
+    /// Sets if the specified image's image component is active.
+    ///
+    /// This procedure sets if the specified image's image component (i.e.
+    /// Red, Green, Blue intensity channels in an RGB image) is active or
+    /// inactive -- whether or not it can be modified. If the specified
+    /// component is not valid for the image type, an error is returned.
+    /// ## `component`
+    /// The image component.
+    /// ## `active`
+    /// Component is active.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_component_active")]
     pub fn set_component_active(&self, component: ChannelType, active: bool) -> bool {
         unsafe {
@@ -1380,6 +3121,20 @@ impl Image {
         }
     }
 
+    /// Sets if the specified image's image component is visible.
+    ///
+    /// This procedure sets if the specified image's image component (i.e.
+    /// Red, Green, Blue intensity channels in an RGB image) is visible or
+    /// invisible -- whether or not it can be seen. If the specified
+    /// component is not valid for the image type, an error is returned.
+    /// ## `component`
+    /// The image component.
+    /// ## `visible`
+    /// Component is visible.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_component_visible")]
     pub fn set_component_visible(&self, component: ChannelType, visible: bool) -> bool {
         unsafe {
@@ -1391,6 +3146,18 @@ impl Image {
         }
     }
 
+    /// Sets the specified XCF image's file.
+    ///
+    /// This procedure sets the specified image's file.
+    /// This is to set the XCF file associated with your image. In
+    /// particular, do not use this function to set the imported file in
+    /// file import plug-ins. This is done by the core process.
+    /// ## `file`
+    /// The new image file.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_file")]
     pub fn set_file(&self, file: &impl IsA<gio::File>) -> bool {
         unsafe {
@@ -1401,6 +3168,16 @@ impl Image {
         }
     }
 
+    /// Set the image's metadata.
+    ///
+    /// Sets exif/iptc/xmp metadata on the image, or deletes it if
+    /// `metadata` is [`None`].
+    /// ## `metadata`
+    /// The exif/ptc/xmp metadata.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_metadata")]
     pub fn set_metadata(&self, metadata: &Metadata) -> bool {
         unsafe {
@@ -1411,6 +3188,18 @@ impl Image {
         }
     }
 
+    /// Set the image's colormap to a copy of `palette`
+    ///
+    /// This procedure changes the image's colormap to an exact copy of
+    /// `palette` and returns the palette of `self`.
+    /// If the image is not in Indexed color mode, nothing happens and [`None`]
+    /// is returned.
+    /// ## `new_palette`
+    /// The palette to copy from.
+    ///
+    /// # Returns
+    ///
+    /// The image's colormap palette.
     #[doc(alias = "gimp_image_set_palette")]
     pub fn set_palette(&self, new_palette: &Palette) -> Option<Palette> {
         unsafe {
@@ -1421,6 +3210,19 @@ impl Image {
         }
     }
 
+    /// Sets the specified image's resolution.
+    ///
+    /// This procedure sets the specified image's resolution in dots per
+    /// inch. This value is independent of any of the layers in this image.
+    /// No scaling or resizing is performed.
+    /// ## `xresolution`
+    /// The new image resolution in the x-axis, in dots per inch.
+    /// ## `yresolution`
+    /// The new image resolution in the y-axis, in dots per inch.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_resolution")]
     pub fn set_resolution(&self, xresolution: f64, yresolution: f64) -> bool {
         unsafe {
@@ -1432,6 +3234,18 @@ impl Image {
         }
     }
 
+    /// Sets the specified image's selected channels.
+    ///
+    /// The channels are set as the selected channels in the image. Any
+    /// previous selected layers or channels are unselected. An exception is
+    /// a previously existing floating selection, in which case this
+    /// procedure will return an execution error.
+    /// ## `channels`
+    /// The list of channels to select.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_selected_channels")]
     pub fn set_selected_channels(&self, channels: &[Channel]) -> bool {
         unsafe {
@@ -1442,6 +3256,18 @@ impl Image {
         }
     }
 
+    /// Sets the specified image's selected layers.
+    ///
+    /// The layers are set as the selected layers in the image. Any previous
+    /// selected layers or channels are unselected. An exception is a
+    /// previously existing floating selection, in which case this procedure
+    /// will return an execution error.
+    /// ## `layers`
+    /// The list of layers to select.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_selected_layers")]
     pub fn set_selected_layers(&self, layers: &[Layer]) -> bool {
         unsafe {
@@ -1452,6 +3278,15 @@ impl Image {
         }
     }
 
+    /// Sets the specified image's selected paths.
+    ///
+    /// The paths are set as the selected paths in the image.
+    /// ## `paths`
+    /// The list of paths to select.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_selected_paths")]
     pub fn set_selected_paths(&self, paths: &[Path]) -> bool {
         unsafe {
@@ -1462,6 +3297,17 @@ impl Image {
         }
     }
 
+    /// Sets whether the image has Black Point Compensation enabled for its
+    /// simulation
+    ///
+    /// This procedure whether the image has Black Point Compensation
+    /// enabled for its simulation
+    /// ## `bpc`
+    /// The Black Point Compensation status.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_simulation_bpc")]
     pub fn set_simulation_bpc(&self, bpc: bool) -> bool {
         unsafe {
@@ -1472,6 +3318,15 @@ impl Image {
         }
     }
 
+    /// Sets the image's simulation rendering intent
+    ///
+    /// This procedure sets the image's simulation rendering intent.
+    /// ## `intent`
+    /// A GimpColorRenderingIntent.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_simulation_intent")]
     pub fn set_simulation_intent(&self, intent: ColorRenderingIntent) -> bool {
         unsafe {
@@ -1482,6 +3337,15 @@ impl Image {
         }
     }
 
+    /// This procedure sets the image's simulation color profile.
+    ///
+    /// If [`None`] is passed as `profile`, then the simulation profile is unset.
+    /// ## `profile`
+    /// A [`ColorProfile`][crate::ColorProfile], or [`None`].
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success.
     #[doc(alias = "gimp_image_set_simulation_profile")]
     pub fn set_simulation_profile(&self, profile: Option<&ColorProfile>) -> bool {
         unsafe {
@@ -1492,6 +3356,17 @@ impl Image {
         }
     }
 
+    /// Sets the image's simulation color profile from an ICC file
+    ///
+    /// This procedure sets the image's simulation color profile from a file
+    /// containing an ICC profile, or unsets it if NULL is passed as 'file'.
+    /// This procedure does no color conversion.
+    /// ## `file`
+    /// The file containing the new simulation color profile.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_simulation_profile_from_file")]
     pub fn set_simulation_profile_from_file(&self, file: &impl IsA<gio::File>) -> bool {
         unsafe {
@@ -1502,6 +3377,26 @@ impl Image {
         }
     }
 
+    /// Set the tattoo state associated with the image.
+    ///
+    /// This procedure sets the tattoo state of the image. Use only by
+    /// save/load plug-ins that wish to preserve an images tattoo state.
+    /// Using this function at other times will produce unexpected results.
+    /// A full check of uniqueness of states in layers, channels and paths
+    /// will be performed by this procedure and a execution failure will be
+    /// returned if this fails. A failure will also be returned if the new
+    /// tattoo state value is less than the maximum tattoo value from all of
+    /// the tattoos from the paths, layers and channels. After the image
+    /// data has been loaded and all the tattoos have been set then this is
+    /// the last procedure that should be called. If effectively does a
+    /// status check on the tattoo values that have been set to make sure
+    /// that all is OK.
+    /// ## `tattoo_state`
+    /// The new image tattoo state.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_tattoo_state")]
     pub fn set_tattoo_state(&self, tattoo_state: u32) -> bool {
         unsafe {
@@ -1512,6 +3407,19 @@ impl Image {
         }
     }
 
+    /// Sets the specified image's unit.
+    ///
+    /// This procedure sets the specified image's unit. No scaling or
+    /// resizing is performed. This value is independent of any of the
+    /// layers in this image. See the gimp_unit_*() procedure definitions
+    /// for the valid range of unit IDs and a description of the unit
+    /// system.
+    /// ## `unit`
+    /// The new image unit.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_set_unit")]
     pub fn set_unit(&self, unit: &Unit) -> bool {
         unsafe {
@@ -1522,6 +3430,16 @@ impl Image {
         }
     }
 
+    /// The channels are set as the selected channels in the image. Any previous
+    /// selected layers or channels are unselected. An exception is a previously
+    /// existing floating selection, in which case this procedure will return an
+    /// execution error.
+    /// ## `channels`
+    /// The list of channels to select.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_take_selected_channels")]
     pub fn take_selected_channels(&self, channels: &[Channel]) -> bool {
         unsafe {
@@ -1532,6 +3450,16 @@ impl Image {
         }
     }
 
+    /// The layers are set as the selected layers in the image. Any previous
+    /// selected layers or channels are unselected. An exception is a previously
+    /// existing floating selection, in which case this procedure will return an
+    /// execution error.
+    /// ## `layers`
+    /// The list of layers to select.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_take_selected_layers")]
     pub fn take_selected_layers(&self, layers: &[Layer]) -> bool {
         unsafe {
@@ -1542,6 +3470,14 @@ impl Image {
         }
     }
 
+    /// The paths are set as the selected paths in the image. Any previous
+    /// selected paths are unselected.
+    /// ## `paths`
+    /// The list of paths to select.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_take_selected_paths")]
     pub fn take_selected_paths(&self, paths: &[Path]) -> bool {
         unsafe {
@@ -1552,61 +3488,200 @@ impl Image {
         }
     }
 
+    /// Thaw the image's channel list.
+    ///
+    /// This procedure thaws the channel list of the image, re-enabling
+    /// updates to the Channels dialog.
+    ///
+    /// This procedure should match a corresponding call to
+    /// [`freeze_channels()`][Self::freeze_channels()].
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_thaw_channels")]
     pub fn thaw_channels(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_thaw_channels(self.to_glib_none().0)) }
     }
 
+    /// Thaw the image's layer list.
+    ///
+    /// This procedure thaws the layer list of the image, re-enabling
+    /// updates to the Layers dialog.
+    ///
+    /// This procedure should match a corresponding call to
+    /// [`freeze_layers()`][Self::freeze_layers()].
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_thaw_layers")]
     pub fn thaw_layers(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_thaw_layers(self.to_glib_none().0)) }
     }
 
+    /// Thaw the image's path list.
+    ///
+    /// This procedure thaws the path list of the image, re-enabling updates
+    /// to the Paths dialog.
+    ///
+    /// This procedure should match a corresponding call to
+    /// [`freeze_paths()`][Self::freeze_paths()].
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_thaw_paths")]
     pub fn thaw_paths(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_thaw_paths(self.to_glib_none().0)) }
     }
 
+    /// Disable the image's undo stack.
+    ///
+    /// This procedure disables the image's undo stack, allowing subsequent
+    /// operations to ignore their undo steps. This is generally called in
+    /// conjunction with [`undo_enable()`][Self::undo_enable()] to temporarily disable an
+    /// image undo stack. This is advantageous because saving undo steps can
+    /// be time and memory intensive.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the image undo has been disabled.
     #[doc(alias = "gimp_image_undo_disable")]
     pub fn undo_disable(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_undo_disable(self.to_glib_none().0)) }
     }
 
+    /// Enable the image's undo stack.
+    ///
+    /// This procedure enables the image's undo stack, allowing subsequent
+    /// operations to store their undo steps. This is generally called in
+    /// conjunction with [`undo_disable()`][Self::undo_disable()] to temporarily disable an
+    /// image undo stack.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the image undo has been enabled.
     #[doc(alias = "gimp_image_undo_enable")]
     pub fn undo_enable(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_undo_enable(self.to_glib_none().0)) }
     }
 
+    /// Freeze the image's undo stack.
+    ///
+    /// This procedure freezes the image's undo stack, allowing subsequent
+    /// operations to ignore their undo steps. This is generally called in
+    /// conjunction with [`undo_thaw()`][Self::undo_thaw()] to temporarily disable an
+    /// image undo stack. This is advantageous because saving undo steps can
+    /// be time and memory intensive. [`undo_freeze()`][Self::undo_freeze()] /
+    /// [`undo_thaw()`][Self::undo_thaw()] and [`undo_disable()`][Self::undo_disable()] /
+    /// [`undo_enable()`][Self::undo_enable()] differ in that the former does not free up
+    /// all undo steps when undo is thawed, so is more suited to interactive
+    /// in-situ previews. It is important in this case that the image is
+    /// back to the same state it was frozen in before thawing, else 'undo'
+    /// behavior is undefined.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the image undo has been frozen.
     #[doc(alias = "gimp_image_undo_freeze")]
     pub fn undo_freeze(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_undo_freeze(self.to_glib_none().0)) }
     }
 
+    /// Finish a group undo.
+    ///
+    /// This function must be called once for each
+    /// [`undo_group_start()`][Self::undo_group_start()] call that is made.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_undo_group_end")]
     pub fn undo_group_end(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_undo_group_end(self.to_glib_none().0)) }
     }
 
+    /// Starts a group undo.
+    ///
+    /// This function is used to start a group undo--necessary for logically
+    /// combining two or more undo operations into a single operation. This
+    /// call must be used in conjunction with a [`undo_group_end()`][Self::undo_group_end()]
+    /// call.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_undo_group_start")]
     pub fn undo_group_start(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_undo_group_start(self.to_glib_none().0)) }
     }
 
+    /// Check if the image's undo stack is enabled.
+    ///
+    /// This procedure checks if the image's undo stack is currently enabled
+    /// or disabled. This is useful when several plug-ins or scripts call
+    /// each other and want to check if their caller has already used
+    /// [`undo_disable()`][Self::undo_disable()] or [`undo_freeze()`][Self::undo_freeze()].
+    ///
+    /// # Returns
+    ///
+    /// TRUE if undo is enabled for this image.
     #[doc(alias = "gimp_image_undo_is_enabled")]
     pub fn undo_is_enabled(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_undo_is_enabled(self.to_glib_none().0)) }
     }
 
+    /// Thaw the image's undo stack.
+    ///
+    /// This procedure thaws the image's undo stack, allowing subsequent
+    /// operations to store their undo steps. This is generally called in
+    /// conjunction with [`undo_freeze()`][Self::undo_freeze()] to temporarily freeze an
+    /// image undo stack. [`undo_thaw()`][Self::undo_thaw()] does NOT free the undo
+    /// stack as [`undo_enable()`][Self::undo_enable()] does, so is suited for situations
+    /// where one wishes to leave the undo stack in the same state in which
+    /// one found it despite non-destructively playing with the image in the
+    /// meantime. An example would be in-situ plug-in previews. Balancing
+    /// freezes and thaws and ensuring image consistency is the
+    /// responsibility of the caller.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the image undo has been thawed.
     #[doc(alias = "gimp_image_undo_thaw")]
     pub fn undo_thaw(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_undo_thaw(self.to_glib_none().0)) }
     }
 
+    /// Unsets the active channel in the specified image.
+    ///
+    /// If an active channel exists, it is unset. There then exists no
+    /// active channel, and if desired, one can be set through a call to
+    /// 'Set Active Channel'. No error is returned in the case of no
+    /// existing active channel.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_unset_active_channel")]
     pub fn unset_active_channel(&self) -> bool {
         unsafe { from_glib(ffi::gimp_image_unset_active_channel(self.to_glib_none().0)) }
     }
 
+    /// Set dither matrix for conversion to indexed
+    ///
+    /// This procedure sets the dither matrix used when converting images to
+    /// INDEXED mode with positional dithering.
+    /// ## `width`
+    /// Width of the matrix (0 to reset to default matrix).
+    /// ## `height`
+    /// Height of the matrix (0 to reset to default matrix).
+    /// ## `matrix`
+    /// The matrix -- all values must be >= 1.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_image_convert_set_dither_matrix")]
     pub fn convert_set_dither_matrix(width: i32, height: i32, matrix: &glib::Bytes) -> bool {
         unsafe {
@@ -1618,17 +3693,43 @@ impl Image {
         }
     }
 
+    /// ## `image_id`
+    /// The image id.
+    ///
+    /// # Returns
+    ///
+    /// a [`Image`][crate::Image] for `image_id` or
+    ///  [`None`] if `image_id` does not represent a valid image.
+    ///  The object belongs to libgimp and you must not modify
+    ///  or unref it.
     #[doc(alias = "gimp_image_get_by_id")]
     #[doc(alias = "get_by_id")]
     pub fn by_id(image_id: i32) -> Option<Image> {
         unsafe { from_glib_none(ffi::gimp_image_get_by_id(image_id)) }
     }
 
+    /// Returns TRUE if the image ID is valid.
+    ///
+    /// This procedure checks if the given image ID is valid and refers to
+    /// an existing image.
+    /// ## `image_id`
+    /// The image ID to check.
+    ///
+    /// # Returns
+    ///
+    /// Whether the image ID is valid.
     #[doc(alias = "gimp_image_id_is_valid")]
     pub fn id_is_valid(image_id: i32) -> bool {
         unsafe { from_glib(ffi::gimp_image_id_is_valid(image_id)) }
     }
 
+    /// Retrieves a thumbnail from metadata if present.
+    /// ## `file`
+    /// A [`gio::File`][crate::gio::File] image
+    ///
+    /// # Returns
+    ///
+    /// a [`Image`][crate::Image] of the `file` thumbnail.
     #[doc(alias = "gimp_image_metadata_load_thumbnail")]
     pub fn metadata_load_thumbnail(
         file: &impl IsA<gio::File>,

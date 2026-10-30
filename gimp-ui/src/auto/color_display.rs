@@ -13,6 +13,34 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// Functions and definitions for creating pluggable GIMP
+    /// display color correction modules.
+    ///
+    /// This is an Abstract Base Class, you cannot instantiate it.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `color-config`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `color-managed`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `enabled`
+    ///  Readable | Writeable | Construct
+    ///
+    /// ## Signals
+    ///
+    ///
+    /// #### `changed`
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`ColorDisplayExt`][trait@crate::prelude::ColorDisplayExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpColorDisplay")]
     pub struct ColorDisplay(Object<ffi::GimpColorDisplay, ffi::GimpColorDisplayClass>);
 
@@ -25,6 +53,11 @@ impl ColorDisplay {
     pub const NONE: Option<&'static ColorDisplay> = None;
 }
 
+/// Trait containing all [`struct@ColorDisplay`] methods.
+///
+/// # Implementors
+///
+/// [`ColorDisplay`][struct@crate::ColorDisplay]
 pub trait ColorDisplayExt: IsA<ColorDisplay> + 'static {
     #[doc(alias = "gimp_color_display_changed")]
     fn changed(&self) {
@@ -33,6 +66,11 @@ pub trait ColorDisplayExt: IsA<ColorDisplay> + 'static {
         }
     }
 
+    /// Creates a copy of `self`.
+    ///
+    /// # Returns
+    ///
+    /// a duplicate of `self`.
     #[doc(alias = "gimp_color_display_clone")]
     #[must_use]
     fn clone(&self) -> Option<ColorDisplay> {
@@ -43,6 +81,13 @@ pub trait ColorDisplayExt: IsA<ColorDisplay> + 'static {
         }
     }
 
+    /// Creates a configuration widget for `self` which can be added to a
+    /// container widget.
+    ///
+    /// # Returns
+    ///
+    /// a new configuration widget for `self`, or
+    ///  [`None`] if no specific widget exists.
     #[doc(alias = "gimp_color_display_configure")]
     fn configure(&self) -> Option<gtk::Widget> {
         unsafe {
@@ -59,6 +104,11 @@ pub trait ColorDisplayExt: IsA<ColorDisplay> + 'static {
         }
     }
 
+    /// Converts all pixels in `area` of `buffer`.
+    /// ## `buffer`
+    /// a [`gegl::Buffer`][crate::gegl::Buffer]
+    /// ## `area`
+    /// area in `buffer` to convert
     #[doc(alias = "gimp_color_display_convert_buffer")]
     fn convert_buffer(&self, buffer: &gegl::Buffer, area: &mut gegl::Rectangle) {
         unsafe {
@@ -70,6 +120,11 @@ pub trait ColorDisplayExt: IsA<ColorDisplay> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// a pointer to the [`gimp::ColorConfig`][crate::gimp::ColorConfig]
+    ///  object or [`None`].
     #[doc(alias = "gimp_color_display_get_config")]
     #[doc(alias = "get_config")]
     fn config(&self) -> Option<gimp::ColorConfig> {

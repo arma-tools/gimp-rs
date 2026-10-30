@@ -6,6 +6,24 @@
 use crate::{ffi, FileProcedure, LoadProcedure, Procedure};
 
 glib::wrapper! {
+    /// A [`Procedure`][crate::Procedure] subclass that makes it easier to write load procedures
+    /// for vector image formats.
+    ///
+    /// It automatically adds the standard arguments:
+    /// ([`RunMode`][crate::RunMode], [`gio::File`][crate::gio::File], int width, int height)
+    ///
+    /// and the standard return value: ( [`Image`][crate::Image] )
+    ///
+    /// It is possible to add additional arguments.
+    ///
+    /// When invoked via `gimp_procedure_run()`, it unpacks these standard
+    /// arguments and calls `run_func` which is a `GimpRunImageFunc`. The
+    /// [`ProcedureConfig`][crate::ProcedureConfig] of `GimpRunVectorLoadFunc` contains
+    /// additionally added arguments but also the arguments added by this class.
+    ///
+    /// # Implements
+    ///
+    /// [`LoadProcedureExt`][trait@crate::prelude::LoadProcedureExt], [`FileProcedureExt`][trait@crate::prelude::FileProcedureExt], [`ProcedureExt`][trait@crate::prelude::ProcedureExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpVectorLoadProcedure")]
     pub struct VectorLoadProcedure(Object<ffi::GimpVectorLoadProcedure, ffi::GimpVectorLoadProcedureClass>) @extends LoadProcedure, FileProcedure, Procedure;
 

@@ -6,6 +6,17 @@
 use crate::ffi;
 
 glib::wrapper! {
+    /// The base class for [`DrawableFilter`][crate::DrawableFilter] specific config objects.
+    ///
+    /// A drawable filter config is created by a [`DrawableFilter`][crate::DrawableFilter] using
+    /// [`DrawableFilter::config()`][crate::DrawableFilter::config()] and its properties match the
+    /// filter's arguments in number, order and type.
+    ///
+    /// This is an Abstract Base Class, you cannot instantiate it.
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpDrawableFilterConfig")]
     pub struct DrawableFilterConfig(Object<ffi::GimpDrawableFilterConfig, ffi::GimpDrawableFilterConfigClass>);
 

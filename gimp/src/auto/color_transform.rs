@@ -13,6 +13,17 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// Definitions and Functions relating to LCMS.
+    ///
+    /// ## Signals
+    ///
+    ///
+    /// #### `progress`
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpColorTransform")]
     pub struct ColorTransform(Object<ffi::GimpColorTransform, ffi::GimpColorTransformClass>);
 
@@ -22,6 +33,20 @@ glib::wrapper! {
 }
 
 impl ColorTransform {
+    /// This function transforms buffer into another buffer.
+    ///
+    /// See `gimp_color_transform_new()`: only the pixel encoding of
+    /// `src_buffer`'s and `dest_buffer`'s formats honored, their color
+    /// spaces are ignored. The transform always takes place between the
+    /// color spaces determined by `self`'s color profiles.
+    /// ## `src_buffer`
+    /// source [`gegl::Buffer`][crate::gegl::Buffer]
+    /// ## `src_rect`
+    /// rectangle in `src_buffer`
+    /// ## `dest_buffer`
+    /// destination [`gegl::Buffer`][crate::gegl::Buffer]
+    /// ## `dest_rect`
+    /// rectangle in `dest_buffer`
     #[doc(alias = "gimp_color_transform_process_buffer")]
     pub fn process_buffer(
         &self,

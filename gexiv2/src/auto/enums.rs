@@ -6,12 +6,15 @@
 use crate::ffi;
 use glib::{prelude::*, translate::*};
 
+/// Options to control the byte order of binary EXIF data exports
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GExiv2ByteOrder")]
 pub enum ByteOrder {
+    /// Use little-endian byte order
     #[doc(alias = "GEXIV2_BYTE_ORDER_LITTLE")]
     Little,
+    /// Use big-endian byte order
     #[doc(alias = "GEXIV2_BYTE_ORDER_BIG")]
     Big,
     #[doc(hidden)]
@@ -98,18 +101,24 @@ impl From<ByteOrder> for glib::Value {
     }
 }
 
+/// GExiv2 log levels
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GExiv2LogLevel")]
 pub enum LogLevel {
+    /// Log level for debugging
     #[doc(alias = "GEXIV2_LOG_LEVEL_DEBUG")]
     Debug,
+    /// Log level for informational messages
     #[doc(alias = "GEXIV2_LOG_LEVEL_INFO")]
     Info,
+    /// Log level for warning messages
     #[doc(alias = "GEXIV2_LOG_LEVEL_WARN")]
     Warn,
+    /// Log level for error messages
     #[doc(alias = "GEXIV2_LOG_LEVEL_ERROR")]
     Error,
+    /// Suppress all log messages
     #[doc(alias = "GEXIV2_LOG_LEVEL_MUTE")]
     Mute,
     #[doc(hidden)]
@@ -202,26 +211,41 @@ impl From<LogLevel> for glib::Value {
     }
 }
 
+/// The orientation of an image is defined as the location of it's x,y origin. More than rotation,
+/// orientation allows for every variation of rotation, flips, and mirroring to be described in
+/// 3 bits of data.
+///
+/// A handy primer to orientation can be found at
+/// <http://jpegclub.org/exif_orientation.html>
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GExiv2Orientation")]
 pub enum Orientation {
+    /// The orientation of the image is unknown
     #[doc(alias = "GEXIV2_ORIENTATION_UNSPECIFIED")]
     Unspecified,
+    /// The orientation of the image is without any rotation.
     #[doc(alias = "GEXIV2_ORIENTATION_NORMAL")]
     Normal,
+    /// The image is flipped on its horizontal axis
     #[doc(alias = "GEXIV2_ORIENTATION_HFLIP")]
     Hflip,
+    /// The image is rotated by 180 degrees
     #[doc(alias = "GEXIV2_ORIENTATION_ROT_180")]
     Rot180,
+    /// The Image is flipped on its vertical axis
     #[doc(alias = "GEXIV2_ORIENTATION_VFLIP")]
     Vflip,
+    /// The image is rotated by 90 degrees clockwise and flipped on its horizontal axis
     #[doc(alias = "GEXIV2_ORIENTATION_ROT_90_HFLIP")]
     Rot90Hflip,
+    /// The image is rotated by 90 degrees clockwise
     #[doc(alias = "GEXIV2_ORIENTATION_ROT_90")]
     Rot90,
+    /// The image is rotated by 90 degrees clockwise and flipped on its vertical axis
     #[doc(alias = "GEXIV2_ORIENTATION_ROT_90_VFLIP")]
     Rot90Vflip,
+    /// The image is rotated 270 degrees clockwise
     #[doc(alias = "GEXIV2_ORIENTATION_ROT_270")]
     Rot270,
     #[doc(hidden)]
@@ -322,18 +346,24 @@ impl From<Orientation> for glib::Value {
     }
 }
 
+/// Used in [`MetadataExt::set_xmp_tag_struct()`][crate::prelude::MetadataExt::set_xmp_tag_struct()] to determine the array type
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GExiv2StructureType")]
 pub enum StructureType {
+    /// Structure is not an array
     #[doc(alias = "GEXIV2_STRUCTURE_XA_NONE")]
     None,
+    /// A list of alternative values
     #[doc(alias = "GEXIV2_STRUCTURE_XA_ALT")]
     Alt,
+    /// An unordered list of values
     #[doc(alias = "GEXIV2_STRUCTURE_XA_BAG")]
     Bag,
+    /// An ordered list of values
     #[doc(alias = "GEXIV2_STRUCTURE_XA_SEQ")]
     Seq,
+    /// Not supported. For completeness only
     #[doc(alias = "GEXIV2_STRUCTURE_XA_LANG")]
     Lang,
     #[doc(hidden)]

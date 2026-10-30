@@ -7,6 +7,12 @@ use crate::ffi;
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// A widget providing a progress bar that automatically redirects any
+    /// progress calls to itself.
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpProgressBar")]
     pub struct ProgressBar(Object<ffi::GimpProgressBar, ffi::GimpProgressBarClass>) @extends gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 
@@ -16,6 +22,11 @@ glib::wrapper! {
 }
 
 impl ProgressBar {
+    /// Creates a new [`ProgressBar`][crate::ProgressBar] widget.
+    ///
+    /// # Returns
+    ///
+    /// the new widget.
     #[doc(alias = "gimp_progress_bar_new")]
     pub fn new() -> ProgressBar {
         unsafe { gtk::Widget::from_glib_none(ffi::gimp_progress_bar_new()).unsafe_cast() }

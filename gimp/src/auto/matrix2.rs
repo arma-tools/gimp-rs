@@ -7,6 +7,7 @@ use crate::ffi;
 use glib::translate::*;
 
 glib::wrapper! {
+    /// A two by two matrix.
     pub struct Matrix2(BoxedInline<ffi::GimpMatrix2>);
 
     match fn {
@@ -17,11 +18,17 @@ glib::wrapper! {
 }
 
 impl Matrix2 {
+    /// Calculates the determinant of the given matrix.
+    ///
+    /// # Returns
+    ///
+    /// The determinant.
     #[doc(alias = "gimp_matrix2_determinant")]
     pub fn determinant(&self) -> f64 {
         unsafe { ffi::gimp_matrix2_determinant(self.to_glib_none().0) }
     }
 
+    /// Sets the matrix to the identity matrix.
     #[doc(alias = "gimp_matrix2_identity")]
     pub fn identity(&mut self) {
         unsafe {
@@ -29,6 +36,7 @@ impl Matrix2 {
         }
     }
 
+    /// Inverts the given matrix.
     #[doc(alias = "gimp_matrix2_invert")]
     pub fn invert(&mut self) {
         unsafe {
@@ -36,6 +44,9 @@ impl Matrix2 {
         }
     }
 
+    /// Multiplies two matrices and puts the result into the second one.
+    /// ## `right`
+    /// The second input matrix which will be overwritten by the result.
     #[doc(alias = "gimp_matrix2_mult")]
     pub fn mult(&self, right: &mut Matrix2) {
         unsafe {
@@ -43,6 +54,20 @@ impl Matrix2 {
         }
     }
 
+    /// Transforms a point in 2D as specified by the transformation matrix.
+    /// ## `x`
+    /// The source X coordinate.
+    /// ## `y`
+    /// The source Y coordinate.
+    ///
+    /// # Returns
+    ///
+    ///
+    /// ## `newx`
+    /// The transformed X coordinate.
+    ///
+    /// ## `newy`
+    /// The transformed Y coordinate.
     #[doc(alias = "gimp_matrix2_transform_point")]
     pub fn transform_point(&self, x: f64, y: f64) -> (f64, f64) {
         unsafe {

@@ -7,6 +7,31 @@ use crate::{ffi, IntStore};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// A [`IntStore`][crate::IntStore] subclass that keeps enum values.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `enum-type`
+    ///  Sets the `GType` of the enum to be used in the store.
+    ///
+    /// Readable | Writeable | Construct Only
+    /// <details><summary><h4>IntStore</h4></summary>
+    ///
+    ///
+    /// #### `user-data-type`
+    ///  Sets the `GType` for the GIMP_INT_STORE_USER_DATA column.
+    ///
+    /// You need to set this property when constructing the store if you want
+    /// to use the GIMP_INT_STORE_USER_DATA column and want to have the store
+    /// handle ref-counting of your user data.
+    ///
+    /// Readable | Writeable | Construct Only
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`IntStoreExt`][trait@crate::prelude::IntStoreExt], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpEnumStore")]
     pub struct EnumStore(Object<ffi::GimpEnumStore, ffi::GimpEnumStoreClass>) @extends IntStore, @implements gtk::Buildable;
 
@@ -39,6 +64,12 @@ impl EnumStore {
     //    unsafe { TODO: call ffi:gimp_enum_store_new_with_values_valist() }
     //}
 
+    /// Creates an icon name for each enum value in the `self` by appending
+    /// the value's nick to the given `icon_prefix`, separated by a hyphen.
+    ///
+    /// See also: [`EnumComboBoxExt::set_icon_prefix()`][crate::prelude::EnumComboBoxExt::set_icon_prefix()].
+    /// ## `icon_prefix`
+    /// a prefix to create icon names from enum values
     #[doc(alias = "gimp_enum_store_set_icon_prefix")]
     pub fn set_icon_prefix(&self, icon_prefix: &str) {
         unsafe {
@@ -49,6 +80,7 @@ impl EnumStore {
         }
     }
 
+    /// Sets the `GType` of the enum to be used in the store.
     #[doc(alias = "enum-type")]
     pub fn enum_type(&self) -> glib::types::Type {
         ObjectExt::property(self, "enum-type")

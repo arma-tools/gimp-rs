@@ -7,6 +7,20 @@ use crate::ffi;
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// [`SpinButton`][crate::SpinButton] is a drop-in replacement for `GtkSpinButton`, with the
+    /// following changes:
+    ///
+    ///  - When the spin-button loses focus, its adjustment value is only
+    ///  updated if the entry text has been changed.
+    ///
+    ///  - When the spin-button's "wrap" property is TRUE, values input through the
+    ///  entry are wrapped around.
+    ///
+    ///  - Modifiers can be used during scrolling for smaller/bigger increments.
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::EntryExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpSpinButton")]
     pub struct SpinButton(Object<ffi::GimpSpinButton, ffi::GimpSpinButtonClass>) @extends gtk::Entry, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 
@@ -18,6 +32,20 @@ glib::wrapper! {
 impl SpinButton {
     pub const NONE: Option<&'static SpinButton> = None;
 
+    /// Creates a new [`SpinButton`][crate::SpinButton].
+    /// ## `adjustment`
+    /// the [`gtk::Adjustment`][crate::gtk::Adjustment] object that this spin
+    ///  button should use, or [`None`]
+    /// ## `climb_rate`
+    /// specifies by how much the rate of change in the
+    ///  value will accelerate if you continue to hold
+    ///  down an up/down button or arrow key
+    /// ## `digits`
+    /// the number of decimal places to display
+    ///
+    /// # Returns
+    ///
+    /// The new spin button as a [`gtk::Widget`][crate::gtk::Widget]
     #[doc(alias = "gimp_spin_button_new")]
     pub fn new(
         adjustment: Option<&impl IsA<gtk::Adjustment>>,
@@ -34,6 +62,25 @@ impl SpinButton {
         }
     }
 
+    /// This is a convenience constructor that allows creation of a numeric
+    /// [`SpinButton`][crate::SpinButton] without manually creating an adjustment. The value is
+    /// initially set to the minimum value and a page increment of 10 * `step`
+    /// is the default. The precision of the spin button is equivalent to the
+    /// precision of `step`.
+    ///
+    /// Note that the way in which the precision is derived works best if `step`
+    /// is a power of ten. If the resulting precision is not suitable for your
+    /// needs, use `gtk_spin_button_set_digits()` to correct it.
+    /// ## `min`
+    /// Minimum allowable value
+    /// ## `max`
+    /// Maximum allowable value
+    /// ## `step`
+    /// Increment added or subtracted by spinning the widget
+    ///
+    /// # Returns
+    ///
+    /// The new spin button as a [`gtk::Widget`][crate::gtk::Widget]
     #[doc(alias = "gimp_spin_button_new_with_range")]
     #[doc(alias = "new_with_range")]
     pub fn with_range(min: f64, max: f64, step: f64) -> SpinButton {

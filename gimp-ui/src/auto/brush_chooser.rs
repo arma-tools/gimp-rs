@@ -6,6 +6,14 @@
 use crate::{ffi, ResourceChooser};
 
 glib::wrapper! {
+    /// A button which pops up a brush selection dialog.
+    ///
+    /// Note that this widget draws itself using `GEGL` code. You **must** call
+    /// `gegl_init()` first to be able to use this chooser.
+    ///
+    /// # Implements
+    ///
+    /// [`ResourceChooserExt`][trait@crate::prelude::ResourceChooserExt], [`trait@gtk::prelude::BoxExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpBrushChooser")]
     pub struct BrushChooser(Object<ffi::GimpBrushChooser, ffi::GimpBrushChooserClass>) @extends ResourceChooser, gtk::Box, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 

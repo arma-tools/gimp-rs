@@ -8,6 +8,11 @@ use glib::{prelude::*, translate::*};
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`IntComboBoxExt`][trait@crate::prelude::IntComboBoxExt], [`trait@gtk::prelude::ComboBoxExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpDrawableComboBox")]
     pub struct DrawableComboBox(Object<ffi::GimpDrawableComboBox>) @extends IntComboBox, gtk::ComboBox, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -17,6 +22,24 @@ glib::wrapper! {
 }
 
 impl DrawableComboBox {
+    /// Creates a new [`IntComboBox`][crate::IntComboBox] filled with all currently opened
+    /// drawables. If a `constraint` function is specified, it is called for
+    /// each drawable and only if the function returns [`true`], the drawable
+    /// is added to the combobox.
+    ///
+    /// You should use `gimp_int_combo_box_connect()` to initialize and connect
+    /// the combo. Use [`IntComboBoxExt::set_active()`][crate::prelude::IntComboBoxExt::set_active()] to get the active
+    /// drawable ID and [`IntComboBoxExt::active()`][crate::prelude::IntComboBoxExt::active()] to retrieve the ID
+    /// of the selected drawable.
+    /// ## `constraint`
+    ///
+    ///  A `GimpItemConstraintFunc` or [`None`]
+    /// ## `data_destroy`
+    /// Destroy function for `data`
+    ///
+    /// # Returns
+    ///
+    /// a new [`IntComboBox`][crate::IntComboBox].
     #[doc(alias = "gimp_drawable_combo_box_new")]
     pub fn new(
         constraint: Option<Box_<dyn Fn(&gimp::Image, &gimp::Item) -> bool + 'static>>,

@@ -8,6 +8,11 @@ use glib::{prelude::*, translate::*};
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A widget providing a popup menu of images.
+    ///
+    /// # Implements
+    ///
+    /// [`IntComboBoxExt`][trait@crate::prelude::IntComboBoxExt], [`trait@gtk::prelude::ComboBoxExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpImageComboBox")]
     pub struct ImageComboBox(Object<ffi::GimpImageComboBox, ffi::GimpImageComboBoxClass>) @extends IntComboBox, gtk::ComboBox, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -17,6 +22,24 @@ glib::wrapper! {
 }
 
 impl ImageComboBox {
+    /// Creates a new [`IntComboBox`][crate::IntComboBox] filled with all currently opened
+    /// images. If a `constraint` function is specified, it is called for
+    /// each image and only if the function returns [`true`], the image is
+    /// added to the combobox.
+    ///
+    /// You should use `gimp_int_combo_box_connect()` to initialize and
+    /// connect the combo. Use [`IntComboBoxExt::set_active()`][crate::prelude::IntComboBoxExt::set_active()] to get the
+    /// active image ID and [`IntComboBoxExt::active()`][crate::prelude::IntComboBoxExt::active()] to retrieve the
+    /// ID of the selected image.
+    /// ## `constraint`
+    ///
+    ///  A `GimpImageConstraintFunc` or [`None`]
+    /// ## `data_destroy`
+    /// Destroy function for `data`.
+    ///
+    /// # Returns
+    ///
+    /// a new [`IntComboBox`][crate::IntComboBox].
     #[doc(alias = "gimp_image_combo_box_new")]
     pub fn new(constraint: Option<Box_<dyn Fn(&gimp::Image) -> bool + 'static>>) -> ImageComboBox {
         let constraint_data: Box_<Option<Box_<dyn Fn(&gimp::Image) -> bool + 'static>>> =

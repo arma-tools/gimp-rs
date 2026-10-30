@@ -7,6 +7,11 @@ use crate::{ffi, Drawable, Image, Item, Layer};
 use glib::translate::*;
 
 glib::wrapper! {
+    /// Operations on a group layer.
+    ///
+    /// # Implements
+    ///
+    /// [`LayerExt`][trait@crate::prelude::LayerExt], [`DrawableExt`][trait@crate::prelude::DrawableExt], [`ItemExt`][trait@crate::prelude::ItemExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpGroupLayer")]
     pub struct GroupLayer(Object<ffi::GimpGroupLayer, ffi::GimpGroupLayerClass>) @extends Layer, Drawable, Item;
 
@@ -16,6 +21,29 @@ glib::wrapper! {
 }
 
 impl GroupLayer {
+    /// Create a new group layer.
+    ///
+    /// This procedure creates a new group layer with a given `name`. If
+    /// `name` is [`None`], GIMP will choose a name using its default layer name
+    /// algorithm.
+    ///
+    /// The new group layer still needs to be added to the image, as this is
+    /// not automatic. Add the new layer with the
+    /// [`Image::insert_layer()`][crate::Image::insert_layer()] method.
+    /// Other attributes such as layer mask, modes and offsets should be set
+    /// with explicit procedure calls.
+    ///
+    /// Other procedures useful with group layers:
+    /// [`Image::reorder_item()`][crate::Image::reorder_item()], [`ItemExt::parent()`][crate::prelude::ItemExt::parent()],
+    /// [`ItemExt::children()`][crate::prelude::ItemExt::children()], [`ItemExt::is_group()`][crate::prelude::ItemExt::is_group()].
+    /// ## `image`
+    /// The image to which to add the group layer.
+    /// ## `name`
+    /// The group layer name.
+    ///
+    /// # Returns
+    ///
+    /// The newly created group layer.
     #[doc(alias = "gimp_group_layer_new")]
     pub fn new(image: &Image, name: Option<&str>) -> GroupLayer {
         unsafe {
@@ -26,11 +54,32 @@ impl GroupLayer {
         }
     }
 
+    /// Merge the passed group layer's layers into one normal layer.
+    ///
+    /// This procedure combines the layers of the passed group layer into a
+    /// single normal layer, replacing the group.
+    /// The group layer is expected to be attached to an image.
+    ///
+    /// # Returns
+    ///
+    /// The resulting layer.
     #[doc(alias = "gimp_group_layer_merge")]
     pub fn merge(&self) -> Option<Layer> {
         unsafe { from_glib_none(ffi::gimp_group_layer_merge(self.to_glib_none().0)) }
     }
 
+    /// Returns a [`GroupLayer`][crate::GroupLayer] representing `layer_id`. This function calls
+    /// [`Item::by_id()`][crate::Item::by_id()] and returns the item if it is a group layer or
+    /// [`None`] otherwise.
+    /// ## `layer_id`
+    /// The layer id.
+    ///
+    /// # Returns
+    ///
+    /// a [`GroupLayer`][crate::GroupLayer] for `layer_id` or
+    ///  [`None`] if `layer_id` does not represent a valid group layer.
+    ///  The object belongs to libgimp and you must not modify or
+    ///  unref it.
     #[doc(alias = "gimp_group_layer_get_by_id")]
     #[doc(alias = "get_by_id")]
     pub fn by_id(layer_id: i32) -> Option<GroupLayer> {

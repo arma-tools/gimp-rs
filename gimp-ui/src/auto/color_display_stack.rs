@@ -13,6 +13,29 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A stack of color correction modules.
+    ///
+    /// ## Signals
+    ///
+    ///
+    /// #### `added`
+    ///
+    ///
+    ///
+    /// #### `changed`
+    ///
+    ///
+    ///
+    /// #### `removed`
+    ///
+    ///
+    ///
+    /// #### `reordered`
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpColorDisplayStack")]
     pub struct ColorDisplayStack(Object<ffi::GimpColorDisplayStack, ffi::GimpColorDisplayStackClass>);
 
@@ -22,11 +45,19 @@ glib::wrapper! {
 }
 
 impl ColorDisplayStack {
+    /// Creates a new stack of color correction modules.
+    ///
+    /// # Returns
+    ///
+    /// a newly allocated [`ColorDisplayStack`][crate::ColorDisplayStack].
     #[doc(alias = "gimp_color_display_stack_new")]
     pub fn new() -> ColorDisplayStack {
         unsafe { from_glib_full(ffi::gimp_color_display_stack_new()) }
     }
 
+    /// Add the color module `display` to `self`.
+    /// ## `display`
+    /// a [`ColorDisplay`][crate::ColorDisplay]
     #[doc(alias = "gimp_color_display_stack_add")]
     pub fn add(&self, display: &impl IsA<ColorDisplay>) {
         unsafe {
@@ -37,6 +68,7 @@ impl ColorDisplayStack {
         }
     }
 
+    /// Emit the "changed" signal of `self`.
     #[doc(alias = "gimp_color_display_stack_changed")]
     pub fn changed(&self) {
         unsafe {
@@ -44,6 +76,12 @@ impl ColorDisplayStack {
         }
     }
 
+    /// Creates a copy of `self` with all its display color modules also
+    /// duplicated.
+    ///
+    /// # Returns
+    ///
+    /// a duplicate of `self`.
     #[doc(alias = "gimp_color_display_stack_clone")]
     #[doc(alias = "clone")]
     #[must_use]
@@ -51,6 +89,11 @@ impl ColorDisplayStack {
         unsafe { from_glib_full(ffi::gimp_color_display_stack_clone(self.to_glib_none().0)) }
     }
 
+    /// Runs all the stack's filters on all pixels in `area` of `buffer`.
+    /// ## `buffer`
+    /// a [`gegl::Buffer`][crate::gegl::Buffer]
+    /// ## `area`
+    /// area of `buffer` to convert
     #[doc(alias = "gimp_color_display_stack_convert_buffer")]
     pub fn convert_buffer(&self, buffer: &gegl::Buffer, area: &mut gegl::Rectangle) {
         unsafe {
@@ -62,6 +105,12 @@ impl ColorDisplayStack {
         }
     }
 
+    /// Gets the list of added color modules.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  the list of `self`'s display color modules.
     #[doc(alias = "gimp_color_display_stack_get_filters")]
     #[doc(alias = "get_filters")]
     pub fn filters(&self) -> Vec<ColorDisplay> {
@@ -72,6 +121,9 @@ impl ColorDisplayStack {
         }
     }
 
+    /// Remove the color module `display` from `self`.
+    /// ## `display`
+    /// a [`ColorDisplay`][crate::ColorDisplay]
     #[doc(alias = "gimp_color_display_stack_remove")]
     pub fn remove(&self, display: &impl IsA<ColorDisplay>) {
         unsafe {
@@ -82,6 +134,9 @@ impl ColorDisplayStack {
         }
     }
 
+    /// Move the color module `display` down in the filter list of `self`.
+    /// ## `display`
+    /// a [`ColorDisplay`][crate::ColorDisplay]
     #[doc(alias = "gimp_color_display_stack_reorder_down")]
     pub fn reorder_down(&self, display: &impl IsA<ColorDisplay>) {
         unsafe {
@@ -92,6 +147,9 @@ impl ColorDisplayStack {
         }
     }
 
+    /// Move the color module `display` up in the filter list of `self`.
+    /// ## `display`
+    /// a [`ColorDisplay`][crate::ColorDisplay]
     #[doc(alias = "gimp_color_display_stack_reorder_up")]
     pub fn reorder_up(&self, display: &impl IsA<ColorDisplay>) {
         unsafe {

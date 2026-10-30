@@ -10,6 +10,11 @@ use glib::prelude::*;
 use glib::translate::*;
 
 glib::wrapper! {
+    /// Functions for querying and manipulating rasterizable items.
+    ///
+    /// # Implements
+    ///
+    /// [`RasterizableExt`][trait@crate::prelude::RasterizableExt], [`DrawableExt`][trait@crate::prelude::DrawableExt], [`ItemExt`][trait@crate::prelude::ItemExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpRasterizable")]
     pub struct Rasterizable(Interface<ffi::GimpRasterizable, ffi::GimpRasterizableInterface>) @requires Drawable, Item;
 
@@ -22,7 +27,31 @@ impl Rasterizable {
     pub const NONE: Option<&'static Rasterizable> = None;
 }
 
+/// Trait containing all [`struct@Rasterizable`] methods.
+///
+/// # Implementors
+///
+/// [`LinkLayer`][struct@crate::LinkLayer], [`Rasterizable`][struct@crate::Rasterizable], [`TextLayer`][struct@crate::TextLayer], [`VectorLayer`][struct@crate::VectorLayer]
 pub trait RasterizableExt: IsA<Rasterizable> + 'static {
+    /// Return whether `self` has been rasterized.
+    ///
+    /// This procedure returns [`true`] if the specified `self` has been
+    /// previously rasterized. In this case, you should treat this `self` as
+    /// the generic raster variant.
+    ///
+    /// For instance, a [`TextLayer`][crate::TextLayer] object implements the
+    /// `GimpRasterizable` interface. If a text layer instance were to return
+    /// [`true`], you should only consider its rendering as returned by
+    /// [`DrawableExt::buffer()`][crate::prelude::DrawableExt::buffer()].
+    ///
+    /// On the other hand, if this returned [`false`], depending on your
+    /// intents, you may prefer to use the text contents and its properties
+    /// with the various procedures provided by the [`TextLayer`][crate::TextLayer]
+    /// class interface.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if `self` is rasterized.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_rasterizable_is_rasterized")]
@@ -34,6 +63,19 @@ pub trait RasterizableExt: IsA<Rasterizable> + 'static {
         }
     }
 
+    /// Rasterize the object.
+    ///
+    /// This procedure makes the item behave like a typical raster layer.
+    ///
+    /// Note that the source information (text contents and properties for a
+    /// text layer, source file for a link layer, path and render properties
+    /// for a vector layer, etc.) are not actually discarded, and it is
+    /// possible to retrieve the original behavior with
+    /// [`restore()`][Self::restore()].
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_rasterizable_rasterize")]
@@ -45,6 +87,18 @@ pub trait RasterizableExt: IsA<Rasterizable> + 'static {
         }
     }
 
+    /// Revert the rasterization of `self`.
+    ///
+    /// Restore the information making the item non-destructive, such as
+    /// text contents and properties of a text layer, source file of a link
+    /// layer, path and render properties of a vector layer, etc.
+    /// This item won't behave anymore like a raster item. In particular, it
+    /// will prevent direct modification of its pixels and will be rendered
+    /// when its properties are updated.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_rasterizable_restore")]

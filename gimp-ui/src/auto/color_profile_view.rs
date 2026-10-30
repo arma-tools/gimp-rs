@@ -7,6 +7,11 @@ use crate::ffi;
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// A widget for viewing the properties of a [`gimp::ColorProfile`][crate::gimp::ColorProfile].
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpColorProfileView")]
     pub struct ColorProfileView(Object<ffi::GimpColorProfileView, ffi::GimpColorProfileViewClass>) @extends gtk::Container, gtk::Widget, @implements gtk::Buildable;
 

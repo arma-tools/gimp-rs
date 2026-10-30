@@ -7,6 +7,10 @@ use crate::ffi;
 use glib::translate::*;
 
 glib::wrapper! {
+    /// The prime purpose of a [`ValueArray`][crate::ValueArray] is for it to be used as an
+    /// object property that holds an array of values. A [`ValueArray`][crate::ValueArray] wraps
+    /// an array of [`glib::Value`][crate::glib::Value] elements in order for it to be used as a boxed
+    /// type through `GIMP_TYPE_VALUE_ARRAY`.
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct ValueArray(Shared<ffi::GimpValueArray>);
 
@@ -18,6 +22,15 @@ glib::wrapper! {
 }
 
 impl ValueArray {
+    /// Allocate and initialize a new [`ValueArray`][crate::ValueArray], optionally preserve space
+    /// for `n_prealloced` elements. New arrays always contain 0 elements,
+    /// regardless of the value of `n_prealloced`.
+    /// ## `n_prealloced`
+    /// number of values to preallocate space for
+    ///
+    /// # Returns
+    ///
+    /// a newly allocated [`ValueArray`][crate::ValueArray] with 0 values
     #[doc(alias = "gimp_value_array_new")]
     pub fn new(n_prealloced: i32) -> ValueArray {
         unsafe { from_glib_full(ffi::gimp_value_array_new(n_prealloced)) }
@@ -35,6 +48,14 @@ impl ValueArray {
     //    unsafe { TODO: call ffi:gimp_value_array_new_from_types_valist() }
     //}
 
+    /// Insert a copy of `value` as last element of `self`. If `value` is
+    /// [`None`], an uninitialized value is appended.
+    /// ## `value`
+    /// [`glib::Value`][crate::glib::Value] to copy into [`ValueArray`][crate::ValueArray], or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// the [`ValueArray`][crate::ValueArray] passed in as `self`
     #[doc(alias = "gimp_value_array_append")]
     #[must_use]
     pub fn append(&self, value: Option<&glib::Value>) -> Option<ValueArray> {
@@ -52,6 +73,22 @@ impl ValueArray {
         unsafe { from_glib_full(ffi::gimp_value_array_copy(self.to_glib_none().0)) }
     }
 
+    /// Return a pointer to the value at `index` contained in `self`. This value
+    /// is supposed to be a `GimpColorArray`.
+    ///
+    /// *Note*: most of the time, you should use the generic [`index()`][Self::index()]
+    /// to retrieve a value, then the relevant `g_value_get_*()` function.
+    /// This alternative function is mostly there for bindings because
+    /// GObject-Introspection is [not able yet to process correctly known
+    /// boxed array types](https://gitlab.gnome.org/GNOME/gobject-introspection/-/issues/492).
+    ///
+    /// There are no reasons to use this function in C code.
+    /// ## `index`
+    /// index of the value of interest
+    ///
+    /// # Returns
+    ///
+    /// the `GimpColorArray` stored at `index` in `self`.
     #[doc(alias = "gimp_value_array_get_color_array")]
     #[doc(alias = "get_color_array")]
     pub fn color_array(&self, index: i32) -> Vec<gegl::Color> {
@@ -63,6 +100,22 @@ impl ValueArray {
         }
     }
 
+    /// Return a pointer to the value at `index` contained in `self`. This value
+    /// is supposed to be a `GimpCoreObjectArray`.
+    ///
+    /// *Note*: most of the time, you should use the generic [`index()`][Self::index()]
+    /// to retrieve a value, then the relevant `g_value_get_*()` function.
+    /// This alternative function is mostly there for bindings because
+    /// GObject-Introspection is [not able yet to process correctly known
+    /// boxed array types](https://gitlab.gnome.org/GNOME/gobject-introspection/-/issues/492).
+    ///
+    /// There are no reasons to use this function in C code.
+    /// ## `index`
+    /// index of the value of interest
+    ///
+    /// # Returns
+    ///
+    /// the `GimpCoreObjectArray` stored at `index` in `self`.
     #[doc(alias = "gimp_value_array_get_core_object_array")]
     #[doc(alias = "get_core_object_array")]
     pub fn core_object_array(&self, index: i32) -> Vec<glib::Object> {
@@ -74,11 +127,34 @@ impl ValueArray {
         }
     }
 
+    /// Return a pointer to the value at `index` contained in `self`.
+    ///
+    /// *Note*: in binding languages, some custom types fail to be correctly passed
+    /// through. For these types, you should use specific functions.
+    /// For instance, in the Python binding, a `GimpColorArray` `GValue`
+    /// won't be usable with this function. You should use instead
+    /// [`color_array()`][Self::color_array()].
+    /// ## `index`
+    /// index of the value of interest
+    ///
+    /// # Returns
+    ///
+    /// pointer to a value at `index` in `self`
     #[doc(alias = "gimp_value_array_index")]
     pub fn index(&self, index: i32) -> Option<glib::Value> {
         unsafe { from_glib_none(ffi::gimp_value_array_index(self.to_glib_none().0, index)) }
     }
 
+    /// Insert a copy of `value` at specified position into `self`. If `value`
+    /// is [`None`], an uninitialized value is inserted.
+    /// ## `index`
+    /// insertion position, must be &lt;= [`length()`][Self::length()]
+    /// ## `value`
+    /// [`glib::Value`][crate::glib::Value] to copy into [`ValueArray`][crate::ValueArray], or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// the [`ValueArray`][crate::ValueArray] passed in as `self`
     #[doc(alias = "gimp_value_array_insert")]
     #[must_use]
     pub fn insert(&self, index: i32, value: Option<&glib::Value>) -> Option<ValueArray> {
@@ -96,6 +172,14 @@ impl ValueArray {
         unsafe { ffi::gimp_value_array_length(self.to_glib_none().0) }
     }
 
+    /// Insert a copy of `value` as first element of `self`. If `value` is
+    /// [`None`], an uninitialized value is prepended.
+    /// ## `value`
+    /// [`glib::Value`][crate::glib::Value] to copy into [`ValueArray`][crate::ValueArray], or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// the [`ValueArray`][crate::ValueArray] passed in as `self`
     #[doc(alias = "gimp_value_array_prepend")]
     #[must_use]
     pub fn prepend(&self, value: Option<&glib::Value>) -> Option<ValueArray> {
@@ -107,6 +191,14 @@ impl ValueArray {
         }
     }
 
+    /// Remove the value at position `index` from `self`.
+    /// ## `index`
+    /// position of value to remove, which must be less than
+    ///  [`length()`][Self::length()]
+    ///
+    /// # Returns
+    ///
+    /// the [`ValueArray`][crate::ValueArray] passed in as `self`
     #[doc(alias = "gimp_value_array_remove")]
     #[must_use]
     pub fn remove(&self, index: i32) -> Option<ValueArray> {

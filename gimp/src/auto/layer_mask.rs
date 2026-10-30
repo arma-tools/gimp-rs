@@ -7,6 +7,11 @@ use crate::{ffi, Channel, Drawable, Item};
 use glib::translate::*;
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`ChannelExt`][trait@crate::prelude::ChannelExt], [`DrawableExt`][trait@crate::prelude::DrawableExt], [`ItemExt`][trait@crate::prelude::ItemExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpLayerMask")]
     pub struct LayerMask(Object<ffi::GimpLayerMask, ffi::GimpLayerMaskClass>) @extends Channel, Drawable, Item;
 
@@ -16,6 +21,18 @@ glib::wrapper! {
 }
 
 impl LayerMask {
+    /// Returns a [`LayerMask`][crate::LayerMask] representing `layer_mask_id`. This function
+    /// calls [`Item::by_id()`][crate::Item::by_id()] and returns the item if it is
+    /// layer_mask or [`None`] otherwise.
+    /// ## `layer_mask_id`
+    /// The layer_mask id.
+    ///
+    /// # Returns
+    ///
+    /// a [`LayerMask`][crate::LayerMask] for
+    ///  `layer_mask_id` or [`None`] if `layer_mask_id` does not
+    ///  represent a valid layer_mask. The object belongs to
+    ///  libgimp and you must not modify or unref it.
     #[doc(alias = "gimp_layer_mask_get_by_id")]
     #[doc(alias = "get_by_id")]
     pub fn by_id(layer_mask_id: i32) -> Option<LayerMask> {

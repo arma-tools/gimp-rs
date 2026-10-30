@@ -10,6 +10,17 @@ use crate::{ffi, Drawable, DrawableFilterConfig, LayerMode};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// Operations on drawable filters: creation, editing.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `id`
+    ///  Readable | Writeable | Construct Only
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpDrawableFilter")]
     pub struct DrawableFilter(Object<ffi::GimpDrawableFilter, ffi::GimpDrawableFilterClass>);
 
@@ -19,6 +30,25 @@ glib::wrapper! {
 }
 
 impl DrawableFilter {
+    /// Create a new drawable filter.
+    ///
+    /// This procedure creates a new filter for the specified operation on
+    /// `drawable`.
+    /// The new effect still needs to be either added or merged to `drawable`
+    /// later. Add the effect non-destructively with
+    /// [`DrawableExt::append_filter()`][crate::prelude::DrawableExt::append_filter()].
+    /// Currently only layers can have non-destructive effects. The effects
+    /// must be merged for all other types of drawable.
+    /// ## `drawable`
+    /// The drawable.
+    /// ## `operation_name`
+    /// The GEGL operation's name.
+    /// ## `name`
+    /// The effect name.
+    ///
+    /// # Returns
+    ///
+    /// The newly created filter.
     #[doc(alias = "gimp_drawable_filter_new")]
     pub fn new(
         drawable: &impl IsA<Drawable>,
@@ -34,11 +64,28 @@ impl DrawableFilter {
         }
     }
 
+    /// Delete a drawable filter.
+    ///
+    /// This procedure deletes the specified filter. This must not be done
+    /// if the drawable whose this filter was applied to was already deleted
+    /// or if the drawable was already removed from the image.
+    /// Do not use anymore the `self` object after having deleted it.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_drawable_filter_delete")]
     pub fn delete(&self) -> bool {
         unsafe { from_glib(ffi::gimp_drawable_filter_delete(self.to_glib_none().0)) }
     }
 
+    /// Get the blending mode of the specified filter.
+    ///
+    /// This procedure returns the specified filter's mode.
+    ///
+    /// # Returns
+    ///
+    /// The effect blending mode.
     #[doc(alias = "gimp_drawable_filter_get_blend_mode")]
     #[doc(alias = "get_blend_mode")]
     pub fn blend_mode(&self) -> LayerMode {
@@ -49,30 +96,75 @@ impl DrawableFilter {
         }
     }
 
+    /// Get the `GimpConfig` with properties that match `self`'s arguments.
+    ///
+    /// The config object will be created at the first call of this method
+    /// and its properties will be synced with the settings of this filter as
+    /// set in the core application.
+    ///
+    /// Further changes to the config's properties are not synced back
+    /// immediately with the core application. Use
+    /// [`DrawableExt::update()`][crate::prelude::DrawableExt::update()] to trigger an actual update.
+    ///
+    /// # Returns
+    ///
+    /// The [`DrawableFilterConfig`][crate::DrawableFilterConfig]. Further
+    ///  calls will return the same object.
     #[doc(alias = "gimp_drawable_filter_get_config")]
     #[doc(alias = "get_config")]
     pub fn config(&self) -> Option<DrawableFilterConfig> {
         unsafe { from_glib_none(ffi::gimp_drawable_filter_get_config(self.to_glib_none().0)) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the drawable's filter ID.
     #[doc(alias = "gimp_drawable_filter_get_id")]
     #[doc(alias = "get_id")]
     pub fn id(&self) -> i32 {
         unsafe { ffi::gimp_drawable_filter_get_id(self.to_glib_none().0) }
     }
 
+    /// Get a drawable filter's name.
+    ///
+    /// This procedure returns the specified filter's name.
+    /// Since it is not possible to set a drawable filter's name yet, this
+    /// will be the operation's name. Eventually this filter's name will be
+    /// a free form field so do not rely on this information for any
+    /// processing.
+    ///
+    /// # Returns
+    ///
+    /// The filter's name.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_drawable_filter_get_name")]
     #[doc(alias = "get_name")]
     pub fn name(&self) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_drawable_filter_get_name(self.to_glib_none().0)) }
     }
 
+    /// Get the opacity of the specified filter.
+    ///
+    /// This procedure returns the specified filter's opacity.
+    ///
+    /// # Returns
+    ///
+    /// The filter's opacity.
     #[doc(alias = "gimp_drawable_filter_get_opacity")]
     #[doc(alias = "get_opacity")]
     pub fn opacity(&self) -> f64 {
         unsafe { ffi::gimp_drawable_filter_get_opacity(self.to_glib_none().0) }
     }
 
+    /// Get a drawable filter's operation name.
+    ///
+    /// This procedure returns the specified filter's operation name.
+    ///
+    /// # Returns
+    ///
+    /// The filter's operation name.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_drawable_filter_get_operation_name")]
     #[doc(alias = "get_operation_name")]
     pub fn operation_name(&self) -> Option<glib::GString> {
@@ -83,17 +175,41 @@ impl DrawableFilter {
         }
     }
 
+    /// Get the visibility of the specified filter.
+    ///
+    /// This procedure returns the specified filter's visibility.
+    ///
+    /// # Returns
+    ///
+    /// The filter visibility.
     #[doc(alias = "gimp_drawable_filter_get_visible")]
     #[doc(alias = "get_visible")]
     pub fn is_visible(&self) -> bool {
         unsafe { from_glib(ffi::gimp_drawable_filter_get_visible(self.to_glib_none().0)) }
     }
 
+    /// Returns TRUE if the `drawable_filter` is valid.
+    ///
+    /// This procedure checks if the given filter is valid and refers to an
+    /// existing `GimpDrawableFilter`.
+    ///
+    /// # Returns
+    ///
+    /// Whether `drawable_filter` is valid.
     #[doc(alias = "gimp_drawable_filter_is_valid")]
     pub fn is_valid(&self) -> bool {
         unsafe { from_glib(ffi::gimp_drawable_filter_is_valid(self.to_glib_none().0)) }
     }
 
+    /// When a filter has one or several auxiliary inputs, you can use this
+    /// function to set them.
+    ///
+    /// The change is not synced immediately with the core application.
+    /// Use [`DrawableExt::update()`][crate::prelude::DrawableExt::update()] to trigger an actual update.
+    /// ## `input_pad_name`
+    /// name of the filter's input pad.
+    /// ## `input`
+    /// the drawable to use as auxiliary input.
     #[doc(alias = "gimp_drawable_filter_set_aux_input")]
     pub fn set_aux_input(&self, input_pad_name: &str, input: &impl IsA<Drawable>) {
         unsafe {
@@ -105,6 +221,12 @@ impl DrawableFilter {
         }
     }
 
+    /// This procedure sets the blend mode of `self`.
+    ///
+    /// The change is not synced immediately with the core application.
+    /// Use [`DrawableExt::update()`][crate::prelude::DrawableExt::update()] to trigger an actual update.
+    /// ## `mode`
+    /// blend mode.
     #[doc(alias = "gimp_drawable_filter_set_blend_mode")]
     pub fn set_blend_mode(&self, mode: LayerMode) {
         unsafe {
@@ -112,6 +234,13 @@ impl DrawableFilter {
         }
     }
 
+    /// This procedure sets the opacity of `self` on a range from 0.0
+    /// (transparent) to 1.0 (opaque).
+    ///
+    /// The change is not synced immediately with the core application.
+    /// Use [`DrawableExt::update()`][crate::prelude::DrawableExt::update()] to trigger an actual update.
+    /// ## `opacity`
+    /// the opacity.
     #[doc(alias = "gimp_drawable_filter_set_opacity")]
     pub fn set_opacity(&self, opacity: f64) {
         unsafe {
@@ -119,6 +248,17 @@ impl DrawableFilter {
         }
     }
 
+    /// Set the visibility of the specified filter.
+    ///
+    /// This procedure sets the specified filter's visibility.
+    /// The drawable won't be immediately rendered. Use
+    /// [`DrawableExt::update()`][crate::prelude::DrawableExt::update()] to trigger an update.
+    /// ## `visible`
+    /// The new filter visibility.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_drawable_filter_set_visible")]
     pub fn set_visible(&self, visible: bool) -> bool {
         unsafe {
@@ -129,6 +269,14 @@ impl DrawableFilter {
         }
     }
 
+    /// Syncs the `GimpConfig` with properties that match `self`'s arguments.
+    /// This procedure updates the settings of the specified filter all at
+    /// once, including the arguments of the [`DrawableFilterConfig`][crate::DrawableFilterConfig]
+    /// obtained with [`config()`][Self::config()] as well as the
+    /// blend mode and opacity.
+    ///
+    /// In particular, if the image is displayed, rendering will be frozen
+    /// and will happen only once for all changed settings.
     #[doc(alias = "gimp_drawable_filter_update")]
     pub fn update(&self) {
         unsafe {
@@ -136,17 +284,47 @@ impl DrawableFilter {
         }
     }
 
+    /// ## `filter_id`
+    /// The `GimpDrawableFilter` id.
+    ///
+    /// # Returns
+    ///
+    /// a [`DrawableFilter`][crate::DrawableFilter] for `filter_id` or
+    ///  [`None`] if `filter_id` does not represent a valid drawable's filter.
+    ///  The object belongs to libgimp and you must not modify
+    ///  or unref it.
     #[doc(alias = "gimp_drawable_filter_get_by_id")]
     #[doc(alias = "get_by_id")]
     pub fn by_id(filter_id: i32) -> Option<DrawableFilter> {
         unsafe { from_glib_none(ffi::gimp_drawable_filter_get_by_id(filter_id)) }
     }
 
+    /// Returns [`true`] if the drawable filter ID is valid.
+    ///
+    /// This procedure checks if the given drawable filter ID is valid and
+    /// refers to an existing filter.
+    /// ## `filter_id`
+    /// The filter ID to check.
+    ///
+    /// # Returns
+    ///
+    /// Whether the filter ID is valid.
     #[doc(alias = "gimp_drawable_filter_id_is_valid")]
     pub fn id_is_valid(filter_id: i32) -> bool {
         unsafe { from_glib(ffi::gimp_drawable_filter_id_is_valid(filter_id)) }
     }
 
+    /// Get a list of all available GEGL operation names for drawable
+    /// filters.
+    ///
+    /// This procedure returns a list of all GEGL operation names available
+    /// for use with drawable filters.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The list of GEGL operation names.
+    ///  The returned value must be freed with `g_strfreev()`.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_drawable_filter_operation_get_available")]
@@ -156,6 +334,30 @@ impl DrawableFilter {
         }
     }
 
+    /// Get information about a GEGL operation.
+    ///
+    /// This procedure returns information about a GEGL operation. The
+    /// content of the list of information can vary across versions and
+    /// currently can contain:
+    /// - a human-readable title of the operation, - a description of the
+    /// operation's behaviour, - the categories the operation belongs to,
+    /// and - the license of the operation.
+    /// An operation can belong to no categories or to multiple categories.
+    /// Multiple categories are separated by the ':' character.
+    /// Some operation's license is not specifically set. In such cases, the
+    /// returned license is 'unknown'.
+    /// ## `operation_name`
+    /// The GEGL operation's name.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `propnames`
+    /// The names of properties.
+    ///
+    /// ## `propvalues`
+    /// The values of properties in the same order.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_drawable_filter_operation_get_details")]
@@ -179,6 +381,18 @@ impl DrawableFilter {
         }
     }
 
+    /// Get information for all parameters of a GEGL operation.
+    ///
+    /// This procedure returns a list of all parameters used to configure a
+    /// GEGL operation.
+    /// Each parameter is represented by GParamSpec.
+    /// ## `operation_name`
+    /// The GEGL operation's name.
+    ///
+    /// # Returns
+    ///
+    /// List of all parameters of the GEGL operation.
+    ///  The returned value must be freed with `g_free()`.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_drawable_filter_operation_get_pspecs")]

@@ -12,6 +12,95 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A [`gtk::CellRenderer`][crate::gtk::CellRenderer] to display a [`gegl::Color`][crate::gegl::Color] color.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `color`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `icon-size`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `opaque`
+    ///  Readable | Writeable | Construct
+    /// <details><summary><h4>CellRenderer</h4></summary>
+    ///
+    ///
+    /// #### `cell-background`
+    ///  Writeable
+    ///
+    ///
+    /// #### `cell-background-gdk`
+    ///  Cell background as a `GdkColor`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `cell-background-rgba`
+    ///  Cell background as a [`gdk::RGBA`][crate::gdk::RGBA]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `cell-background-set`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `editing`
+    ///  Readable
+    ///
+    ///
+    /// #### `height`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `is-expanded`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `is-expander`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `mode`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `xalign`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `xpad`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `yalign`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `ypad`
+    ///  Readable | Writeable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::CellRendererExt`], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpCellRendererColor")]
     pub struct CellRendererColor(Object<ffi::GimpCellRendererColor, ffi::GimpCellRendererColorClass>) @extends gtk::CellRenderer;
 
@@ -21,6 +110,11 @@ glib::wrapper! {
 }
 
 impl CellRendererColor {
+    /// Creates a [`gtk::CellRenderer`][crate::gtk::CellRenderer] that displays a color.
+    ///
+    /// # Returns
+    ///
+    /// a new [`CellRendererColor`][crate::CellRendererColor]
     #[doc(alias = "gimp_cell_renderer_color_new")]
     pub fn new() -> CellRendererColor {
         unsafe {

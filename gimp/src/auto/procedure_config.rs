@@ -7,6 +7,29 @@ use crate::{ffi, Image, Procedure};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// The base class for [`Procedure`][crate::Procedure] specific config objects and the main
+    /// interface to manage aspects of [`Procedure`][crate::Procedure]'s arguments such as
+    /// persistency of the last used arguments across GIMP sessions.
+    ///
+    /// A procedure config is created by a [`Procedure`][crate::Procedure] using
+    /// [`ProcedureExt::create_config()`][crate::prelude::ProcedureExt::create_config()] and its properties match the
+    /// procedure's arguments and auxiliary arguments in number, order and
+    /// type.
+    ///
+    /// It implements the `GimpConfig` interface and therefore has all its
+    /// serialization and deserialization features.
+    ///
+    /// This is an Abstract Base Class, you cannot instantiate it.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `procedure`
+    ///  Readable | Writeable | Construct Only
+    ///
+    /// # Implements
+    ///
+    /// [`ProcedureConfigExt`][trait@crate::prelude::ProcedureConfigExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpProcedureConfig")]
     pub struct ProcedureConfig(Object<ffi::GimpProcedureConfig, ffi::GimpProcedureConfigClass>);
 
@@ -19,7 +42,18 @@ impl ProcedureConfig {
     pub const NONE: Option<&'static ProcedureConfig> = None;
 }
 
+/// Trait containing all [`struct@ProcedureConfig`] methods.
+///
+/// # Implementors
+///
+/// [`ProcedureConfig`][struct@crate::ProcedureConfig]
 pub trait ProcedureConfigExt: IsA<ProcedureConfig> + 'static {
+    /// A utility function which will get the current string value of a
+    /// `GimpParamSpecChoice` property in `self` and convert it to the
+    /// integer ID mapped to this value.
+    /// This makes it easy to work with an Enum type locally, within a plug-in code.
+    /// ## `property_name`
+    /// the name of a `GimpParamSpecChoice` property.
     #[doc(alias = "gimp_procedure_config_get_choice_id")]
     #[doc(alias = "get_choice_id")]
     fn choice_id(&self, property_name: &str) -> i32 {
@@ -31,6 +65,19 @@ pub trait ProcedureConfigExt: IsA<ProcedureConfig> + 'static {
         }
     }
 
+    /// A function for bindings to get a `GimpColorArray` property. Getting
+    /// these with [`ObjectExt::get()`][crate::glib::prelude::ObjectExt::get()] or [`ObjectExt::property()`][crate::glib::prelude::ObjectExt::property()] won't
+    /// [work for the time being](https://gitlab.gnome.org/GNOME/gobject-introspection/-/issues/492)
+    /// so all our boxed array types must be set and get using these
+    /// alternative functions instead.
+    ///
+    /// C plug-ins should just use [`ObjectExt::get()`][crate::glib::prelude::ObjectExt::get()].
+    /// ## `property_name`
+    /// the name of a `GParamSpecBoxed` param spec with `GimpColorArray` value type.
+    ///
+    /// # Returns
+    ///
+    /// an array of `GObjects`.
     #[doc(alias = "gimp_procedure_config_get_color_array")]
     #[doc(alias = "get_color_array")]
     fn color_array(&self, property_name: &str) -> Vec<gegl::Color> {
@@ -42,6 +89,19 @@ pub trait ProcedureConfigExt: IsA<ProcedureConfig> + 'static {
         }
     }
 
+    /// A function for bindings to get a `GimpCoreObjectArray` property. Getting
+    /// these with [`ObjectExt::get()`][crate::glib::prelude::ObjectExt::get()] or [`ObjectExt::property()`][crate::glib::prelude::ObjectExt::property()] won't
+    /// [work for the time being](https://gitlab.gnome.org/GNOME/gobject-introspection/-/issues/492)
+    /// so all our boxed array types must be set and get using alternative
+    /// functions instead.
+    ///
+    /// C plug-ins should just use [`ObjectExt::get()`][crate::glib::prelude::ObjectExt::get()].
+    /// ## `property_name`
+    /// the name of a `GimpParamSpecCoreObjectArray` param spec.
+    ///
+    /// # Returns
+    ///
+    /// an array of `GObjects`.
     #[doc(alias = "gimp_procedure_config_get_core_object_array")]
     #[doc(alias = "get_core_object_array")]
     fn core_object_array(&self, property_name: &str) -> Vec<glib::Object> {
@@ -55,6 +115,12 @@ pub trait ProcedureConfigExt: IsA<ProcedureConfig> + 'static {
         }
     }
 
+    /// This function returns the [`Procedure`][crate::Procedure] which created `self`, see
+    /// [`ProcedureExt::create_config()`][crate::prelude::ProcedureExt::create_config()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure which created this config.
     #[doc(alias = "gimp_procedure_config_get_procedure")]
     #[doc(alias = "get_procedure")]
     fn procedure(&self) -> Option<Procedure> {
@@ -65,6 +131,24 @@ pub trait ProcedureConfigExt: IsA<ProcedureConfig> + 'static {
         }
     }
 
+    /// *Note: There is normally no need to call this function because it's
+    /// already called by [`ExportProcedure`][crate::ExportProcedure] after the ``run()`` callback.*
+    ///
+    /// *Only use this function if the [`Metadata`][crate::Metadata] passed as argument of a
+    /// [`ExportProcedure`][crate::ExportProcedure]'s `run()` method needs to be written at a specific
+    /// point of the export, other than its end.*
+    ///
+    /// This function syncs back `self`'s export properties to the
+    /// metadata's [`MetadataSaveFlags`][crate::MetadataSaveFlags] and writes the metadata to
+    /// `file`.
+    ///
+    /// The metadata is only ever written once. If this function has been
+    /// called explicitly, it will do nothing when called a second time at the end of
+    /// the ``run()`` callback.
+    /// ## `exported_image`
+    /// the image that was actually exported
+    /// ## `file`
+    /// the file `exported_image` was written to
     #[doc(alias = "gimp_procedure_config_save_metadata")]
     fn save_metadata(&self, exported_image: &Image, file: &impl IsA<gio::File>) {
         unsafe {
@@ -76,6 +160,17 @@ pub trait ProcedureConfigExt: IsA<ProcedureConfig> + 'static {
         }
     }
 
+    /// A function for bindings to set a `GimpColorArray` property. Setting
+    /// these with [`ObjectExt::set()`][crate::glib::prelude::ObjectExt::set()] or [`ObjectExt::set_property()`][crate::glib::prelude::ObjectExt::set_property()] won't
+    /// [work for the time being](https://gitlab.gnome.org/GNOME/gobject-introspection/-/issues/492)
+    /// so all our boxed array types must be set and get using these
+    /// alternative functions instead.
+    ///
+    /// C plug-ins should just use [`ObjectExt::set()`][crate::glib::prelude::ObjectExt::set()].
+    /// ## `property_name`
+    /// the name of a `GParamSpecBoxed` param spec with `GimpColorArray` value type.
+    /// ## `colors`
+    /// an array of [`gegl::Color`][crate::gegl::Color].
     #[doc(alias = "gimp_procedure_config_set_color_array")]
     fn set_color_array(&self, property_name: &str, colors: &[gegl::Color]) {
         let n_colors = colors.len() as _;
@@ -89,6 +184,17 @@ pub trait ProcedureConfigExt: IsA<ProcedureConfig> + 'static {
         }
     }
 
+    /// A function for bindings to set a `GimpCoreObjectArray` property. Setting
+    /// these with [`ObjectExt::set()`][crate::glib::prelude::ObjectExt::set()] or [`ObjectExt::set_property()`][crate::glib::prelude::ObjectExt::set_property()] won't
+    /// [work for the time being](https://gitlab.gnome.org/GNOME/gobject-introspection/-/issues/492)
+    /// so all our boxed array types must be set and get using alternative
+    /// functions instead.
+    ///
+    /// C plug-ins should just use [`ObjectExt::set()`][crate::glib::prelude::ObjectExt::set()].
+    /// ## `property_name`
+    /// the name of a `GimpParamSpecCoreObjectArray` param spec.
+    /// ## `objects`
+    /// an array of `GObjects`.
     #[doc(alias = "gimp_procedure_config_set_core_object_array")]
     fn set_core_object_array(&self, property_name: &str, objects: &[glib::Object]) {
         let n_objects = objects.len() as _;

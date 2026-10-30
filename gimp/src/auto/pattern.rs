@@ -7,6 +7,11 @@ use crate::{ffi, ConfigInterface, Resource};
 use glib::translate::*;
 
 glib::wrapper! {
+    /// Installable object used by fill and clone tools.
+    ///
+    /// # Implements
+    ///
+    /// [`ResourceExt`][trait@crate::prelude::ResourceExt], [`trait@glib::ObjectExt`], [`ConfigInterfaceExt`][trait@crate::prelude::ConfigInterfaceExt]
     #[doc(alias = "GimpPattern")]
     pub struct Pattern(Object<ffi::GimpPattern, ffi::GimpPatternClass>) @extends Resource, @implements ConfigInterface;
 
@@ -16,6 +21,23 @@ glib::wrapper! {
 }
 
 impl Pattern {
+    /// Gets information about the pattern.
+    ///
+    /// Gets information about the pattern: the pattern extents (width and
+    /// height) and bytes per pixel.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `width`
+    /// The pattern width.
+    ///
+    /// ## `height`
+    /// The pattern height.
+    ///
+    /// ## `bpp`
+    /// The pattern bpp.
     #[doc(alias = "gimp_pattern_get_info")]
     #[doc(alias = "get_info")]
     pub fn info(&self) -> Option<(i32, i32, i32)> {
@@ -37,6 +59,16 @@ impl Pattern {
         }
     }
 
+    /// Returns the pattern with the given name.
+    ///
+    /// Returns an existing pattern having the given name. Returns [`None`]
+    /// when no pattern exists of that name.
+    /// ## `name`
+    /// The name of the pattern.
+    ///
+    /// # Returns
+    ///
+    /// The pattern.
     #[doc(alias = "gimp_pattern_get_by_name")]
     #[doc(alias = "get_by_name")]
     pub fn by_name(name: &str) -> Option<Pattern> {

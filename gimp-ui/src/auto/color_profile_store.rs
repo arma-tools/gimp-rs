@@ -7,6 +7,19 @@ use crate::ffi;
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// A `GtkListStore` subclass that keep color profiles.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `history`
+    ///  [`gio::File`][crate::gio::File] of the color history used to populate the profile store.
+    ///
+    /// Readable | Writeable | Construct Only
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpColorProfileStore")]
     pub struct ColorProfileStore(Object<ffi::GimpColorProfileStore, ffi::GimpColorProfileStoreClass>) @implements gtk::Buildable;
 
@@ -21,6 +34,18 @@ impl ColorProfileStore {
     //    unsafe { TODO: call ffi:gimp_color_profile_store_new() }
     //}
 
+    /// Adds a color profile item to the [`ColorProfileStore`][crate::ColorProfileStore]. Items
+    /// added with this function will be kept at the top, separated from
+    /// the history of last used color profiles.
+    ///
+    /// This function is often used to add a selectable item for the [`None`]
+    /// file. If you pass [`None`] for both `file` and `label`, the `label` will
+    /// be set to the string "None" for you (and translated for the user).
+    /// ## `file`
+    /// [`gio::File`][crate::gio::File] of the profile to add (or [`None`])
+    /// ## `label`
+    /// label to use for the profile
+    ///  (may only be [`None`] if `file` is [`None`])
     #[doc(alias = "gimp_color_profile_store_add_file")]
     pub fn add_file(&self, file: &impl IsA<gio::File>, label: &str) {
         unsafe {
@@ -32,6 +57,7 @@ impl ColorProfileStore {
         }
     }
 
+    /// [`gio::File`][crate::gio::File] of the color history used to populate the profile store.
     pub fn history(&self) -> Option<gio::File> {
         ObjectExt::property(self, "history")
     }

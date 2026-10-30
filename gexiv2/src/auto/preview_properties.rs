@@ -7,6 +7,11 @@ use crate::ffi;
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`PreviewPropertiesExt`][trait@crate::prelude::PreviewPropertiesExt]
     #[doc(alias = "GExiv2PreviewProperties")]
     pub struct PreviewProperties(Object<ffi::GExiv2PreviewProperties, ffi::GExiv2PreviewPropertiesClass>);
 
@@ -19,7 +24,16 @@ impl PreviewProperties {
     pub const NONE: Option<&'static PreviewProperties> = None;
 }
 
+/// Trait containing all [`struct@PreviewProperties`] methods.
+///
+/// # Implementors
+///
+/// [`PreviewProperties`][struct@crate::PreviewProperties]
 pub trait PreviewPropertiesExt: IsA<PreviewProperties> + 'static {
+    ///
+    /// # Returns
+    ///
+    /// The recommended file extension for the preview image.
     #[doc(alias = "gexiv2_preview_properties_get_extension")]
     #[doc(alias = "get_extension")]
     fn extension(&self) -> Option<glib::GString> {
@@ -30,12 +44,20 @@ pub trait PreviewPropertiesExt: IsA<PreviewProperties> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The preview image's display height in pixels.
     #[doc(alias = "gexiv2_preview_properties_get_height")]
     #[doc(alias = "get_height")]
     fn height(&self) -> u32 {
         unsafe { ffi::gexiv2_preview_properties_get_height(self.as_ref().to_glib_none().0) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The preview image's MIME type.
     #[doc(alias = "gexiv2_preview_properties_get_mime_type")]
     #[doc(alias = "get_mime_type")]
     fn mime_type(&self) -> Option<glib::GString> {
@@ -46,12 +68,20 @@ pub trait PreviewPropertiesExt: IsA<PreviewProperties> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The preview image size in bytes.
     #[doc(alias = "gexiv2_preview_properties_get_size")]
     #[doc(alias = "get_size")]
     fn size(&self) -> u32 {
         unsafe { ffi::gexiv2_preview_properties_get_size(self.as_ref().to_glib_none().0) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The preview image's display width in pixels.
     #[doc(alias = "gexiv2_preview_properties_get_width")]
     #[doc(alias = "get_width")]
     fn width(&self) -> u32 {

@@ -12,6 +12,514 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// Constructors for [`gtk::Dialog`][crate::gtk::Dialog]'s and action_areas as well as other
+    /// dialog-related stuff.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `help-func`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `help-id`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `parent`
+    ///  Writeable | Construct Only
+    /// <details><summary><h4>Dialog</h4></summary>
+    ///
+    ///
+    /// #### `use-header-bar`
+    ///  [`true`] if the dialog uses a `GtkHeaderBar` for action buttons
+    /// instead of the action-area.
+    ///
+    /// For technical reasons, this property is declared as an integer
+    /// property, but you should only set it to [`true`] or [`false`].
+    ///
+    /// Readable | Writeable | Construct Only
+    /// </details>
+    /// <details><summary><h4>Window</h4></summary>
+    ///
+    ///
+    /// #### `accept-focus`
+    ///  Whether the window should receive the input focus.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `application`
+    ///  The `GtkApplication` associated with the window.
+    ///
+    /// The application will be kept alive for at least as long as it
+    /// has any windows associated with it (see `g_application_hold()`
+    /// for a way to keep it alive without windows).
+    ///
+    /// Normally, the connection between the application and the window
+    /// will remain until the window is destroyed, but you can explicitly
+    /// remove it by setting the :application property to [`None`].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `attached-to`
+    ///  The widget to which this window is attached.
+    /// See [`WindowExtManual::set_attached_to()`][crate::gtk::prelude::WindowExtManual::set_attached_to()].
+    ///
+    /// Examples of places where specifying this relation is useful are
+    /// for instance a `GtkMenu` created by a [`gtk::ComboBox`][crate::gtk::ComboBox], a completion
+    /// popup window created by [`gtk::Entry`][crate::gtk::Entry] or a typeahead search entry
+    /// created by `GtkTreeView`.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `decorated`
+    ///  Whether the window should be decorated by the window manager.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `default-height`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `default-width`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `deletable`
+    ///  Whether the window frame should have a close button.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `destroy-with-parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-map`
+    ///  Whether the window should receive the input focus when mapped.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-visible`
+    ///  Whether 'focus rectangles' are currently visible in this window.
+    ///
+    /// This property is maintained by GTK+ based on user input
+    /// and should not be set by applications.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `gravity`
+    ///  The window gravity of the window. See [`WindowExtManual::move_()`][crate::gtk::prelude::WindowExtManual::move_()] and `GdkGravity` for
+    /// more details about window gravity.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-resize-grip`
+    ///  Whether the window has a corner resize grip.
+    ///
+    /// Note that the resize grip is only shown if the window is
+    /// actually resizable and not maximized. Use
+    /// [`resize-grip-visible`][struct@crate::gtk::Window#resize-grip-visible] to find out if the resize
+    /// grip is currently shown.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-toplevel-focus`
+    ///  Readable
+    ///
+    ///
+    /// #### `hide-titlebar-when-maximized`
+    ///  Whether the titlebar should be hidden during maximization.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `icon`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `icon-name`
+    ///  The :icon-name property specifies the name of the themed icon to
+    /// use as the window icon. See `GtkIconTheme` for more details.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-active`
+    ///  Readable
+    ///
+    ///
+    /// #### `is-maximized`
+    ///  Readable
+    ///
+    ///
+    /// #### `mnemonics-visible`
+    ///  Whether mnemonics are currently visible in this window.
+    ///
+    /// This property is maintained by GTK+ based on user input,
+    /// and should not be set by applications.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `modal`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `resizable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `resize-grip-visible`
+    ///  Whether a corner resize grip is currently shown.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `role`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `screen`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `skip-pager-hint`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `skip-taskbar-hint`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `startup-id`
+    ///  The :startup-id is a write-only property for setting window's
+    /// startup notification identifier. See [`WindowExtManual::set_startup_id()`][crate::gtk::prelude::WindowExtManual::set_startup_id()]
+    /// for more details.
+    ///
+    /// Writeable
+    ///
+    ///
+    /// #### `title`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `transient-for`
+    ///  The transient parent of the window. See [`WindowExtManual::set_transient_for()`][crate::gtk::prelude::WindowExtManual::set_transient_for()] for
+    /// more details about transient windows.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `type`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `type-hint`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `urgency-hint`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window-position`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Container</h4></summary>
+    ///
+    ///
+    /// #### `border-width`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `child`
+    ///  Writeable
+    ///
+    ///
+    /// #### `resize-mode`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`GimpDialogExt`][trait@crate::prelude::GimpDialogExt], [`trait@gtk::prelude::DialogExt`], [`trait@gtk::prelude::WindowExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpDialog")]
     pub struct Dialog(Object<ffi::GimpDialog, ffi::GimpDialogClass>) @extends gtk::Dialog, gtk::Window, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -34,7 +542,23 @@ impl Dialog {
     //}
 }
 
+/// Trait containing all [`struct@Dialog`] methods.
+///
+/// # Implementors
+///
+/// [`Dialog`][struct@crate::Dialog], [`ProcBrowserDialog`][struct@crate::ProcBrowserDialog], [`ProcedureDialog`][struct@crate::ProcedureDialog]
 pub trait GimpDialogExt: IsA<Dialog> + 'static {
+    /// This function is essentially the same as [`DialogExtManual::add_button()`][crate::gtk::prelude::DialogExtManual::add_button()]
+    /// except it ensures there is only one help button and automatically
+    /// sets the RESPONSE_OK widget as the default response.
+    /// ## `button_text`
+    /// text of button, or stock ID.
+    /// ## `response_id`
+    /// response ID for the button.
+    ///
+    /// # Returns
+    ///
+    /// the button widget that was added.
     #[doc(alias = "gimp_dialog_add_button")]
     fn add_button(&self, button_text: &str, response_id: i32) -> Option<gtk::Widget> {
         unsafe {
@@ -62,11 +586,23 @@ pub trait GimpDialogExt: IsA<Dialog> + 'static {
     //    unsafe { TODO: call ffi:gimp_dialog_get_native_handle() }
     //}
 
+    /// This function does exactly the same as [`DialogExtManual::run()`][crate::gtk::prelude::DialogExtManual::run()] except it
+    /// does not make the dialog modal while the `GMainLoop` is running.
+    ///
+    /// # Returns
+    ///
+    /// response ID
     #[doc(alias = "gimp_dialog_run")]
     fn run(&self) -> i32 {
         unsafe { ffi::gimp_dialog_run(self.as_ref().to_glib_none().0) }
     }
 
+    /// Reorder `self`'s buttons if `GtkSettings:gtk-alternative-button-order`
+    /// is set to TRUE. This is mostly a wrapper around the GTK function
+    /// [`DialogExtManual::set_alternative_button_order()`][crate::gtk::prelude::DialogExtManual::set_alternative_button_order()], except it won't
+    /// output a deprecation warning.
+    /// ## `order`
+    /// array of buttons' response ids.
     #[doc(alias = "gimp_dialog_set_alternative_button_order_from_array")]
     fn set_alternative_button_order_from_array(&self, order: &[i32]) {
         let n_buttons = order.len() as _;

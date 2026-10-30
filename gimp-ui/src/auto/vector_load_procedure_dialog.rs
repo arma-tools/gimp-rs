@@ -6,6 +6,11 @@
 use crate::{ffi, Dialog, ProcedureDialog};
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`ProcedureDialogExt`][trait@crate::prelude::ProcedureDialogExt], [`GimpDialogExt`][trait@crate::prelude::GimpDialogExt], [`trait@gtk::prelude::DialogExt`], [`trait@gtk::prelude::WindowExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpVectorLoadProcedureDialog")]
     pub struct VectorLoadProcedureDialog(Object<ffi::GimpVectorLoadProcedureDialog, ffi::GimpVectorLoadProcedureDialogClass>) @extends ProcedureDialog, Dialog, gtk::Dialog, gtk::Window, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 

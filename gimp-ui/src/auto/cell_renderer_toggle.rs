@@ -13,6 +13,185 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A `GtkCellRendererToggle` that displays icons instead of a checkbox.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `icon-name`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `icon-size`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `override-background`
+    ///  Readable | Writeable | Construct
+    /// <details><summary><h4>CellRendererToggle</h4></summary>
+    ///
+    ///
+    /// #### `activatable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `active`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `inconsistent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `indicator-size`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `radio`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>CellRenderer</h4></summary>
+    ///
+    ///
+    /// #### `cell-background`
+    ///  Writeable
+    ///
+    ///
+    /// #### `cell-background-gdk`
+    ///  Cell background as a `GdkColor`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `cell-background-rgba`
+    ///  Cell background as a [`gdk::RGBA`][crate::gdk::RGBA]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `cell-background-set`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `editing`
+    ///  Readable
+    ///
+    ///
+    /// #### `height`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `is-expanded`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `is-expander`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `mode`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `xalign`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `xpad`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `yalign`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `ypad`
+    ///  Readable | Writeable
+    /// </details>
+    ///
+    /// ## Signals
+    ///
+    ///
+    /// #### `clicked`
+    ///
+    /// <details><summary><h4>CellRendererToggle</h4></summary>
+    ///
+    ///
+    /// #### `toggled`
+    ///  The ::toggled signal is emitted when the cell is toggled.
+    ///
+    /// It is the responsibility of the application to update the model
+    /// with the correct value to store at `path`. Often this is simply the
+    /// opposite of the value currently stored at `path`.
+    ///
+    ///
+    /// </details>
+    /// <details><summary><h4>CellRenderer</h4></summary>
+    ///
+    ///
+    /// #### `editing-canceled`
+    ///  This signal gets emitted when the user cancels the process of editing a
+    /// cell. For example, an editable cell renderer could be written to cancel
+    /// editing when the user presses Escape.
+    ///
+    /// See also: [`CellRendererExtManual::stop_editing()`][crate::gtk::prelude::CellRendererExtManual::stop_editing()].
+    ///
+    ///
+    ///
+    ///
+    /// #### `editing-started`
+    ///  This signal gets emitted when a cell starts to be edited.
+    /// The intended use of this signal is to do special setup
+    /// on `editable`, e.g. adding a `GtkEntryCompletion` or setting
+    /// up additional columns in a [`gtk::ComboBox`][crate::gtk::ComboBox].
+    ///
+    /// See `gtk_cell_editable_start_editing()` for information on the lifecycle of
+    /// the `editable` and a way to do setup that doesn’t depend on the `renderer`.
+    ///
+    /// Note that GTK+ doesn't guarantee that cell renderers will
+    /// continue to use the same kind of widget for editing in future
+    /// releases, therefore you should check the type of `editable`
+    /// before doing any specific setup, as in the following example:
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// static void
+    /// text_editing_started (GtkCellRenderer *cell,
+    ///                       GtkCellEditable *editable,
+    ///                       const gchar     *path,
+    ///                       gpointer         data)
+    /// {
+    ///   if (GTK_IS_ENTRY (editable))
+    ///     {
+    ///       GtkEntry *entry = GTK_ENTRY (editable);
+    ///
+    ///       // ... create a GtkEntryCompletion
+    ///
+    ///       gtk_entry_set_completion (entry, completion);
+    ///     }
+    /// }
+    /// ```
+    ///
+    ///
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::CellRendererExt`], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpCellRendererToggle")]
     pub struct CellRendererToggle(Object<ffi::GimpCellRendererToggle, ffi::GimpCellRendererToggleClass>) @extends gtk::CellRenderer;
 
@@ -22,6 +201,17 @@ glib::wrapper! {
 }
 
 impl CellRendererToggle {
+    /// Creates a custom version of the `GtkCellRendererToggle`. Instead of
+    /// showing the standard toggle button, it shows a named icon if the
+    /// cell is active and no icon otherwise. This cell renderer is for
+    /// example used in the Layers treeview to indicate and control the
+    /// layer's visibility by showing `GIMP_STOCK_VISIBLE`.
+    /// ## `icon_name`
+    /// the icon name of the icon to use for the active state
+    ///
+    /// # Returns
+    ///
+    /// a new [`CellRendererToggle`][crate::CellRendererToggle]
     #[doc(alias = "gimp_cell_renderer_toggle_new")]
     pub fn new(icon_name: &str) -> CellRendererToggle {
         unsafe {
@@ -32,6 +222,11 @@ impl CellRendererToggle {
         }
     }
 
+    /// Emits the "clicked" signal from a [`CellRendererToggle`][crate::CellRendererToggle].
+    /// ## `path`
+    /// the path to the clicked row
+    /// ## `state`
+    /// the modifier state
     #[doc(alias = "gimp_cell_renderer_toggle_clicked")]
     pub fn clicked(&self, path: &str, state: gdk::ModifierType) {
         unsafe {

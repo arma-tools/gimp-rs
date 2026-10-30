@@ -7,21 +7,30 @@ use crate::ffi;
 use glib::{bitflags::bitflags, prelude::*, translate::*};
 
 bitflags! {
+    /// Options to control the format of the serialized XMP packet
+    /// Taken from: exiv2/src/xmp.hpp
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GExiv2XmpFormatFlags")]
     pub struct XmpFormatFlags: u32 {
+        /// Omit the XML packet wrapper.
         #[doc(alias = "GEXIV2_OMIT_PACKET_WRAPPER")]
         const OMIT_PACKET_WRAPPER = ffi::GEXIV2_OMIT_PACKET_WRAPPER as _;
+        /// Default is a writeable packet.
         #[doc(alias = "GEXIV2_READ_ONLY_PACKET")]
         const READ_ONLY_PACKET = ffi::GEXIV2_READ_ONLY_PACKET as _;
+        /// Use a compact form of RDF.
         #[doc(alias = "GEXIV2_USE_COMPACT_FORMAT")]
         const USE_COMPACT_FORMAT = ffi::GEXIV2_USE_COMPACT_FORMAT as _;
+        /// Include a padding allowance for a thumbnail image.
         #[doc(alias = "GEXIV2_INCLUDE_THUMBNAIL_PAD")]
         const INCLUDE_THUMBNAIL_PAD = ffi::GEXIV2_INCLUDE_THUMBNAIL_PAD as _;
+        /// The padding parameter is the overall packet length.
         #[doc(alias = "GEXIV2_EXACT_PACKET_LENGTH")]
         const EXACT_PACKET_LENGTH = ffi::GEXIV2_EXACT_PACKET_LENGTH as _;
+        /// Show aliases as XML comments.
         #[doc(alias = "GEXIV2_WRITE_ALIAS_COMMENTS")]
         const WRITE_ALIAS_COMMENTS = ffi::GEXIV2_WRITE_ALIAS_COMMENTS as _;
+        /// Omit all formatting whitespace.
         #[doc(alias = "GEXIV2_OMIT_ALL_FORMATTING")]
         const OMIT_ALL_FORMATTING = ffi::GEXIV2_OMIT_ALL_FORMATTING as _;
     }

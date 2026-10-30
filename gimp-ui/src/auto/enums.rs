@@ -6,14 +6,18 @@
 use crate::ffi;
 use glib::{prelude::*, translate::*};
 
+/// Aspect ratios.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpAspectType")]
 pub enum AspectType {
+    /// it's a 1:1 square
     #[doc(alias = "GIMP_ASPECT_SQUARE")]
     Square,
+    /// it's higher than it's wide
     #[doc(alias = "GIMP_ASPECT_PORTRAIT")]
     Portrait,
+    /// it's wider than it's high
     #[doc(alias = "GIMP_ASPECT_LANDSCAPE")]
     Landscape,
     #[doc(hidden)]
@@ -102,16 +106,21 @@ impl From<AspectType> for glib::Value {
     }
 }
 
+/// Possible chain positions for [`ChainButton`][crate::ChainButton].
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpChainPosition")]
 pub enum ChainPosition {
+    /// the chain is on top
     #[doc(alias = "GIMP_CHAIN_TOP")]
     Top,
+    /// the chain is to the left
     #[doc(alias = "GIMP_CHAIN_LEFT")]
     Left,
+    /// the chain is on bottom
     #[doc(alias = "GIMP_CHAIN_BOTTOM")]
     Bottom,
+    /// the chain is to the right
     #[doc(alias = "GIMP_CHAIN_RIGHT")]
     Right,
     #[doc(hidden)]
@@ -202,14 +211,18 @@ impl From<ChainPosition> for glib::Value {
     }
 }
 
+/// The types of transparency display for [`ColorArea`][crate::ColorArea].
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpColorAreaType")]
 pub enum ColorAreaType {
+    /// don't display transparency
     #[doc(alias = "GIMP_COLOR_AREA_FLAT")]
     Flat,
+    /// display transparency using small checks
     #[doc(alias = "GIMP_COLOR_AREA_SMALL_CHECKS")]
     SmallChecks,
+    /// display transparency using large checks
     #[doc(alias = "GIMP_COLOR_AREA_LARGE_CHECKS")]
     LargeChecks,
     #[doc(hidden)]
@@ -298,28 +311,40 @@ impl From<ColorAreaType> for glib::Value {
     }
 }
 
+/// An enum to specify the types of color channels edited in
+/// [`ColorSelector`][crate::ColorSelector] widgets.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpColorSelectorChannel")]
 pub enum ColorSelectorChannel {
+    /// the hue channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_HUE")]
     Hue,
+    /// the saturation channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_SATURATION")]
     Saturation,
+    /// the value channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_VALUE")]
     Value,
+    /// the red channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_RED")]
     Red,
+    /// the green channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_GREEN")]
     Green,
+    /// the blue channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_BLUE")]
     Blue,
+    /// the alpha channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_ALPHA")]
     Alpha,
+    /// the lightness channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_LCH_LIGHTNESS")]
     LchLightness,
+    /// the chroma channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_LCH_CHROMA")]
     LchChroma,
+    /// the hue channel
     #[doc(alias = "GIMP_COLOR_SELECTOR_LCH_HUE")]
     LchHue,
     #[doc(hidden)]
@@ -422,14 +447,19 @@ impl From<ColorSelectorChannel> for glib::Value {
     }
 }
 
+/// An enum to specify the types of color spaces edited in
+/// [`ColorSelector`][crate::ColorSelector] widgets.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpColorSelectorModel")]
 pub enum ColorSelectorModel {
+    /// RGB color model
     #[doc(alias = "GIMP_COLOR_SELECTOR_MODEL_RGB")]
     Rgb,
+    /// CIE LCh color model
     #[doc(alias = "GIMP_COLOR_SELECTOR_MODEL_LCH")]
     Lch,
+    /// HSV color model
     #[doc(alias = "GIMP_COLOR_SELECTOR_MODEL_HSV")]
     Hsv,
     #[doc(hidden)]
@@ -518,14 +548,19 @@ impl From<ColorSelectorModel> for glib::Value {
     }
 }
 
+/// Possible layouts for [`IntComboBox`][crate::IntComboBox].
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpIntComboBoxLayout")]
 pub enum IntComboBoxLayout {
+    /// show icons only
     #[doc(alias = "GIMP_INT_COMBO_BOX_LAYOUT_ICON_ONLY")]
     IconOnly,
+    /// show icons and abbreviated labels,
+    ///  when available
     #[doc(alias = "GIMP_INT_COMBO_BOX_LAYOUT_ABBREVIATED")]
     Abbreviated,
+    /// show icons and full labels
     #[doc(alias = "GIMP_INT_COMBO_BOX_LAYOUT_FULL")]
     Full,
     #[doc(hidden)]
@@ -614,22 +649,30 @@ impl From<IntComboBoxLayout> for glib::Value {
     }
 }
 
+/// The column types of [`IntStore`][crate::IntStore].
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpIntStoreColumns")]
 pub enum IntStoreColumns {
+    /// the integer value
     #[doc(alias = "GIMP_INT_STORE_VALUE")]
     Value,
+    /// a human-readable label
     #[doc(alias = "GIMP_INT_STORE_LABEL")]
     Label,
+    /// an abbreviated label
     #[doc(alias = "GIMP_INT_STORE_ABBREV")]
     Abbrev,
+    /// an icon name
     #[doc(alias = "GIMP_INT_STORE_ICON_NAME")]
     IconName,
+    /// a [`gdk_pixbuf::Pixbuf`][crate::gdk_pixbuf::Pixbuf]
     #[doc(alias = "GIMP_INT_STORE_PIXBUF")]
     Pixbuf,
+    /// arbitrary user data
     #[doc(alias = "GIMP_INT_STORE_USER_DATA")]
     UserData,
+    /// the number of columns
     #[doc(alias = "GIMP_INT_STORE_NUM_COLUMNS")]
     NumColumns,
     #[doc(hidden)]
@@ -672,12 +715,15 @@ impl FromGlib<ffi::GimpIntStoreColumns> for IntStoreColumns {
     }
 }
 
+/// Import targets for [`PageSelector`][crate::PageSelector].
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpPageSelectorTarget")]
 pub enum PageSelectorTarget {
+    /// import as layers of one image
     #[doc(alias = "GIMP_PAGE_SELECTOR_TARGET_LAYERS")]
     Layers,
+    /// import as separate images
     #[doc(alias = "GIMP_PAGE_SELECTOR_TARGET_IMAGES")]
     Images,
     #[doc(hidden)]
@@ -764,14 +810,18 @@ impl From<PageSelectorTarget> for glib::Value {
     }
 }
 
+/// Update policies for [`SizeEntry`][crate::SizeEntry].
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpSizeEntryUpdatePolicy")]
 pub enum SizeEntryUpdatePolicy {
+    /// the size entry's meaning is up to the user
     #[doc(alias = "GIMP_SIZE_ENTRY_UPDATE_NONE")]
     None,
+    /// the size entry displays values
     #[doc(alias = "GIMP_SIZE_ENTRY_UPDATE_SIZE")]
     Size,
+    /// the size entry displays resolutions
     #[doc(alias = "GIMP_SIZE_ENTRY_UPDATE_RESOLUTION")]
     Resolution,
     #[doc(hidden)]
@@ -860,10 +910,12 @@ impl From<SizeEntryUpdatePolicy> for glib::Value {
     }
 }
 
+/// Types of errors returned by libgimpwidgets functions
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpWidgetsError")]
 pub enum WidgetsError {
+    /// A parse error has occurred
     #[doc(alias = "GIMP_WIDGETS_PARSE_ERROR")]
     WidgetsParseError,
     #[doc(hidden)]
@@ -914,12 +966,15 @@ impl glib::error::ErrorDomain for WidgetsError {
     }
 }
 
+/// the zoom types for [`ZoomModel`][crate::ZoomModel].
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpZoomType")]
 pub enum ZoomType {
+    /// zoom in
     #[doc(alias = "GIMP_ZOOM_IN")]
     In,
+    /// zoom out
     #[doc(alias = "GIMP_ZOOM_OUT")]
     Out,
     #[doc(hidden)]

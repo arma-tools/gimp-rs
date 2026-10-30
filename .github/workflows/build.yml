@@ -47,6 +47,18 @@ jobs:
         timeout-minutes: 20
         run: tests/run-gimp-tests.sh
 
+      # As on docs.rs: all features (newer than the installed GIMP, DOCS_RS
+      # skips the pkg-config checks) and the nightly-only doc(cfg).
+      - name: Docs
+        env:
+          DOCS_RS: 1
+          RUSTC_BOOTSTRAP: 1
+          RUSTFLAGS: --cfg docsrs
+          RUSTDOCFLAGS: --cfg docsrs
+        run: >
+          cargo doc --workspace --locked --all-features --no-deps
+          --exclude gimp-rs-examples
+
   windows:
     name: Windows
     runs-on: windows-latest

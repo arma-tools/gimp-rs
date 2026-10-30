@@ -13,6 +13,29 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// An interface dealing with color profiles.
+    ///
+    /// ## Signals
+    ///
+    ///
+    /// #### `profile-changed`
+    ///
+    ///
+    ///
+    /// #### `simulation-bpc-changed`
+    ///
+    ///
+    ///
+    /// #### `simulation-intent-changed`
+    ///
+    ///
+    ///
+    /// #### `simulation-profile-changed`
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`ColorManagedExt`][trait@crate::prelude::ColorManagedExt]
     #[doc(alias = "GimpColorManaged")]
     pub struct ColorManaged(Interface<ffi::GimpColorManaged, ffi::GimpColorManagedInterface>);
 
@@ -25,7 +48,18 @@ impl ColorManaged {
     pub const NONE: Option<&'static ColorManaged> = None;
 }
 
+/// Trait containing all [`struct@ColorManaged`] methods.
+///
+/// # Implementors
+///
+/// [`ColorManaged`][struct@crate::ColorManaged]
 pub trait ColorManagedExt: IsA<ColorManaged> + 'static {
+    /// This function always returns a [`ColorProfile`][crate::ColorProfile] and falls back to
+    /// [`ColorProfile::new_rgb_srgb()`][crate::ColorProfile::new_rgb_srgb()] if the method is not implemented.
+    ///
+    /// # Returns
+    ///
+    /// The `self`'s [`ColorProfile`][crate::ColorProfile].
     #[doc(alias = "gimp_color_managed_get_color_profile")]
     #[doc(alias = "get_color_profile")]
     fn color_profile(&self) -> Option<ColorProfile> {
@@ -36,6 +70,11 @@ pub trait ColorManagedExt: IsA<ColorManaged> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// A blob of data that represents an ICC color
+    ///  profile.
     #[doc(alias = "gimp_color_managed_get_icc_profile")]
     #[doc(alias = "get_icc_profile")]
     fn icc_profile(&self) -> Vec<u8> {
@@ -52,6 +91,12 @@ pub trait ColorManagedExt: IsA<ColorManaged> + 'static {
         }
     }
 
+    /// This function always returns a gboolean representing whether
+    /// Black Point Compensation is enabled
+    ///
+    /// # Returns
+    ///
+    /// The `self`'s simulation Black Point Compensation value.
     #[doc(alias = "gimp_color_managed_get_simulation_bpc")]
     #[doc(alias = "get_simulation_bpc")]
     fn is_simulation_bpc(&self) -> bool {
@@ -62,6 +107,11 @@ pub trait ColorManagedExt: IsA<ColorManaged> + 'static {
         }
     }
 
+    /// This function always returns a [`ColorRenderingIntent`][crate::ColorRenderingIntent]
+    ///
+    /// # Returns
+    ///
+    /// The `self`'s simulation [`ColorRenderingIntent`][crate::ColorRenderingIntent].
     #[doc(alias = "gimp_color_managed_get_simulation_intent")]
     #[doc(alias = "get_simulation_intent")]
     fn simulation_intent(&self) -> ColorRenderingIntent {
@@ -72,6 +122,11 @@ pub trait ColorManagedExt: IsA<ColorManaged> + 'static {
         }
     }
 
+    /// This function always returns a [`ColorProfile`][crate::ColorProfile]
+    ///
+    /// # Returns
+    ///
+    /// The `self`'s simulation [`ColorProfile`][crate::ColorProfile].
     #[doc(alias = "gimp_color_managed_get_simulation_profile")]
     #[doc(alias = "get_simulation_profile")]
     fn simulation_profile(&self) -> Option<ColorProfile> {
@@ -82,6 +137,7 @@ pub trait ColorManagedExt: IsA<ColorManaged> + 'static {
         }
     }
 
+    /// Emits the "profile-changed" signal.
     #[doc(alias = "gimp_color_managed_profile_changed")]
     fn profile_changed(&self) {
         unsafe {
@@ -89,6 +145,7 @@ pub trait ColorManagedExt: IsA<ColorManaged> + 'static {
         }
     }
 
+    /// Emits the "simulation-bpc-changed" signal.
     #[doc(alias = "gimp_color_managed_simulation_bpc_changed")]
     fn simulation_bpc_changed(&self) {
         unsafe {
@@ -96,6 +153,7 @@ pub trait ColorManagedExt: IsA<ColorManaged> + 'static {
         }
     }
 
+    /// Emits the "simulation-intent-changed" signal.
     #[doc(alias = "gimp_color_managed_simulation_intent_changed")]
     fn simulation_intent_changed(&self) {
         unsafe {
@@ -103,6 +161,7 @@ pub trait ColorManagedExt: IsA<ColorManaged> + 'static {
         }
     }
 
+    /// Emits the "simulation-profile-changed" signal.
     #[doc(alias = "gimp_color_managed_simulation_profile_changed")]
     fn simulation_profile_changed(&self) {
         unsafe {

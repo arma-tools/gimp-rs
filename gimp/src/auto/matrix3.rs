@@ -7,6 +7,7 @@ use crate::ffi;
 use glib::translate::*;
 
 glib::wrapper! {
+    /// A three by three matrix.
     pub struct Matrix3(BoxedInline<ffi::GimpMatrix3>);
 
     match fn {
@@ -17,6 +18,25 @@ glib::wrapper! {
 }
 
 impl Matrix3 {
+    /// Applies the affine transformation given by six values to `self`.
+    /// The six values form define an affine transformation matrix as
+    /// illustrated below:
+    ///
+    ///  ( a c e )
+    ///  ( b d f )
+    ///  ( 0 0 1 )
+    /// ## `a`
+    /// the 'a' coefficient
+    /// ## `b`
+    /// the 'b' coefficient
+    /// ## `c`
+    /// the 'c' coefficient
+    /// ## `d`
+    /// the 'd' coefficient
+    /// ## `e`
+    /// the 'e' coefficient
+    /// ## `f`
+    /// the 'f' coefficient
     #[doc(alias = "gimp_matrix3_affine")]
     pub fn affine(&mut self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {
         unsafe {
@@ -24,6 +44,11 @@ impl Matrix3 {
         }
     }
 
+    /// Calculates the determinant of the given matrix.
+    ///
+    /// # Returns
+    ///
+    /// The determinant.
     #[doc(alias = "gimp_matrix3_determinant")]
     pub fn determinant(&self) -> f64 {
         unsafe { ffi::gimp_matrix3_determinant(self.to_glib_none().0) }
@@ -39,6 +64,7 @@ impl Matrix3 {
         }
     }
 
+    /// Sets the matrix to the identity matrix.
     #[doc(alias = "gimp_matrix3_identity")]
     pub fn identity(&mut self) {
         unsafe {
@@ -46,6 +72,7 @@ impl Matrix3 {
         }
     }
 
+    /// Inverts the given matrix.
     #[doc(alias = "gimp_matrix3_invert")]
     pub fn invert(&mut self) {
         unsafe {
@@ -53,26 +80,52 @@ impl Matrix3 {
         }
     }
 
+    /// Checks if the given matrix defines an affine transformation.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the matrix defines an affine transformation,
+    ///  [`false`] otherwise
     #[doc(alias = "gimp_matrix3_is_affine")]
     pub fn is_affine(&self) -> bool {
         unsafe { from_glib(ffi::gimp_matrix3_is_affine(self.to_glib_none().0)) }
     }
 
+    /// Checks if the given matrix is diagonal.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the matrix is diagonal, [`false`] otherwise
     #[doc(alias = "gimp_matrix3_is_diagonal")]
     pub fn is_diagonal(&self) -> bool {
         unsafe { from_glib(ffi::gimp_matrix3_is_diagonal(self.to_glib_none().0)) }
     }
 
+    /// Checks if the given matrix is the identity matrix.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the matrix is the identity matrix, [`false`] otherwise
     #[doc(alias = "gimp_matrix3_is_identity")]
     pub fn is_identity(&self) -> bool {
         unsafe { from_glib(ffi::gimp_matrix3_is_identity(self.to_glib_none().0)) }
     }
 
+    /// Checks if we'll need to interpolate when applying this matrix as
+    /// a transformation.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if all entries of the upper left 2x2 matrix are
+    ///  either 0 or 1, [`false`] otherwise
     #[doc(alias = "gimp_matrix3_is_simple")]
     pub fn is_simple(&self) -> bool {
         unsafe { from_glib(ffi::gimp_matrix3_is_simple(self.to_glib_none().0)) }
     }
 
+    /// Multiplies two matrices and puts the result into the second one.
+    /// ## `right`
+    /// The second input matrix which will be overwritten by the result.
     #[doc(alias = "gimp_matrix3_mult")]
     pub fn mult(&self, right: &mut Matrix3) {
         unsafe {
@@ -80,6 +133,9 @@ impl Matrix3 {
         }
     }
 
+    /// Rotates the matrix by theta degrees.
+    /// ## `theta`
+    /// The angle of rotation (in radians).
     #[doc(alias = "gimp_matrix3_rotate")]
     pub fn rotate(&mut self, theta: f64) {
         unsafe {
@@ -87,6 +143,11 @@ impl Matrix3 {
         }
     }
 
+    /// Scales the matrix by x and y
+    /// ## `x`
+    /// X scale factor.
+    /// ## `y`
+    /// Y scale factor.
     #[doc(alias = "gimp_matrix3_scale")]
     pub fn scale(&mut self, x: f64, y: f64) {
         unsafe {
@@ -94,6 +155,11 @@ impl Matrix3 {
         }
     }
 
+    /// Translates the matrix by x and y.
+    /// ## `x`
+    /// Translation in X direction.
+    /// ## `y`
+    /// Translation in Y direction.
     #[doc(alias = "gimp_matrix3_translate")]
     pub fn translate(&mut self, x: f64, y: f64) {
         unsafe {
@@ -101,6 +167,9 @@ impl Matrix3 {
         }
     }
 
+    /// Shears the matrix in the X direction.
+    /// ## `amount`
+    /// X shear amount.
     #[doc(alias = "gimp_matrix3_xshear")]
     pub fn xshear(&mut self, amount: f64) {
         unsafe {
@@ -108,6 +177,9 @@ impl Matrix3 {
         }
     }
 
+    /// Shears the matrix in the Y direction.
+    /// ## `amount`
+    /// Y shear amount.
     #[doc(alias = "gimp_matrix3_yshear")]
     pub fn yshear(&mut self, amount: f64) {
         unsafe {

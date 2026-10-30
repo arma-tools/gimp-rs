@@ -7,6 +7,20 @@ use crate::{ffi, Procedure};
 use glib::translate::*;
 
 glib::wrapper! {
+    /// Batch procedures implement an interpreter able to run commands as input.
+    ///
+    /// In particular, batch procedures will be available on the command line
+    /// through the `--batch-interpreter` option to switch the chosen interpreter.
+    /// Then any command given through the `--batch` option will have to be in the
+    /// chosen language.
+    ///
+    /// It makes GIMP usable on the command line, but also to process small scripts
+    /// (without making full-featured plug-ins), fully in command line without
+    /// graphical interface.
+    ///
+    /// # Implements
+    ///
+    /// [`ProcedureExt`][trait@crate::prelude::ProcedureExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpBatchProcedure")]
     pub struct BatchProcedure(Object<ffi::GimpBatchProcedure, ffi::GimpBatchProcedureClass>) @extends Procedure;
 
@@ -16,6 +30,12 @@ glib::wrapper! {
 }
 
 impl BatchProcedure {
+    /// Returns the procedure's interpreter name, as set with
+    /// [`set_interpreter_name()`][Self::set_interpreter_name()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's interpreter name.
     #[doc(alias = "gimp_batch_procedure_get_interpreter_name")]
     #[doc(alias = "get_interpreter_name")]
     pub fn interpreter_name(&self) -> Option<glib::GString> {
@@ -26,6 +46,27 @@ impl BatchProcedure {
         }
     }
 
+    /// Associates an interpreter name with a batch procedure.
+    ///
+    /// This name can be used for any public-facing strings, such as
+    /// graphical interface labels or command line usage. E.g. the command
+    /// line interface could list all available interface, displaying both a
+    /// procedure name and a "pretty printing" title.
+    ///
+    /// Note that since the format name is public-facing, it is recommended
+    /// to localize it at runtime, for instance through gettext, like:
+    ///
+    /// **⚠️ The following code is in c ⚠️**
+    ///
+    /// ```c
+    /// gimp_batch_procedure_set_interpreter_name (procedure, _("Python 3"));
+    /// ```
+    ///
+    /// Some language would indeed localize even some technical terms or
+    /// acronyms, even if sometimes just to rewrite them with the local
+    /// writing system.
+    /// ## `interpreter_name`
+    /// A public-facing name for the interpreter, e.g. "Python 3".
     #[doc(alias = "gimp_batch_procedure_set_interpreter_name")]
     pub fn set_interpreter_name(&self, interpreter_name: &str) {
         unsafe {

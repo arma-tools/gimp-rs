@@ -8,6 +8,11 @@ use glib::{prelude::*, translate::*};
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`IntComboBoxExt`][trait@crate::prelude::IntComboBoxExt], [`trait@gtk::prelude::ComboBoxExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpPathComboBox")]
     pub struct PathComboBox(Object<ffi::GimpPathComboBox>) @extends IntComboBox, gtk::ComboBox, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -17,6 +22,23 @@ glib::wrapper! {
 }
 
 impl PathComboBox {
+    /// Creates a new [`IntComboBox`][crate::IntComboBox] filled with all currently opened
+    /// path objects. If a `constraint` function is specified, it is called for
+    /// each path object and only if the function returns [`true`], the path
+    /// object is added to the combobox.
+    ///
+    /// You should use `gimp_int_combo_box_connect()` to initialize and connect
+    /// the combo. Use [`IntComboBoxExt::set_active()`][crate::prelude::IntComboBoxExt::set_active()] to set the active
+    /// path ID and [`IntComboBoxExt::active()`][crate::prelude::IntComboBoxExt::active()] to retrieve the ID
+    /// of the selected path object.
+    /// ## `constraint`
+    /// A `GimpItemConstraintFunc` or [`None`]
+    /// ## `data_destroy`
+    /// Destroy function for `data`
+    ///
+    /// # Returns
+    ///
+    /// a new [`IntComboBox`][crate::IntComboBox].
     #[doc(alias = "gimp_path_combo_box_new")]
     pub fn new(
         constraint: Option<Box_<dyn Fn(&gimp::Image, &gimp::Item) -> bool + 'static>>,

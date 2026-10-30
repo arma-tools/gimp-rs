@@ -11,6 +11,7 @@ Babl-0.1.gir and Gegl-0.4.gir are taken from gegl-rs and are not touched here,
 so the types match the published babl-sys/gegl-sys crates.
 """
 
+import re
 import shutil
 import sys
 import xml.etree.ElementTree as ET
@@ -27,9 +28,11 @@ for prefix, uri in NS.items():
 
 CORE = "{%s}" % NS["core"]
 C = "{%s}" % NS["c"]
+GLIB = "{%s}" % NS["glib"]
 
 HERE = Path(__file__).resolve().parent
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("/usr/share/gir-1.0")
+GIR_DIRS = [HERE, HERE.parent / "gir-files"]
 
 
 def parents(root):
@@ -54,8 +57,137 @@ def remove_callables_with_untyped_params(root):
                     break
 
 
+class Namespace:
+    """The C names of the items of a GIR namespace."""
+
+    def __init__(self, root):
+        ns = root.find("core:namespace", NS)
+        self.name = ns.get("name")
+        self.includes = {i.get("name"): i.get("version") for i in root.findall("core:include", NS)}
+        self.types = {}  # name -> C type
+        self.c_types = {}  # C type -> name
+        self.callables = {}  # (type name or None, name) -> C function
+        self.members = {}  # (enum name, member name) -> C identifier
+        self.constants = {}  # name -> C identifier
+        for el in ns:
+            name = el.get("name")
+            if el.tag == CORE + "constant":
+                self.constants[name] = el.get(C + "type")
+            elif el.tag == CORE + "function":
+                self.callables[(None, name)] = el.get(C + "identifier")
+            elif name:
+                ctype = el.get(C + "type") or el.get(GLIB + "type-name")
+                if ctype:
+                    self.types[name] = ctype
+                    self.c_types[ctype] = name
+                for child in el:
+                    if child.tag in (CORE + "method", CORE + "constructor", CORE + "function"):
+                        self.callables[(name, child.get("name"))] = child.get(C + "identifier")
+                    elif child.tag == CORE + "member":
+                        self.members[(name, child.get("name"))] = child.get(C + "identifier")
+
+
+class Namespaces:
+    """The namespace being fixed and, loaded on demand, the ones it includes
+    (directly or indirectly)."""
+
+    def __init__(self, root):
+        self.current = Namespace(root)
+        self.loaded = {self.current.name: self.current}
+        self.versions = dict(self.current.includes)
+
+    def get(self, name):
+        if name in self.loaded:
+            return self.loaded[name]
+        ns = None
+        version = self.versions.get(name)
+        if version:
+            for d in GIR_DIRS:
+                path = d / f"{name}-{version}.gir"
+                if path.exists():
+                    ns = Namespace(ET.parse(path).getroot())
+                    for n, v in ns.includes.items():
+                        self.versions.setdefault(n, v)
+                    break
+        self.loaded[name] = ns
+        return ns
+
+
+GI_DOCGEN_LINK = re.compile(
+    r"\[(alias|callback|class|const|ctor|enum|error|flags|func|id|iface|method|property|signal|struct|type|vfunc)@([\w.:-]+)(?:#[\w-]+)?\]"
+)
+
+
+def gi_docgen_to_gtk_doc(namespaces, kind, target):
+    """Converts a gi-docgen link to the gtk-doc syntax, e.g.
+    `[method@Gimp.Image.get_width]` to `gimp_image_get_width()`."""
+    member = None
+    if "::" in target:
+        target, member = target.split("::", 1)
+        member = "::" + member
+    elif ":" in target:
+        target, member = target.split(":", 1)
+        member = ":" + member
+
+    parts = target.split(".")
+    ns = namespaces.current
+    if len(parts) > 1:
+        other = namespaces.get(parts[0])
+        if other:
+            ns = other
+            parts = parts[1:]
+    # Some links use the C type name, like [vfunc@GimpPlugIn.quit].
+    parts[0] = ns.c_types.get(parts[0], parts[0])
+
+    converted = None
+    if kind in ("property", "signal") and len(parts) == 1 and parts[0] in ns.types:
+        converted = f"#{ns.types[parts[0]]}{member}"
+    elif kind in ("method", "ctor", "func"):
+        key = (parts[0], parts[1]) if len(parts) == 2 else (None, parts[0])
+        if ns.callables.get(key):
+            converted = f"{ns.callables[key]}()"
+    elif kind == "const":
+        converted = ns.constants.get(parts[0]) and f"%{ns.constants[parts[0]]}"
+    elif kind == "id":
+        converted = f"{target}()"
+    elif len(parts) == 1:
+        converted = ns.types.get(parts[0]) and f"#{ns.types[parts[0]]}"
+    elif len(parts) == 2 and kind in ("enum", "flags", "error"):
+        member_id = ns.members.get((parts[0], parts[1].lower()))
+        converted = member_id and f"%{member_id}"
+
+    if converted:
+        return converted
+    # Unbound, like vfuncs: as code, without the broken link.
+    suffix = "()" if kind in ("method", "ctor", "func", "vfunc") else ""
+    return f"`{target}{member or ''}{suffix}`"
+
+
+def convert_gi_docgen_links(root):
+    """The GIMP and GExiv2 docs mix gtk-doc (`#GimpImage`, `@param`) and
+    gi-docgen (`[class@Gimp.Image]`) syntax, but the GIR files declare neither
+    (`<doc:format name="unknown"/>`). gir then only understands gtk-doc, so
+    the gi-docgen links are converted to it."""
+    namespaces = Namespaces(root)
+    for tag in ("doc", "doc-deprecated"):
+        for doc in root.iter(CORE + tag):
+            if doc.text:
+                doc.text = GI_DOCGEN_LINK.sub(
+                    lambda m: gi_docgen_to_gtk_doc(namespaces, m[1], m[2]), doc.text
+                )
+
+
+ULINK = re.compile(r'<ulink url="([^"]+)">(.*?)</ulink>', re.S)
+
+
 def fix_gexiv2(root):
     remove_callables_with_untyped_params(root)
+    convert_gi_docgen_links(root)
+
+    # DocBook links, to markdown.
+    for doc in root.iter(CORE + "doc"):
+        if doc.text:
+            doc.text = ULINK.sub(lambda m: f"[{m[2]}]({m[1]})" if m[2] else f"<{m[1]}>", doc.text)
 
 
 CONSTANT_VALUES = {
@@ -110,6 +242,11 @@ def fix_gimp(root):
                 t.set("name", "ProcedureSensitivityMask")
                 t.set(C + "type", "GimpProcedureSensitivityMask")
 
+    # The out string is the procedure's own (`const gchar**`), but lacks a
+    # `(transfer none)` annotation, so g-ir-scanner assumes transfer full.
+    for p in root.findall("core:namespace/core:class[@name='FileProcedure']/core:method[@name='get_meta']/core:parameters/core:parameter[@name='meta_extensions']", NS):
+        p.set("transfer-ownership", "none")
+
     # g-ir-scanner cannot evaluate macros built on G_PARAM_USER_SHIFT and
     # emits wrong values. These are the values the C compiler computes (the
     # gimp-sys ABI test `cross_validate_constants_with_c` checks them).
@@ -120,6 +257,8 @@ def fix_gimp(root):
     # Types from these headers are part of the GIR but not reachable via
     # libgimp/gimp.h; the ABI tests of gimp-sys need them.
     add_c_includes(root, ["libgimpmodule/gimpmodule.h", "libgimpbase/gimpparasiteio.h"])
+
+    convert_gi_docgen_links(root)
 
 
 def add_c_includes(root, headers):
@@ -136,6 +275,8 @@ def fix_gimp_ui(root):
     for pkg in root.findall("core:package", NS):
         if pkg.get("name") == "gimp-ui-3.0":
             pkg.set("name", "gimpui-3.0")
+
+    convert_gi_docgen_links(root)
 
 
 FILES = {

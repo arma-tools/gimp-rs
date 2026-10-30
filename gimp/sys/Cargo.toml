@@ -2,6 +2,9 @@
 name = "gimp-sys"
 version = "0.1.0"
 description = "GIMP 3 (libgimp) FFI bindings"
+readme = "README.md"
+keywords = ["gimp", "ffi", "plugin", "gegl", "glib"]
+categories = ["external-ffi-bindings", "multimedia::images"]
 build = "build.rs"
 
 [package.edition]
@@ -11,6 +14,9 @@ workspace = true
 workspace = true
 
 [package.license]
+workspace = true
+
+[package.repository]
 workspace = true
 
 [package.metadata.system-deps.gimp_3_0]

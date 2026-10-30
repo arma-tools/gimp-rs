@@ -7,6 +7,11 @@ use crate::{ffi, ConfigInterface, GradientSegmentColor, GradientSegmentType, Res
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// Installable object used by the gradient rendering tool.
+    ///
+    /// # Implements
+    ///
+    /// [`ResourceExt`][trait@crate::prelude::ResourceExt], [`trait@glib::ObjectExt`], [`ConfigInterfaceExt`][trait@crate::prelude::ConfigInterfaceExt]
     #[doc(alias = "GimpGradient")]
     pub struct Gradient(Object<ffi::GimpGradient, ffi::GimpGradientClass>) @extends Resource, @implements ConfigInterface;
 
@@ -16,11 +21,35 @@ glib::wrapper! {
 }
 
 impl Gradient {
+    /// Creates a new gradient
+    ///
+    /// Creates a new gradient having no segments.
+    /// ## `name`
+    /// The requested name of the new gradient.
+    ///
+    /// # Returns
+    ///
+    /// The gradient.
     #[doc(alias = "gimp_gradient_new")]
     pub fn new(name: &str) -> Gradient {
         unsafe { from_glib_none(ffi::gimp_gradient_new(name.to_glib_none().0)) }
     }
 
+    /// Sample the gradient in custom positions.
+    ///
+    /// Samples the color of the gradient at positions from a list. The left
+    /// endpoint of the gradient corresponds to position 0.0, and the right
+    /// endpoint corresponds to 1.0. Returns a list of colors, one for each
+    /// sample.
+    /// ## `positions`
+    /// The list of positions to sample along the gradient.
+    /// ## `reverse`
+    /// Use the reverse gradient.
+    ///
+    /// # Returns
+    ///
+    /// Color samples.
+    ///  The returned value must be freed with `gimp_color_array_free()`.
     #[doc(alias = "gimp_gradient_get_custom_samples")]
     #[doc(alias = "get_custom_samples")]
     pub fn custom_samples(&self, positions: &[f64], reverse: bool) -> Vec<gegl::Color> {
@@ -35,12 +64,36 @@ impl Gradient {
         }
     }
 
+    /// Gets the number of segments of the gradient
+    ///
+    /// Gets the number of segments of the gradient
+    ///
+    /// # Returns
+    ///
+    /// Number of segments.
     #[doc(alias = "gimp_gradient_get_number_of_segments")]
     #[doc(alias = "get_number_of_segments")]
     pub fn number_of_segments(&self) -> i32 {
         unsafe { ffi::gimp_gradient_get_number_of_segments(self.to_glib_none().0) }
     }
 
+    /// Sample the gradient in uniform parts.
+    ///
+    /// Samples colors uniformly across the gradient. It returns a list of
+    /// colors for each sample. The minimum number of samples to take is 2,
+    /// in which case the returned colors will correspond to the `{ 0.0, 1.0
+    /// }` positions in the gradient. For example, if the number of samples
+    /// is 3, the procedure will return the colors at positions `{ 0.0, 0.5,
+    /// 1.0 }`.
+    /// ## `num_samples`
+    /// The number of samples to take.
+    /// ## `reverse`
+    /// Use the reverse gradient.
+    ///
+    /// # Returns
+    ///
+    /// Color samples.
+    ///  The returned value must be freed with `gimp_color_array_free()`.
     #[doc(alias = "gimp_gradient_get_uniform_samples")]
     #[doc(alias = "get_uniform_samples")]
     pub fn uniform_samples(&self, num_samples: i32, reverse: bool) -> Vec<gegl::Color> {
@@ -53,6 +106,19 @@ impl Gradient {
         }
     }
 
+    /// Gets the gradient segment's blending function
+    ///
+    /// Gets the blending function of the segment at the index.
+    /// Returns an error when the segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `blend_func`
+    /// The blending function of the segment.
     #[doc(alias = "gimp_gradient_segment_get_blending_function")]
     pub fn segment_get_blending_function(&self, segment: i32) -> Option<GradientSegmentType> {
         unsafe {
@@ -70,6 +136,19 @@ impl Gradient {
         }
     }
 
+    /// Gets the gradient segment's coloring type
+    ///
+    /// Gets the coloring type of the segment at the index.
+    /// Returns an error when the segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `coloring_type`
+    /// The coloring type of the segment.
     #[doc(alias = "gimp_gradient_segment_get_coloring_type")]
     pub fn segment_get_coloring_type(&self, segment: i32) -> Option<GradientSegmentColor> {
         unsafe {
@@ -87,6 +166,16 @@ impl Gradient {
         }
     }
 
+    /// Gets the left endpoint color of the segment
+    ///
+    /// Gets the left endpoint color of the indexed segment of the gradient.
+    /// Returns an error when the segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    ///
+    /// # Returns
+    ///
+    /// The return color.
     #[doc(alias = "gimp_gradient_segment_get_left_color")]
     pub fn segment_get_left_color(&self, segment: i32) -> Option<gegl::Color> {
         unsafe {
@@ -97,6 +186,20 @@ impl Gradient {
         }
     }
 
+    /// Gets the left endpoint position of a segment
+    ///
+    /// Gets the position of the left endpoint of the segment of the
+    /// gradient.
+    /// Returns an error when the segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `pos`
+    /// The return position.
     #[doc(alias = "gimp_gradient_segment_get_left_pos")]
     pub fn segment_get_left_pos(&self, segment: i32) -> Option<f64> {
         unsafe {
@@ -114,6 +217,19 @@ impl Gradient {
         }
     }
 
+    /// Gets the midpoint position of the segment
+    ///
+    /// Gets the position of the midpoint of the segment of the gradient.
+    /// Returns an error when the segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `pos`
+    /// The return position.
     #[doc(alias = "gimp_gradient_segment_get_middle_pos")]
     pub fn segment_get_middle_pos(&self, segment: i32) -> Option<f64> {
         unsafe {
@@ -131,6 +247,17 @@ impl Gradient {
         }
     }
 
+    /// Gets the right endpoint color of the segment
+    ///
+    /// Gets the color of the right endpoint color of the segment of the
+    /// gradient.
+    /// Returns an error when the segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    ///
+    /// # Returns
+    ///
+    /// The return color.
     #[doc(alias = "gimp_gradient_segment_get_right_color")]
     pub fn segment_get_right_color(&self, segment: i32) -> Option<gegl::Color> {
         unsafe {
@@ -141,6 +268,20 @@ impl Gradient {
         }
     }
 
+    /// Gets the right endpoint position of the segment
+    ///
+    /// Gets the position of the right endpoint of the segment of the
+    /// gradient.
+    /// Returns an error when the segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `pos`
+    /// The return position.
     #[doc(alias = "gimp_gradient_segment_get_right_pos")]
     pub fn segment_get_right_pos(&self, segment: i32) -> Option<f64> {
         unsafe {
@@ -158,6 +299,20 @@ impl Gradient {
         }
     }
 
+    /// Blend the colors of the segment range.
+    ///
+    /// Blends the colors (but not the opacity) of the range of segments.
+    /// The colors' transition will then be uniform across the range.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_blend_colors")]
     pub fn segment_range_blend_colors(&self, start_segment: i32, end_segment: i32) -> bool {
         unsafe {
@@ -169,6 +324,20 @@ impl Gradient {
         }
     }
 
+    /// Blend the opacity of the segment range.
+    ///
+    /// Blends the opacity (but not the colors) of the range of segments.
+    /// The opacity's transition will then be uniform across the range.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_blend_opacity")]
     pub fn segment_range_blend_opacity(&self, start_segment: i32, end_segment: i32) -> bool {
         unsafe {
@@ -180,6 +349,19 @@ impl Gradient {
         }
     }
 
+    /// Delete the segment range
+    ///
+    /// Deletes a range of segments.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable. Deleting all the segments is undefined behavior.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_delete")]
     pub fn segment_range_delete(&self, start_segment: i32, end_segment: i32) -> bool {
         unsafe {
@@ -191,6 +373,21 @@ impl Gradient {
         }
     }
 
+    /// Flip the segment range
+    ///
+    /// Reverses the order of segments in a range, and swaps the left and
+    /// right colors in each segment. As if the range as a 1D line were
+    /// rotated in a plane.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_flip")]
     pub fn segment_range_flip(&self, start_segment: i32, end_segment: i32) -> bool {
         unsafe {
@@ -202,6 +399,25 @@ impl Gradient {
         }
     }
 
+    /// Move the position of an entire segment range by a delta.
+    ///
+    /// Moves the position of an entire segment range by a delta. The actual
+    /// delta (which is returned) will be limited by the control points of
+    /// the neighboring segments.
+    /// Returns the actual delta. Returns an error when a segment index is
+    /// out of range, or gradient is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    /// ## `delta`
+    /// The delta to move the segment range.
+    /// ## `control_compress`
+    /// Whether or not to compress the neighboring segments.
+    ///
+    /// # Returns
+    ///
+    /// The final delta by which the range moved.
     #[doc(alias = "gimp_gradient_segment_range_move")]
     pub fn segment_range_move(
         &self,
@@ -221,6 +437,21 @@ impl Gradient {
         }
     }
 
+    /// Uniformly redistribute the segment range's handles
+    ///
+    /// Redistributes the handles of the segment range of the gradient, so
+    /// they'll be evenly spaced. A handle is where two segments meet.
+    /// Segments will then have the same width.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_redistribute_handles")]
     pub fn segment_range_redistribute_handles(&self, start_segment: i32, end_segment: i32) -> bool {
         unsafe {
@@ -232,6 +463,23 @@ impl Gradient {
         }
     }
 
+    /// Replicate the segment range
+    ///
+    /// Replicates a segment range a given number of times. Instead of the
+    /// original segment range, several smaller scaled copies of it will
+    /// appear in equal widths.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    /// ## `replicate_times`
+    /// The number of replicas for each segment.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_replicate")]
     pub fn segment_range_replicate(
         &self,
@@ -249,6 +497,21 @@ impl Gradient {
         }
     }
 
+    /// Sets the blending function of a range of segments
+    ///
+    /// Sets the blending function of a range of segments.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    /// ## `blending_function`
+    /// The blending function.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_set_blending_function")]
     pub fn segment_range_set_blending_function(
         &self,
@@ -266,6 +529,21 @@ impl Gradient {
         }
     }
 
+    /// Sets the coloring type of a range of segments
+    ///
+    /// Sets the coloring type of a range of segments.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    /// ## `coloring_type`
+    /// The coloring type.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_set_coloring_type")]
     pub fn segment_range_set_coloring_type(
         &self,
@@ -283,6 +561,19 @@ impl Gradient {
         }
     }
 
+    /// Splits each segment in the segment range at midpoint
+    ///
+    /// Splits each segment in the segment range at its midpoint.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_split_midpoint")]
     pub fn segment_range_split_midpoint(&self, start_segment: i32, end_segment: i32) -> bool {
         unsafe {
@@ -294,6 +585,22 @@ impl Gradient {
         }
     }
 
+    /// Splits each segment in the segment range uniformly
+    ///
+    /// Splits each segment in the segment range uniformly into to the
+    /// number of parts given.
+    /// Returns an error when a segment index is out of range, or gradient
+    /// is not editable.
+    /// ## `start_segment`
+    /// Index of the first segment to operate on.
+    /// ## `end_segment`
+    /// Index of the last segment to operate on. If negative, the range will extend to the end segment.
+    /// ## `split_parts`
+    /// The number of uniform divisions to split each segment to.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_range_split_uniform")]
     pub fn segment_range_split_uniform(
         &self,
@@ -311,6 +618,21 @@ impl Gradient {
         }
     }
 
+    /// Sets the left endpoint color of a segment
+    ///
+    /// Sets the color of the left endpoint the indexed segment of the
+    /// gradient. The alpha channel of the [`gegl::Color`][crate::gegl::Color] is taken into
+    /// account.
+    /// Returns an error when gradient is not editable or index is out of
+    /// range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    /// ## `color`
+    /// The color to set.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_set_left_color")]
     pub fn segment_set_left_color(&self, segment: i32, color: &impl IsA<gegl::Color>) -> bool {
         unsafe {
@@ -322,6 +644,24 @@ impl Gradient {
         }
     }
 
+    /// Sets the left endpoint position of the segment
+    ///
+    /// Sets the position of the left endpoint of the segment of the
+    /// gradient. The final position will be the given fraction from the
+    /// midpoint to the left to the midpoint of the current segment.
+    /// Returns the final position. Returns an error when gradient is not
+    /// editable or segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    /// ## `pos`
+    /// The position to set the guidepoint to.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `final_pos`
+    /// The return position.
     #[doc(alias = "gimp_gradient_segment_set_left_pos")]
     pub fn segment_set_left_pos(&self, segment: i32, pos: f64) -> Option<f64> {
         unsafe {
@@ -340,6 +680,24 @@ impl Gradient {
         }
     }
 
+    /// Sets the midpoint position of the segment
+    ///
+    /// Sets the midpoint position of the segment of the gradient. The final
+    /// position will be the given fraction between the two endpoints of the
+    /// segment.
+    /// Returns the final position. Returns an error when gradient is not
+    /// editable or segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    /// ## `pos`
+    /// The position to set the guidepoint to.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `final_pos`
+    /// The return position.
     #[doc(alias = "gimp_gradient_segment_set_middle_pos")]
     pub fn segment_set_middle_pos(&self, segment: i32, pos: f64) -> Option<f64> {
         unsafe {
@@ -358,6 +716,20 @@ impl Gradient {
         }
     }
 
+    /// Sets the right endpoint color of the segment
+    ///
+    /// Sets the right endpoint color of the segment of the gradient. The
+    /// alpha channel of the [`gegl::Color`][crate::gegl::Color] is taken into account.
+    /// Returns an error when gradient is not editable or segment index is
+    /// out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    /// ## `color`
+    /// The color to set.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_gradient_segment_set_right_color")]
     pub fn segment_set_right_color(&self, segment: i32, color: &impl IsA<gegl::Color>) -> bool {
         unsafe {
@@ -369,6 +741,24 @@ impl Gradient {
         }
     }
 
+    /// Sets the right endpoint position of the segment
+    ///
+    /// Sets the right endpoint position of the segment of the gradient. The
+    /// final position will be the given fraction from the midpoint of the
+    /// current segment to the midpoint of the segment to the right.
+    /// Returns the final position. Returns an error when gradient is not
+    /// editable or segment index is out of range.
+    /// ## `segment`
+    /// The index of a segment within the gradient.
+    /// ## `pos`
+    /// The position to set the right endpoint to.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `final_pos`
+    /// The return position.
     #[doc(alias = "gimp_gradient_segment_set_right_pos")]
     pub fn segment_set_right_pos(&self, segment: i32, pos: f64) -> Option<f64> {
         unsafe {
@@ -387,6 +777,16 @@ impl Gradient {
         }
     }
 
+    /// Returns the gradient with the given name.
+    ///
+    /// Returns an existing gradient having the given name. Returns [`None`]
+    /// when no gradient exists of that name.
+    /// ## `name`
+    /// The name of the gradient.
+    ///
+    /// # Returns
+    ///
+    /// The gradient.
     #[doc(alias = "gimp_gradient_get_by_name")]
     #[doc(alias = "get_by_name")]
     pub fn by_name(name: &str) -> Option<Gradient> {

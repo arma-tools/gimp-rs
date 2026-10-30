@@ -2,6 +2,9 @@
 name = "gimp-ui-sys"
 version = "0.1.0"
 description = "GIMP 3 (libgimpui) FFI bindings"
+readme = "README.md"
+keywords = ["gimp", "ffi", "plugin", "gtk", "gui"]
+categories = ["external-ffi-bindings", "gui"]
 build = "build.rs"
 
 [package.edition]
@@ -11,6 +14,9 @@ workspace = true
 workspace = true
 
 [package.license]
+workspace = true
+
+[package.repository]
 workspace = true
 
 [package.metadata.system-deps.gimpui_3_0]

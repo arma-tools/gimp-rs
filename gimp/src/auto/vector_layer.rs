@@ -13,6 +13,11 @@ use glib::prelude::*;
 use glib::translate::*;
 
 glib::wrapper! {
+    /// Functions for querying and manipulating vector layers.
+    ///
+    /// # Implements
+    ///
+    /// [`LayerExt`][trait@crate::prelude::LayerExt], [`DrawableExt`][trait@crate::prelude::DrawableExt], [`ItemExt`][trait@crate::prelude::ItemExt], [`trait@glib::ObjectExt`], [`RasterizableExt`][trait@crate::prelude::RasterizableExt]
     #[doc(alias = "GimpVectorLayer")]
     pub struct VectorLayer(Object<ffi::GimpVectorLayer, ffi::GimpVectorLayerClass>) @extends Layer, Drawable, Item, @implements Rasterizable;
 
@@ -22,6 +27,28 @@ glib::wrapper! {
 }
 
 impl VectorLayer {
+    /// Create a new vector layer.
+    ///
+    /// This procedure creates a new vector layer displaying the specified
+    /// `path`. By default, the fill and stroke properties will be defined by
+    /// the context.
+    ///
+    /// The new layer still needs to be added to the image as this is not
+    /// automatic. Add the new layer with the [`Image::insert_layer()`][crate::Image::insert_layer()]
+    /// method.
+    ///
+    /// The arguments are kept as simple as necessary for the basic case.
+    /// All vector attributes, however, can be modified with the appropriate
+    /// `gimp_vector_layer_set_*()` procedures.
+    /// ## `image`
+    /// The image.
+    /// ## `path`
+    /// The path to create the layer from.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The new vector layer. The object belongs to libgimp and you should not free it.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_new")]
@@ -34,6 +61,14 @@ impl VectorLayer {
         }
     }
 
+    /// Check if fill is enabled in the vector layer.
+    ///
+    /// This procedure checks if fill is enabled in the specified vector
+    /// layer.
+    ///
+    /// # Returns
+    ///
+    /// If the fill is enabled on the vector layer.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_enable_fill")]
@@ -46,6 +81,14 @@ impl VectorLayer {
         }
     }
 
+    /// Check if stroke is enabled in the vector layer.
+    ///
+    /// This procedure checks if stroke is enabled in the specified vector
+    /// layer.
+    ///
+    /// # Returns
+    ///
+    /// If the stroke is enabled on the vector layer.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_enable_stroke")]
@@ -58,6 +101,17 @@ impl VectorLayer {
         }
     }
 
+    /// Get the color of the fill in a vector layer.
+    ///
+    /// This procedure returns the color of the fill in a vector layer.
+    ///
+    /// Note that there won't be both a fill color and pattern, so either
+    /// this procedure or [`fill_pattern()`][Self::fill_pattern()] will
+    /// return [`None`] at any given time.
+    ///
+    /// # Returns
+    ///
+    /// The color of the fill.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_fill_color")]
@@ -66,6 +120,17 @@ impl VectorLayer {
         unsafe { from_glib_full(ffi::gimp_vector_layer_get_fill_color(self.to_glib_none().0)) }
     }
 
+    /// Get the pattern of the fill in a vector layer.
+    ///
+    /// This procedure returns the pattern of the fill in a vector layer.
+    ///
+    /// Note that there won't be both a fill color and pattern, so either
+    /// this procedure or [`fill_color()`][Self::fill_color()] will
+    /// return [`None`] at any given time.
+    ///
+    /// # Returns
+    ///
+    /// The pattern of the fill.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_fill_pattern")]
@@ -78,6 +143,14 @@ impl VectorLayer {
         }
     }
 
+    /// Gets the path from the vector layer if one is associated with it.
+    ///
+    /// This procedure returns the path from the vector layer if one is
+    /// associated with it.
+    ///
+    /// # Returns
+    ///
+    /// The path associated with the vector layer.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_path")]
@@ -86,6 +159,13 @@ impl VectorLayer {
         unsafe { from_glib_none(ffi::gimp_vector_layer_get_path(self.to_glib_none().0)) }
     }
 
+    /// Get the stroke cap style of a vector layer.
+    ///
+    /// This procedure returns the stroke cap style in a vector layer.
+    ///
+    /// # Returns
+    ///
+    /// The stroke cap style.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_stroke_cap_style")]
@@ -98,6 +178,17 @@ impl VectorLayer {
         }
     }
 
+    /// Get the color of the stroke in a vector layer.
+    ///
+    /// This procedure returns the color of the stroke in a vector layer.
+    ///
+    /// Note that there won't be both a stroke color and pattern, so either
+    /// this procedure or [`stroke_pattern()`][Self::stroke_pattern()] will
+    /// return [`None`] at any given time.
+    ///
+    /// # Returns
+    ///
+    /// The color of the stroke.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_stroke_color")]
@@ -110,6 +201,13 @@ impl VectorLayer {
         }
     }
 
+    /// Get the stroke dash offset of a vector layer.
+    ///
+    /// This procedure returns the stroke dash offset in a vector layer.
+    ///
+    /// # Returns
+    ///
+    /// The stroke dash offset.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_stroke_dash_offset")]
@@ -118,6 +216,16 @@ impl VectorLayer {
         unsafe { ffi::gimp_vector_layer_get_stroke_dash_offset(self.to_glib_none().0) }
     }
 
+    /// Get the stroke dash pattern of a vector layer.
+    ///
+    /// This procedure returns the stroke dash pattern in a vector layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
+    ///
+    /// ## `dashes`
+    /// The stroke dash pattern array.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_stroke_dash_pattern")]
@@ -142,6 +250,13 @@ impl VectorLayer {
         }
     }
 
+    /// Get the stroke join style of a vector layer.
+    ///
+    /// This procedure returns the stroke join style in a vector layer.
+    ///
+    /// # Returns
+    ///
+    /// The stroke join style.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_stroke_join_style")]
@@ -154,6 +269,13 @@ impl VectorLayer {
         }
     }
 
+    /// Get the stroke miter limit of a vector layer.
+    ///
+    /// This procedure returns the stroke miter limit in a vector layer.
+    ///
+    /// # Returns
+    ///
+    /// The stroke miter limit.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_stroke_miter_limit")]
@@ -162,6 +284,17 @@ impl VectorLayer {
         unsafe { ffi::gimp_vector_layer_get_stroke_miter_limit(self.to_glib_none().0) }
     }
 
+    /// Get the pattern of the stroke in a vector layer.
+    ///
+    /// This procedure returns the pattern of the fill in a vector layer.
+    ///
+    /// Note that there won't be both a stroke color and pattern, so either
+    /// this procedure or [`stroke_color()`][Self::stroke_color()] will
+    /// return [`None`] at any given time.
+    ///
+    /// # Returns
+    ///
+    /// The pattern of the fill.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_stroke_pattern")]
@@ -174,6 +307,13 @@ impl VectorLayer {
         }
     }
 
+    /// Get the stroke width of a vector layer.
+    ///
+    /// This procedure returns the stroke width in a vector layer.
+    ///
+    /// # Returns
+    ///
+    /// The stroke width.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_stroke_width")]
@@ -182,6 +322,13 @@ impl VectorLayer {
         unsafe { ffi::gimp_vector_layer_get_stroke_width(self.to_glib_none().0) }
     }
 
+    /// Get the stroke width unit of a vector layer.
+    ///
+    /// This procedure returns the stroke width unit in a vector layer.
+    ///
+    /// # Returns
+    ///
+    /// The stroke width unit.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_get_stroke_width_unit")]
@@ -194,6 +341,14 @@ impl VectorLayer {
         }
     }
 
+    /// Rerender the vector layer
+    ///
+    /// This procedure causes the vector layer to refresh itself after
+    /// changes.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_refresh")]
@@ -201,6 +356,16 @@ impl VectorLayer {
         unsafe { from_glib(ffi::gimp_vector_layer_refresh(self.to_glib_none().0)) }
     }
 
+    /// Set whether the fill is enabled on the vector layer.
+    ///
+    /// This procedure sets the fill's visibility in the vector layer
+    /// 'layer'.
+    /// ## `enable_fill`
+    /// Whether to enable the fill on the vector layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_enable_fill")]
@@ -213,6 +378,16 @@ impl VectorLayer {
         }
     }
 
+    /// Set whether the stroke is enabled on the vector layer.
+    ///
+    /// This procedure sets the stroke's visibility in the vector layer
+    /// 'layer'.
+    /// ## `enable_stroke`
+    /// Whether to enable the stroke on the vector layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_enable_stroke")]
@@ -225,6 +400,15 @@ impl VectorLayer {
         }
     }
 
+    /// Set the color of the fill in the vector layer.
+    ///
+    /// This procedure sets the fill color in the vector layer 'layer'.
+    /// ## `color`
+    /// The color to use for the fill.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_fill_color")]
@@ -237,6 +421,15 @@ impl VectorLayer {
         }
     }
 
+    /// Set the stroke cap style of a vector layer.
+    ///
+    /// This procedure sets the stroke cap style in a vector layer.
+    /// ## `cap_style`
+    /// The stroke cap style.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_stroke_cap_style")]
@@ -249,6 +442,15 @@ impl VectorLayer {
         }
     }
 
+    /// Set the color of the stroke in the vector layer.
+    ///
+    /// This procedure sets the stroke color in the vector layer 'layer'.
+    /// ## `color`
+    /// The color to use for the stroke.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_stroke_color")]
@@ -261,6 +463,15 @@ impl VectorLayer {
         }
     }
 
+    /// Set the stroke dash offset of a vector layer.
+    ///
+    /// This procedure sets the stroke dash offset in a vector layer.
+    /// ## `dash_offset`
+    /// The stroke dash offset.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_stroke_dash_offset")]
@@ -273,6 +484,15 @@ impl VectorLayer {
         }
     }
 
+    /// Set the stroke dash pattern of a vector layer.
+    ///
+    /// This procedure sets the stroke dash pattern in a vector layer.
+    /// ## `dashes`
+    /// The line dash pattern setting.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_stroke_dash_pattern")]
@@ -287,6 +507,15 @@ impl VectorLayer {
         }
     }
 
+    /// Set the stroke join style of a vector layer.
+    ///
+    /// This procedure sets the stroke join style in a vector layer.
+    /// ## `join_style`
+    /// The stroke join style.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_stroke_join_style")]
@@ -299,6 +528,15 @@ impl VectorLayer {
         }
     }
 
+    /// Set the stroke miter limit of a vector layer.
+    ///
+    /// This procedure sets the stroke miter limit in a vector layer.
+    /// ## `miter`
+    /// The stroke miter limit.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_stroke_miter_limit")]
@@ -311,6 +549,15 @@ impl VectorLayer {
         }
     }
 
+    /// Set the stroke width of a vector layer.
+    ///
+    /// This procedure sets the stroke width in a vector layer.
+    /// ## `width`
+    /// The stroke width.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_stroke_width")]
@@ -323,6 +570,15 @@ impl VectorLayer {
         }
     }
 
+    /// Set the stroke width unit of a vector layer.
+    ///
+    /// This procedure sets the stroke width unit in a vector layer.
+    /// ## `unit`
+    /// The stroke width unit.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_vector_layer_set_stroke_width_unit")]
@@ -335,6 +591,18 @@ impl VectorLayer {
         }
     }
 
+    /// Returns a [`VectorLayer`][crate::VectorLayer] representing `layer_id`. This function calls
+    /// [`Item::by_id()`][crate::Item::by_id()] and returns the item if it is layer or [`None`]
+    /// otherwise.
+    /// ## `layer_id`
+    /// The layer id.
+    ///
+    /// # Returns
+    ///
+    /// a [`VectorLayer`][crate::VectorLayer] for `layer_id` or
+    ///  [`None`] if `layer_id` does not represent a valid layer. The
+    ///  object belongs to libgimp and you must not modify or unref
+    ///  it.
     #[doc(alias = "gimp_vector_layer_get_by_id")]
     #[doc(alias = "get_by_id")]
     pub fn by_id(layer_id: i32) -> Option<VectorLayer> {

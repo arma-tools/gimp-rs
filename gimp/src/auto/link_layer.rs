@@ -12,6 +12,11 @@ use crate::{ffi, Drawable, Item, Layer, Rasterizable};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// Functions for querying and manipulating link layers.
+    ///
+    /// # Implements
+    ///
+    /// [`LayerExt`][trait@crate::prelude::LayerExt], [`DrawableExt`][trait@crate::prelude::DrawableExt], [`ItemExt`][trait@crate::prelude::ItemExt], [`trait@glib::ObjectExt`], [`RasterizableExt`][trait@crate::prelude::RasterizableExt]
     #[doc(alias = "GimpLinkLayer")]
     pub struct LinkLayer(Object<ffi::GimpLinkLayer, ffi::GimpLinkLayerClass>) @extends Layer, Drawable, Item, @implements Rasterizable;
 
@@ -21,6 +26,26 @@ glib::wrapper! {
 }
 
 impl LinkLayer {
+    /// Create a new link layer.
+    ///
+    /// This procedure creates a link layer monitoring the specified `file`.
+    ///
+    /// The new layer still needs to be added to the image as this is not
+    /// automatic. Add the new layer with the [`Image::insert_layer()`][crate::Image::insert_layer()]
+    /// method.
+    ///
+    /// The arguments are kept as simple as necessary for the basic case.
+    /// All link attributes, however, can be modified with the appropriate
+    /// `gimp_link_layer_set_*()` procedures.
+    /// ## `image`
+    /// The image.
+    /// ## `file`
+    /// The file this link layer will monitor.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The new link layer. The object belongs to libgimp and you should not free it.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_link_layer_new")]
@@ -33,6 +58,13 @@ impl LinkLayer {
         }
     }
 
+    /// Get the monitored file.
+    ///
+    /// This procedure returns the file which is being monitored.
+    ///
+    /// # Returns
+    ///
+    /// The monitored file.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_link_layer_get_file")]
@@ -41,6 +73,22 @@ impl LinkLayer {
         unsafe { from_glib_full(ffi::gimp_link_layer_get_file(self.to_glib_none().0)) }
     }
 
+    /// Get the mime type of the monitored file.
+    ///
+    /// This procedure returns the mime type of the file which is being
+    /// monitored by `self`.
+    ///
+    /// Note that this will be the real mime type, corresponding to our
+    /// format support, as returned by the [`LoadProcedure`][crate::LoadProcedure] which
+    /// actually performs the external image file import.
+    ///
+    /// This function may also return [`None`] in case of error (for instance
+    /// if the external file doesn't exist anymore).
+    ///
+    /// # Returns
+    ///
+    /// The mime type of the monitored file.
+    ///  The returned value must be freed with `g_free()`.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_link_layer_get_mime_type")]
@@ -49,6 +97,16 @@ impl LinkLayer {
         unsafe { from_glib_full(ffi::gimp_link_layer_get_mime_type(self.to_glib_none().0)) }
     }
 
+    /// Set the monitored file.
+    ///
+    /// This procedure sets the file to be monitored. It may change the
+    /// layer's render.
+    /// ## `file`
+    /// The file to monitor.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_link_layer_set_file")]
@@ -61,6 +119,18 @@ impl LinkLayer {
         }
     }
 
+    /// Returns a [`LinkLayer`][crate::LinkLayer] representing `layer_id`. This function calls
+    /// [`Item::by_id()`][crate::Item::by_id()] and returns the item if it is a link
+    /// layer or [`None`] otherwise.
+    /// ## `layer_id`
+    /// The layer id.
+    ///
+    /// # Returns
+    ///
+    /// a [`LinkLayer`][crate::LinkLayer] for `layer_id` or
+    ///  [`None`] if `layer_id` does not represent a valid link layer. The
+    ///  object belongs to libgimp and you must not modify or unref
+    ///  it.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_link_layer_get_by_id")]

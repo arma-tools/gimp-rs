@@ -12,6 +12,27 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A class holding generic export options.
+    ///
+    /// Note: right now, GIMP does not provide any generic export option to
+    /// manipulate, and there is practically no reason for you to create this
+    /// object yourself. In Export PDB procedure, or again in functions such
+    /// as [`file_save()`][crate::file_save()], you may just pass [`None`].
+    ///
+    /// In the future, this object will enable to pass various generic
+    /// options, such as ability to crop or resize images at export time.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `capabilities`
+    ///  What [`ExportCapabilities`][crate::ExportCapabilities] are supported.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpExportOptions")]
     pub struct ExportOptions(Object<ffi::GimpExportOptions, ffi::GimpExportOptionsClass>);
 
@@ -21,10 +42,12 @@ glib::wrapper! {
 }
 
 impl ExportOptions {
+    /// What [`ExportCapabilities`][crate::ExportCapabilities] are supported.
     pub fn capabilities(&self) -> ExportCapabilities {
         ObjectExt::property(self, "capabilities")
     }
 
+    /// What [`ExportCapabilities`][crate::ExportCapabilities] are supported.
     pub fn set_capabilities(&self, capabilities: ExportCapabilities) {
         ObjectExt::set_property(self, "capabilities", capabilities)
     }

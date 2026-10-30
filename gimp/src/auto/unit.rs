@@ -7,6 +7,38 @@ use crate::ffi;
 use glib::translate::*;
 
 glib::wrapper! {
+    /// Provides operations on units, a collection of predefined units and
+    /// functions to create new units.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `abbreviation`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `digits`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `factor`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `id`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `symbol`
+    ///  Readable | Writeable | Construct Only
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpUnit")]
     pub struct Unit(Object<ffi::GimpUnit, ffi::GimpUnitClass>);
 
@@ -16,6 +48,26 @@ glib::wrapper! {
 }
 
 impl Unit {
+    /// Creates a new unit.
+    ///
+    /// This procedure creates a new unit and returns it. Note that the new
+    /// unit will have it's deletion flag set to TRUE, so you will have to
+    /// set it to FALSE with [`set_deletion_flag()`][Self::set_deletion_flag()] to make it
+    /// persistent.
+    /// ## `name`
+    /// The new unit's name.
+    /// ## `factor`
+    /// The new unit's factor.
+    /// ## `digits`
+    /// The new unit's digits.
+    /// ## `symbol`
+    /// The new unit's symbol.
+    /// ## `abbreviation`
+    /// The new unit's abbreviation.
+    ///
+    /// # Returns
+    ///
+    /// The new unit.
     #[doc(alias = "gimp_unit_new")]
     pub fn new(name: &str, factor: f64, digits: i32, symbol: &str, abbreviation: &str) -> Unit {
         unsafe {
@@ -29,64 +81,164 @@ impl Unit {
         }
     }
 
+    /// This function returns the abbreviation of the unit (e.g. "in" for
+    /// inches).
+    /// It can be used as a short label for the unit in the interface.
+    /// For long labels, use [`name()`][Self::name()].
+    ///
+    /// NOTE: This string must not be changed or freed.
+    ///
+    /// # Returns
+    ///
+    /// The unit's abbreviation.
     #[doc(alias = "gimp_unit_get_abbreviation")]
     #[doc(alias = "get_abbreviation")]
     pub fn abbreviation(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::gimp_unit_get_abbreviation(self.to_glib_none().0)) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The unit's `deletion_flag`.
     #[doc(alias = "gimp_unit_get_deletion_flag")]
     #[doc(alias = "get_deletion_flag")]
     pub fn is_deletion_flag(&self) -> bool {
         unsafe { from_glib(ffi::gimp_unit_get_deletion_flag(self.to_glib_none().0)) }
     }
 
+    /// Returns the number of digits set for `self`.
+    /// Built-in units' accuracy is approximately the same as an inch with
+    /// two digits. User-defined units can suggest a different accuracy.
+    ///
+    /// Note: the value is as-set by defaults or by the user and does not
+    /// necessary provide enough precision on high-resolution units.
+    /// When the information is needed for a specific unit, the use of
+    /// [`scaled_digits()`][Self::scaled_digits()] may be more appropriate.
+    ///
+    /// Returns 0 for `self` == GIMP_UNIT_PIXEL.
+    ///
+    /// # Returns
+    ///
+    /// The suggested number of digits.
     #[doc(alias = "gimp_unit_get_digits")]
     #[doc(alias = "get_digits")]
     pub fn digits(&self) -> i32 {
         unsafe { ffi::gimp_unit_get_digits(self.to_glib_none().0) }
     }
 
+    /// A [`Unit`][crate::Unit]'s `factor` is defined to be:
+    ///
+    /// distance_in_units == (`factor` * distance_in_inches)
+    ///
+    /// Returns 0 for `self` == GIMP_UNIT_PIXEL.
+    ///
+    /// # Returns
+    ///
+    /// The unit's factor.
     #[doc(alias = "gimp_unit_get_factor")]
     #[doc(alias = "get_factor")]
     pub fn factor(&self) -> f64 {
         unsafe { ffi::gimp_unit_get_factor(self.to_glib_none().0) }
     }
 
+    /// The ID can be used to retrieve the unit with [`by_id()`][Self::by_id()].
+    ///
+    /// Note that this ID will be stable within a single session of GIMP, but
+    /// you should not expect this ID to stay the same across multiple runs.
+    ///
+    /// # Returns
+    ///
+    /// The unit's ID.
     #[doc(alias = "gimp_unit_get_id")]
     #[doc(alias = "get_id")]
     pub fn id(&self) -> i32 {
         unsafe { ffi::gimp_unit_get_id(self.to_glib_none().0) }
     }
 
+    /// This function returns the usual name of the unit (e.g. "inches").
+    /// It can be used as the long label for the unit in the interface.
+    /// For short labels, use [`abbreviation()`][Self::abbreviation()].
+    ///
+    /// NOTE: This string must not be changed or freed.
+    ///
+    /// # Returns
+    ///
+    /// The unit's name.
     #[doc(alias = "gimp_unit_get_name")]
     #[doc(alias = "get_name")]
     pub fn name(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::gimp_unit_get_name(self.to_glib_none().0)) }
     }
 
+    /// Returns the number of digits a `self` field should provide to get
+    /// enough accuracy so that every pixel position shows a different
+    /// value from neighboring pixels.
+    ///
+    /// Note: when needing digit accuracy to display a diagonal distance,
+    /// the `resolution` may not correspond to the unit's horizontal or
+    /// vertical resolution, but instead to the result of:
+    /// `distance_in_pixel / distance_in_inch`.
+    /// ## `resolution`
+    /// the resolution in PPI.
+    ///
+    /// # Returns
+    ///
+    /// The suggested number of digits.
     #[doc(alias = "gimp_unit_get_scaled_digits")]
     #[doc(alias = "get_scaled_digits")]
     pub fn scaled_digits(&self, resolution: f64) -> i32 {
         unsafe { ffi::gimp_unit_get_scaled_digits(self.to_glib_none().0, resolution) }
     }
 
+    /// This is e.g. "''" for UNIT_INCH.
+    ///
+    /// NOTE: This string must not be changed or freed.
+    ///
+    /// # Returns
+    ///
+    /// The unit's symbol.
     #[doc(alias = "gimp_unit_get_symbol")]
     #[doc(alias = "get_symbol")]
     pub fn symbol(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::gimp_unit_get_symbol(self.to_glib_none().0)) }
     }
 
+    /// Returns whether the unit is built-in.
+    ///
+    /// This procedure returns `self` is a built-in unit. In particular the
+    /// deletion flag cannot be set on built-in units.
+    ///
+    /// # Returns
+    ///
+    /// Whether `self` is built-in.
     #[doc(alias = "gimp_unit_is_built_in")]
     pub fn is_built_in(&self) -> bool {
         unsafe { from_glib(ffi::gimp_unit_is_built_in(self.to_glib_none().0)) }
     }
 
+    /// Checks if the given `self` is metric. A simplistic test is used
+    /// that looks at the unit's factor and checks if it is 2.54 multiplied
+    /// by some common powers of 10. Currently it checks for mm, cm, dm, m.
+    ///
+    /// See also: [`factor()`][Self::factor()]
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the `self` is metric.
     #[doc(alias = "gimp_unit_is_metric")]
     pub fn is_metric(&self) -> bool {
         unsafe { from_glib(ffi::gimp_unit_is_metric(self.to_glib_none().0)) }
     }
 
+    /// Sets a [`Unit`][crate::Unit]'s `deletion_flag`. If the `deletion_flag` of a unit is
+    /// [`true`] when GIMP exits, this unit will not be saved in the users's
+    /// "unitrc" file.
+    ///
+    /// Trying to change the `deletion_flag` of a built-in unit will be silently
+    /// ignored.
+    /// ## `deletion_flag`
+    /// The new deletion_flag.
     #[doc(alias = "gimp_unit_set_deletion_flag")]
     pub fn set_deletion_flag(&self, deletion_flag: bool) {
         unsafe {
@@ -94,6 +246,23 @@ impl Unit {
         }
     }
 
+    /// The `format` string supports the following percent expansions:
+    ///
+    /// * ``n``: Name (long label)
+    /// * ``a``: Abbreviation (short label)
+    /// * `%%`: Literal percent
+    /// * ``f``: Factor (how many units make up an inch)
+    /// * ``y``: Symbol (e.g. `''` for `GIMP_UNIT_INCH`)
+    /// ## `format`
+    /// A printf-like format string which is used to create the unit
+    ///  string.
+    /// ## `unit`
+    /// A unit.
+    ///
+    /// # Returns
+    ///
+    /// A newly allocated string with above percent
+    ///  expressions replaced with the resp. strings for `unit`.
     #[doc(alias = "gimp_unit_format_string")]
     pub fn format_string(format: &str, unit: &Unit) -> Option<glib::GString> {
         unsafe {
@@ -104,37 +273,94 @@ impl Unit {
         }
     }
 
+    /// Returns the unique [`Unit`][crate::Unit] object corresponding to `unit_id`,
+    /// which is the integer identifier as returned by [`id()`][Self::id()].
+    /// ## `unit_id`
+    /// The unit id.
+    ///
+    /// # Returns
+    ///
+    /// the [`Unit`][crate::Unit] object with ID `unit_id`.
     #[doc(alias = "gimp_unit_get_by_id")]
     #[doc(alias = "get_by_id")]
     pub fn by_id(unit_id: i32) -> Option<Unit> {
         unsafe { from_glib_none(ffi::gimp_unit_get_by_id(unit_id)) }
     }
 
+    /// Returns the unique object representing inch unit.
+    ///
+    /// This procedure returns the unit representing inch. The returned
+    /// object is unique across the whole run.
+    ///
+    /// # Returns
+    ///
+    /// The unique inch unit.
     #[doc(alias = "gimp_unit_inch")]
     pub fn inch() -> Option<Unit> {
         unsafe { from_glib_none(ffi::gimp_unit_inch()) }
     }
 
+    /// Returns the unique object representing millimeter unit.
+    ///
+    /// This procedure returns the unit representing millimeter. The
+    /// returned object is unique across the whole run.
+    ///
+    /// # Returns
+    ///
+    /// The unique millimeter unit.
     #[doc(alias = "gimp_unit_mm")]
     pub fn mm() -> Option<Unit> {
         unsafe { from_glib_none(ffi::gimp_unit_mm()) }
     }
 
+    /// Returns the unique object representing percent dimensions relatively
+    /// to an image.
+    ///
+    /// This procedure returns the unit representing typographical points.
+    /// The returned object is unique across the whole run.
+    ///
+    /// # Returns
+    ///
+    /// The unique percent unit.
     #[doc(alias = "gimp_unit_percent")]
     pub fn percent() -> Option<Unit> {
         unsafe { from_glib_none(ffi::gimp_unit_percent()) }
     }
 
+    /// Returns the unique object representing Pica unit.
+    ///
+    /// This procedure returns the unit representing Picas.
+    /// The returned object is unique across the whole run.
+    ///
+    /// # Returns
+    ///
+    /// The unique pica unit.
     #[doc(alias = "gimp_unit_pica")]
     pub fn pica() -> Option<Unit> {
         unsafe { from_glib_none(ffi::gimp_unit_pica()) }
     }
 
+    /// Returns the unique object representing pixel unit.
+    ///
+    /// This procedure returns the unit representing pixel. The returned
+    /// object is unique across the whole run.
+    ///
+    /// # Returns
+    ///
+    /// The unique pixel unit.
     #[doc(alias = "gimp_unit_pixel")]
     pub fn pixel() -> Option<Unit> {
         unsafe { from_glib_none(ffi::gimp_unit_pixel()) }
     }
 
+    /// Returns the unique object representing typographical point unit.
+    ///
+    /// This procedure returns the unit representing typographical points.
+    /// The returned object is unique across the whole run.
+    ///
+    /// # Returns
+    ///
+    /// The unique point unit.
     #[doc(alias = "gimp_unit_point")]
     pub fn point() -> Option<Unit> {
         unsafe { from_glib_none(ffi::gimp_unit_point()) }

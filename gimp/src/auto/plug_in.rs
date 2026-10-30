@@ -7,6 +7,81 @@ use crate::{ffi, PDBErrorHandler, Procedure};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// The base class for plug-ins to derive from.
+    ///
+    /// GimpPlugIn manages the plug-in's [`Procedure`][crate::Procedure] objects. The procedures a
+    /// plug-in implements are registered with GIMP by returning a list of their
+    /// names from either ``GimpPlugIn.query_procedures()`` or
+    /// ``GimpPlugIn.init_procedures()``.
+    ///
+    /// Every GIMP plug-in has to be implemented as a subclass and make it known to
+    /// the libgimp infrastructure and the main GIMP application by passing its
+    /// `GType` to `MAIN()`.
+    ///
+    /// `MAIN()` passes the 'argc' and 'argv' of the platform's `main()` function,
+    /// along with the `GType`, to [`main()`][crate::main()], which creates an instance of the
+    /// plug-in's `GimpPlugIn` subclass and calls its virtual functions, depending
+    /// on how the plug-in was called by GIMP.
+    ///
+    /// There are 3 different ways GIMP calls a plug-in: "query", "init" and "run".
+    ///
+    /// The plug-in is called in "query" mode once after it was installed, or when
+    /// the cached plug-in information in the config file "pluginrc" needs to be
+    /// recreated. In "query" mode, ``GimpPlugIn.query_procedures()`` is called
+    /// and returns a list of procedure names the plug-in implements. This is the
+    /// "normal" place to register procedures, because the existence of most
+    /// procedures doesn't depend on things that change between GIMP sessions.
+    ///
+    /// The plug-in is called in "init" mode at each GIMP startup, and
+    /// ``PlugIn.init_procedures()`` is called and returns a list of procedure
+    /// names this plug-in implements. This only happens if the plug-in actually
+    /// implements ``GimpPlugIn.init_procedures()``. A plug-in only needs to
+    /// implement init_procedures if the existence of its procedures can change
+    /// between GIMP sessions, for example if they depend on the presence of
+    /// external tools, or hardware like scanners, or online services, or whatever
+    /// variable circumstances.
+    ///
+    /// In order to register the plug-in's procedures with the main GIMP application
+    /// in the plug-in's "query" and "init" modes, [`PlugIn`][crate::PlugIn] calls
+    /// ``PlugIn.create_procedure()`` on all procedure names in the exact order of
+    /// the list returned by ``PlugIn.query_procedures()`` or
+    /// ``PlugIn.init_procedures()`` and then registers the returned
+    /// [`Procedure`][crate::Procedure].
+    ///
+    /// The plug-in is called in "run" mode whenever one of the procedures it
+    /// implements is called by either the main GIMP application or any other
+    /// plug-in. In "run" mode, one of the procedure names returned by
+    /// ``PlugIn.query_procedures()`` or ``PlugIn.init_procedures()`` is passed
+    /// to ``PlugIn.create_procedure()`` which must return a [`Procedure`][crate::Procedure] for
+    /// the passed name. The procedure is then executed by calling
+    /// `gimp_procedure_run()`.
+    ///
+    /// In any of the three modes, ``PlugIn.quit()`` is called before the plug-in
+    /// process exits, so the plug-in can perform whatever cleanup necessary.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `program-name`
+    ///  The program name as usually found on argv[0]
+    ///
+    /// Writeable | Construct Only
+    ///
+    ///
+    /// #### `read-channel`
+    ///  The `GIOChannel` to read from GIMP
+    ///
+    /// Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `write-channel`
+    ///  The `GIOChannel` to write to GIMP
+    ///
+    /// Readable | Writeable | Construct Only
+    ///
+    /// # Implements
+    ///
+    /// [`PlugInExt`][trait@crate::prelude::PlugInExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpPlugIn")]
     pub struct PlugIn(Object<ffi::GimpPlugIn, ffi::GimpPlugInClass>);
 
@@ -18,6 +93,26 @@ glib::wrapper! {
 impl PlugIn {
     pub const NONE: Option<&'static PlugIn> = None;
 
+    /// Returns the default top directory for GIMP plug-ins and modules. If
+    /// the environment variable GIMP3_PLUGINDIR exists, that is used. It
+    /// should be an absolute pathname. Otherwise, on Unix the compile-time
+    /// defined directory is used. On Windows, the installation directory
+    /// as deduced from the executable's full filename is used.
+    ///
+    /// Note that the actual directories used for GIMP plug-ins and modules
+    /// can be overridden by the user in the preferences dialog.
+    ///
+    /// In config files such as gimprc, the string ${gimp_plug_in_dir}
+    /// expands to this directory.
+    ///
+    /// The returned string is owned by GIMP and must not be modified or
+    /// freed. The returned string is in the encoding used for filenames by
+    /// GLib, which isn't necessarily UTF-8. (On Windows it always is
+    /// UTF-8.)
+    ///
+    /// # Returns
+    ///
+    /// The top directory for GIMP plug_ins and modules.
     #[doc(alias = "gimp_plug_in_directory")]
     pub fn directory() -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::gimp_plug_in_directory()) }
@@ -28,13 +123,39 @@ impl PlugIn {
     //    unsafe { TODO: call ffi:gimp_plug_in_directory_file() }
     //}
 
+    /// Generic `GQuark` error domain for plug-ins. Plug-ins are welcome to
+    /// create their own domain when they want to handle advanced error
+    /// handling. Often, you just want to pass an error message to the core.
+    /// This domain can be used for such simple usage.
+    ///
+    /// See [`glib::Error`][crate::glib::Error] for information on error domains.
     #[doc(alias = "gimp_plug_in_error_quark")]
     pub fn error_quark() -> glib::Quark {
         unsafe { from_glib(ffi::gimp_plug_in_error_quark()) }
     }
 }
 
+/// Trait containing all [`struct@PlugIn`] methods.
+///
+/// # Implementors
+///
+/// [`PlugIn`][struct@crate::PlugIn]
 pub trait PlugInExt: IsA<PlugIn> + 'static {
+    /// Add a new sub-menu to the GIMP menus.
+    ///
+    /// This function installs a sub-menu which does not belong to any
+    /// procedure at the location `menu_path`.
+    ///
+    /// For translations of `menu_label` to work properly, `menu_label`
+    /// should only be marked for translation but passed to this function
+    /// untranslated, for example using N_("Submenu"). GIMP will look up
+    /// the translation in the textdomain registered for the plug-in.
+    ///
+    /// See also: [`ProcedureExt::add_menu_path()`][crate::prelude::ProcedureExt::add_menu_path()].
+    /// ## `menu_path`
+    /// The sub-menu's menu path.
+    /// ## `menu_label`
+    /// The menu label of the sub-menu.
     #[doc(alias = "gimp_plug_in_add_menu_branch")]
     fn add_menu_branch(&self, menu_path: &str, menu_label: &str) {
         unsafe {
@@ -46,6 +167,24 @@ pub trait PlugInExt: IsA<PlugIn> + 'static {
         }
     }
 
+    /// This function adds a temporary procedure to `self`. It is usually
+    /// called from a [`PDBProcType::Persistent`][crate::PDBProcType::Persistent] procedure's
+    /// ``Procedure.run()``.
+    ///
+    /// A temporary procedure is a procedure which is only available while
+    /// one of your plug-in's "real" procedures is running.
+    ///
+    /// The procedure's type _must_ be
+    /// [`PDBProcType::Temporary`][crate::PDBProcType::Temporary] or the function will fail.
+    ///
+    /// NOTE: Normally, plug-in communication is triggered by the plug-in
+    /// and the GIMP core only responds to the plug-in's requests. You must
+    /// explicitly enable receiving of temporary procedure run requests
+    /// using either [`persistent_enable()`][Self::persistent_enable()] or
+    /// [`persistent_process()`][Self::persistent_process()]. See their respective
+    /// documentation for details.
+    /// ## `procedure`
+    /// A [`Procedure`][crate::Procedure] of type [`PDBProcType::Temporary`][crate::PDBProcType::Temporary].
     #[doc(alias = "gimp_plug_in_add_temp_procedure")]
     fn add_temp_procedure(&self, procedure: &impl IsA<Procedure>) {
         unsafe {
@@ -56,6 +195,15 @@ pub trait PlugInExt: IsA<PlugIn> + 'static {
         }
     }
 
+    /// Retrieves the active error handler for procedure calls.
+    ///
+    /// This procedure retrieves the currently active error handler for
+    /// procedure calls made by the calling plug-in. See
+    /// `gimp_plugin_set_pdb_error_handler()` for details.
+    ///
+    /// # Returns
+    ///
+    /// Who is responsible for handling procedure call errors.
     #[doc(alias = "gimp_plug_in_get_pdb_error_handler")]
     #[doc(alias = "get_pdb_error_handler")]
     fn pdb_error_handler(&self) -> PDBErrorHandler {
@@ -66,6 +214,14 @@ pub trait PlugInExt: IsA<PlugIn> + 'static {
         }
     }
 
+    /// This function retrieves a temporary procedure from `self` by the
+    /// procedure's `procedure_name`.
+    /// ## `procedure_name`
+    /// The name of a [`Procedure`][crate::Procedure] added to `self`.
+    ///
+    /// # Returns
+    ///
+    /// The procedure if registered, or [`None`].
     #[doc(alias = "gimp_plug_in_get_temp_procedure")]
     #[doc(alias = "get_temp_procedure")]
     fn temp_procedure(&self, procedure_name: &str) -> Option<Procedure> {
@@ -77,6 +233,13 @@ pub trait PlugInExt: IsA<PlugIn> + 'static {
         }
     }
 
+    /// This function retrieves the list of temporary procedure of `self` as
+    /// added with [`add_temp_procedure()`][Self::add_temp_procedure()].
+    ///
+    /// # Returns
+    ///
+    /// The list of
+    ///  procedures.
     #[doc(alias = "gimp_plug_in_get_temp_procedures")]
     #[doc(alias = "get_temp_procedures")]
     fn temp_procedures(&self) -> Vec<Procedure> {
@@ -87,6 +250,27 @@ pub trait PlugInExt: IsA<PlugIn> + 'static {
         }
     }
 
+    /// Enables asynchronous processing of messages from the main GIMP
+    /// application.
+    ///
+    /// Normally, a plug-in is not called by GIMP except for the call to
+    /// the procedure it implements. All subsequent communication is
+    /// triggered by the plug-in and all messages sent from GIMP to the
+    /// plug-in are just answers to requests the plug-in made.
+    ///
+    /// If the plug-in however registered temporary procedures using
+    /// [`add_temp_procedure()`][Self::add_temp_procedure()], it needs to be able to receive
+    /// requests to execute them. Usually this will be done by running
+    /// [`persistent_process()`][Self::persistent_process()] in an endless loop.
+    ///
+    /// If the plug-in cannot use [`persistent_process()`][Self::persistent_process()], i.e. if
+    /// it has a GUI and is hanging around in a `GMainLoop`, it
+    /// must call [`persistent_enable()`][Self::persistent_enable()].
+    ///
+    /// Note that the plug-in does not need to be a
+    /// [`PDBProcType::Persistent`][crate::PDBProcType::Persistent] to register temporary procedures.
+    ///
+    /// See also: [`add_temp_procedure()`][Self::add_temp_procedure()].
     #[doc(alias = "gimp_plug_in_persistent_enable")]
     fn persistent_enable(&self) {
         unsafe {
@@ -94,6 +278,18 @@ pub trait PlugInExt: IsA<PlugIn> + 'static {
         }
     }
 
+    /// Processes one message sent by GIMP and returns.
+    ///
+    /// Call this function in an endless loop after calling
+    /// [`ProcedureExt::persistent_ready()`][crate::prelude::ProcedureExt::persistent_ready()] to process requests for
+    /// running temporary procedures.
+    ///
+    /// See [`persistent_enable()`][Self::persistent_enable()] for an asynchronous way of
+    /// doing the same if running an endless loop is not an option.
+    ///
+    /// See also: [`add_temp_procedure()`][Self::add_temp_procedure()].
+    /// ## `timeout`
+    /// The timeout (in ms) to use for the `select()` call.
     #[doc(alias = "gimp_plug_in_persistent_process")]
     fn persistent_process(&self, timeout: u32) {
         unsafe {
@@ -101,6 +297,10 @@ pub trait PlugInExt: IsA<PlugIn> + 'static {
         }
     }
 
+    /// This function removes a temporary procedure from `self` by the
+    /// procedure's `procedure_name`.
+    /// ## `procedure_name`
+    /// The name of a [`Procedure`][crate::Procedure] added to `self`.
     #[doc(alias = "gimp_plug_in_remove_temp_procedure")]
     fn remove_temp_procedure(&self, procedure_name: &str) {
         unsafe {
@@ -111,6 +311,20 @@ pub trait PlugInExt: IsA<PlugIn> + 'static {
         }
     }
 
+    /// Set a help domain and path for the `self`.
+    ///
+    /// This function registers user documentation for the calling plug-in
+    /// with the GIMP help system. The `domain_uri` parameter points to the
+    /// root directory where the plug-in help is installed. For each
+    /// supported language there should be a file called 'gimp-help.xml'
+    /// that maps the help IDs to the actual help files.
+    ///
+    /// This function can only be called in the
+    /// ``PlugIn.query_procedures()`` function of a plug-in.
+    /// ## `domain_name`
+    /// The XML namespace of the plug-in's help pages.
+    /// ## `domain_uri`
+    /// The root URI of the plug-in's help pages.
     #[doc(alias = "gimp_plug_in_set_help_domain")]
     fn set_help_domain(&self, domain_name: &str, domain_uri: &impl IsA<gio::File>) {
         unsafe {
@@ -122,6 +336,18 @@ pub trait PlugInExt: IsA<PlugIn> + 'static {
         }
     }
 
+    /// Sets an error handler for procedure calls.
+    ///
+    /// This procedure changes the way that errors in procedure calls are
+    /// handled. By default GIMP will raise an error dialog if a procedure
+    /// call made by a plug-in fails. Using this procedure the plug-in can
+    /// change this behavior. If the error handler is set to
+    /// [`PDBErrorHandler::Plugin`][crate::PDBErrorHandler::Plugin], then the plug-in is responsible for
+    /// calling [`PDB::last_error()`][crate::PDB::last_error()] and handling the error whenever
+    /// one if its procedure calls fails. It can do this by displaying the
+    /// error message or by forwarding it in its own return values.
+    /// ## `handler`
+    /// Who is responsible for handling procedure call errors.
     #[doc(alias = "gimp_plug_in_set_pdb_error_handler")]
     fn set_pdb_error_handler(&self, handler: PDBErrorHandler) {
         unsafe {

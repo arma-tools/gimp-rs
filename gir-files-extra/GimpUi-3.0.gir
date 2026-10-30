@@ -208,7 +208,7 @@ gimp_browser_set_widget() is removed and replaced by a #GtkLabel.</doc>
       <doc xml:space="preserve" filename="libgimp/gimpbrushchooser.c" line="38">A button which pops up a brush selection dialog.
 
 Note that this widget draws itself using `GEGL` code. You **must** call
-[func@Gegl.init] first to be able to use this chooser.</doc>
+gegl_init() first to be able to use this chooser.</doc>
       <source-position filename="libgimp/gimpbrushchooser.h" line="33" />
       <implements name="Atk.ImplementorIface" />
       <implements name="Gtk.Buildable" />
@@ -793,7 +793,7 @@ channels. See gimp_drawable_combo_box_new() for more information.</doc>
       </constructor>
     </class>
     <class name="ColorArea" c:symbol-prefix="color_area" c:type="GimpColorArea" parent="Gtk.DrawingArea" glib:type-name="GimpColorArea" glib:get-type="gimp_color_area_get_type" glib:type-struct="ColorAreaClass">
-      <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorarea.c" line="39">Displays a [class@Gegl.Color], optionally with alpha-channel.</doc>
+      <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorarea.c" line="39">Displays a #GeglColor, optionally with alpha-channel.</doc>
       <source-position filename="libgimpwidgets/gimpcolorarea.h" line="38" />
       <implements name="Atk.ImplementorIface" />
       <implements name="Gtk.Buildable" />
@@ -809,7 +809,7 @@ DND. If the color changes, the "color_changed" signal is emitted.</doc>
         </return-value>
         <parameters>
           <parameter name="color" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorarea.c" line="504">A pointer to a [class@Gegl.Color].</doc>
+            <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorarea.c" line="504">A pointer to a #GeglColor.</doc>
             <type name="Gegl.Color" c:type="GeglColor*" />
           </parameter>
           <parameter name="type" transfer-ownership="none">
@@ -846,7 +846,7 @@ Note that setting a @drag_mask of 0 disables the drag ability.</doc>
         <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorarea.c" line="557">Retrieves the current color of the @area.</doc>
         <source-position filename="libgimpwidgets/gimpcolorarea.h" line="47" />
         <return-value transfer-ownership="full">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorarea.c" line="563">a copy of the [class@Gegl.Color] displayed in
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorarea.c" line="563">a copy of the #GeglColor displayed in
                           @area.</doc>
           <type name="Gegl.Color" c:type="GeglColor*" />
         </return-value>
@@ -884,7 +884,7 @@ via the @area's #GimpColorAreaType.</doc>
             <type name="ColorArea" c:type="GimpColorArea*" />
           </instance-parameter>
           <parameter name="color" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorarea.c" line="530">Pointer to a [class@Gegl.Color] that defines the new color.</doc>
+            <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorarea.c" line="530">Pointer to a #GeglColor that defines the new color.</doc>
             <type name="Gegl.Color" c:type="GeglColor*" />
           </parameter>
         </parameters>
@@ -1047,7 +1047,7 @@ signal is emitted.</doc>
             <type name="gint" c:type="gint" />
           </parameter>
           <parameter name="color" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorbutton.c" line="619">A [class@Gegl.Color].</doc>
+            <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorbutton.c" line="619">A #GeglColor.</doc>
             <type name="Gegl.Color" c:type="GeglColor*" />
           </parameter>
           <parameter name="type" transfer-ownership="none">
@@ -1095,7 +1095,7 @@ signal is emitted.</doc>
         <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorbutton.c" line="724">Retrieves the currently set color from the @button.</doc>
         <source-position filename="libgimpwidgets/gimpcolorbutton.h" line="79" />
         <return-value transfer-ownership="full">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorbutton.c" line="730">a copy of @button's [class@Gegl.Color].</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorbutton.c" line="730">a copy of @button's #GeglColor.</doc>
           <type name="Gegl.Color" c:type="GeglColor*" />
         </return-value>
         <parameters>
@@ -1159,7 +1159,7 @@ otherwise.</doc>
             <type name="ColorButton" c:type="GimpColorButton*" />
           </instance-parameter>
           <parameter name="color" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorbutton.c" line="704">A new [class@Gegl.Color].</doc>
+            <doc xml:space="preserve" filename="libgimpwidgets/gimpcolorbutton.c" line="704">A new #GeglColor.</doc>
             <type name="Gegl.Color" c:type="GeglColor*" />
           </parameter>
         </parameters>
@@ -4078,11 +4078,11 @@ except it takes a va_list instead of '...'</doc>
       <method name="get_native_handle" c:identifier="gimp_dialog_get_native_handle" version="3.0">
         <doc xml:space="preserve" filename="libgimpwidgets/gimpdialog.c" line="767">Returns an opaque data handle representing the window in the currently
 running platform. You should not try to use this directly. Usually this is to
-be used in functions such as [func@Gimp.brushes_popup] which will allow the
-core process to set this [class@Dialog] as parent to the newly created popup.</doc>
+be used in functions such as gimp_brushes_popup() which will allow the
+core process to set this #GimpDialog as parent to the newly created popup.</doc>
         <source-position filename="libgimpwidgets/gimpdialog.h" line="86" />
         <return-value transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpdialog.c" line="776">an opaque [struct@GLib.Bytes] identifying this
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpdialog.c" line="776">an opaque #GBytes identifying this
                           window.</doc>
           <type name="GLib.Bytes" c:type="GBytes*" />
         </return-value>
@@ -4109,9 +4109,9 @@ does not make the dialog modal while the #GMainLoop is running.</doc>
         </parameters>
       </method>
       <method name="set_alternative_button_order_from_array" c:identifier="gimp_dialog_set_alternative_button_order_from_array" version="3.0">
-        <doc xml:space="preserve" filename="libgimpwidgets/gimpdialog.c" line="741">Reorder @dialog's buttons if [property@Gtk.Settings:gtk-alternative-button-order]
+        <doc xml:space="preserve" filename="libgimpwidgets/gimpdialog.c" line="741">Reorder @dialog's buttons if #GtkSettings:gtk-alternative-button-order
 is set to TRUE. This is mostly a wrapper around the GTK function
-[method@Gtk.Dialog.set_alternative_button_order], except it won't
+gtk_dialog_set_alternative_button_order(), except it won't
 output a deprecation warning.</doc>
         <source-position filename="libgimpwidgets/gimpdialog.h" line="81" />
         <return-value transfer-ownership="none">
@@ -4293,12 +4293,12 @@ When @drawable is %NULL, initial choice is from context.</doc>
         <doc-deprecated xml:space="preserve">Use gimp_item_chooser_get_label().</doc-deprecated>
         <source-position filename="libgimp/gimpdrawablechooser.h" line="49" />
         <return-value transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimpdrawablechooser.c" line="450">the [class@Gtk.Widget] showing the label text.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimpdrawablechooser.c" line="450">the #GtkWidget showing the label text.</doc>
           <type name="Gtk.Widget" c:type="GtkWidget*" />
         </return-value>
         <parameters>
           <instance-parameter name="widget" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimp/gimpdrawablechooser.c" line="446">A [class@DrawableChooser].</doc>
+            <doc xml:space="preserve" filename="libgimp/gimpdrawablechooser.c" line="446">A #GimpDrawableChooser.</doc>
             <type name="DrawableChooser" c:type="GimpDrawableChooser*" />
           </instance-parameter>
         </parameters>
@@ -4813,10 +4813,10 @@ to select files for different use cases.</doc>
         <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="296">Creates a new #GtkWidget that lets a user choose a file according to
 @action.
 
-[enum@Gimp.FileChooserAction.ANY] is not a valid value for @action.</doc>
+%GIMP_FILE_CHOOSER_ACTION_ANY is not a valid value for @action.</doc>
         <source-position filename="libgimpwidgets/gimpfilechooser.h" line="35" />
         <return-value transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="308">A [class@GimpUi.FileChooser].</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="308">A #GimpFileChooser.</doc>
           <type name="Gtk.Widget" c:type="GtkWidget*" />
         </return-value>
         <parameters>
@@ -4885,15 +4885,15 @@ Note: the label text may contain a mnemonic.</doc>
       </method>
       <method name="get_label_widget" c:identifier="gimp_file_chooser_get_label_widget" version="3.0">
         <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="633">Returns the label widget. This can be useful for instance when
-aligning dialog's widgets with a [class@Gtk.SizeGroup].</doc>
+aligning dialog's widgets with a #GtkSizeGroup.</doc>
         <source-position filename="libgimpwidgets/gimpfilechooser.h" line="56" />
         <return-value transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="640">the [class@Gtk.Widget] showing the label text.</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="640">the #GtkWidget showing the label text.</doc>
           <type name="Gtk.Widget" c:type="GtkWidget*" />
         </return-value>
         <parameters>
           <instance-parameter name="chooser" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="635">A [class@FileChooser].</doc>
+            <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="635">A #GimpFileChooser.</doc>
             <type name="FileChooser" c:type="GimpFileChooser*" />
           </instance-parameter>
         </parameters>
@@ -4924,11 +4924,11 @@ specific widget composition.
 Warning: with GTK deprecations, we may have soon to change the
 internal implementation. So this is all the more reason for you not
 to rely on specific child widgets being present (e.g.: we use
-currently [class@Gtk.FileChooserButton] internally but it was removed
+currently #GtkFileChooserButton internally but it was removed
 in GTK4 so we will eventually replace it by custom code). We will
 also likely move to native file dialogs at some point.
 
-[enum@Gimp.FileChooserAction.ANY] is not a valid value for @action.</doc>
+%GIMP_FILE_CHOOSER_ACTION_ANY is not a valid value for @action.</doc>
         <source-position filename="libgimpwidgets/gimpfilechooser.h" line="41" />
         <return-value transfer-ownership="none">
           <type name="none" c:type="void" />
@@ -4971,7 +4971,7 @@ Setting a %NULL label text will hide the label widget.</doc>
         </return-value>
         <parameters>
           <instance-parameter name="chooser" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="550">A [class@FileChooser].</doc>
+            <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="550">A #GimpFileChooser.</doc>
             <type name="FileChooser" c:type="GimpFileChooser*" />
           </instance-parameter>
           <parameter name="text" transfer-ownership="none" nullable="1" allow-none="1">
@@ -4992,7 +4992,7 @@ generic title and there will be no placeholder text in the entry.</doc>
         </return-value>
         <parameters>
           <instance-parameter name="chooser" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="604">A [class@FileChooser].</doc>
+            <doc xml:space="preserve" filename="libgimpwidgets/gimpfilechooser.c" line="604">A #GimpFileChooser.</doc>
             <type name="FileChooser" c:type="GimpFileChooser*" />
           </instance-parameter>
           <parameter name="text" transfer-ownership="none" nullable="1" allow-none="1">
@@ -6626,12 +6626,12 @@ When @image is %NULL, initial choice is from context.</doc>
         <doc xml:space="preserve" filename="libgimp/gimpimagechooser.c" line="390">Returns the label widget.</doc>
         <source-position filename="libgimp/gimpimagechooser.h" line="42" />
         <return-value transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimpimagechooser.c" line="396">the [class@Gtk.Widget] showing the label text.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimpimagechooser.c" line="396">the #GtkWidget showing the label text.</doc>
           <type name="Gtk.Widget" c:type="GtkWidget*" />
         </return-value>
         <parameters>
           <instance-parameter name="widget" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimp/gimpimagechooser.c" line="392">A [class@ImageChooser].</doc>
+            <doc xml:space="preserve" filename="libgimp/gimpimagechooser.c" line="392">A #GimpImageChooser.</doc>
             <type name="ImageChooser" c:type="GimpImageChooser*" />
           </instance-parameter>
         </parameters>
@@ -7244,7 +7244,7 @@ If you need to construct an empty #GimpIntRadioFrame, it's best to use
 g_object_new (GIMP_TYPE_INT_RADIO_FRAME, NULL).
 
 If you want to have a frame title with a mnemonic, set @title to
-%NULL instead and call [method@IntRadioFrame.set_title] instead.</doc>
+%NULL instead and call gimp_int_radio_frame_set_title() instead.</doc>
         <source-position filename="libgimpwidgets/gimpintradioframe.h" line="64" />
         <return-value transfer-ownership="none">
           <doc xml:space="preserve" filename="libgimpwidgets/gimpintradioframe.c" line="246">a new #GimpIntRadioFrame.</doc>
@@ -7817,12 +7817,12 @@ When @item is %NULL, initial choice is from context.</doc>
         <doc xml:space="preserve" filename="libgimp/gimpitemchooser.c" line="433">Returns the label widget.</doc>
         <source-position filename="libgimp/gimpitemchooser.h" line="42" />
         <return-value transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimpitemchooser.c" line="439">the [class@Gtk.Widget] showing the label text.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimpitemchooser.c" line="439">the #GtkWidget showing the label text.</doc>
           <type name="Gtk.Widget" c:type="GtkWidget*" />
         </return-value>
         <parameters>
           <instance-parameter name="widget" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimp/gimpitemchooser.c" line="435">A [class@ItemChooser].</doc>
+            <doc xml:space="preserve" filename="libgimp/gimpitemchooser.c" line="435">A #GimpItemChooser.</doc>
             <type name="ItemChooser" c:type="GimpItemChooser*" />
           </instance-parameter>
         </parameters>
@@ -7951,7 +7951,7 @@ either a #GimpColorButton (if the @color is editable) or a
         <doc xml:space="preserve" filename="libgimpwidgets/gimplabelcolor.c" line="368">This function returns the value shown by @color.</doc>
         <source-position filename="libgimpwidgets/gimplabelcolor.h" line="48" />
         <return-value transfer-ownership="full">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimplabelcolor.c" line="374">a copy of the [class@Gegl.Color] used by the widget.</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimplabelcolor.c" line="374">a copy of the #GeglColor used by the widget.</doc>
           <type name="Gegl.Color" c:type="GeglColor*" />
         </return-value>
         <parameters>
@@ -9851,7 +9851,7 @@ gimp_path_editor_set_dir_writable().</doc>
       <doc xml:space="preserve" filename="libgimp/gimppatternchooser.c" line="38">A button which pops up a pattern selection dialog.
 
 Note that this widget draws itself using `GEGL` code. You **must** call
-[func@Gegl.init] first to be able to use this chooser.</doc>
+gegl_init() first to be able to use this chooser.</doc>
       <source-position filename="libgimp/gimppatternchooser.h" line="33" />
       <implements name="Atk.ImplementorIface" />
       <implements name="Gtk.Buildable" />
@@ -10890,7 +10890,7 @@ the checkerboard pattern that the @area uses to visualize transparency.</doc>
         </parameters>
       </method>
       <method name="reset" c:identifier="gimp_preview_area_reset" version="3.0">
-        <doc xml:space="preserve" filename="libgimpwidgets/gimppreviewarea.c" line="1863">Reset any previous drawing done through [class@GimpUi.PreviewArea] functions.</doc>
+        <doc xml:space="preserve" filename="libgimpwidgets/gimppreviewarea.c" line="1863">Reset any previous drawing done through #GimpPreviewArea functions.</doc>
         <source-position filename="libgimpwidgets/gimppreviewarea.h" line="74" />
         <return-value transfer-ownership="none">
           <type name="none" c:type="void" />
@@ -12244,10 +12244,10 @@ type. The following types are possible:
 - %GIMP_TYPE_PARAM_FILE:
     * %GTK_FILE_CHOOSER_BUTTON (default): generic file chooser widget
       using the action mode of the param spec.
-      Note that it won't work with a [enum@Gimp.FileChooserAction.ANY]
+      Note that it won't work with a %GIMP_FILE_CHOOSER_ACTION_ANY
       action. If you intend to display a widget for a file param
       spec, you should always set it to a more specific action.
-      See [method@Gimp.Procedure.add_file_argument].
+      See gimp_procedure_add_file_argument().
 - %G_TYPE_PARAM_UNIT:
     * %GIMP_TYPE_UNIT_COMBO_BOX
 - %GIMP_TYPE_PARAM_ITEM (any subtype, such as layer, channel or path):
@@ -12798,12 +12798,12 @@ Subclass responsibilities:
         <doc xml:space="preserve" filename="libgimp/gimpresourcechooser.c" line="462">Returns the label widget.</doc>
         <source-position filename="libgimp/gimpresourcechooser.h" line="52" />
         <return-value transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimpresourcechooser.c" line="468">the [class@Gtk.Widget] showing the label text.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimpresourcechooser.c" line="468">the #GtkWidget showing the label text.</doc>
           <type name="Gtk.Widget" c:type="GtkWidget*" />
         </return-value>
         <parameters>
           <instance-parameter name="widget" transfer-ownership="none">
-            <doc xml:space="preserve" filename="libgimp/gimpresourcechooser.c" line="464">A [class@ResourceChooser].</doc>
+            <doc xml:space="preserve" filename="libgimp/gimpresourcechooser.c" line="464">A #GimpResourceChooser.</doc>
             <type name="ResourceChooser" c:type="GimpResourceChooser*" />
           </instance-parameter>
         </parameters>
@@ -14380,7 +14380,7 @@ needs, use gtk_spin_button_set_digits() to correct it.</doc>
 returns the keyval used for the mnemonic accelerator.</doc>
         <source-position filename="libgimpwidgets/gimpspinscale.h" line="61" />
         <return-value transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpspinscale.c" line="1468">the keyval usable for accelerators, or [const@Gdk.KEY_VoidSymbol].</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpspinscale.c" line="1468">the keyval usable for accelerators, or %GDK_KEY_VoidSymbol.</doc>
           <type name="guint" c:type="const guint" />
         </return-value>
         <parameters>
@@ -14704,11 +14704,11 @@ GtkComboBox which is the active index).</doc>
       </return-value>
       <parameters>
         <parameter name="id" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpstringcombobox.h" line="34">the string value from the column @id_column as passed to [ctor@StringComboBox.new].</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpstringcombobox.h" line="34">the string value from the column @id_column as passed to gimp_string_combo_box_new().</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="data" transfer-ownership="none" nullable="1" allow-none="1" closure="1">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpstringcombobox.h" line="35">the data passed in [method@StringComboBox.set_sensitivity].</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpstringcombobox.h" line="35">the data passed in gimp_string_combo_box_set_sensitivity().</doc>
           <type name="gpointer" c:type="gpointer" />
         </parameter>
       </parameters>
@@ -15062,7 +15062,7 @@ GtkComboBox which is the active index).</doc>
 properties of @config.
 
 @file must be the same vector file which was passed to the
-[callback@Gimp.RunVectorLoadFunc] implementation for your plug-in. If you pass any
+#GimpRunVectorLoadFunc implementation for your plug-in. If you pass any
 other file, then the preview may be wrong or not showing at all. And it is
 considered a programming error.
 
@@ -15090,7 +15090,7 @@ gtk_widget_destroy().</doc>
             <type name="Gimp.VectorLoadData" c:type="GimpVectorLoadData*" />
           </parameter>
           <parameter name="file" transfer-ownership="none" nullable="1" allow-none="1">
-            <doc xml:space="preserve" filename="libgimp/gimpvectorloadproceduredialog.c" line="285">a [iface@Gio.File] to load the preview from.</doc>
+            <doc xml:space="preserve" filename="libgimp/gimpvectorloadproceduredialog.c" line="285">a #GFile to load the preview from.</doc>
             <type name="Gio.File" c:type="GFile*" />
           </parameter>
         </parameters>
@@ -15439,7 +15439,7 @@ This function also allow to get the current width, height and bpp of the
     </function>
     <function name="cairo_set_source_color" c:identifier="gimp_cairo_set_source_color" version="3.0">
       <doc xml:space="preserve" filename="libgimpwidgets/gimpcairo-utils.c" line="202">Sets @color as the source pattern within @cr, taking into account the profile
-of the [class@Gdk.Monitor] which @widget is displayed on.
+of the #GdkMonitor which @widget is displayed on.
 
 If @config is set, the color configuration as set by the user will be used,
 in particular using any custom monitor profile set in preferences (overriding
@@ -15447,8 +15447,8 @@ system-set profile). If no such custom profile is set, it will use the
 profile of the monitor @widget is displayed on and will default to sRGB if
 @widget is %NULL.
 
-Use [func@Gimp.get_color_configuration] to retrieve the user
-[class@Gimp.ColorConfig].
+Use gimp_get_color_configuration() to retrieve the user
+#GimpColorConfig.
 
 TODO: @softproof is currently unused.</doc>
       <source-position filename="libgimpwidgets/gimpcairo-utils.h" line="35" />
@@ -15461,7 +15461,7 @@ TODO: @softproof is currently unused.</doc>
           <type name="cairo.Context" c:type="cairo_t*" />
         </parameter>
         <parameter name="color" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpcairo-utils.c" line="205">the [class@Gegl.Color] to use as source pattern within @cr.</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpcairo-utils.c" line="205">the #GeglColor to use as source pattern within @cr.</doc>
           <type name="Gegl.Color" c:type="GeglColor*" />
         </parameter>
         <parameter name="config" transfer-ownership="none">
@@ -15473,7 +15473,7 @@ TODO: @softproof is currently unused.</doc>
           <type name="gboolean" c:type="gboolean" />
         </parameter>
         <parameter name="widget" transfer-ownership="none" nullable="1" allow-none="1">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpcairo-utils.c" line="208">[class@Gtk.Widget] to draw the focus indicator on.</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpcairo-utils.c" line="208">#GtkWidget to draw the focus indicator on.</doc>
           <type name="Gtk.Widget" c:type="GtkWidget*" />
         </parameter>
       </parameters>
@@ -16098,7 +16098,7 @@ constructors. You only have to call it for windows/dialogs you created
 "manually".
 
 Most of the time, what you want to call for non-windows widgets is
-simply [func@GimpUi.help_set_help_data]. Yet if you need to set up an
+simply gimp_help_set_help_data(). Yet if you need to set up an
 @help_func, call `gimp_help_connect` instead. Note that `gimp_help_set_help_data`
 is implied, so you don't have to call it too.</doc>
       <source-position filename="libgimpwidgets/gimphelpui.h" line="40" />
@@ -16215,8 +16215,8 @@ this for you.</doc>
       </parameters>
     </function>
     <function name="init" c:identifier="gimp_ui_init">
-      <doc xml:space="preserve" filename="libgimp/gimpui.c" line="256">This function initializes GTK with [func@Gtk.init], as well as GEGL and
-babl (non-interactive plug-ins should use only [func@Gegl.init] instead).
+      <doc xml:space="preserve" filename="libgimp/gimpui.c" line="256">This function initializes GTK with gtk_init(), as well as GEGL and
+babl (non-interactive plug-ins should use only gegl_init() instead).
 
 It also sets up various other things so that the plug-in user looks
 and behaves like the GIMP core. This includes selecting the GTK theme
@@ -16442,10 +16442,10 @@ of the returned frame.</doc>
       </parameters>
     </function>
     <function name="prop_brush_chooser_new" c:identifier="gimp_prop_brush_chooser_new" version="3.0">
-      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="44">Creates a [class@GimpUi.BrushChooser] controlled by the specified property.</doc>
+      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="44">Creates a #GimpBrushChooser controlled by the specified property.</doc>
       <source-position filename="libgimp/gimppropwidgets.h" line="35" />
       <return-value transfer-ownership="full">
-        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="52">A new [class@GimpUi.BrushChooser].</doc>
+        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="52">A new #GimpBrushChooser.</doc>
         <type name="Gtk.Widget" c:type="GtkWidget*" />
       </return-value>
       <parameters>
@@ -16454,7 +16454,7 @@ of the returned frame.</doc>
           <type name="GObject.Object" c:type="GObject*" />
         </parameter>
         <parameter name="property_name" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="47">Name of a [class@Gimp.Brush] property.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="47">Name of a #GimpBrush property.</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="chooser_title" transfer-ownership="none" nullable="1" allow-none="1">
@@ -16508,8 +16508,8 @@ specified property.</doc>
       </parameters>
     </function>
     <function name="prop_choice_radio_frame_new" c:identifier="gimp_prop_choice_radio_frame_new">
-      <doc xml:space="preserve" filename="libgimpwidgets/gimppropwidgets.c" line="2831">Creates a [class@GimpUi.IntRadioFrame] widget to display and set the
-specified [class@Gimp.Choice] property.</doc>
+      <doc xml:space="preserve" filename="libgimpwidgets/gimppropwidgets.c" line="2831">Creates a #GimpIntRadioFrame widget to display and set the
+specified #GimpChoice property.</doc>
       <source-position filename="libgimpwidgets/gimppropwidgets.h" line="176" />
       <return-value transfer-ownership="full">
         <doc xml:space="preserve" filename="libgimpwidgets/gimppropwidgets.c" line="2839">The newly created #GimpIntRadioFrame widget.</doc>
@@ -16571,7 +16571,7 @@ property.</doc>
           <type name="GObject.Object" c:type="GObject*" />
         </parameter>
         <parameter name="property_name" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimppropwidgets.c" line="4519">Name of [class@Gegl.Color] property.</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimppropwidgets.c" line="4519">Name of #GeglColor property.</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="width" transfer-ownership="none">
@@ -16674,11 +16674,11 @@ must be the name of a property of type %GimpParamUnit:</doc>
       </parameters>
     </function>
     <function name="prop_drawable_chooser_new" c:identifier="gimp_prop_drawable_chooser_new" version="3.0" deprecated="1" deprecated-version="3.2">
-      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="277">Creates a [class@GimpUi.DrawableChooser] controlled by the specified property.</doc>
+      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="277">Creates a #GimpDrawableChooser controlled by the specified property.</doc>
       <doc-deprecated xml:space="preserve">Use gimp_prop_item_chooser_new().</doc-deprecated>
       <source-position filename="libgimp/gimppropwidgets.h" line="59" />
       <return-value transfer-ownership="full">
-        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="285">A new [class@GimpUi.DrawableChooser].</doc>
+        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="285">A new #GimpDrawableChooser.</doc>
         <type name="Gtk.Widget" c:type="GtkWidget*" />
       </return-value>
       <parameters>
@@ -16687,7 +16687,7 @@ must be the name of a property of type %GimpParamUnit:</doc>
           <type name="GObject.Object" c:type="GObject*" />
         </parameter>
         <parameter name="property_name" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="280">Name of a [class@Gimp.Drawable] property.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="280">Name of a #GimpDrawable property.</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="chooser_title" transfer-ownership="none" nullable="1" allow-none="1">
@@ -16988,9 +16988,9 @@ interface; you can use the #GtkFileChooser API with it.</doc>
       </parameters>
     </function>
     <function name="prop_file_chooser_new" c:identifier="gimp_prop_file_chooser_new" version="3.0">
-      <doc xml:space="preserve" filename="libgimpwidgets/gimppropwidgets.c" line="2974">Creates a [class@GimpUi.FileChooser] to edit the specified file
+      <doc xml:space="preserve" filename="libgimpwidgets/gimppropwidgets.c" line="2974">Creates a #GimpFileChooser to edit the specified file
 property. @property_name must be a %GimpParamSpecFile with an action
-other than [enum@Gimp.FileChooserAction.ANY].
+other than %GIMP_FILE_CHOOSER_ACTION_ANY.
 
 If @label is %NULL, @property_name's `nick` text will be used
 instead.</doc>
@@ -17019,10 +17019,10 @@ instead.</doc>
       </parameters>
     </function>
     <function name="prop_font_chooser_new" c:identifier="gimp_prop_font_chooser_new" version="3.0">
-      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="65">Creates a [class@GimpUi.FontChooser] controlled by the specified property.</doc>
+      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="65">Creates a #GimpFontChooser controlled by the specified property.</doc>
       <source-position filename="libgimp/gimppropwidgets.h" line="38" />
       <return-value transfer-ownership="full">
-        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="73">A new [class@GimpUi.FontChooser].</doc>
+        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="73">A new #GimpFontChooser.</doc>
         <type name="Gtk.Widget" c:type="GtkWidget*" />
       </return-value>
       <parameters>
@@ -17031,7 +17031,7 @@ instead.</doc>
           <type name="GObject.Object" c:type="GObject*" />
         </parameter>
         <parameter name="property_name" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="68">Name of a [class@Gimp.Font] property.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="68">Name of a #GimpFont property.</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="chooser_title" transfer-ownership="none" nullable="1" allow-none="1">
@@ -17041,10 +17041,10 @@ instead.</doc>
       </parameters>
     </function>
     <function name="prop_gradient_chooser_new" c:identifier="gimp_prop_gradient_chooser_new" version="3.0">
-      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="86">Creates a [class@GimpUi.GradientChooser] controlled by the specified property.</doc>
+      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="86">Creates a #GimpGradientChooser controlled by the specified property.</doc>
       <source-position filename="libgimp/gimppropwidgets.h" line="41" />
       <return-value transfer-ownership="full">
-        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="94">A new [class@GimpUi.GradientChooser].</doc>
+        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="94">A new #GimpGradientChooser.</doc>
         <type name="Gtk.Widget" c:type="GtkWidget*" />
       </return-value>
       <parameters>
@@ -17053,7 +17053,7 @@ instead.</doc>
           <type name="GObject.Object" c:type="GObject*" />
         </parameter>
         <parameter name="property_name" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="89">Name of a [class@Gimp.Gradient] property.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="89">Name of a #GimpGradient property.</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="chooser_title" transfer-ownership="none" nullable="1" allow-none="1">
@@ -17118,10 +17118,10 @@ See gtk_image_new_from_icon_name() for more information.</doc>
       </parameters>
     </function>
     <function name="prop_image_chooser_new" c:identifier="gimp_prop_image_chooser_new" version="3.0">
-      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="149">Creates a [class@GimpUi.ImageChooser] controlled by the specified property.</doc>
+      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="149">Creates a #GimpImageChooser controlled by the specified property.</doc>
       <source-position filename="libgimp/gimppropwidgets.h" line="51" />
       <return-value transfer-ownership="full">
-        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="157">A new [class@GimpUi.ImageChooser].</doc>
+        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="157">A new #GimpImageChooser.</doc>
         <type name="Gtk.Widget" c:type="GtkWidget*" />
       </return-value>
       <parameters>
@@ -17130,7 +17130,7 @@ See gtk_image_new_from_icon_name() for more information.</doc>
           <type name="GObject.Object" c:type="GObject*" />
         </parameter>
         <parameter name="property_name" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="152">Name of a [class@Gimp.Image] property.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="152">Name of a #GimpImage property.</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="chooser_title" transfer-ownership="none" nullable="1" allow-none="1">
@@ -17192,10 +17192,10 @@ the specified int property. If @title is %NULL, the
       </parameters>
     </function>
     <function name="prop_item_chooser_new" c:identifier="gimp_prop_item_chooser_new" version="3.2">
-      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="209">Creates a [class@GimpUi.ItemChooser] controlled by the specified property.</doc>
+      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="209">Creates a #GimpItemChooser controlled by the specified property.</doc>
       <source-position filename="libgimp/gimppropwidgets.h" line="54" />
       <return-value transfer-ownership="full">
-        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="217">A new [class@GimpUi.ItemChooser].</doc>
+        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="217">A new #GimpItemChooser.</doc>
         <type name="Gtk.Widget" c:type="GtkWidget*" />
       </return-value>
       <parameters>
@@ -17204,7 +17204,7 @@ the specified int property. If @title is %NULL, the
           <type name="GObject.Object" c:type="GObject*" />
         </parameter>
         <parameter name="property_name" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="212">Name of a [class@Gimp.Item] property.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="212">Name of a #GimpItem property.</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="chooser_title" transfer-ownership="none" nullable="1" allow-none="1">
@@ -17324,10 +17324,10 @@ gimp_memsize_entry_new() for more information.</doc>
       </parameters>
     </function>
     <function name="prop_palette_chooser_new" c:identifier="gimp_prop_palette_chooser_new" version="3.0">
-      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="107">Creates a [class@GimpUi.PaletteChooser] controlled by the specified property.</doc>
+      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="107">Creates a #GimpPaletteChooser controlled by the specified property.</doc>
       <source-position filename="libgimp/gimppropwidgets.h" line="44" />
       <return-value transfer-ownership="full">
-        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="115">A new [class@GimpUi.PaletteChooser].</doc>
+        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="115">A new #GimpPaletteChooser.</doc>
         <type name="Gtk.Widget" c:type="GtkWidget*" />
       </return-value>
       <parameters>
@@ -17336,7 +17336,7 @@ gimp_memsize_entry_new() for more information.</doc>
           <type name="GObject.Object" c:type="GObject*" />
         </parameter>
         <parameter name="property_name" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="110">Name of a [class@Gimp.Palette] property.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="110">Name of a #GimpPalette property.</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="chooser_title" transfer-ownership="none" nullable="1" allow-none="1">
@@ -17373,10 +17373,10 @@ path properties.</doc>
       </parameters>
     </function>
     <function name="prop_pattern_chooser_new" c:identifier="gimp_prop_pattern_chooser_new" version="3.0">
-      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="128">Creates a [class@GimpUi.PatternChooser] controlled by the specified property.</doc>
+      <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="128">Creates a #GimpPatternChooser controlled by the specified property.</doc>
       <source-position filename="libgimp/gimppropwidgets.h" line="47" />
       <return-value transfer-ownership="full">
-        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="136">A new [class@GimpUi.PatternChooser].</doc>
+        <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="136">A new #GimpPatternChooser.</doc>
         <type name="Gtk.Widget" c:type="GtkWidget*" />
       </return-value>
       <parameters>
@@ -17385,7 +17385,7 @@ path properties.</doc>
           <type name="GObject.Object" c:type="GObject*" />
         </parameter>
         <parameter name="property_name" transfer-ownership="none">
-          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="131">Name of a [class@Gimp.Pattern] property.</doc>
+          <doc xml:space="preserve" filename="libgimp/gimppropwidgets.c" line="131">Name of a #GimpPattern property.</doc>
           <type name="utf8" c:type="const gchar*" />
         </parameter>
         <parameter name="chooser_title" transfer-ownership="none" nullable="1" allow-none="1">
@@ -17691,7 +17691,7 @@ number of characters to be entered.</doc>
       </parameters>
     </function>
     <function name="prop_toggle_new" c:identifier="gimp_prop_toggle_new" version="3.2">
-      <doc xml:space="preserve" filename="libgimpwidgets/gimppropwidgets.c" line="403">Creates a [class@Gtk.ToggleButton] that sets the specified boolean
+      <doc xml:space="preserve" filename="libgimpwidgets/gimppropwidgets.c" line="403">Creates a #GtkToggleButton that sets the specified boolean
 property.
 
 If @icon_name is %NULL, @label will be used. If @label is %NULL too,
@@ -18251,11 +18251,11 @@ animations such as the scrolling credits or Easter Egg animations.</doc>
     </function>
     <function name="widget_free_native_handle" c:identifier="gimp_widget_free_native_handle" version="3.0">
       <doc xml:space="preserve" filename="libgimpwidgets/gimpwidgetsutils.c" line="1169">Disposes a widget's native window handle created, possibly
-asynchronously, by a previous call to [func@GimpUi.widget_set_native_handle].
+asynchronously, by a previous call to gimp_widget_set_native_handle().
 
 Depending on the platform, this function may also execute other
 necessary clean up so you should call it and not simply free the
-[struct@GLib.Bytes] yourself.
+#GBytes yourself.
 
 You should call this function in the `dispose()` implementation of
 your custom widget **before** chaining up with the parent class'
@@ -18276,7 +18276,7 @@ that you don't have to check if the window handle was actually set.</doc>
           <type name="Gtk.Widget" c:type="GtkWidget*" />
         </parameter>
         <parameter name="window_handle" direction="inout" caller-allocates="0" transfer-ownership="full">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpwidgetsutils.c" line="1172">same pointer previously passed to [func@GimpUi.widget_set_native_handle].</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpwidgetsutils.c" line="1172">same pointer previously passed to gimp_widget_set_native_handle().</doc>
           <type name="GLib.Bytes" c:type="GBytes**" />
         </parameter>
       </parameters>
@@ -18370,7 +18370,7 @@ displayed on.</doc>
 the window handle representing @widget into @window_handle so that it
 can later be reused to set other windows as transient to this one
 (even across processes, such as in-between plug-ins), e.g. using
-[func@GimpUi.window_set_transient_for].
+gimp_window_set_transient_for().
 
 Depending on the platform, the actual content of @window_handle can be
 various types and should therefore be considered an opaque data.
@@ -18382,7 +18382,7 @@ This convenience function is safe to use even before @widget is
 visible as it will set the handle once it is mapped.
 
 Free @window_handle on `dispose()` or `finalize()` with
-[func@GimpUi.widget_free_native_handle].</doc>
+gimp_widget_free_native_handle().</doc>
       <source-position filename="libgimpwidgets/gimpwidgetsutils.h" line="70" />
       <return-value transfer-ownership="none">
         <type name="none" c:type="void" />
@@ -18393,7 +18393,7 @@ Free @window_handle on `dispose()` or `finalize()` with
           <type name="Gtk.Widget" c:type="GtkWidget*" />
         </parameter>
         <parameter name="window_handle" direction="inout" caller-allocates="0" transfer-ownership="full">
-          <doc xml:space="preserve" filename="libgimpwidgets/gimpwidgetsutils.c" line="1114">pointer to store the native handle as a [struct@GLib.Bytes].</doc>
+          <doc xml:space="preserve" filename="libgimpwidgets/gimpwidgetsutils.c" line="1114">pointer to store the native handle as a #GBytes.</doc>
           <type name="GLib.Bytes" c:type="GBytes**" />
         </parameter>
       </parameters>
@@ -18465,12 +18465,12 @@ to the window identified by @handle.
 Note that @handle is an opaque data, which you should not try to
 construct yourself or make sense of. It may be different things
 depending on the OS or even the display server. You should only use
-a handle returned by [func@Gimp.progress_get_window_handle],
-[method@Gimp.Display.get_window_handle] or
-[method@GimpUi.Dialog.get_native_handle].
+a handle returned by gimp_progress_get_window_handle(),
+gimp_display_get_window_handle() or
+gimp_dialog_get_native_handle().
 
 Most of the time you will want to use the convenience function
-[func@GimpUi.window_set_transient].</doc>
+gimp_window_set_transient().</doc>
       <source-position filename="libgimp/gimpui.h" line="64" />
       <return-value transfer-ownership="none">
         <type name="none" c:type="void" />
@@ -18489,10 +18489,10 @@ Most of the time you will want to use the convenience function
     <function name="window_set_transient_for_display" c:identifier="gimp_window_set_transient_for_display" version="2.4">
       <doc xml:space="preserve" filename="libgimp/gimpui.c" line="427">Indicates to the window manager that @window is a transient dialog
 associated with the GIMP image window that is identified by its
-display. See [method@Gdk.Window.set_transient_for] for more information.
+display. See gdk_window_set_transient_for() for more information.
 
 Most of the time you will want to use the convenience function
-[func@GimpUi.window_set_transient].</doc>
+gimp_window_set_transient().</doc>
       <source-position filename="libgimp/gimpui.h" line="66" />
       <return-value transfer-ownership="none">
         <type name="none" c:type="void" />

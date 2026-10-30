@@ -7,6 +7,16 @@ use crate::{ffi, ColorAreaType, IntStore, SizeEntryUpdatePolicy, ZoomModel, Zoom
 use glib::{prelude::*, translate::*};
 use std::boxed::Box as Box_;
 
+/// Create a Cairo image surface from a GdkPixbuf.
+///
+/// You should avoid calling this function as there are probably more
+/// efficient ways of achieving the result you are looking for.
+/// ## `pixbuf`
+/// a [`gdk_pixbuf::Pixbuf`][crate::gdk_pixbuf::Pixbuf]
+///
+/// # Returns
+///
+/// a [`cairo::Surface`][crate::cairo::Surface].
 #[doc(alias = "gimp_cairo_surface_create_from_pixbuf")]
 pub fn cairo_surface_create_from_pixbuf(pixbuf: &gdk_pixbuf::Pixbuf) -> Option<cairo::Surface> {
     unsafe {
@@ -16,6 +26,18 @@ pub fn cairo_surface_create_from_pixbuf(pixbuf: &gdk_pixbuf::Pixbuf) -> Option<c
     }
 }
 
+/// This function invokes the context help inspector.
+///
+/// The mouse cursor will turn turn into a question mark and the user can
+/// click on any widget of the application which started the inspector.
+///
+/// If the widget the user clicked on has a `help_id` string attached
+/// (see [`help_set_help_data()`][crate::help_set_help_data()]), the corresponding help page will
+/// be displayed. Otherwise the help system will ascend the widget hierarchy
+/// until it finds an attached `help_id` string (which should be the
+/// case at least for every window/dialog).
+/// ## `widget`
+/// Any [`gtk::Widget`][crate::gtk::Widget] on the screen.
 #[doc(alias = "gimp_context_help")]
 pub fn context_help(widget: &impl IsA<gtk::Widget>) {
     unsafe {
@@ -28,6 +50,9 @@ pub fn context_help(widget: &impl IsA<gtk::Widget>) {
 //    unsafe { TODO: call ffi:gimp_coordinates_new() }
 //}
 
+/// This function is for internal use only.
+/// ## `show`
+/// whether a help button should be added when creating a GimpDialog
 #[doc(alias = "gimp_dialogs_show_help_button")]
 pub fn dialogs_show_help_button(show: bool) {
     unsafe {
@@ -45,6 +70,14 @@ pub fn dialogs_show_help_button(show: bool) {
 //    unsafe { TODO: call ffi:gimp_enum_icon_box_new_with_range() }
 //}
 
+/// Sets the padding of all buttons in a box created by
+/// `gimp_enum_icon_box_new()`.
+/// ## `icon_box`
+/// an icon box widget
+/// ## `xpad`
+/// horizontal padding
+/// ## `ypad`
+/// vertical padding
 #[doc(alias = "gimp_enum_icon_box_set_child_padding")]
 pub fn enum_icon_box_set_child_padding(icon_box: &impl IsA<gtk::Widget>, xpad: i32, ypad: i32) {
     unsafe {
@@ -52,6 +85,12 @@ pub fn enum_icon_box_set_child_padding(icon_box: &impl IsA<gtk::Widget>, xpad: i
     }
 }
 
+/// Sets the icon size of all buttons in a box created by
+/// `gimp_enum_icon_box_new()`.
+/// ## `icon_box`
+/// an icon box widget
+/// ## `icon_size`
+/// the [`gtk::IconSize`][crate::gtk::IconSize] enum
 #[doc(alias = "gimp_enum_icon_box_set_icon_size")]
 pub fn enum_icon_box_set_icon_size(icon_box: &impl IsA<gtk::Widget>, icon_size: gtk::IconSize) {
     unsafe {
@@ -82,6 +121,20 @@ pub fn enum_icon_box_set_icon_size(icon_box: &impl IsA<gtk::Widget>, icon_size: 
 //    unsafe { TODO: call ffi:gimp_enum_radio_frame_new_with_range() }
 //}
 
+/// Alternative of `gdk_event_triggers_context_menu()` with the additional
+/// feature of allowing a menu triggering to happen on a button release
+/// event. All the other rules on whether `event` should trigger a
+/// contextual menu are exactly the same. Only the swapping to release
+/// state as additional feature is different.
+/// ## `event`
+/// The `GdkEvent` to verify.
+/// ## `on_release`
+/// Whether a menu is triggered on a button release event
+///  instead of a press event.
+///
+/// # Returns
+///
+/// [`true`] if the event should trigger a context menu.
 #[doc(alias = "gimp_event_triggers_context_menu")]
 pub fn event_triggers_context_menu(event: &gdk::Event, on_release: bool) -> bool {
     unsafe {
@@ -98,6 +151,29 @@ pub fn event_triggers_context_menu(event: &gdk::Event, on_release: bool) -> bool
 //    unsafe { TODO: call ffi:gimp_get_monitor_at_pointer() }
 //}
 
+/// Note that the `label_text` can be [`None`] and that the widget will be
+/// attached starting at (`column` + 1) in this case, too.
+/// ## `grid`
+/// The [`gtk::Grid`][crate::gtk::Grid] the widgets will be attached to.
+/// ## `left`
+/// The column to start with.
+/// ## `top`
+/// The row to attach the widgets.
+/// ## `label_text`
+/// The text for the `GtkLabel` which will be attached left of
+///  the widget.
+/// ## `label_xalign`
+/// The horizontal alignment of the `GtkLabel`.
+/// ## `label_yalign`
+/// The vertical alignment of the `GtkLabel`.
+/// ## `widget`
+/// The [`gtk::Widget`][crate::gtk::Widget] to attach right of the label.
+/// ## `widget_columns`
+/// The number of columns the widget will use.
+///
+/// # Returns
+///
+/// The created `GtkLabel`.
 #[doc(alias = "gimp_grid_attach_aligned")]
 pub fn grid_attach_aligned(
     grid: &impl IsA<gtk::Grid>,
@@ -123,6 +199,28 @@ pub fn grid_attach_aligned(
     }
 }
 
+/// Note that this function is automatically called by all libgimp dialog
+/// constructors. You only have to call it for windows/dialogs you created
+/// "manually".
+///
+/// Most of the time, what you want to call for non-windows widgets is
+/// simply [`help_set_help_data()`][crate::help_set_help_data()]. Yet if you need to set up an
+/// `help_func`, call `gimp_help_connect` instead. Note that `gimp_help_set_help_data`
+/// is implied, so you don't have to call it too.
+/// ## `widget`
+/// The widget you want to connect the help accelerator for.
+///  Will be a [`gtk::Window`][crate::gtk::Window] in most cases.
+/// ## `tooltip`
+/// The text for this widget's tooltip. For windows, you
+///  usually want to set [`None`].
+/// ## `help_func`
+/// The function which will be called if the user presses "F1".
+/// ## `help_id`
+/// The `help_id` which will be passed to `help_func`.
+/// ## `help_data`
+/// The `help_data` pointer which will be passed to `help_func`.
+/// ## `help_data_destroy`
+/// Destroy function for `help_data`.
 #[doc(alias = "gimp_help_connect")]
 pub fn help_connect<P: Fn(&str) + Send + Sync + 'static>(
     widget: &impl IsA<gtk::Widget>,
@@ -168,6 +266,19 @@ pub fn help_connect<P: Fn(&str) + Send + Sync + 'static>(
 //    unsafe { TODO: call ffi:gimp_help_id_quark() }
 //}
 
+/// The reason why we don't use [`WidgetExtManual::set_tooltip_text()`][crate::gtk::prelude::WidgetExtManual::set_tooltip_text()] is that
+/// elements in the GIMP user interface should, if possible, also have
+/// a `help_id` set for context-sensitive help.
+///
+/// This function can be called with [`None`] for `tooltip`. Use this feature
+/// if you want to set a help link for a widget which shouldn't have
+/// a visible tooltip.
+/// ## `widget`
+/// The [`gtk::Widget`][crate::gtk::Widget] you want to set a `tooltip` and/or `help_id` for.
+/// ## `tooltip`
+/// The text for this widget's tooltip (or [`None`]).
+/// ## `help_id`
+/// The `help_id` for the `GtkTipsQuery` tooltips inspector.
 #[doc(alias = "gimp_help_set_help_data")]
 pub fn help_set_help_data(widget: &impl IsA<gtk::Widget>, tooltip: Option<&str>, help_id: &str) {
     unsafe {
@@ -179,6 +290,15 @@ pub fn help_set_help_data(widget: &impl IsA<gtk::Widget>, tooltip: Option<&str>,
     }
 }
 
+/// Just like [`help_set_help_data()`][crate::help_set_help_data()], but supports to pass text
+/// which is marked up with <link linkend="PangoMarkupFormat">Pango
+/// text markup language`</link>`.
+/// ## `widget`
+/// The [`gtk::Widget`][crate::gtk::Widget] you want to set a `tooltip` and/or `help_id` for.
+/// ## `tooltip`
+/// The markup for this widget's tooltip (or [`None`]).
+/// ## `help_id`
+/// The `help_id` for the `GtkTipsQuery` tooltips inspector.
 #[doc(alias = "gimp_help_set_help_data_with_markup")]
 pub fn help_set_help_data_with_markup(
     widget: &impl IsA<gtk::Widget>,
@@ -194,6 +314,10 @@ pub fn help_set_help_data_with_markup(
     }
 }
 
+/// Initializes the GIMP stock icon factory.
+///
+/// You don't need to call this function as [`init()`][crate::init()] already does
+/// this for you.
 #[doc(alias = "gimp_icons_init")]
 pub fn icons_init() {
     unsafe {
@@ -210,6 +334,20 @@ pub fn icons_set_icon_theme(path: &impl IsA<gio::File>) -> bool {
     }
 }
 
+/// This function initializes GTK with `gtk_init()`, as well as GEGL and
+/// babl (non-interactive plug-ins should use only `gegl_init()` instead).
+///
+/// It also sets up various other things so that the plug-in user looks
+/// and behaves like the GIMP core. This includes selecting the GTK theme
+/// and setting up the help system as chosen in GIMP preferences. Any
+/// plug-in that provides a user interface should call this function.
+///
+/// It can safely be called more than once. Calls after the first return
+/// quickly with no effect.
+/// ## `prog_name`
+/// The name of the plug-in which will be passed as argv[0] to
+///  ``gtk_init()``. It's a convention to use the name of the
+///  executable and _not_ the PDB procedure name.
 #[doc(alias = "gimp_ui_init")]
 pub fn init(prog_name: &str) {
     unsafe {
@@ -237,11 +375,34 @@ pub fn init(prog_name: &str) {
 //    unsafe { TODO: call ffi:gimp_monitor_get_color_profile() }
 //}
 
+/// ## `procedure_name`
+/// The name of a procedure.
+///
+/// # Returns
+///
+/// a new widget providing a view on a
+///  GIMP procedure
 #[doc(alias = "gimp_proc_view_new")]
 pub fn proc_view_new(procedure_name: &str) -> Option<gtk::Widget> {
     unsafe { from_glib_full(ffi::gimp_proc_view_new(procedure_name.to_glib_none().0)) }
 }
 
+/// Creates a [`gtk::ComboBox`][crate::gtk::ComboBox] widget to display and set the specified
+/// boolean property. The combo box will have two entries, one
+/// displaying the `true_text` label, the other displaying the
+/// `false_text` label.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of boolean property controlled by combo box.
+/// ## `true_text`
+/// Label used for entry corresponding to [`true`] value.
+/// ## `false_text`
+/// Label used for entry corresponding to [`false`] value.
+///
+/// # Returns
+///
+/// The newly created [`gtk::ComboBox`][crate::gtk::ComboBox] widget.
 #[doc(alias = "gimp_prop_boolean_combo_box_new")]
 pub fn prop_boolean_combo_box_new(
     config: &impl IsA<glib::Object>,
@@ -259,6 +420,24 @@ pub fn prop_boolean_combo_box_new(
     }
 }
 
+/// Creates a pair of radio buttons which function to set and display
+/// the specified boolean property.
+/// If `title` is [`None`], the `property_name`'s nick will be used as label
+/// of the returned frame.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of boolean property controlled by the radio buttons.
+/// ## `title`
+/// Label for the frame.
+/// ## `true_text`
+/// Label for the button corresponding to [`true`].
+/// ## `false_text`
+/// Label for the button corresponding to [`false`].
+///
+/// # Returns
+///
+/// A [`Frame`][crate::Frame] containing the radio buttons.
 #[doc(alias = "gimp_prop_boolean_radio_frame_new")]
 pub fn prop_boolean_radio_frame_new(
     config: &impl IsA<glib::Object>,
@@ -278,6 +457,17 @@ pub fn prop_boolean_radio_frame_new(
     }
 }
 
+/// Creates a [`BrushChooser`][crate::BrushChooser] controlled by the specified property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of a `GimpBrush` property.
+/// ## `chooser_title`
+/// title for the poppable dialog.
+///
+/// # Returns
+///
+/// A new [`BrushChooser`][crate::BrushChooser].
 #[doc(alias = "gimp_prop_brush_chooser_new")]
 pub fn prop_brush_chooser_new(
     config: &impl IsA<glib::Object>,
@@ -293,6 +483,20 @@ pub fn prop_brush_chooser_new(
     }
 }
 
+/// Creates a `GtkCheckButton` that displays and sets the specified
+/// boolean property.
+/// If `label` is [`None`], the `property_name`'s nick will be used as label
+/// of the returned button.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of boolean property controlled by checkbutton.
+/// ## `label`
+/// Label to give checkbutton (including mnemonic).
+///
+/// # Returns
+///
+/// The newly created `GtkCheckButton` widget.
 #[doc(alias = "gimp_prop_check_button_new")]
 pub fn prop_check_button_new(
     config: &impl IsA<glib::Object>,
@@ -308,6 +512,16 @@ pub fn prop_check_button_new(
     }
 }
 
+/// Creates a [`StringComboBox`][crate::StringComboBox] widget to display and set the
+/// specified property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of `GimpChoice` property controlled by combo box.
+///
+/// # Returns
+///
+/// The newly created [`StringComboBox`][crate::StringComboBox] widget.
 #[doc(alias = "gimp_prop_choice_combo_box_new")]
 pub fn prop_choice_combo_box_new(
     config: &impl IsA<glib::Object>,
@@ -321,6 +535,16 @@ pub fn prop_choice_combo_box_new(
     }
 }
 
+/// Creates a [`IntRadioFrame`][crate::IntRadioFrame] widget to display and set the
+/// specified `GimpChoice` property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of `GimpChoice` property controlled by radio buttons.
+///
+/// # Returns
+///
+/// The newly created [`IntRadioFrame`][crate::IntRadioFrame] widget.
 #[doc(alias = "gimp_prop_choice_radio_frame_new")]
 pub fn prop_choice_radio_frame_new(
     config: &impl IsA<glib::Object>,
@@ -334,6 +558,22 @@ pub fn prop_choice_radio_frame_new(
     }
 }
 
+/// Creates a [`ColorArea`][crate::ColorArea] to set and display the value of an RGB
+/// property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of `GeglColor` property.
+/// ## `width`
+/// Width of color area.
+/// ## `height`
+/// Height of color area.
+/// ## `type_`
+/// How transparency is represented.
+///
+/// # Returns
+///
+/// A new [`ColorArea`][crate::ColorArea] widget.
 #[doc(alias = "gimp_prop_color_area_new")]
 pub fn prop_color_area_new(
     config: &impl IsA<glib::Object>,
@@ -353,6 +593,22 @@ pub fn prop_color_area_new(
     }
 }
 
+/// Creates a [`ColorButton`][crate::ColorButton] to set and display the value of a color
+/// property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of [`gegl::Color`][crate::gegl::Color] property.
+/// ## `width`
+/// Width of the colorpreview in pixels.
+/// ## `height`
+/// Height of the colorpreview in pixels.
+/// ## `type_`
+/// How transparency is represented.
+///
+/// # Returns
+///
+/// A new [`ColorButton`][crate::ColorButton] widget.
 #[doc(alias = "gimp_prop_color_select_new")]
 pub fn prop_color_select_new(
     config: &impl IsA<glib::Object>,
@@ -397,6 +653,36 @@ pub fn prop_coordinates_connect(
     }
 }
 
+/// Creates a [`SizeEntry`][crate::SizeEntry] to set and display two double or int
+/// properties, which will usually represent X and Y coordinates, and
+/// their associated unit property.
+///
+/// If `unit_format` is [`None`], the unit will default to inch. Otherwise it
+/// must be the name of a property of type `GimpParamUnit`:
+/// ## `config`
+/// Object to which property is attached.
+/// ## `x_property_name`
+/// Name of int or double property for X coordinate.
+/// ## `y_property_name`
+/// Name of int or double property for Y coordinate.
+/// ## `unit_property_name`
+/// Name of unit property.
+/// ## `unit_format`
+/// A printf-like unit-format string as is used with
+///  `gimp_unit_menu_new()`.
+/// ## `update_policy`
+/// How the automatic pixel `<->` real-world-unit
+///  calculations should be done.
+/// ## `xresolution`
+/// The resolution (in dpi) for the X coordinate.
+/// ## `yresolution`
+/// The resolution (in dpi) for the Y coordinate.
+/// ## `has_chainbutton`
+/// Whether to add a chainbutton to the size entry.
+///
+/// # Returns
+///
+/// A new [`SizeEntry`][crate::SizeEntry] widget.
 #[doc(alias = "gimp_prop_coordinates_new")]
 pub fn prop_coordinates_new(
     config: &impl IsA<glib::Object>,
@@ -424,6 +710,21 @@ pub fn prop_coordinates_new(
     }
 }
 
+/// Creates a [`DrawableChooser`][crate::DrawableChooser] controlled by the specified property.
+///
+/// # Deprecated since 3.2
+///
+/// Use [`prop_item_chooser_new()`][crate::prop_item_chooser_new()].
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of a [`gimp::Drawable`][crate::gimp::Drawable] property.
+/// ## `chooser_title`
+/// title for the poppable dialog.
+///
+/// # Returns
+///
+/// A new [`DrawableChooser`][crate::DrawableChooser].
 #[cfg_attr(feature = "v3_2", deprecated = "Since 3.2")]
 #[allow(deprecated)]
 #[doc(alias = "gimp_prop_drawable_chooser_new")]
@@ -441,6 +742,18 @@ pub fn prop_drawable_chooser_new(
     }
 }
 
+/// Creates a [`gtk::Entry`][crate::gtk::Entry] to set and display the value of the specified
+/// string property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of string property.
+/// ## `max_len`
+/// Maximum allowed length of string.
+///
+/// # Returns
+///
+/// A new [`gtk::Entry`][crate::gtk::Entry] widget.
 #[doc(alias = "gimp_prop_entry_new")]
 pub fn prop_entry_new(config: &impl IsA<glib::Object>, property_name: &str) -> Option<gtk::Widget> {
     let max_len = property_name.len() as _;
@@ -453,6 +766,26 @@ pub fn prop_entry_new(config: &impl IsA<glib::Object>, property_name: &str) -> O
     }
 }
 
+/// Creates a `GtkCheckButton` that displays and sets the specified
+/// property of type Enum. Note that this widget only allows two values
+/// for the enum, one corresponding to the "checked" state and the
+/// other to the "unchecked" state.
+/// If `label` is [`None`], the `property_name`'s nick will be used as label
+/// of the returned button.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of enum property controlled by checkbutton.
+/// ## `label`
+/// Label to give checkbutton (including mnemonic).
+/// ## `false_value`
+/// Enum value corresponding to unchecked state.
+/// ## `true_value`
+/// Enum value corresponding to checked state.
+///
+/// # Returns
+///
+/// The newly created `GtkCheckButton` widget.
 #[doc(alias = "gimp_prop_enum_check_button_new")]
 pub fn prop_enum_check_button_new(
     config: &impl IsA<glib::Object>,
@@ -472,6 +805,23 @@ pub fn prop_enum_check_button_new(
     }
 }
 
+/// Creates a [`IntComboBox`][crate::IntComboBox] widget to display and set the specified
+/// enum property. The `mimimum_value` and `maximum_value` give the
+/// possibility of restricting the allowed range to a subset of the
+/// enum. If the two values are equal (e.g., 0, 0), then the full
+/// range of the Enum is used.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of enum property controlled by combo box.
+/// ## `minimum`
+/// Smallest allowed value of enum.
+/// ## `maximum`
+/// Largest allowed value of enum.
+///
+/// # Returns
+///
+/// The newly created [`EnumComboBox`][crate::EnumComboBox] widget.
 #[doc(alias = "gimp_prop_enum_combo_box_new")]
 pub fn prop_enum_combo_box_new(
     config: &impl IsA<glib::Object>,
@@ -489,6 +839,25 @@ pub fn prop_enum_combo_box_new(
     }
 }
 
+/// Creates a horizontal box of radio buttons with named icons, which
+/// function to set and display the value of the specified Enum
+/// property. The icon name for each icon is created by appending the
+/// enum_value's nick to the given `icon_prefix`. See
+/// `gimp_enum_icon_box_new()` for more information.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of enum property controlled by the radio buttons.
+/// ## `icon_prefix`
+/// The prefix of the group of icon names to use.
+/// ## `minimum`
+/// Smallest value of enum to be included.
+/// ## `maximum`
+/// Largest value of enum to be included.
+///
+/// # Returns
+///
+/// A `libgimpwidgets`-gimpenumiconbox containing the radio buttons.
 #[doc(alias = "gimp_prop_enum_icon_box_new")]
 pub fn prop_enum_icon_box_new(
     config: &impl IsA<glib::Object>,
@@ -508,6 +877,14 @@ pub fn prop_enum_icon_box_new(
     }
 }
 
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of enum property to be displayed.
+///
+/// # Returns
+///
+/// The newly created [`EnumLabel`][crate::EnumLabel] widget.
 #[doc(alias = "gimp_prop_enum_label_new")]
 pub fn prop_enum_label_new(
     config: &impl IsA<glib::Object>,
@@ -521,6 +898,24 @@ pub fn prop_enum_label_new(
     }
 }
 
+/// Creates a group of radio buttons which function to set and display
+/// the specified enum property. The `minimum` and `maximum` arguments
+/// allow only a subset of the enum to be used. If the two arguments
+/// are equal (e.g., 0, 0), then the full range of the enum will be used.
+/// If you want to assign a label to the group of radio buttons, use
+/// [`prop_enum_radio_frame_new()`][crate::prop_enum_radio_frame_new()] instead of this function.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of enum property controlled by the radio buttons.
+/// ## `minimum`
+/// Smallest value of enum to be included.
+/// ## `maximum`
+/// Largest value of enum to be included.
+///
+/// # Returns
+///
+/// A [`gtk::Box`][crate::gtk::Box] containing the radio buttons.
 #[doc(alias = "gimp_prop_enum_radio_box_new")]
 pub fn prop_enum_radio_box_new(
     config: &impl IsA<glib::Object>,
@@ -538,6 +933,26 @@ pub fn prop_enum_radio_box_new(
     }
 }
 
+/// Creates a group of radio buttons which function to set and display
+/// the specified enum property. The `minimum` and `maximum` arguments
+/// allow only a subset of the enum to be used. If the two arguments
+/// are equal (e.g., 0, 0), then the full range of the enum will be used.
+/// If `title` is [`None`], the `property_name`'s nick will be used as label
+/// of the returned frame.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of enum property controlled by the radio buttons.
+/// ## `title`
+/// Label for the frame holding the buttons
+/// ## `minimum`
+/// Smallest value of enum to be included.
+/// ## `maximum`
+/// Largest value of enum to be included.
+///
+/// # Returns
+///
+/// A [`Frame`][crate::Frame] containing the radio buttons.
 #[doc(alias = "gimp_prop_enum_radio_frame_new")]
 pub fn prop_enum_radio_frame_new(
     config: &impl IsA<glib::Object>,
@@ -557,6 +972,21 @@ pub fn prop_enum_radio_frame_new(
     }
 }
 
+/// Creates a `GtkExpander` controlled by the specified boolean property.
+/// A value of [`true`] for the property corresponds to the expanded state
+/// for the widget.
+/// If `label` is [`None`], the `property_name`'s nick will be used as label
+/// of the returned widget.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of boolean property.
+/// ## `label`
+/// Label for expander.
+///
+/// # Returns
+///
+/// A new `GtkExpander` widget.
 #[doc(alias = "gimp_prop_expander_new")]
 pub fn prop_expander_new(
     config: &impl IsA<glib::Object>,
@@ -577,6 +1007,24 @@ pub fn prop_expander_new(
 //    unsafe { TODO: call ffi:gimp_prop_file_chooser_button_new() }
 //}
 
+/// Creates a `GtkFileChooserButton` to edit the specified path property.
+///
+/// The button uses `dialog` as it's file-picking window. Note that `dialog`
+/// must be a `GtkFileChooserDialog` (or subclass) and must not have
+/// `GTK_DIALOG_DESTROY_WITH_PARENT` set.
+///
+/// Note that `GtkFileChooserButton` implements the `GtkFileChooser`
+/// interface; you can use the `GtkFileChooser` API with it.
+/// ## `config`
+/// object to which property is attached.
+/// ## `property_name`
+/// name of path property.
+/// ## `dialog`
+/// the `GtkFileChooserDialog` widget to use.
+///
+/// # Returns
+///
+/// A new `GtkFileChooserButton`.
 #[doc(alias = "gimp_prop_file_chooser_button_new_with_dialog")]
 pub fn prop_file_chooser_button_new_with_dialog(
     config: &impl IsA<glib::Object>,
@@ -592,6 +1040,24 @@ pub fn prop_file_chooser_button_new_with_dialog(
     }
 }
 
+/// Creates a [`FileChooser`][crate::FileChooser] to edit the specified file
+/// property. `property_name` must be a `GimpParamSpecFile` with an action
+/// other than `GIMP_FILE_CHOOSER_ACTION_ANY`.
+///
+/// If `label` is [`None`], `property_name`'s `nick` text will be used
+/// instead.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of a `GimpParamSpecFile` property.
+/// ## `label`
+/// Label of the widget.
+/// ## `title`
+/// Title of the file dialog.
+///
+/// # Returns
+///
+/// A new `GtkFileChooserButton`.
 #[doc(alias = "gimp_prop_file_chooser_new")]
 pub fn prop_file_chooser_new(
     config: &impl IsA<glib::Object>,
@@ -609,6 +1075,17 @@ pub fn prop_file_chooser_new(
     }
 }
 
+/// Creates a [`FontChooser`][crate::FontChooser] controlled by the specified property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of a `GimpFont` property.
+/// ## `chooser_title`
+/// title for the poppable dialog.
+///
+/// # Returns
+///
+/// A new [`FontChooser`][crate::FontChooser].
 #[doc(alias = "gimp_prop_font_chooser_new")]
 pub fn prop_font_chooser_new(
     config: &impl IsA<glib::Object>,
@@ -624,6 +1101,17 @@ pub fn prop_font_chooser_new(
     }
 }
 
+/// Creates a [`GradientChooser`][crate::GradientChooser] controlled by the specified property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of a `GimpGradient` property.
+/// ## `chooser_title`
+/// title for the poppable dialog.
+///
+/// # Returns
+///
+/// A new [`GradientChooser`][crate::GradientChooser].
 #[doc(alias = "gimp_prop_gradient_chooser_new")]
 pub fn prop_gradient_chooser_new(
     config: &impl IsA<glib::Object>,
@@ -639,6 +1127,22 @@ pub fn prop_gradient_chooser_new(
     }
 }
 
+/// Creates a horizontal scale to control the value of the specified
+/// integer or double property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of integer or double property controlled by the scale.
+/// ## `step_increment`
+/// Step size.
+/// ## `page_increment`
+/// Page size.
+/// ## `digits`
+/// Number of digits after decimal point to display.
+///
+/// # Returns
+///
+/// A new `GtkScale`.
 #[doc(alias = "gimp_prop_hscale_new")]
 pub fn prop_hscale_new(
     config: &impl IsA<glib::Object>,
@@ -658,6 +1162,19 @@ pub fn prop_hscale_new(
     }
 }
 
+/// Creates a widget to display a icon image representing the value of the
+/// specified string property, which should encode an icon name.
+/// See `gtk_image_new_from_icon_name()` for more information.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of string property.
+/// ## `icon_size`
+/// Size of desired icon image.
+///
+/// # Returns
+///
+/// A new `GtkImage` widget.
 #[doc(alias = "gimp_prop_icon_image_new")]
 pub fn prop_icon_image_new(
     config: &impl IsA<glib::Object>,
@@ -673,6 +1190,17 @@ pub fn prop_icon_image_new(
     }
 }
 
+/// Creates a [`ImageChooser`][crate::ImageChooser] controlled by the specified property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of a [`gimp::Image`][crate::gimp::Image] property.
+/// ## `chooser_title`
+/// title for the poppable dialog.
+///
+/// # Returns
+///
+/// A new [`ImageChooser`][crate::ImageChooser].
 #[doc(alias = "gimp_prop_image_chooser_new")]
 pub fn prop_image_chooser_new(
     config: &impl IsA<glib::Object>,
@@ -688,6 +1216,19 @@ pub fn prop_image_chooser_new(
     }
 }
 
+/// Creates a [`IntComboBox`][crate::IntComboBox] widget to display and set the specified
+/// property. The contents of the widget are determined by `store`,
+/// which should be created using `gimp_int_store_new()`.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of int property controlled by combo box.
+/// ## `store`
+/// [`IntStore`][crate::IntStore] holding list of labels, values, etc.
+///
+/// # Returns
+///
+/// The newly created [`IntComboBox`][crate::IntComboBox] widget.
 #[doc(alias = "gimp_prop_int_combo_box_new")]
 pub fn prop_int_combo_box_new(
     config: &impl IsA<glib::Object>,
@@ -703,6 +1244,21 @@ pub fn prop_int_combo_box_new(
     }
 }
 
+/// Creates a group of radio buttons which function to set and display
+/// the specified int property. If `title` is [`None`], the
+/// `property_name`'s nick will be used as label of the returned frame.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of enum property controlled by the radio buttons.
+/// ## `title`
+/// Label for the frame holding the buttons
+/// ## `store`
+/// [`IntStore`][crate::IntStore] holding list of labels, values, etc.
+///
+/// # Returns
+///
+/// A [`Frame`][crate::Frame] containing the radio buttons.
 #[doc(alias = "gimp_prop_int_radio_frame_new")]
 pub fn prop_int_radio_frame_new(
     config: &impl IsA<glib::Object>,
@@ -720,6 +1276,17 @@ pub fn prop_int_radio_frame_new(
     }
 }
 
+/// Creates a [`ItemChooser`][crate::ItemChooser] controlled by the specified property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of a [`gimp::Item`][crate::gimp::Item] property.
+/// ## `chooser_title`
+/// title for the poppable dialog.
+///
+/// # Returns
+///
+/// A new [`ItemChooser`][crate::ItemChooser].
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_prop_item_chooser_new")]
@@ -737,6 +1304,18 @@ pub fn prop_item_chooser_new(
     }
 }
 
+/// Creates a [`LabelColor`][crate::LabelColor] to set and display the value of an RGB
+/// property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of RGB property.
+/// ## `editable`
+/// Whether the widget should allow color editability.
+///
+/// # Returns
+///
+/// A new [`LabelColor`][crate::LabelColor] widget.
 #[doc(alias = "gimp_prop_label_color_new")]
 pub fn prop_label_color_new(
     config: &impl IsA<glib::Object>,
@@ -752,6 +1331,19 @@ pub fn prop_label_color_new(
     }
 }
 
+/// Creates a [`LabelEntry`][crate::LabelEntry] to set and display the value of the
+/// specified string property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of string property.
+/// ## `max_len`
+/// Maximum allowed length of string (set to negative for
+///  no maximum).
+///
+/// # Returns
+///
+/// A new [`gtk::Entry`][crate::gtk::Entry] widget.
 #[doc(alias = "gimp_prop_label_entry_new")]
 pub fn prop_label_entry_new(
     config: &impl IsA<glib::Object>,
@@ -767,6 +1359,18 @@ pub fn prop_label_entry_new(
     }
 }
 
+/// Creates a `GtkLabel` to display the value of the specified property.
+/// The property should be a string property or at least transformable
+/// to a string. If the user should be able to edit the string, use
+/// [`prop_entry_new()`][crate::prop_entry_new()] instead.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of string property.
+///
+/// # Returns
+///
+/// A new `GtkLabel` widget.
 #[doc(alias = "gimp_prop_label_new")]
 pub fn prop_label_new(config: &impl IsA<glib::Object>, property_name: &str) -> Option<gtk::Widget> {
     unsafe {
@@ -777,6 +1381,16 @@ pub fn prop_label_new(config: &impl IsA<glib::Object>, property_name: &str) -> O
     }
 }
 
+/// Creates a [`LabelSpin`][crate::LabelSpin] to set and display the value of the
+/// specified double property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `digits`
+/// Number of digits after decimal point to display.
+///
+/// # Returns
+///
+/// A new `libgimpwidgets`-gimpspinbutton.
 #[doc(alias = "gimp_prop_label_spin_new")]
 pub fn prop_label_spin_new(
     config: &impl IsA<glib::Object>,
@@ -792,6 +1406,17 @@ pub fn prop_label_spin_new(
     }
 }
 
+/// Creates a [`MemsizeEntry`][crate::MemsizeEntry] (spin button and option menu) to set
+/// and display the value of the specified memsize property. See
+/// [`MemsizeEntry::new()`][crate::MemsizeEntry::new()] for more information.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of memsize property.
+///
+/// # Returns
+///
+/// A new [`MemsizeEntry`][crate::MemsizeEntry].
 #[doc(alias = "gimp_prop_memsize_entry_new")]
 pub fn prop_memsize_entry_new(
     config: &impl IsA<glib::Object>,
@@ -805,6 +1430,17 @@ pub fn prop_memsize_entry_new(
     }
 }
 
+/// Creates a [`PaletteChooser`][crate::PaletteChooser] controlled by the specified property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of a `GimpPalette` property.
+/// ## `chooser_title`
+/// title for the poppable dialog.
+///
+/// # Returns
+///
+/// A new [`PaletteChooser`][crate::PaletteChooser].
 #[doc(alias = "gimp_prop_palette_chooser_new")]
 pub fn prop_palette_chooser_new(
     config: &impl IsA<glib::Object>,
@@ -820,6 +1456,20 @@ pub fn prop_palette_chooser_new(
     }
 }
 
+/// Creates a [`PathEditor`][crate::PathEditor] to edit the specified path and writable
+/// path properties.
+/// ## `config`
+/// object to which property is attached.
+/// ## `path_property_name`
+/// name of path property.
+/// ## `writable_property_name`
+/// name of writable path property.
+/// ## `filechooser_title`
+/// window title of `GtkFileChooserDialog` widget.
+///
+/// # Returns
+///
+/// A new [`PathEditor`][crate::PathEditor].
 #[doc(alias = "gimp_prop_path_editor_new")]
 pub fn prop_path_editor_new(
     config: &impl IsA<glib::Object>,
@@ -837,6 +1487,17 @@ pub fn prop_path_editor_new(
     }
 }
 
+/// Creates a [`PatternChooser`][crate::PatternChooser] controlled by the specified property.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of a `GimpPattern` property.
+/// ## `chooser_title`
+/// title for the poppable dialog.
+///
+/// # Returns
+///
+/// A new [`PatternChooser`][crate::PatternChooser].
 #[doc(alias = "gimp_prop_pattern_chooser_new")]
 pub fn prop_pattern_chooser_new(
     config: &impl IsA<glib::Object>,
@@ -852,6 +1513,21 @@ pub fn prop_pattern_chooser_new(
     }
 }
 
+/// Creates a [`IntComboBox`][crate::IntComboBox] widget to display and set the specified
+/// property. The contents of the widget are determined by `store`,
+/// which should be created using `gimp_int_store_new()`.
+/// Values are GType/gpointer data, and therefore must be stored in the
+/// "user-data" column, instead of the usual "value" column.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of GType/gpointer property controlled by combo box.
+/// ## `store`
+/// [`IntStore`][crate::IntStore] holding list of labels, values, etc.
+///
+/// # Returns
+///
+/// The newly created [`IntComboBox`][crate::IntComboBox] widget.
 #[doc(alias = "gimp_prop_pointer_combo_box_new")]
 pub fn prop_pointer_combo_box_new(
     config: &impl IsA<glib::Object>,
@@ -867,6 +1543,45 @@ pub fn prop_pointer_combo_box_new(
     }
 }
 
+/// Creates a [`ScaleEntry`][crate::ScaleEntry] (slider and spin button) to set and display
+/// the value of a specified int or double property with sensible default
+/// settings depending on the range (decimal places, increments, etc.).
+/// These settings can be overridden by the relevant widget methods.
+///
+/// If `label` is [`None`], the `property_name`'s nick will be used as label
+/// of the returned object.
+///
+/// If `factor` is not 1.0, the widget's range will be computed based of
+/// `property_name`'s range multiplied by `factor`. A typical usage would
+/// be to display a [0.0, 1.0] range as [0.0, 100.0] by setting 100.0 as
+/// `factor`.
+///
+/// See [`ScaleEntryExt::set_bounds()`][crate::prelude::ScaleEntryExt::set_bounds()] for more information on
+/// `limit_scale`, `lower_limit` and `upper_limit`.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of integer or double property controlled by the scale.
+/// ## `label`
+/// The text for the `GtkLabel` which will appear left of
+///  the `GtkScale`.
+/// ## `factor`
+/// Optional multiplier to convert `property_name`'s
+///  range into the [`ScaleEntry`][crate::ScaleEntry]'s range. The common
+///  usage is to set 1.0.
+///  For non-double properties, no other values than 1.0
+///  are acceptable.
+/// ## `limit_scale`
+/// [`false`] if the range of possible values of the
+///  GtkScale should be the same as of the GtkSpinButton.
+/// ## `lower_limit`
+/// The scale's lower boundary if `scale_limits` is [`true`].
+/// ## `upper_limit`
+/// The scale's upper boundary if `scale_limits` is [`true`].
+///
+/// # Returns
+///
+/// The newly allocated [`ScaleEntry`][crate::ScaleEntry].
 #[doc(alias = "gimp_prop_scale_entry_new")]
 pub fn prop_scale_entry_new(
     config: &impl IsA<glib::Object>,
@@ -890,6 +1605,32 @@ pub fn prop_scale_entry_new(
     }
 }
 
+/// Creates a [`SizeEntry`][crate::SizeEntry] to set and display the specified double or
+/// int property, and its associated unit property. Note that this
+/// function is only suitable for creating a size entry holding a
+/// single value. Use [`prop_coordinates_new()`][crate::prop_coordinates_new()] to create a size
+/// entry holding two values.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of int or double property.
+/// ## `property_is_pixel`
+/// When [`true`], the property value is in pixels,
+///  and in the selected unit otherwise.
+/// ## `unit_property_name`
+/// Name of unit property.
+/// ## `unit_format`
+/// A printf-like unit-format string as is used with
+///  `gimp_unit_menu_new()`.
+/// ## `update_policy`
+/// How the automatic pixel `<->` real-world-unit
+///  calculations should be done.
+/// ## `resolution`
+/// The resolution (in dpi) for the field.
+///
+/// # Returns
+///
+/// A new [`SizeEntry`][crate::SizeEntry] widget.
 #[doc(alias = "gimp_prop_size_entry_new")]
 pub fn prop_size_entry_new(
     config: &impl IsA<glib::Object>,
@@ -913,6 +1654,25 @@ pub fn prop_size_entry_new(
     }
 }
 
+/// Creates a spin button to set and display the value of the
+/// specified double property.
+///
+/// If you wish to change the widget's range relatively to the
+/// `property_name`'s range, use [`prop_widget_set_factor()`][crate::prop_widget_set_factor()].
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of double property controlled by the spin button.
+/// ## `step_increment`
+/// Step size.
+/// ## `page_increment`
+/// Page size.
+/// ## `digits`
+/// Number of digits after decimal point to display.
+///
+/// # Returns
+///
+/// A new `libgimpwidgets`-gimpspinbutton.
 #[doc(alias = "gimp_prop_spin_button_new")]
 pub fn prop_spin_button_new(
     config: &impl IsA<glib::Object>,
@@ -932,6 +1692,31 @@ pub fn prop_spin_button_new(
     }
 }
 
+/// Creates a spin scale to set and display the value of the specified
+/// int or double property.
+///
+/// By default, the `property_name`'s nick will be used as label of the
+/// returned widget. Use [`SpinScale::set_label()`][crate::SpinScale::set_label()] to change this.
+///
+/// If you wish to change the widget's range relatively to the
+/// `property_name`'s range, use [`prop_widget_set_factor()`][crate::prop_widget_set_factor()].
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of double or int property controlled by the
+///  spin button.
+/// ## `step_increment`
+/// Step size.
+/// ## `page_increment`
+/// Page size.
+/// ## `digits`
+/// Number of digits after decimal point to display.
+///  This is only used for double properties. In case of
+///  int properties, `digits = 0` is implied.
+///
+/// # Returns
+///
+/// A new `libgimpwidgets`-gimpspinbutton.
 #[doc(alias = "gimp_prop_spin_scale_new")]
 pub fn prop_spin_scale_new(
     config: &impl IsA<glib::Object>,
@@ -956,6 +1741,25 @@ pub fn prop_spin_scale_new(
 //    unsafe { TODO: call ffi:gimp_prop_string_combo_box_new() }
 //}
 
+/// Creates a [`gtk::Box`][crate::gtk::Box] with a switch and a label that displays and sets the
+/// specified boolean property.
+/// If `label` is [`None`], the `property_name`'s nick will be used as label.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of boolean property controlled by checkbutton.
+/// ## `label`
+/// Label to give checkbutton (including mnemonic).
+///
+/// # Returns
+///
+/// The newly created box containing a `GtkSwitch`.
+///
+/// ## `label_out`
+/// The generated `GtkLabel`
+///
+/// ## `switch_out`
+/// The generated `GtkSwitch`
 #[doc(alias = "gimp_prop_switch_new")]
 pub fn prop_switch_new(
     config: &impl IsA<glib::Object>,
@@ -981,6 +1785,27 @@ pub fn prop_switch_new(
 //    unsafe { TODO: call ffi:gimp_prop_text_buffer_new() }
 //}
 
+/// Creates a `GtkToggleButton` that sets the specified boolean
+/// property.
+///
+/// If `icon_name` is [`None`], `label` will be used. If `label` is [`None`] too,
+/// the `property_name`'s nick will be used as label.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of boolean property controlled by the toggle button.
+/// ## `icon_name`
+/// Icon to display in the toggle.
+/// ## `label`
+/// Label to give the toggle (including mnemonic).
+///
+/// # Returns
+///
+/// The newly `GtkToggleButton`.
+///
+/// ## `image_out`
+/// The generated `GtkImage`
+///  if `icon_name` was not [`None`].
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_prop_toggle_new")]
@@ -1003,6 +1828,16 @@ pub fn prop_toggle_new(
     }
 }
 
+/// Creates a [`UnitComboBox`][crate::UnitComboBox] to set and display the value of a Unit
+/// property. See [`UnitComboBox::new()`][crate::UnitComboBox::new()] for more information.
+/// ## `config`
+/// Object to which property is attached.
+/// ## `property_name`
+/// Name of Unit property.
+///
+/// # Returns
+///
+/// A new [`UnitComboBox`][crate::UnitComboBox] widget.
 #[doc(alias = "gimp_prop_unit_combo_box_new")]
 pub fn prop_unit_combo_box_new(
     config: &impl IsA<glib::Object>,
@@ -1016,6 +1851,35 @@ pub fn prop_unit_combo_box_new(
     }
 }
 
+/// Change the display factor of the property `widget` relatively to the
+/// property it was bound to. Currently the only types of widget accepted
+/// as input are those created by [`prop_spin_scale_new()`][crate::prop_spin_scale_new()] and
+/// [`prop_spin_button_new()`][crate::prop_spin_button_new()].
+///
+/// If `factor` is 1.0, then the config property and the widget display
+/// map exactly.
+///
+/// If `factor` is not 1.0, the widget's range will be computed based of
+/// `property_name`'s range multiplied by `factor`. A typical usage would
+/// be to display a [0.0, 1.0] range as [0.0, 100.0] by setting 100.0 as
+/// `factor`. This function can only be used with double properties.
+///
+/// The `step_increment` and `page_increment` can be set to new increments
+/// you want to get for this new range. If you set them to 0.0 or
+/// negative values, new increments will be computed based on the new
+/// `factor` and previous factor.
+/// ## `widget`
+/// Property widget.
+/// ## `factor`
+/// Multiplier to convert the `widget`'s range and
+///  map appropriately to the property's range it is
+///  associated to.
+/// ## `step_increment`
+/// Step size.
+/// ## `page_increment`
+/// Page size.
+/// ## `digits`
+/// Number of digits after decimal point to display.
 #[doc(alias = "gimp_prop_widget_set_factor")]
 pub fn prop_widget_set_factor(
     widget: &impl IsA<gtk::Widget>,
@@ -1070,6 +1934,13 @@ pub fn prop_widget_set_factor(
 //    unsafe { TODO: call ffi:gimp_standard_help_func() }
 //}
 
+/// This function attempts to read the user's system preference for
+/// showing animation. It can be used to turn off or hide unnecessary
+/// animations such as the scrolling credits or Easter Egg animations.
+///
+/// # Returns
+///
+/// [`true`] if the user has animations enabled on their system
 #[doc(alias = "gimp_widget_animation_enabled")]
 pub fn widget_animation_enabled() -> bool {
     unsafe { from_glib(ffi::gimp_widget_animation_enabled()) }
@@ -1080,6 +1951,15 @@ pub fn widget_animation_enabled() -> bool {
 //    unsafe { TODO: call ffi:gimp_widget_free_native_handle() }
 //}
 
+/// This function returns the [`gimp::ColorProfile`][crate::gimp::ColorProfile] of the monitor `widget` is
+/// currently displayed on, or [`None`] if there is no profile configured.
+/// ## `widget`
+/// a [`gtk::Widget`][crate::gtk::Widget]
+///
+/// # Returns
+///
+/// `widget`'s monitor's [`gimp::ColorProfile`][crate::gimp::ColorProfile],
+///  or [`None`].
 #[doc(alias = "gimp_widget_get_color_profile")]
 pub fn widget_get_color_profile(widget: &impl IsA<gtk::Widget>) -> Option<gimp::ColorProfile> {
     unsafe {
@@ -1114,6 +1994,11 @@ pub fn widget_get_color_profile(widget: &impl IsA<gtk::Widget>) -> Option<gimp::
 //    unsafe { TODO: call ffi:gimp_widget_track_monitor() }
 //}
 
+/// Indicates to the window manager that `window` is a transient dialog
+/// associated with the GIMP window that the plug-in has been
+/// started from. See also `gimp_window_set_transient_for_display()`.
+/// ## `window`
+/// the [`gtk::Window`][crate::gtk::Window] that should become transient
 #[doc(alias = "gimp_window_set_transient")]
 pub fn window_set_transient(window: &impl IsA<gtk::Window>) {
     unsafe {
@@ -1131,6 +2016,16 @@ pub fn window_set_transient(window: &impl IsA<gtk::Window>) {
 //    unsafe { TODO: call ffi:gimp_window_set_transient_for_display() }
 //}
 
+/// ## `model`
+/// a [`ZoomModel`][crate::ZoomModel]
+/// ## `icon_size`
+/// use 0 for a button with text labels
+///
+/// # Returns
+///
+/// a newly created GtkButton
+///
+/// Since GIMP 2.4
 #[doc(alias = "gimp_zoom_button_new")]
 pub fn zoom_button_new(
     model: &ZoomModel,

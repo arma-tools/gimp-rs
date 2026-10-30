@@ -19,6 +19,23 @@ use glib::{prelude::*, translate::*};
 //    unsafe { TODO: call ffi:gimp_adaptive_supersample_area() }
 //}
 
+/// Paint in the current brush with varying pressure. Paint application
+/// is time-dependent.
+///
+/// This tool simulates the use of an airbrush. Paint pressure
+/// represents the relative intensity of the paint application. High
+/// pressure results in a thicker layer of paint while low pressure
+/// results in a thinner layer.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `pressure`
+/// The pressure of the airbrush strokes.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_airbrush")]
 pub fn airbrush(drawable: &impl IsA<Drawable>, pressure: f64, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -32,6 +49,21 @@ pub fn airbrush(drawable: &impl IsA<Drawable>, pressure: f64, strokes: &[f64]) -
     }
 }
 
+/// Paint in the current brush with varying pressure. Paint application
+/// is time-dependent.
+///
+/// This tool simulates the use of an airbrush. It is similar to
+/// [`airbrush()`][crate::airbrush()] except that the pressure is derived from the
+/// airbrush tools options box. It the option has not been set the
+/// default for the option will be used.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_airbrush_default")]
 pub fn airbrush_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -49,6 +81,15 @@ pub fn airbrush_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool 
 //    unsafe { TODO: call ffi:gimp_any_to_utf8() }
 //}
 
+/// Add a global parasite.
+///
+/// This procedure attaches a global parasite. It has no return values.
+/// ## `parasite`
+/// The parasite to attach.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_attach_parasite")]
 pub fn attach_parasite(parasite: &Parasite) -> bool {
     unsafe { from_glib(ffi::gimp_attach_parasite(parasite.to_glib_none().0)) }
@@ -84,6 +125,13 @@ pub fn babl_format_get_type() -> glib::types::Type {
 //    unsafe { TODO: call ffi:gimp_bilinear_rgb() }
 //}
 
+/// This function wraps bindtextdomain on UNIX and wbintextdomain on Windows.
+/// `dir_name` is expected to be in the encoding used by the C library on UNIX
+/// and UTF-8 on Windows.
+/// ## `domain_name`
+/// a gettext domain name
+/// ## `dir_name`
+/// path of the catalog directory
 #[doc(alias = "gimp_bind_text_domain")]
 pub fn bind_text_domain(domain_name: &str, dir_name: &str) {
     unsafe {
@@ -91,6 +139,15 @@ pub fn bind_text_domain(domain_name: &str, dir_name: &str) {
     }
 }
 
+/// Close the brush selection dialog.
+///
+/// Closes an open brush selection dialog.
+/// ## `brush_callback`
+/// The name of the callback registered for this pop-up.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_brushes_close_popup")]
 pub fn brushes_close_popup(brush_callback: &str) -> bool {
     unsafe {
@@ -100,6 +157,19 @@ pub fn brushes_close_popup(brush_callback: &str) -> bool {
     }
 }
 
+/// Retrieve a complete listing of the available brushes.
+///
+/// This procedure returns a complete listing of available GIMP brushes.
+/// Each brush returned can be used as input to
+/// [`context_set_brush()`][crate::context_set_brush()].
+/// ## `filter`
+/// An optional regular expression used to filter the list.
+///
+/// # Returns
+///
+///
+///  The list of brushes.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_brushes_get_list")]
 pub fn brushes_get_list(filter: &str) -> Vec<Brush> {
     unsafe {
@@ -109,6 +179,21 @@ pub fn brushes_get_list(filter: &str) -> Vec<Brush> {
     }
 }
 
+/// Invokes the GIMP brush selection dialog.
+///
+/// Opens a dialog letting a user choose a brush.
+/// ## `brush_callback`
+/// The callback PDB proc to call when user chooses a brush.
+/// ## `popup_title`
+/// Title of the brush selection dialog.
+/// ## `initial_brush`
+/// The brush to set as the initial choice.
+/// ## `parent_window`
+/// An optional parent window handle for the popup to be set transient to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_brushes_popup")]
 pub fn brushes_popup(
     brush_callback: &str,
@@ -126,11 +211,30 @@ pub fn brushes_popup(
     }
 }
 
+/// Refresh current brushes. This function always succeeds.
+///
+/// This procedure retrieves all brushes currently in the user's brush
+/// path and updates the brush dialogs accordingly.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_brushes_refresh")]
 pub fn brushes_refresh() -> bool {
     unsafe { from_glib(ffi::gimp_brushes_refresh()) }
 }
 
+/// Sets the selected brush in a brush selection dialog.
+///
+/// Sets the selected brush in a brush selection dialog.
+/// ## `brush_callback`
+/// The name of the callback registered for this pop-up.
+/// ## `brush`
+/// The brush to set as selected.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_brushes_set_popup")]
 pub fn brushes_set_popup(brush_callback: &str, brush: &Brush) -> bool {
     unsafe {
@@ -141,21 +245,57 @@ pub fn brushes_set_popup(brush_callback: &str, brush: &Brush) -> bool {
     }
 }
 
+/// Deletes a named buffer.
+///
+/// This procedure deletes a named buffer.
+/// ## `buffer_name`
+/// The buffer name.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_buffer_delete")]
 pub fn buffer_delete(buffer_name: &str) -> bool {
     unsafe { from_glib(ffi::gimp_buffer_delete(buffer_name.to_glib_none().0)) }
 }
 
+/// Retrieves the specified buffer's bytes.
+///
+/// This procedure retrieves the specified named buffer's bytes.
+/// ## `buffer_name`
+/// The buffer name.
+///
+/// # Returns
+///
+/// The buffer bpp.
 #[doc(alias = "gimp_buffer_get_bytes")]
 pub fn buffer_get_bytes(buffer_name: &str) -> i32 {
     unsafe { ffi::gimp_buffer_get_bytes(buffer_name.to_glib_none().0) }
 }
 
+/// Retrieves the specified buffer's height.
+///
+/// This procedure retrieves the specified named buffer's height.
+/// ## `buffer_name`
+/// The buffer name.
+///
+/// # Returns
+///
+/// The buffer height.
 #[doc(alias = "gimp_buffer_get_height")]
 pub fn buffer_get_height(buffer_name: &str) -> i32 {
     unsafe { ffi::gimp_buffer_get_height(buffer_name.to_glib_none().0) }
 }
 
+/// Retrieves the specified buffer's image type.
+///
+/// This procedure retrieves the specified named buffer's image type.
+/// ## `buffer_name`
+/// The buffer name.
+///
+/// # Returns
+///
+/// The buffer image type.
 #[doc(alias = "gimp_buffer_get_image_type")]
 pub fn buffer_get_image_type(buffer_name: &str) -> ImageType {
     unsafe {
@@ -165,11 +305,32 @@ pub fn buffer_get_image_type(buffer_name: &str) -> ImageType {
     }
 }
 
+/// Retrieves the specified buffer's width.
+///
+/// This procedure retrieves the specified named buffer's width.
+/// ## `buffer_name`
+/// The buffer name.
+///
+/// # Returns
+///
+/// The buffer width.
 #[doc(alias = "gimp_buffer_get_width")]
 pub fn buffer_get_width(buffer_name: &str) -> i32 {
     unsafe { ffi::gimp_buffer_get_width(buffer_name.to_glib_none().0) }
 }
 
+/// Renames a named buffer.
+///
+/// This procedure renames a named buffer.
+/// ## `buffer_name`
+/// The buffer name.
+/// ## `new_name`
+/// The buffer's new name.
+///
+/// # Returns
+///
+/// The real name given to the buffer.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_buffer_rename")]
 pub fn buffer_rename(buffer_name: &str, new_name: &str) -> Option<glib::GString> {
     unsafe {
@@ -180,6 +341,18 @@ pub fn buffer_rename(buffer_name: &str, new_name: &str) -> Option<glib::GString>
     }
 }
 
+/// Retrieve a complete listing of the available buffers.
+///
+/// This procedure returns a complete listing of available named
+/// buffers.
+/// ## `filter`
+/// An optional regular expression used to filter the list.
+///
+/// # Returns
+///
+///
+///  The list of buffer names.
+///  The returned value must be freed with `g_strfreev()`.
 #[doc(alias = "gimp_buffers_get_name_list")]
 pub fn buffers_get_name_list(filter: Option<&str>) -> Vec<glib::GString> {
     unsafe {
@@ -189,11 +362,43 @@ pub fn buffers_get_name_list(filter: Option<&str>) -> Vec<glib::GString> {
     }
 }
 
+/// Returns the default top directory for GIMP cached files. If the
+/// environment variable GIMP3_CACHEDIR exists, that is used. It
+/// should be an absolute pathname. Otherwise, a subdirectory of the
+/// directory returned by `g_get_user_cache_dir()` is used.
+///
+/// Note that the actual directories used for GIMP caches files can
+/// be overridden by the user in the preferences dialog.
+///
+/// In config files such as gimprc, the string ${gimp_cache_dir}
+/// expands to this directory.
+///
+/// The returned string is owned by GIMP and must not be modified or
+/// freed. The returned string is in the encoding used for filenames by
+/// GLib, which isn't necessarily UTF-8. (On Windows it always is
+/// UTF-8.).
+///
+/// # Returns
+///
+/// The default top directory for GIMP cached files.
 #[doc(alias = "gimp_cache_directory")]
 pub fn cache_directory() -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_cache_directory()) }
 }
 
+/// Turns any input string into a canonicalized string.
+///
+/// Canonical identifiers are e.g. expected by the PDB for procedure
+/// and parameter names. Every character of the input string that is
+/// not either '-', 'a-z', 'A-Z' or '0-9' will be replaced by a '-'.
+/// ## `identifier`
+/// The identifier string to canonicalize.
+///
+/// # Returns
+///
+/// The canonicalized identifier. This is a newly allocated
+///  string that should be freed with `g_free()` when no longer
+///  needed.
 #[doc(alias = "gimp_canonicalize_identifier")]
 pub fn canonicalize_identifier(identifier: &str) -> Option<glib::GString> {
     unsafe {
@@ -203,21 +408,51 @@ pub fn canonicalize_identifier(identifier: &str) -> Option<glib::GString> {
     }
 }
 
+/// Returns the first checkerboard custom color that can
+/// be used in previews.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the _check_custom_color1 value
 #[doc(alias = "gimp_check_custom_color1")]
 pub fn check_custom_color1() -> Option<gegl::Color> {
     unsafe { from_glib_none(ffi::gimp_check_custom_color1()) }
 }
 
+/// Returns the second checkerboard custom color that can
+/// be used in previews.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the _check_custom_color2 value
 #[doc(alias = "gimp_check_custom_color2")]
 pub fn check_custom_color2() -> Option<gegl::Color> {
     unsafe { from_glib_none(ffi::gimp_check_custom_color2()) }
 }
 
+/// Returns the size of the checkerboard to be used in previews.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the check_size value
 #[doc(alias = "gimp_check_size")]
 pub fn check_size() -> CheckSize {
     unsafe { from_glib(ffi::gimp_check_size()) }
 }
 
+/// Returns the type of the checkerboard to be used in previews.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the check_type value
 #[doc(alias = "gimp_check_type")]
 pub fn check_type() -> CheckType {
     unsafe { from_glib(ffi::gimp_check_type()) }
@@ -228,6 +463,36 @@ pub fn check_type() -> CheckType {
 //    unsafe { TODO: call ffi:gimp_checks_get_colors() }
 //}
 
+/// Clone from the source to the dest drawable using the current brush
+///
+/// This tool clones (copies) from the source drawable starting at the
+/// specified source coordinates to the dest drawable. If the
+/// \"clone_type\" argument is set to PATTERN-CLONE, then the current
+/// pattern is used as the source and the \"src_drawable\" argument is
+/// ignored. Pattern cloning assumes a tileable pattern and mods the sum
+/// of the src coordinates and subsequent stroke offsets with the width
+/// and height of the pattern. For image cloning, if the sum of the src
+/// coordinates and subsequent stroke offsets exceeds the extents of the
+/// src drawable, then no paint is transferred. The clone tool is
+/// capable of transforming between any image types including
+/// RGB-&gt;Indexed--although converting from any type to indexed is
+/// significantly slower.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `src_drawable`
+/// The source drawable.
+/// ## `clone_type`
+/// The type of clone.
+/// ## `src_x`
+/// The x coordinate in the source image.
+/// ## `src_y`
+/// The y coordinate in the source image.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_clone")]
 pub fn clone(
     drawable: &impl IsA<Drawable>,
@@ -251,6 +516,22 @@ pub fn clone(
     }
 }
 
+/// Clone from the source to the dest drawable using the current brush
+///
+/// This tool clones (copies) from the source drawable starting at the
+/// specified source coordinates to the dest drawable. This function
+/// performs exactly the same as the [`clone()`][crate::clone()] function except that
+/// the tools arguments are obtained from the clones option dialog. It
+/// this dialog has not been activated then the dialogs default values
+/// will be used.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_clone_default")]
 pub fn clone_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -268,6 +549,18 @@ pub fn color_array_get_type() -> glib::types::Type {
     unsafe { from_glib(ffi::gimp_color_array_get_type()) }
 }
 
+/// Determine whether `color` is out of its own space gamut. This can only
+/// happen if the color space is unbounded and any of the color component
+/// is out of the `[0; 1]` range.
+/// A small error of margin is accepted, so that for instance a component
+/// at -0.0000001 is not making the whole color to be considered as
+/// out-of-gamut while it may just be computation imprecision.
+/// ## `color`
+/// a [`gegl::Color`][crate::gegl::Color]
+///
+/// # Returns
+///
+/// whether the color is out of its own color space gamut.
 #[doc(alias = "gimp_color_is_out_of_self_gamut")]
 pub fn color_is_out_of_self_gamut(color: &impl IsA<gegl::Color>) -> bool {
     unsafe {
@@ -277,6 +570,39 @@ pub fn color_is_out_of_self_gamut(color: &impl IsA<gegl::Color>) -> bool {
     }
 }
 
+/// Determine whether `color1` and `color2` can be considered identical to the
+/// human eyes, by computing the distance in a color space as perceptually
+/// uniform as possible.
+///
+/// This function will also consider any transparency channel, so that if you
+/// only want to compare the pure color, you could for instance set both color's
+/// alpha channel to 1.0 first (possibly on duplicates of the colors if originals
+/// should not be modified), such as:
+///
+/// **⚠️ The following code is in C ⚠️**
+///
+/// ```C
+/// gimp_color_set_alpha (color1, 1.0);
+/// gimp_color_set_alpha (color2, 1.0);
+/// if (gimp_color_is_perceptually_identical (color1, color2))
+///   {
+///     printf ("Both colors are identical, ignoring their alpha component");
+///   }
+/// ```
+///
+/// Note that this relation is not transitive, because it is based on a
+/// color distance algorithm. It means that if color1 is perceptually
+/// identical to color2, which is perceptually identical to color3, it
+/// does not mean that color1 is perceptually identical to color3, as far
+/// this algorithm is concerned.
+/// ## `color1`
+/// a [`gegl::Color`][crate::gegl::Color]
+/// ## `color2`
+/// a [`gegl::Color`][crate::gegl::Color]
+///
+/// # Returns
+///
+/// whether the 2 colors can be considered the same for the human eyes.
 #[doc(alias = "gimp_color_is_perceptually_identical")]
 pub fn color_is_perceptually_identical(
     color1: &impl IsA<gegl::Color>,
@@ -290,21 +616,60 @@ pub fn color_is_perceptually_identical(
     }
 }
 
+/// Attempts to parse a string describing an sRGB color in CSS notation. This can
+/// be either a numerical representation (`rgb(255,0,0)` or `rgb(100%,0%,0%)`)
+/// or a hexadecimal notation as parsed by [`color_parse_hex()`][crate::color_parse_hex()] (`#`ff0000``) or
+/// a color name as parsed by [`color_parse_css()`][crate::color_parse_css()] (`red`).
+///
+/// Additionally the ``rgba()``, ``hsl()`` and ``hsla()`` functions are supported too.
+/// ## `css`
+/// a string describing a color in CSS notation
+///
+/// # Returns
+///
+/// a newly allocated [`gegl::Color`][crate::gegl::Color] if `css` was
+///  parsed successfully, [`None`] otherwise
 #[doc(alias = "gimp_color_parse_css")]
 pub fn color_parse_css(css: &str) -> Option<gegl::Color> {
     unsafe { from_glib_full(ffi::gimp_color_parse_css(css.to_glib_none().0)) }
 }
 
+/// Attempts to parse a string describing a sRGB color in hexadecimal
+/// notation (optionally prefixed with a '#').
+/// ## `hex`
+/// a string describing a color in hexadecimal notation
+///
+/// # Returns
+///
+/// a newly allocated color representing `hex`.
 #[doc(alias = "gimp_color_parse_hex")]
 pub fn color_parse_hex(hex: &str) -> Option<gegl::Color> {
     unsafe { from_glib_full(ffi::gimp_color_parse_hex(hex.to_glib_none().0)) }
 }
 
+/// Attempts to parse a color name. This function accepts [SVG 1.1 color
+/// keywords](https://www.w3.org/TR/SVG11/types.html`ColorKeywords`).
+/// ## `name`
+/// a color name (in UTF-8 encoding)
+///
+/// # Returns
+///
+/// a sRGB color as defined in "4.4. Recognized color
+///  keyword names" list of SVG 1.1 specification, if `name` was parsed
+///  successfully, [`None`] otherwise
 #[doc(alias = "gimp_color_parse_name")]
 pub fn color_parse_name(name: &str) -> Option<gegl::Color> {
     unsafe { from_glib_full(ffi::gimp_color_parse_name(name.to_glib_none().0)) }
 }
 
+/// Update the `alpha` channel, and any other component if necessary (e.g. in case
+/// of premultiplied channels), without changing the format of `color`.
+///
+/// If `color` has no alpha component, this function is a no-op.
+/// ## `color`
+/// a [`gegl::Color`][crate::gegl::Color]
+/// ## `alpha`
+/// new value for the alpha channel.
 #[doc(alias = "gimp_color_set_alpha")]
 pub fn color_set_alpha(color: &impl IsA<gegl::Color>, alpha: f64) {
     unsafe {
@@ -312,86 +677,229 @@ pub fn color_set_alpha(color: &impl IsA<gegl::Color>, alpha: f64) {
     }
 }
 
+/// Whether the currently active paint dynamics will be applied to
+/// painting.
+///
+/// Returns whether the currently active paint dynamics (as returned by
+/// `gimp_context_get_dynamics()`) is enabled.
+///
+/// # Returns
+///
+/// Whether dynamics enabled or disabled.
 #[doc(alias = "gimp_context_are_dynamics_enabled")]
 pub fn context_are_dynamics_enabled() -> bool {
     unsafe { from_glib(ffi::gimp_context_are_dynamics_enabled()) }
 }
 
+/// Enables paint dynamics using the active paint dynamics.
+///
+/// Enables the active paint dynamics to be used in all subsequent paint
+/// operations.
+/// ## `enable`
+/// Whether to enable or disable dynamics.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_enable_dynamics")]
 pub fn context_enable_dynamics(enable: bool) -> bool {
     unsafe { from_glib(ffi::gimp_context_enable_dynamics(enable.into_glib())) }
 }
 
+/// Get the antialias setting.
+///
+/// Returns the antialias setting.
+///
+/// # Returns
+///
+/// The antialias setting.
 #[doc(alias = "gimp_context_get_antialias")]
 pub fn context_get_antialias() -> bool {
     unsafe { from_glib(ffi::gimp_context_get_antialias()) }
 }
 
+/// Get the current GIMP background color.
+///
+/// Returns the current GIMP background color. The background color is
+/// used in a variety of tools such as blending, erasing (with non-alpha
+/// images), and image filling.
+///
+/// # Returns
+///
+/// The background color.
 #[doc(alias = "gimp_context_get_background")]
 pub fn context_get_background() -> Option<gegl::Color> {
     unsafe { from_glib_full(ffi::gimp_context_get_background()) }
 }
 
+/// Get the currently active brush.
+///
+/// Returns the currently active brush. All paint and stroke operations
+/// use this brush.
+///
+/// # Returns
+///
+/// The active brush.
 #[doc(alias = "gimp_context_get_brush")]
 pub fn context_get_brush() -> Option<Brush> {
     unsafe { from_glib_none(ffi::gimp_context_get_brush()) }
 }
 
+/// Get brush angle in degrees.
+///
+/// Set the angle in degrees for brush based paint tools.
+///
+/// # Returns
+///
+/// Angle in degrees.
 #[doc(alias = "gimp_context_get_brush_angle")]
 pub fn context_get_brush_angle() -> f64 {
     unsafe { ffi::gimp_context_get_brush_angle() }
 }
 
+/// Get brush aspect ratio.
+///
+/// Set the aspect ratio for brush based paint tools.
+///
+/// # Returns
+///
+/// Aspect ratio.
 #[doc(alias = "gimp_context_get_brush_aspect_ratio")]
 pub fn context_get_brush_aspect_ratio() -> f64 {
     unsafe { ffi::gimp_context_get_brush_aspect_ratio() }
 }
 
+/// Get brush force in paint options.
+///
+/// Get the brush application force for brush based paint tools.
+///
+/// # Returns
+///
+/// Brush application force.
 #[doc(alias = "gimp_context_get_brush_force")]
 pub fn context_get_brush_force() -> f64 {
     unsafe { ffi::gimp_context_get_brush_force() }
 }
 
+/// Get brush hardness in paint options.
+///
+/// Get the brush hardness for brush based paint tools.
+///
+/// # Returns
+///
+/// Brush hardness.
 #[doc(alias = "gimp_context_get_brush_hardness")]
 pub fn context_get_brush_hardness() -> f64 {
     unsafe { ffi::gimp_context_get_brush_hardness() }
 }
 
+/// Get brush size in pixels.
+///
+/// Get the brush size in pixels for brush based paint tools.
+///
+/// # Returns
+///
+/// Brush size in pixels.
 #[doc(alias = "gimp_context_get_brush_size")]
 pub fn context_get_brush_size() -> f64 {
     unsafe { ffi::gimp_context_get_brush_size() }
 }
 
+/// Get brush spacing as percent of size.
+///
+/// Get the brush spacing as percent of size for brush based paint
+/// tools.
+///
+/// # Returns
+///
+/// Brush spacing as fraction of size.
 #[doc(alias = "gimp_context_get_brush_spacing")]
 pub fn context_get_brush_spacing() -> f64 {
     unsafe { ffi::gimp_context_get_brush_spacing() }
 }
 
+/// Get the diagonal neighbors setting.
+///
+/// Returns the diagonal neighbors setting.
+///
+/// # Returns
+///
+/// The diagonal neighbors setting.
 #[doc(alias = "gimp_context_get_diagonal_neighbors")]
 pub fn context_get_diagonal_neighbors() -> bool {
     unsafe { from_glib(ffi::gimp_context_get_diagonal_neighbors()) }
 }
 
+/// Get the distance metric used in some computations.
+///
+/// Returns the distance metric in the current context. See
+/// [`context_set_distance_metric()`][crate::context_set_distance_metric()] to know more about its usage.
+///
+/// # Returns
+///
+/// The distance metric.
 #[doc(alias = "gimp_context_get_distance_metric")]
 pub fn context_get_distance_metric() -> gegl::DistanceMetric {
     unsafe { from_glib(ffi::gimp_context_get_distance_metric()) }
 }
 
+/// Get the currently active paint dynamics.
+///
+/// Returns the name of the currently active paint dynamics. If enabled,
+/// all paint operations and stroke operations use this paint dynamics
+/// to control the application of paint to the image. If disabled, the
+/// dynamics will be ignored during paint actions.
+/// See [`context_are_dynamics_enabled()`][crate::context_are_dynamics_enabled()] to enquire whether dynamics
+/// are used or ignored.
+///
+/// # Returns
+///
+/// The name of the active paint dynamics.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_context_get_dynamics_name")]
 pub fn context_get_dynamics_name() -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_context_get_dynamics_name()) }
 }
 
+/// Retrieve the currently active stroke option's emulate brush dynamics
+/// setting.
+///
+/// This procedure returns the emulate brush dynamics property of the
+/// currently active stroke options.
+///
+/// # Returns
+///
+/// The emulate brush dynamics setting.
 #[doc(alias = "gimp_context_get_emulate_brush_dynamics")]
 pub fn context_get_emulate_brush_dynamics() -> bool {
     unsafe { from_glib(ffi::gimp_context_get_emulate_brush_dynamics()) }
 }
 
+/// Get the feather setting.
+///
+/// Returns the feather setting.
+///
+/// # Returns
+///
+/// The feather setting.
 #[doc(alias = "gimp_context_get_feather")]
 pub fn context_get_feather() -> bool {
     unsafe { from_glib(ffi::gimp_context_get_feather()) }
 }
 
+/// Get the feather radius setting.
+///
+/// Returns the feather radius setting.
+///
+/// # Returns
+///
+/// TRUE on success.
+///
+/// ## `feather_radius_x`
+/// The horizontal feather radius.
+///
+/// ## `feather_radius_y`
+/// The vertical feather radius.
 #[doc(alias = "gimp_context_get_feather_radius")]
 pub fn context_get_feather_radius() -> Option<(f64, f64)> {
     unsafe {
@@ -412,91 +920,228 @@ pub fn context_get_feather_radius() -> Option<(f64, f64)> {
     }
 }
 
+/// Get the currently active font.
+///
+/// Returns the currently active font.
+///
+/// # Returns
+///
+/// The active font.
 #[doc(alias = "gimp_context_get_font")]
 pub fn context_get_font() -> Option<Font> {
     unsafe { from_glib_none(ffi::gimp_context_get_font()) }
 }
 
+/// Get the current GIMP foreground color.
+///
+/// Returns the current GIMP foreground color. The foreground color is
+/// used in a variety of tools such as paint tools, blending, and bucket
+/// fill.
+///
+/// # Returns
+///
+/// The foreground color.
 #[doc(alias = "gimp_context_get_foreground")]
 pub fn context_get_foreground() -> Option<gegl::Color> {
     unsafe { from_glib_full(ffi::gimp_context_get_foreground()) }
 }
 
+/// Get the currently active gradient.
+///
+/// Returns the currently active gradient.
+///
+/// # Returns
+///
+/// The active gradient.
 #[doc(alias = "gimp_context_get_gradient")]
 pub fn context_get_gradient() -> Option<Gradient> {
     unsafe { from_glib_none(ffi::gimp_context_get_gradient()) }
 }
 
+/// Get the gradient blend color space.
+///
+/// Get the gradient blend color space for paint tools and the gradient
+/// tool.
+///
+/// # Returns
+///
+/// Color blend space.
 #[doc(alias = "gimp_context_get_gradient_blend_color_space")]
 pub fn context_get_gradient_blend_color_space() -> GradientBlendColorSpace {
     unsafe { from_glib(ffi::gimp_context_get_gradient_blend_color_space()) }
 }
 
+/// Get the gradient repeat mode.
+///
+/// Get the gradient repeat mode for paint tools and the gradient tool.
+///
+/// # Returns
+///
+/// Repeat mode.
 #[doc(alias = "gimp_context_get_gradient_repeat_mode")]
 pub fn context_get_gradient_repeat_mode() -> RepeatMode {
     unsafe { from_glib(ffi::gimp_context_get_gradient_repeat_mode()) }
 }
 
+/// Get the gradient reverse setting.
+///
+/// Get the gradient reverse setting for paint tools and the gradient
+/// tool.
+///
+/// # Returns
+///
+/// Reverse.
 #[doc(alias = "gimp_context_get_gradient_reverse")]
 pub fn context_get_gradient_reverse() -> bool {
     unsafe { from_glib(ffi::gimp_context_get_gradient_reverse()) }
 }
 
+/// Get ink angle in degrees.
+///
+/// Get the ink angle in degrees for ink tool.
+///
+/// # Returns
+///
+/// ink angle in degrees.
 #[doc(alias = "gimp_context_get_ink_angle")]
 pub fn context_get_ink_angle() -> f64 {
     unsafe { ffi::gimp_context_get_ink_angle() }
 }
 
+/// Get ink blob angle in degrees.
+///
+/// Get the ink blob angle in degrees for ink tool.
+///
+/// # Returns
+///
+/// ink blob angle in degrees.
 #[doc(alias = "gimp_context_get_ink_blob_angle")]
 pub fn context_get_ink_blob_angle() -> f64 {
     unsafe { ffi::gimp_context_get_ink_blob_angle() }
 }
 
+/// Get ink blob aspect ratio.
+///
+/// Get the ink blob aspect ratio for ink tool.
+///
+/// # Returns
+///
+/// ink blob aspect ratio.
 #[doc(alias = "gimp_context_get_ink_blob_aspect_ratio")]
 pub fn context_get_ink_blob_aspect_ratio() -> f64 {
     unsafe { ffi::gimp_context_get_ink_blob_aspect_ratio() }
 }
 
+/// Get ink blob type.
+///
+/// Get the ink blob type for ink tool.
+///
+/// # Returns
+///
+/// Ink blob type.
 #[doc(alias = "gimp_context_get_ink_blob_type")]
 pub fn context_get_ink_blob_type() -> InkBlobType {
     unsafe { from_glib(ffi::gimp_context_get_ink_blob_type()) }
 }
 
+/// Get ink blob size in pixels.
+///
+/// Get the ink blob size in pixels for ink tool.
+///
+/// # Returns
+///
+/// ink blob size in pixels.
 #[doc(alias = "gimp_context_get_ink_size")]
 pub fn context_get_ink_size() -> f64 {
     unsafe { ffi::gimp_context_get_ink_size() }
 }
 
+/// Get ink size sensitivity.
+///
+/// Get the ink size sensitivity for ink tool.
+///
+/// # Returns
+///
+/// ink size sensitivity.
 #[doc(alias = "gimp_context_get_ink_size_sensitivity")]
 pub fn context_get_ink_size_sensitivity() -> f64 {
     unsafe { ffi::gimp_context_get_ink_size_sensitivity() }
 }
 
+/// Get ink speed sensitivity.
+///
+/// Get the ink speed sensitivity for ink tool.
+///
+/// # Returns
+///
+/// ink speed sensitivity.
 #[doc(alias = "gimp_context_get_ink_speed_sensitivity")]
 pub fn context_get_ink_speed_sensitivity() -> f64 {
     unsafe { ffi::gimp_context_get_ink_speed_sensitivity() }
 }
 
+/// Get ink tilt sensitivity.
+///
+/// Get the ink tilt sensitivity for ink tool.
+///
+/// # Returns
+///
+/// ink tilt sensitivity.
 #[doc(alias = "gimp_context_get_ink_tilt_sensitivity")]
 pub fn context_get_ink_tilt_sensitivity() -> f64 {
     unsafe { ffi::gimp_context_get_ink_tilt_sensitivity() }
 }
 
+/// Get the interpolation type.
+///
+/// Returns the interpolation setting. The return value is an integer
+/// which corresponds to the values listed in the argument description.
+/// If the interpolation has not been set explicitly by
+/// [`context_set_interpolation()`][crate::context_set_interpolation()], the default interpolation set in
+/// gimprc will be used.
+///
+/// # Returns
+///
+/// The interpolation type.
 #[doc(alias = "gimp_context_get_interpolation")]
 pub fn context_get_interpolation() -> InterpolationType {
     unsafe { from_glib(ffi::gimp_context_get_interpolation()) }
 }
 
+/// Get the line cap style setting.
+///
+/// Returns the line cap style setting.
+///
+/// # Returns
+///
+/// The line cap style setting.
 #[doc(alias = "gimp_context_get_line_cap_style")]
 pub fn context_get_line_cap_style() -> CapStyle {
     unsafe { from_glib(ffi::gimp_context_get_line_cap_style()) }
 }
 
+/// Get the line dash offset setting.
+///
+/// Returns the line dash offset setting.
+///
+/// # Returns
+///
+/// The line dash offset setting.
 #[doc(alias = "gimp_context_get_line_dash_offset")]
 pub fn context_get_line_dash_offset() -> f64 {
     unsafe { ffi::gimp_context_get_line_dash_offset() }
 }
 
+/// Get the line dash pattern setting.
+///
+/// Returns the line dash pattern setting.
+///
+/// # Returns
+///
+/// TRUE on success.
+///
+/// ## `dashes`
+/// The line dash pattern setting.
 #[doc(alias = "gimp_context_get_line_dash_pattern")]
 pub fn context_get_line_dash_pattern() -> Option<Vec<f64>> {
     unsafe {
@@ -517,36 +1162,87 @@ pub fn context_get_line_dash_pattern() -> Option<Vec<f64>> {
     }
 }
 
+/// Get the line join style setting.
+///
+/// Returns the line join style setting.
+///
+/// # Returns
+///
+/// The line join style setting.
 #[doc(alias = "gimp_context_get_line_join_style")]
 pub fn context_get_line_join_style() -> JoinStyle {
     unsafe { from_glib(ffi::gimp_context_get_line_join_style()) }
 }
 
+/// Get the line miter limit setting.
+///
+/// Returns the line miter limit setting.
+///
+/// # Returns
+///
+/// The line miter limit setting.
 #[doc(alias = "gimp_context_get_line_miter_limit")]
 pub fn context_get_line_miter_limit() -> f64 {
     unsafe { ffi::gimp_context_get_line_miter_limit() }
 }
 
+/// Get the line width setting.
+///
+/// Returns the line width setting.
+///
+/// # Returns
+///
+/// The line width setting.
 #[doc(alias = "gimp_context_get_line_width")]
 pub fn context_get_line_width() -> f64 {
     unsafe { ffi::gimp_context_get_line_width() }
 }
 
+/// Get the line width unit setting.
+///
+/// Returns the line width unit setting.
+///
+/// # Returns
+///
+/// The line width unit setting.
 #[doc(alias = "gimp_context_get_line_width_unit")]
 pub fn context_get_line_width_unit() -> Option<Unit> {
     unsafe { from_glib_none(ffi::gimp_context_get_line_width_unit()) }
 }
 
+/// Get the currently active MyPaint brush.
+///
+/// Returns the name of the currently active MyPaint brush.
+///
+/// # Returns
+///
+/// The name of the active MyPaint brush.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_context_get_mypaint_brush")]
 pub fn context_get_mypaint_brush() -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_context_get_mypaint_brush()) }
 }
 
+/// Get the opacity.
+///
+/// Returns the opacity setting. The return value is a floating point
+/// number between 0 and 100.
+///
+/// # Returns
+///
+/// The opacity.
 #[doc(alias = "gimp_context_get_opacity")]
 pub fn context_get_opacity() -> f64 {
     unsafe { ffi::gimp_context_get_opacity() }
 }
 
+/// Get the paint fade length.
+///
+/// Get the paint fade length for paint tools and the gradient tool.
+///
+/// # Returns
+///
+/// The paint fade length setting.
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_context_get_paint_fade_length")]
@@ -554,6 +1250,14 @@ pub fn context_get_paint_fade_length() -> f64 {
     unsafe { ffi::gimp_context_get_paint_fade_length() }
 }
 
+/// Get the paint fade repeat type.
+///
+/// Get the paint fade repeat type for paint tools and the gradient
+/// tool.
+///
+/// # Returns
+///
+/// The paint fade repeat type setting.
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_context_get_paint_fade_repeat")]
@@ -561,66 +1265,168 @@ pub fn context_get_paint_fade_repeat() -> RepeatMode {
     unsafe { from_glib(ffi::gimp_context_get_paint_fade_repeat()) }
 }
 
+/// Get the currently active paint method.
+///
+/// Returns the name of the currently active paint method.
+///
+/// # Returns
+///
+/// The name of the active paint method.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_context_get_paint_method")]
 pub fn context_get_paint_method() -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_context_get_paint_method()) }
 }
 
+/// Get the paint mode.
+///
+/// Returns the paint-mode setting. The return value is an integer which
+/// corresponds to the values listed in the argument description.
+///
+/// # Returns
+///
+/// The paint mode.
 #[doc(alias = "gimp_context_get_paint_mode")]
 pub fn context_get_paint_mode() -> LayerMode {
     unsafe { from_glib(ffi::gimp_context_get_paint_mode()) }
 }
 
+/// Get the currently active palette.
+///
+/// Returns the currently active palette.
+///
+/// # Returns
+///
+/// The active palette.
 #[doc(alias = "gimp_context_get_palette")]
 pub fn context_get_palette() -> Option<Palette> {
     unsafe { from_glib_none(ffi::gimp_context_get_palette()) }
 }
 
+/// Get the currently active pattern.
+///
+/// Returns the active pattern in the current context. All clone and
+/// bucket-fill operations with patterns will use this pattern to
+/// control the application of paint to the image.
+///
+/// # Returns
+///
+/// The active pattern.
 #[doc(alias = "gimp_context_get_pattern")]
 pub fn context_get_pattern() -> Option<Pattern> {
     unsafe { from_glib_none(ffi::gimp_context_get_pattern()) }
 }
 
+/// Get the sample criterion setting.
+///
+/// Returns the sample criterion setting.
+///
+/// # Returns
+///
+/// The sample criterion setting.
 #[doc(alias = "gimp_context_get_sample_criterion")]
 pub fn context_get_sample_criterion() -> SelectCriterion {
     unsafe { from_glib(ffi::gimp_context_get_sample_criterion()) }
 }
 
+/// Get the sample merged setting.
+///
+/// Returns the sample merged setting.
+///
+/// # Returns
+///
+/// The sample merged setting.
 #[doc(alias = "gimp_context_get_sample_merged")]
 pub fn context_get_sample_merged() -> bool {
     unsafe { from_glib(ffi::gimp_context_get_sample_merged()) }
 }
 
+/// Get the sample threshold setting.
+///
+/// Returns the sample threshold setting.
+///
+/// # Returns
+///
+/// The sample threshold setting.
 #[doc(alias = "gimp_context_get_sample_threshold")]
 pub fn context_get_sample_threshold() -> f64 {
     unsafe { ffi::gimp_context_get_sample_threshold() }
 }
 
+/// Get the sample threshold setting as an integer value.
+///
+/// Returns the sample threshold setting as an integer value. See
+/// [`context_get_sample_threshold()`][crate::context_get_sample_threshold()].
+///
+/// # Returns
+///
+/// The sample threshold setting.
 #[doc(alias = "gimp_context_get_sample_threshold_int")]
 pub fn context_get_sample_threshold_int() -> i32 {
     unsafe { ffi::gimp_context_get_sample_threshold_int() }
 }
 
+/// Get the sample transparent setting.
+///
+/// Returns the sample transparent setting.
+///
+/// # Returns
+///
+/// The sample transparent setting.
 #[doc(alias = "gimp_context_get_sample_transparent")]
 pub fn context_get_sample_transparent() -> bool {
     unsafe { from_glib(ffi::gimp_context_get_sample_transparent()) }
 }
 
+/// Get the currently active stroke method.
+///
+/// Returns the currently active stroke method.
+///
+/// # Returns
+///
+/// The active stroke method.
 #[doc(alias = "gimp_context_get_stroke_method")]
 pub fn context_get_stroke_method() -> StrokeMethod {
     unsafe { from_glib(ffi::gimp_context_get_stroke_method()) }
 }
 
+/// Get the transform direction.
+///
+/// Returns the transform direction. The return value is an integer
+/// which corresponds to the values listed in the argument description.
+///
+/// # Returns
+///
+/// The transform direction.
 #[doc(alias = "gimp_context_get_transform_direction")]
 pub fn context_get_transform_direction() -> TransformDirection {
     unsafe { from_glib(ffi::gimp_context_get_transform_direction()) }
 }
 
+/// Get the transform resize type.
+///
+/// Returns the transform resize setting. The return value is an integer
+/// which corresponds to the values listed in the argument description.
+///
+/// # Returns
+///
+/// The transform resize type.
 #[doc(alias = "gimp_context_get_transform_resize")]
 pub fn context_get_transform_resize() -> TransformResize {
     unsafe { from_glib(ffi::gimp_context_get_transform_resize()) }
 }
 
+/// Lists the available paint methods.
+///
+/// Lists the names of the available paint methods. Any of the names can
+/// be used for [`context_set_paint_method()`][crate::context_set_paint_method()].
+///
+/// # Returns
+///
+/// TRUE on success.
+///
+/// ## `paint_methods`
+/// The names of the available paint methods.
 #[doc(alias = "gimp_context_list_paint_methods")]
 pub fn context_list_paint_methods() -> Option<Vec<glib::GString>> {
     unsafe {
@@ -634,21 +1440,70 @@ pub fn context_list_paint_methods() -> Option<Vec<glib::GString>> {
     }
 }
 
+/// Pops the topmost context from the plug-in's context stack.
+///
+/// Removes the topmost context from the plug-in's context stack. The
+/// next context on the stack becomes the new current context of the
+/// plug-in, that is, the context that was active before the
+/// corresponding call to [`context_push()`][crate::context_push()]
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_pop")]
 pub fn context_pop() -> bool {
     unsafe { from_glib(ffi::gimp_context_pop()) }
 }
 
+/// Pushes a context onto the top of the plug-in's context stack.
+///
+/// Creates a new context by copying the current context. The copy
+/// becomes the new current context for the calling plug-in until it is
+/// popped again using [`context_pop()`][crate::context_pop()].
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_push")]
 pub fn context_push() -> bool {
     unsafe { from_glib(ffi::gimp_context_push()) }
 }
 
+/// Set the antialias setting.
+///
+/// Modifies the antialias setting. If antialiasing is turned on, the
+/// edges of selected region will contain intermediate values which give
+/// the appearance of a sharper, less pixelized edge. This should be set
+/// as TRUE most of the time unless a binary-only selection is wanted.
+///
+/// This setting affects the following procedures:
+/// [`Image::select_color()`][crate::Image::select_color()], [`Image::select_contiguous_color()`][crate::Image::select_contiguous_color()],
+/// [`Image::select_round_rectangle()`][crate::Image::select_round_rectangle()], [`Image::select_ellipse()`][crate::Image::select_ellipse()],
+/// [`Image::select_polygon()`][crate::Image::select_polygon()], [`Image::select_item()`][crate::Image::select_item()],
+/// [`DrawableExt::edit_bucket_fill()`][crate::prelude::DrawableExt::edit_bucket_fill()], [`DrawableExt::edit_stroke_item()`][crate::prelude::DrawableExt::edit_stroke_item()],
+/// [`DrawableExt::edit_stroke_selection()`][crate::prelude::DrawableExt::edit_stroke_selection()].
+/// ## `antialias`
+/// The antialias setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_antialias")]
 pub fn context_set_antialias(antialias: bool) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_antialias(antialias.into_glib())) }
 }
 
+/// Set the current GIMP background color.
+///
+/// Sets the current GIMP background color. After this is set,
+/// operations which use background such as blending, filling images,
+/// clearing, and erasing (in non-alpha images) will use the new value.
+/// ## `background`
+/// The background color.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_background")]
 pub fn context_set_background(background: &impl IsA<gegl::Color>) -> bool {
     unsafe {
@@ -658,66 +1513,193 @@ pub fn context_set_background(background: &impl IsA<gegl::Color>) -> bool {
     }
 }
 
+/// Set the active brush.
+///
+/// Sets the active brush in the current context. The brush will be used
+/// in subsequent paint and stroke operations. Returns an error when the
+/// brush data was uninstalled since the brush object was created.
+/// ## `brush`
+/// The brush.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush")]
 pub fn context_set_brush(brush: &Brush) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush(brush.to_glib_none().0)) }
 }
 
+/// Set brush angle in degrees.
+///
+/// Set the angle in degrees for brush based paint tools.
+/// ## `angle`
+/// Angle in degrees.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush_angle")]
 pub fn context_set_brush_angle(angle: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush_angle(angle)) }
 }
 
+/// Set brush aspect ratio.
+///
+/// Set the aspect ratio for brush based paint tools.
+/// ## `aspect`
+/// Aspect ratio.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush_aspect_ratio")]
 pub fn context_set_brush_aspect_ratio(aspect: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush_aspect_ratio(aspect)) }
 }
 
+/// Set brush spacing to its default.
+///
+/// Set the brush spacing to the default for paintbrush, airbrush, or
+/// pencil tools.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush_default_hardness")]
 pub fn context_set_brush_default_hardness() -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush_default_hardness()) }
 }
 
+/// Set brush size to its default.
+///
+/// Set the brush size to the default (max of width and height) for
+/// paintbrush, airbrush, or pencil tools.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush_default_size")]
 pub fn context_set_brush_default_size() -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush_default_size()) }
 }
 
+/// Set brush spacing to its default.
+///
+/// Set the brush spacing to the default for paintbrush, airbrush, or
+/// pencil tools.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush_default_spacing")]
 pub fn context_set_brush_default_spacing() -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush_default_spacing()) }
 }
 
+/// Set brush application force.
+///
+/// Set the brush application force for brush based paint tools.
+/// ## `force`
+/// Brush application force.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush_force")]
 pub fn context_set_brush_force(force: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush_force(force)) }
 }
 
+/// Set brush hardness.
+///
+/// Set the brush hardness for brush based paint tools.
+/// ## `hardness`
+/// Brush hardness.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush_hardness")]
 pub fn context_set_brush_hardness(hardness: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush_hardness(hardness)) }
 }
 
+/// Set brush size in pixels.
+///
+/// Set the brush size in pixels for brush based paint tools.
+/// ## `size`
+/// Brush size in pixels.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush_size")]
 pub fn context_set_brush_size(size: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush_size(size)) }
 }
 
+/// Set brush spacing as percent of size.
+///
+/// Set the brush spacing as percent of size for brush based paint
+/// tools.
+/// ## `spacing`
+/// Brush spacing as fraction of size.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_brush_spacing")]
 pub fn context_set_brush_spacing(spacing: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_brush_spacing(spacing)) }
 }
 
+/// Set the current GIMP foreground and background colors to black and
+/// white.
+///
+/// Sets the current GIMP foreground and background colors to their
+/// initial default values, black and white.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_default_colors")]
 pub fn context_set_default_colors() -> bool {
     unsafe { from_glib(ffi::gimp_context_set_default_colors()) }
 }
 
+/// Reset context settings to their default values.
+///
+/// Resets context settings used by various procedures to their default
+/// value. You should usually call this after a context push so that a
+/// script which calls procedures affected by context settings will not
+/// be affected by changes in the global context.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_defaults")]
 pub fn context_set_defaults() -> bool {
     unsafe { from_glib(ffi::gimp_context_set_defaults()) }
 }
 
+/// Set the diagonal neighbors setting.
+///
+/// Modifies the diagonal neighbors setting. If the affected region of
+/// an operation is based on a seed point, like when doing a seed fill,
+/// then, when this setting is TRUE, all eight neighbors of each pixel
+/// are considered when calculating the affected region; in contrast,
+/// when this setting is FALSE, only the four orthogonal neighbors of
+/// each pixel are considered.
+///
+/// This setting affects the following procedures:
+/// [`Image::select_contiguous_color()`][crate::Image::select_contiguous_color()],
+/// [`DrawableExt::edit_bucket_fill()`][crate::prelude::DrawableExt::edit_bucket_fill()].
+/// ## `diagonal_neighbors`
+/// The diagonal neighbors setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_diagonal_neighbors")]
 pub fn context_set_diagonal_neighbors(diagonal_neighbors: bool) -> bool {
     unsafe {
@@ -727,16 +1709,53 @@ pub fn context_set_diagonal_neighbors(diagonal_neighbors: bool) -> bool {
     }
 }
 
+/// Set the distance metric used in some computations.
+///
+/// Modifies the distance metric used in some computations, such as
+/// [`DrawableExt::edit_gradient_fill()`][crate::prelude::DrawableExt::edit_gradient_fill()]. In particular, it does not
+/// change the metric used in generic distance computation on canvas, as
+/// in the Measure tool.
+///
+/// This setting affects the following procedures:
+/// [`DrawableExt::edit_gradient_fill()`][crate::prelude::DrawableExt::edit_gradient_fill()].
+/// ## `metric`
+/// The distance metric.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_distance_metric")]
 pub fn context_set_distance_metric(metric: gegl::DistanceMetric) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_distance_metric(metric.into_glib())) }
 }
 
+/// Set the active paint dynamics.
+///
+/// Sets the active paint dynamics. The paint dynamics will be used in
+/// all subsequent paint operations when dynamics are enabled. The name
+/// should be a name of an installed paint dynamics. Returns an error if
+/// no matching paint dynamics is found.
+/// ## `name`
+/// A name of a paint dynamics.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_dynamics_name")]
 pub fn context_set_dynamics_name(name: &str) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_dynamics_name(name.to_glib_none().0)) }
 }
 
+/// Set the stroke option's emulate brush dynamics setting.
+///
+/// This procedure sets the specified emulate brush dynamics setting.
+/// The new method will be used in all subsequent stroke operations.
+/// ## `emulate_dynamics`
+/// The new emulate brush dynamics setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_emulate_brush_dynamics")]
 pub fn context_set_emulate_brush_dynamics(emulate_dynamics: bool) -> bool {
     unsafe {
@@ -746,11 +1765,43 @@ pub fn context_set_emulate_brush_dynamics(emulate_dynamics: bool) -> bool {
     }
 }
 
+/// Set the feather setting.
+///
+/// Modifies the feather setting. If the feather option is enabled,
+/// selections will be blurred before combining. The blur is a gaussian
+/// blur; its radii can be controlled using
+/// [`context_set_feather_radius()`][crate::context_set_feather_radius()].
+///
+/// This setting affects the following procedures:
+/// [`Image::select_color()`][crate::Image::select_color()], [`Image::select_contiguous_color()`][crate::Image::select_contiguous_color()],
+/// [`Image::select_rectangle()`][crate::Image::select_rectangle()], [`Image::select_round_rectangle()`][crate::Image::select_round_rectangle()],
+/// [`Image::select_ellipse()`][crate::Image::select_ellipse()], [`Image::select_polygon()`][crate::Image::select_polygon()],
+/// [`Image::select_item()`][crate::Image::select_item()].
+/// ## `feather`
+/// The feather setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_feather")]
 pub fn context_set_feather(feather: bool) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_feather(feather.into_glib())) }
 }
 
+/// Set the feather radius setting.
+///
+/// Modifies the feather radius setting.
+///
+/// This setting affects all procedures that are affected by
+/// [`context_set_feather()`][crate::context_set_feather()].
+/// ## `feather_radius_x`
+/// The horizontal feather radius.
+/// ## `feather_radius_y`
+/// The vertical feather radius.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_feather_radius")]
 pub fn context_set_feather_radius(feather_radius_x: f64, feather_radius_y: f64) -> bool {
     unsafe {
@@ -761,11 +1812,33 @@ pub fn context_set_feather_radius(feather_radius_x: f64, feather_radius_y: f64) 
     }
 }
 
+/// Set the active font.
+///
+/// Sets the active font in the current context. The font will be used
+/// in subsequent text operations. Returns an error when the font data
+/// was uninstalled since the font object was created.
+/// ## `font`
+/// The font.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_font")]
 pub fn context_set_font(font: &Font) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_font(font.to_glib_none().0)) }
 }
 
+/// Set the current GIMP foreground color.
+///
+/// Sets the current GIMP foreground color. After this is set,
+/// operations which use foreground such as paint tools, blending, and
+/// bucket fill will use the new value.
+/// ## `foreground`
+/// The foreground color.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_foreground")]
 pub fn context_set_foreground(foreground: &impl IsA<gegl::Color>) -> bool {
     unsafe {
@@ -775,11 +1848,32 @@ pub fn context_set_foreground(foreground: &impl IsA<gegl::Color>) -> bool {
     }
 }
 
+/// Sets the active gradient.
+///
+/// Sets the active gradient in the current context. The gradient will
+/// be used in subsequent gradient operations. Returns an error when the
+/// gradient data was uninstalled since the gradient object was created.
+/// ## `gradient`
+/// The gradient.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_gradient")]
 pub fn context_set_gradient(gradient: &Gradient) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_gradient(gradient.to_glib_none().0)) }
 }
 
+/// Set the gradient blend color space.
+///
+/// Set the gradient blend color space for paint tools and the gradient
+/// tool.
+/// ## `blend_color_space`
+/// Blend color space.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_gradient_blend_color_space")]
 pub fn context_set_gradient_blend_color_space(blend_color_space: GradientBlendColorSpace) -> bool {
     unsafe {
@@ -789,26 +1883,67 @@ pub fn context_set_gradient_blend_color_space(blend_color_space: GradientBlendCo
     }
 }
 
+/// Sets the built-in FG-BG HSV (ccw) gradient as the active gradient.
+///
+/// Sets the built-in FG-BG HSV (ccw) gradient as the active gradient.
+/// The gradient will be used for subsequent gradient operations.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_gradient_fg_bg_hsv_ccw")]
 pub fn context_set_gradient_fg_bg_hsv_ccw() -> bool {
     unsafe { from_glib(ffi::gimp_context_set_gradient_fg_bg_hsv_ccw()) }
 }
 
+/// Sets the built-in FG-BG HSV (cw) gradient as the active gradient.
+///
+/// Sets the built-in FG-BG HSV (cw) gradient as the active gradient.
+/// The gradient will be used for subsequent gradient operations.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_gradient_fg_bg_hsv_cw")]
 pub fn context_set_gradient_fg_bg_hsv_cw() -> bool {
     unsafe { from_glib(ffi::gimp_context_set_gradient_fg_bg_hsv_cw()) }
 }
 
+/// Sets the built-in FG-BG RGB gradient as the active gradient.
+///
+/// Sets the built-in FG-BG RGB gradient as the active gradient. The
+/// gradient will be used for subsequent gradient operations.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_gradient_fg_bg_rgb")]
 pub fn context_set_gradient_fg_bg_rgb() -> bool {
     unsafe { from_glib(ffi::gimp_context_set_gradient_fg_bg_rgb()) }
 }
 
+/// Sets the built-in FG-Transparent gradient as the active gradient.
+///
+/// Sets the built-in FG-Transparent gradient as the active gradient.
+/// The gradient will be used for subsequent gradient operations.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_gradient_fg_transparent")]
 pub fn context_set_gradient_fg_transparent() -> bool {
     unsafe { from_glib(ffi::gimp_context_set_gradient_fg_transparent()) }
 }
 
+/// Set the gradient repeat mode.
+///
+/// Set the gradient repeat mode for paint tools and the gradient tool.
+/// ## `repeat_mode`
+/// Repeat mode.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_gradient_repeat_mode")]
 pub fn context_set_gradient_repeat_mode(repeat_mode: RepeatMode) -> bool {
     unsafe {
@@ -818,51 +1953,149 @@ pub fn context_set_gradient_repeat_mode(repeat_mode: RepeatMode) -> bool {
     }
 }
 
+/// Set the gradient reverse setting.
+///
+/// Set the gradient reverse setting for paint tools and the gradient
+/// tool.
+/// ## `reverse`
+/// Reverse.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_gradient_reverse")]
 pub fn context_set_gradient_reverse(reverse: bool) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_gradient_reverse(reverse.into_glib())) }
 }
 
+/// Set ink angle in degrees.
+///
+/// Set the ink angle in degrees for ink tool.
+/// ## `angle`
+/// ink angle in degrees.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_ink_angle")]
 pub fn context_set_ink_angle(angle: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_ink_angle(angle)) }
 }
 
+/// Set ink blob angle in degrees.
+///
+/// Set the ink blob angle in degrees for ink tool.
+/// ## `angle`
+/// ink blob angle in degrees.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_ink_blob_angle")]
 pub fn context_set_ink_blob_angle(angle: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_ink_blob_angle(angle)) }
 }
 
+/// Set ink blob aspect ratio.
+///
+/// Set the ink blob aspect ratio for ink tool.
+/// ## `aspect`
+/// ink blob aspect ratio.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_ink_blob_aspect_ratio")]
 pub fn context_set_ink_blob_aspect_ratio(aspect: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_ink_blob_aspect_ratio(aspect)) }
 }
 
+/// Set ink blob type.
+///
+/// Set the ink blob type for ink tool.
+/// ## `type_`
+/// Ink blob type.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_ink_blob_type")]
 pub fn context_set_ink_blob_type(type_: InkBlobType) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_ink_blob_type(type_.into_glib())) }
 }
 
+/// Set ink blob size in pixels.
+///
+/// Set the ink blob size in pixels for ink tool.
+/// ## `size`
+/// ink blob size in pixels.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_ink_size")]
 pub fn context_set_ink_size(size: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_ink_size(size)) }
 }
 
+/// Set ink size sensitivity.
+///
+/// Set the ink size sensitivity for ink tool.
+/// ## `size`
+/// ink size sensitivity.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_ink_size_sensitivity")]
 pub fn context_set_ink_size_sensitivity(size: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_ink_size_sensitivity(size)) }
 }
 
+/// Set ink speed sensitivity.
+///
+/// Set the ink speed sensitivity for ink tool.
+/// ## `speed`
+/// ink speed sensitivity.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_ink_speed_sensitivity")]
 pub fn context_set_ink_speed_sensitivity(speed: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_ink_speed_sensitivity(speed)) }
 }
 
+/// Set ink tilt sensitivity.
+///
+/// Set the ink tilt sensitivity for ink tool.
+/// ## `tilt`
+/// ink tilt sensitivity.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_ink_tilt_sensitivity")]
 pub fn context_set_ink_tilt_sensitivity(tilt: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_ink_tilt_sensitivity(tilt)) }
 }
 
+/// Set the interpolation type.
+///
+/// Modifies the interpolation setting.
+///
+/// This setting affects affects the following procedures:
+/// [`ItemExt::transform_flip()`][crate::prelude::ItemExt::transform_flip()], [`ItemExt::transform_perspective()`][crate::prelude::ItemExt::transform_perspective()],
+/// [`ItemExt::transform_rotate()`][crate::prelude::ItemExt::transform_rotate()], [`ItemExt::transform_scale()`][crate::prelude::ItemExt::transform_scale()],
+/// [`ItemExt::transform_shear()`][crate::prelude::ItemExt::transform_shear()], [`ItemExt::transform_2d()`][crate::prelude::ItemExt::transform_2d()],
+/// [`ItemExt::transform_matrix()`][crate::prelude::ItemExt::transform_matrix()], [`Image::scale()`][crate::Image::scale()],
+/// [`LayerExt::scale()`][crate::prelude::LayerExt::scale()].
+/// ## `interpolation`
+/// The interpolation type.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_interpolation")]
 pub fn context_set_interpolation(interpolation: InterpolationType) -> bool {
     unsafe {
@@ -872,16 +2105,59 @@ pub fn context_set_interpolation(interpolation: InterpolationType) -> bool {
     }
 }
 
+/// Set the line cap style setting.
+///
+/// Modifies the line cap style setting for stroking lines.
+///
+/// This setting affects the following procedures:
+/// [`DrawableExt::edit_stroke_selection()`][crate::prelude::DrawableExt::edit_stroke_selection()],
+/// [`DrawableExt::edit_stroke_item()`][crate::prelude::DrawableExt::edit_stroke_item()].
+/// ## `cap_style`
+/// The line cap style setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_line_cap_style")]
 pub fn context_set_line_cap_style(cap_style: CapStyle) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_line_cap_style(cap_style.into_glib())) }
 }
 
+/// Set the line dash offset setting.
+///
+/// Modifies the line dash offset setting for stroking lines.
+///
+/// This setting affects the following procedures:
+/// [`DrawableExt::edit_stroke_selection()`][crate::prelude::DrawableExt::edit_stroke_selection()],
+/// [`DrawableExt::edit_stroke_item()`][crate::prelude::DrawableExt::edit_stroke_item()].
+/// ## `dash_offset`
+/// The line dash offset setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_line_dash_offset")]
 pub fn context_set_line_dash_offset(dash_offset: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_line_dash_offset(dash_offset)) }
 }
 
+/// Set the line dash pattern setting.
+///
+/// Modifies the line dash pattern setting for stroking lines.
+///
+/// The unit of the dash pattern segments is the actual line width used
+/// for the stroke operation, in other words a segment length of 1.0
+/// results in a square segment shape (or gap shape).
+///
+/// This setting affects the following procedures:
+/// [`DrawableExt::edit_stroke_selection()`][crate::prelude::DrawableExt::edit_stroke_selection()],
+/// [`DrawableExt::edit_stroke_item()`][crate::prelude::DrawableExt::edit_stroke_item()].
+/// ## `dashes`
+/// The line dash pattern setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_line_dash_pattern")]
 pub fn context_set_line_dash_pattern(dashes: &[f64]) -> bool {
     let num_dashes = dashes.len() as _;
@@ -893,6 +2169,18 @@ pub fn context_set_line_dash_pattern(dashes: &[f64]) -> bool {
     }
 }
 
+/// Set the line join style setting.
+///
+/// Modifies the line join style setting for stroking lines.
+/// This setting affects the following procedures:
+/// [`DrawableExt::edit_stroke_selection()`][crate::prelude::DrawableExt::edit_stroke_selection()],
+/// [`DrawableExt::edit_stroke_item()`][crate::prelude::DrawableExt::edit_stroke_item()].
+/// ## `join_style`
+/// The line join style setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_line_join_style")]
 pub fn context_set_line_join_style(join_style: JoinStyle) -> bool {
     unsafe {
@@ -902,16 +2190,58 @@ pub fn context_set_line_join_style(join_style: JoinStyle) -> bool {
     }
 }
 
+/// Set the line miter limit setting.
+///
+/// Modifies the line miter limit setting for stroking lines.
+/// A mitered join is converted to a bevelled join if the miter would
+/// extend to a distance of more than (miter-limit * line-width) from
+/// the actual join point.
+///
+/// This setting affects the following procedures:
+/// [`DrawableExt::edit_stroke_selection()`][crate::prelude::DrawableExt::edit_stroke_selection()],
+/// [`DrawableExt::edit_stroke_item()`][crate::prelude::DrawableExt::edit_stroke_item()].
+/// ## `miter_limit`
+/// The line miter limit setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_line_miter_limit")]
 pub fn context_set_line_miter_limit(miter_limit: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_line_miter_limit(miter_limit)) }
 }
 
+/// Set the line width setting.
+///
+/// Modifies the line width setting for stroking lines.
+///
+/// This setting affects the following procedures:
+/// [`DrawableExt::edit_stroke_selection()`][crate::prelude::DrawableExt::edit_stroke_selection()],
+/// [`DrawableExt::edit_stroke_item()`][crate::prelude::DrawableExt::edit_stroke_item()].
+/// ## `line_width`
+/// The line width setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_line_width")]
 pub fn context_set_line_width(line_width: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_line_width(line_width)) }
 }
 
+/// Set the line width unit setting.
+///
+/// Modifies the line width unit setting for stroking lines.
+///
+/// This setting affects the following procedures:
+/// [`DrawableExt::edit_stroke_selection()`][crate::prelude::DrawableExt::edit_stroke_selection()],
+/// [`DrawableExt::edit_stroke_item()`][crate::prelude::DrawableExt::edit_stroke_item()].
+/// ## `line_width_unit`
+/// The line width setting unit.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_line_width_unit")]
 pub fn context_set_line_width_unit(line_width_unit: &Unit) -> bool {
     unsafe {
@@ -921,16 +2251,47 @@ pub fn context_set_line_width_unit(line_width_unit: &Unit) -> bool {
     }
 }
 
+/// Set a MyPaint brush as the active MyPaint brush.
+///
+/// Sets the active MyPaint brush to the named MyPaint brush. The brush
+/// will be used in all subsequent MyPaint paint operations. The name
+/// should be a name of an installed MyPaint brush. Returns an error if
+/// no matching MyPaint brush is found.
+/// ## `name`
+/// A name of a MyPaint brush.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_mypaint_brush")]
 pub fn context_set_mypaint_brush(name: &str) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_mypaint_brush(name.to_glib_none().0)) }
 }
 
+/// Set the opacity.
+///
+/// Modifies the opacity setting. The value should be a floating point
+/// number between 0 and 100.
+/// ## `opacity`
+/// The opacity.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_opacity")]
 pub fn context_set_opacity(opacity: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_opacity(opacity)) }
 }
 
+/// Set the paint fade length.
+///
+/// Set the paint fade length for paint tools and the gradient tool.
+/// ## `fade_length`
+/// The paint fade length setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_context_set_paint_fade_length")]
@@ -938,6 +2299,16 @@ pub fn context_set_paint_fade_length(fade_length: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_paint_fade_length(fade_length)) }
 }
 
+/// Set the paint fade repeat type.
+///
+/// Set the paint fade repeat type for paint tools and the gradient
+/// tool.
+/// ## `fade_repeat`
+/// The paint fade repeat type setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_context_set_paint_fade_repeat")]
@@ -949,26 +2320,86 @@ pub fn context_set_paint_fade_repeat(fade_repeat: RepeatMode) -> bool {
     }
 }
 
+/// Set the active paint method.
+///
+/// Sets the active paint method to the named paint method. The paint
+/// method will be used in all subsequent paint operations. The name
+/// should be a name of an available paint method. Returns an error if
+/// no matching paint method is found.
+/// ## `name`
+/// The name of the paint method.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_paint_method")]
 pub fn context_set_paint_method(name: &str) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_paint_method(name.to_glib_none().0)) }
 }
 
+/// Set the paint mode.
+///
+/// Modifies the paint_mode setting.
+/// ## `paint_mode`
+/// The paint mode.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_paint_mode")]
 pub fn context_set_paint_mode(paint_mode: LayerMode) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_paint_mode(paint_mode.into_glib())) }
 }
 
+/// Set the active palette.
+///
+/// Sets the active palette in the current context. The palette will be
+/// used in subsequent paint operations. Returns an error when the
+/// palette data was uninstalled since the palette object was created.
+/// ## `palette`
+/// The palette.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_palette")]
 pub fn context_set_palette(palette: &Palette) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_palette(palette.to_glib_none().0)) }
 }
 
+/// Set the active pattern.
+///
+/// Sets the active pattern in the current context. The pattern will be
+/// used in subsequent fill operations using a pattern. Returns an error
+/// when the pattern data was uninstalled since the pattern object was
+/// created.
+/// ## `pattern`
+/// The pattern.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_pattern")]
 pub fn context_set_pattern(pattern: &Pattern) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_pattern(pattern.to_glib_none().0)) }
 }
 
+/// Set the sample criterion setting.
+///
+/// Modifies the sample criterion setting. If an operation depends on
+/// the colors of the pixels present in a drawable, like when doing a
+/// seed fill, this setting controls how color similarity is determined.
+/// SELECT_CRITERION_COMPOSITE is the default value.
+///
+/// This setting affects the following procedures:
+/// [`Image::select_color()`][crate::Image::select_color()], [`Image::select_contiguous_color()`][crate::Image::select_contiguous_color()],
+/// [`DrawableExt::edit_bucket_fill()`][crate::prelude::DrawableExt::edit_bucket_fill()].
+/// ## `sample_criterion`
+/// The sample criterion setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_sample_criterion")]
 pub fn context_set_sample_criterion(sample_criterion: SelectCriterion) -> bool {
     unsafe {
@@ -978,6 +2409,24 @@ pub fn context_set_sample_criterion(sample_criterion: SelectCriterion) -> bool {
     }
 }
 
+/// Set the sample merged setting.
+///
+/// Modifies the sample merged setting. If an operation depends on the
+/// colors of the pixels present in a drawable, like when doing a seed
+/// fill, this setting controls whether the pixel data from the given
+/// drawable is used ('sample-merged' is FALSE), or the pixel data from
+/// the composite image ('sample-merged' is TRUE. This is equivalent to
+/// sampling for colors after merging all visible layers).
+///
+/// This setting affects the following procedures:
+/// [`Image::select_color()`][crate::Image::select_color()], [`Image::select_contiguous_color()`][crate::Image::select_contiguous_color()],
+/// [`DrawableExt::edit_bucket_fill()`][crate::prelude::DrawableExt::edit_bucket_fill()].
+/// ## `sample_merged`
+/// The sample merged setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_sample_merged")]
 pub fn context_set_sample_merged(sample_merged: bool) -> bool {
     unsafe {
@@ -987,16 +2436,60 @@ pub fn context_set_sample_merged(sample_merged: bool) -> bool {
     }
 }
 
+/// Set the sample threshold setting.
+///
+/// Modifies the sample threshold setting. If an operation depends on
+/// the colors of the pixels present in a drawable, like when doing a
+/// seed fill, this setting controls what is \"sufficiently close\" to
+/// be considered a similar color. If the sample threshold has not been
+/// set explicitly, the default threshold set in gimprc will be used.
+///
+/// This setting affects the following procedures:
+/// [`Image::select_color()`][crate::Image::select_color()], [`Image::select_contiguous_color()`][crate::Image::select_contiguous_color()],
+/// [`DrawableExt::edit_bucket_fill()`][crate::prelude::DrawableExt::edit_bucket_fill()].
+/// ## `sample_threshold`
+/// The sample threshold setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_sample_threshold")]
 pub fn context_set_sample_threshold(sample_threshold: f64) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_sample_threshold(sample_threshold)) }
 }
 
+/// Set the sample threshold setting as an integer value.
+///
+/// Modifies the sample threshold setting as an integer value. See
+/// [`context_set_sample_threshold()`][crate::context_set_sample_threshold()].
+/// ## `sample_threshold`
+/// The sample threshold setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_sample_threshold_int")]
 pub fn context_set_sample_threshold_int(sample_threshold: i32) -> bool {
     unsafe { from_glib(ffi::gimp_context_set_sample_threshold_int(sample_threshold)) }
 }
 
+/// Set the sample transparent setting.
+///
+/// Modifies the sample transparent setting. If an operation depends on
+/// the colors of the pixels present in a drawable, like when doing a
+/// seed fill, this setting controls whether transparency is considered
+/// to be a unique selectable color. When this setting is TRUE,
+/// transparent areas can be selected or filled.
+///
+/// This setting affects the following procedures:
+/// [`Image::select_color()`][crate::Image::select_color()], [`Image::select_contiguous_color()`][crate::Image::select_contiguous_color()],
+/// [`DrawableExt::edit_bucket_fill()`][crate::prelude::DrawableExt::edit_bucket_fill()].
+/// ## `sample_transparent`
+/// The sample transparent setting.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_sample_transparent")]
 pub fn context_set_sample_transparent(sample_transparent: bool) -> bool {
     unsafe {
@@ -1006,6 +2499,16 @@ pub fn context_set_sample_transparent(sample_transparent: bool) -> bool {
     }
 }
 
+/// Set the active stroke method.
+///
+/// Sets the active stroke method. The method will be used in all
+/// subsequent stroke operations.
+/// ## `stroke_method`
+/// The new stroke method.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_stroke_method")]
 pub fn context_set_stroke_method(stroke_method: StrokeMethod) -> bool {
     unsafe {
@@ -1015,6 +2518,21 @@ pub fn context_set_stroke_method(stroke_method: StrokeMethod) -> bool {
     }
 }
 
+/// Set the transform direction.
+///
+/// Modifies the transform direction setting.
+///
+/// This setting affects affects the following procedures:
+/// [`ItemExt::transform_flip()`][crate::prelude::ItemExt::transform_flip()], [`ItemExt::transform_perspective()`][crate::prelude::ItemExt::transform_perspective()],
+/// [`ItemExt::transform_rotate()`][crate::prelude::ItemExt::transform_rotate()], [`ItemExt::transform_scale()`][crate::prelude::ItemExt::transform_scale()],
+/// [`ItemExt::transform_shear()`][crate::prelude::ItemExt::transform_shear()], [`ItemExt::transform_2d()`][crate::prelude::ItemExt::transform_2d()],
+/// [`ItemExt::transform_matrix()`][crate::prelude::ItemExt::transform_matrix()].
+/// ## `transform_direction`
+/// The transform direction.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_transform_direction")]
 pub fn context_set_transform_direction(transform_direction: TransformDirection) -> bool {
     unsafe {
@@ -1024,6 +2542,25 @@ pub fn context_set_transform_direction(transform_direction: TransformDirection) 
     }
 }
 
+/// Set the transform resize type.
+///
+/// Modifies the transform resize setting. When transforming pixels, if
+/// the result of a transform operation has a different size than the
+/// original area, this setting determines how the resulting area is
+/// sized.
+///
+/// This setting affects affects the following procedures:
+/// [`ItemExt::transform_flip()`][crate::prelude::ItemExt::transform_flip()], [`ItemExt::transform_flip_simple()`][crate::prelude::ItemExt::transform_flip_simple()],
+/// [`ItemExt::transform_perspective()`][crate::prelude::ItemExt::transform_perspective()], [`ItemExt::transform_rotate()`][crate::prelude::ItemExt::transform_rotate()],
+/// [`ItemExt::transform_rotate_simple()`][crate::prelude::ItemExt::transform_rotate_simple()], [`ItemExt::transform_scale()`][crate::prelude::ItemExt::transform_scale()],
+/// [`ItemExt::transform_shear()`][crate::prelude::ItemExt::transform_shear()], [`ItemExt::transform_2d()`][crate::prelude::ItemExt::transform_2d()],
+/// [`ItemExt::transform_matrix()`][crate::prelude::ItemExt::transform_matrix()].
+/// ## `transform_resize`
+/// The transform resize type.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_set_transform_resize")]
 pub fn context_set_transform_resize(transform_resize: TransformResize) -> bool {
     unsafe {
@@ -1033,11 +2570,38 @@ pub fn context_set_transform_resize(transform_resize: TransformResize) -> bool {
     }
 }
 
+/// Swap the current GIMP foreground and background colors.
+///
+/// Swaps the current GIMP foreground and background colors, so that the
+/// new foreground color becomes the old background color and vice
+/// versa.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_context_swap_colors")]
 pub fn context_swap_colors() -> bool {
     unsafe { from_glib(ffi::gimp_context_swap_colors()) }
 }
 
+/// Convolve (Blur, Sharpen) using the current brush.
+///
+/// This tool convolves the specified drawable with either a sharpening
+/// or blurring kernel. The pressure parameter controls the magnitude of
+/// the operation. Like the paintbrush, this tool linearly interpolates
+/// between the specified stroke coordinates.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `pressure`
+/// The pressure.
+/// ## `convolve_type`
+/// Convolve type.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_convolve")]
 pub fn convolve(
     drawable: &impl IsA<Drawable>,
@@ -1057,6 +2621,21 @@ pub fn convolve(
     }
 }
 
+/// Convolve (Blur, Sharpen) using the current brush.
+///
+/// This tool convolves the specified drawable with either a sharpening
+/// or blurring kernel. This function performs exactly the same as the
+/// [`convolve()`][crate::convolve()] function except that the tools arguments are
+/// obtained from the convolve option dialog. It this dialog has not
+/// been activated then the dialogs default values will be used.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_convolve_default")]
 pub fn convolve_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -1074,11 +2653,36 @@ pub fn core_object_array_get_type() -> glib::types::Type {
     unsafe { from_glib(ffi::gimp_core_object_array_get_type()) }
 }
 
+/// Query for CPU acceleration support.
+///
+/// # Returns
+///
+/// [`CpuAccelFlags`][crate::CpuAccelFlags] as supported by the CPU.
 #[doc(alias = "gimp_cpu_accel_get_support")]
 pub fn cpu_accel_get_support() -> CpuAccelFlags {
     unsafe { from_glib(ffi::gimp_cpu_accel_get_support()) }
 }
 
+/// Returns the default top directory for GIMP data. If the environment
+/// variable GIMP3_DATADIR exists, that is used. It should be an
+/// absolute pathname. Otherwise, on Unix the compile-time defined
+/// directory is used. On Windows, the installation directory as
+/// deduced from the executable's full filename is used.
+///
+/// Note that the actual directories used for GIMP data files can be
+/// overridden by the user in the preferences dialog.
+///
+/// In config files such as gimprc, the string ${gimp_data_dir} expands
+/// to this directory.
+///
+/// The returned string is owned by GIMP and must not be modified or
+/// freed. The returned string is in the encoding used for filenames by
+/// GLib, which isn't necessarily UTF-8. (On Windows it always is
+/// UTF-8.)
+///
+/// # Returns
+///
+/// The top directory for GIMP data.
 #[doc(alias = "gimp_data_directory")]
 pub fn data_directory() -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_data_directory()) }
@@ -1089,26 +2693,112 @@ pub fn data_directory() -> Option<glib::GString> {
 //    unsafe { TODO: call ffi:gimp_data_directory_file() }
 //}
 
+/// Finishes measuring elapsed time.
+///
+/// This procedure stops the timer started by a previous
+/// [`debug_timer_start()`][crate::debug_timer_start()] call, and prints and returns the elapsed
+/// time.
+/// If there was already an active timer at the time of corresponding
+/// call to [`debug_timer_start()`][crate::debug_timer_start()], a dummy value is returned.
+///
+/// This is a debug utility procedure. It is subject to change at any
+/// point, and should not be used in production.
+///
+/// # Returns
+///
+/// The elapsed time, in seconds.
 #[doc(alias = "gimp_debug_timer_end")]
 pub fn debug_timer_end() -> f64 {
     unsafe { ffi::gimp_debug_timer_end() }
 }
 
+/// Starts measuring elapsed time.
+///
+/// This procedure starts a timer, measuring the elapsed time since the
+/// call. Each call to this procedure should be matched by a call to
+/// [`debug_timer_end()`][crate::debug_timer_end()], which returns the elapsed time.
+/// If there is already an active timer, it is not affected by the call,
+/// however, a matching [`debug_timer_end()`][crate::debug_timer_end()] call is still required.
+///
+/// This is a debug utility procedure. It is subject to change at any
+/// point, and should not be used in production.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_debug_timer_start")]
 pub fn debug_timer_start() -> bool {
     unsafe { from_glib(ffi::gimp_debug_timer_start()) }
 }
 
+/// Returns the default display ID. This corresponds to the display the
+/// running procedure's menu entry was invoked from.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the default display ID
+///  The object belongs to libgimp and you should not free it.
 #[doc(alias = "gimp_default_display")]
 pub fn default_display() -> Option<Display> {
     unsafe { from_glib_none(ffi::gimp_default_display()) }
 }
 
+/// Removes a global parasite.
+///
+/// This procedure detaches a global parasite.
+///
+/// It will return [`false`] if `name` is invalid ([`None`] or empty string)
+/// and [`true`] otherwise (even if there was no parasite removed, because
+/// no parasite was named like this).
+/// ## `name`
+/// The name of the parasite to detach.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_detach_parasite")]
 pub fn detach_parasite(name: &str) -> bool {
     unsafe { from_glib(ffi::gimp_detach_parasite(name.to_glib_none().0)) }
 }
 
+/// Returns the user-specific GIMP settings directory. If the
+/// environment variable GIMP3_DIRECTORY exists, it is used. If it is
+/// an absolute path, it is used as is. If it is a relative path, it
+/// is taken to be a subdirectory of the home directory. If it is a
+/// relative path, and no home directory can be determined, it is taken
+/// to be a subdirectory of [`data_directory()`][crate::data_directory()].
+///
+/// The usual case is that no GIMP3_DIRECTORY environment variable
+/// exists, and then we use the GIMPDIR subdirectory of the local
+/// configuration directory:
+///
+/// - UNIX: $XDG_CONFIG_HOME (defaults to $HOME/.config/)
+///
+/// - Windows: CSIDL_APPDATA
+///
+/// - OSX (UNIX exception): the Application Support Directory.
+///
+/// If neither the configuration nor home directory exist,
+/// `g_get_user_config_dir()` will return {tmp}/{user_name}/.config/ where
+/// the temporary directory {tmp} and the {user_name} are determined
+/// according to platform rules.
+///
+/// In any case, we always return some non-empty string, whether it
+/// corresponds to an existing directory or not.
+///
+/// In config files such as gimprc, the string ${gimp_dir} expands to
+/// this directory.
+///
+/// The returned string is owned by GIMP and must not be modified or
+/// freed. The returned string is in the encoding used for filenames by
+/// GLib, which isn't necessarily UTF-8 (on Windows it is always
+/// UTF-8.)
+///
+/// # Returns
+///
+/// The user-specific GIMP settings directory.
 #[doc(alias = "gimp_directory")]
 pub fn directory() -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_directory()) }
@@ -1119,11 +2809,35 @@ pub fn directory() -> Option<glib::GString> {
 //    unsafe { TODO: call ffi:gimp_directory_file() }
 //}
 
+/// Flush all internal changes to the user interface
+///
+/// This procedure takes no arguments and returns nothing except a
+/// success status. Its purpose is to flush all pending updates of image
+/// manipulations to the user interface. It should be called whenever
+/// appropriate.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_displays_flush")]
 pub fn displays_flush() -> bool {
     unsafe { from_glib(ffi::gimp_displays_flush()) }
 }
 
+/// Reconnect displays from one image to another image.
+///
+/// This procedure connects all displays of the old_image to the
+/// new_image. If the old_image has no display or new_image already has
+/// a display the reconnect is not performed and the procedure returns
+/// without success. You should rarely need to use this function.
+/// ## `old_image`
+/// The old image (must have at least one display).
+/// ## `new_image`
+/// The new image (must not have a display).
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_displays_reconnect")]
 pub fn displays_reconnect(old_image: &Image, new_image: &Image) -> bool {
     unsafe {
@@ -1134,6 +2848,23 @@ pub fn displays_reconnect(old_image: &Image, new_image: &Image) -> bool {
     }
 }
 
+/// Dodgeburn image with varying exposure.
+///
+/// Dodgeburn. More details here later.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `exposure`
+/// The exposure of the strokes.
+/// ## `dodgeburn_type`
+/// The type either dodge or burn.
+/// ## `dodgeburn_mode`
+/// The mode.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_dodgeburn")]
 pub fn dodgeburn(
     drawable: &impl IsA<Drawable>,
@@ -1155,6 +2886,20 @@ pub fn dodgeburn(
     }
 }
 
+/// Dodgeburn image with varying exposure. This is the same as the
+/// [`dodgeburn()`][crate::dodgeburn()] function except that the exposure, type and mode
+/// are taken from the tools option dialog. If the dialog has not been
+/// activated then the defaults as used by the dialog will be used.
+///
+/// Dodgeburn. More details here later.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_dodgeburn_default")]
 pub fn dodgeburn_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -1167,6 +2912,19 @@ pub fn dodgeburn_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool
     }
 }
 
+/// Close the drawable selection dialog.
+///
+/// Closes an open drawable selection dialog.
+///
+/// # Deprecated since 3.2
+///
+/// Use [`items_close_popup()`][crate::items_close_popup()] instead.
+/// ## `callback`
+/// The name of the callback registered for this pop-up.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[cfg_attr(feature = "v3_2", deprecated = "Since 3.2")]
 #[allow(deprecated)]
 #[doc(alias = "gimp_drawables_close_popup")]
@@ -1174,6 +2932,27 @@ pub fn drawables_close_popup(callback: &str) -> bool {
     unsafe { from_glib(ffi::gimp_drawables_close_popup(callback.to_glib_none().0)) }
 }
 
+/// Invokes the drawable selection dialog.
+///
+/// Opens a dialog letting a user choose an drawable.
+///
+/// # Deprecated since 3.2
+///
+/// Use [`items_popup()`][crate::items_popup()] instead.
+/// ## `callback`
+/// The callback PDB proc to call when user chooses an drawable.
+/// ## `popup_title`
+/// Title of the drawable selection dialog.
+/// ## `drawable_type`
+/// The name of the GIMP_TYPE_DRAWABLE subtype.
+/// ## `initial_drawable`
+/// The drawable to set as the initial choice.
+/// ## `parent_window`
+/// An optional parent window handle for the popup to be set transient to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[cfg_attr(feature = "v3_2", deprecated = "Since 3.2")]
 #[allow(deprecated)]
 #[doc(alias = "gimp_drawables_popup")]
@@ -1195,6 +2974,21 @@ pub fn drawables_popup(
     }
 }
 
+/// Sets the selected drawable in a drawable selection dialog.
+///
+/// Sets the selected drawable in a drawable selection dialog.
+///
+/// # Deprecated since 3.2
+///
+/// Use [`items_set_popup()`][crate::items_set_popup()] instead.
+/// ## `callback`
+/// The name of the callback registered for this pop-up.
+/// ## `drawable`
+/// The drawable to set as selected.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[cfg_attr(feature = "v3_2", deprecated = "Since 3.2")]
 #[allow(deprecated)]
 #[doc(alias = "gimp_drawables_set_popup")]
@@ -1207,6 +3001,18 @@ pub fn drawables_set_popup(callback: &str, drawable: &impl IsA<Drawable>) -> boo
     }
 }
 
+/// Retrieve the list of loaded paint dynamics.
+///
+/// This procedure returns a list of the paint dynamics that are
+/// currently available.
+/// ## `filter`
+/// An optional regular expression used to filter the list.
+///
+/// # Returns
+///
+///
+///  The list of paint dynamics names.
+///  The returned value must be freed with `g_strfreev()`.
 #[doc(alias = "gimp_dynamics_get_name_list")]
 pub fn dynamics_get_name_list(filter: Option<&str>) -> Vec<glib::GString> {
     unsafe {
@@ -1216,6 +3022,15 @@ pub fn dynamics_get_name_list(filter: Option<&str>) -> Vec<glib::GString> {
     }
 }
 
+/// Refresh current paint dynamics. This function always succeeds.
+///
+/// This procedure retrieves all paint dynamics currently in the user's
+/// paint dynamics path and updates the paint dynamics dialogs
+/// accordingly.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_dynamics_refresh")]
 pub fn dynamics_refresh() -> bool {
     unsafe { from_glib(ffi::gimp_dynamics_refresh()) }
@@ -1226,11 +3041,42 @@ pub fn edit_copy(drawables: &[Drawable]) -> bool {
     unsafe { from_glib(ffi::gimp_edit_copy(drawables.to_glib_none().0)) }
 }
 
+/// Copy from the projection.
+///
+/// If there is a selection in the image, then the area specified by the
+/// selection is copied from the projection and placed in an internal
+/// GIMP edit buffer. It can subsequently be retrieved using the
+/// [`edit_paste()`][crate::edit_paste()] command. If there is no selection, then the
+/// projection's contents will be stored in the internal GIMP edit
+/// buffer.
+/// ## `image`
+/// The image to copy from.
+///
+/// # Returns
+///
+/// TRUE if the copy was successful.
 #[doc(alias = "gimp_edit_copy_visible")]
 pub fn edit_copy_visible(image: &Image) -> bool {
     unsafe { from_glib(ffi::gimp_edit_copy_visible(image.to_glib_none().0)) }
 }
 
+/// Cut from the specified drawables.
+///
+/// If there is a selection in the image, then the area specified by the
+/// selection is cut from the specified drawables and placed in an
+/// internal GIMP edit buffer. It can subsequently be retrieved using
+/// the [`edit_paste()`][crate::edit_paste()] command. If there is no selection and only one
+/// specified drawable, then the specified drawable will be removed and
+/// its contents stored in the internal GIMP edit buffer.
+/// This procedure will return [`false`] if the selected area lies
+/// completely outside the bounds of the current drawables and there is
+/// nothing to cut from.
+/// ## `drawables`
+/// The drawables to cut from.
+///
+/// # Returns
+///
+/// TRUE if the cut was successful, FALSE if there was nothing to copy from.
 #[doc(alias = "gimp_edit_cut")]
 pub fn edit_cut(drawables: &[Drawable]) -> bool {
     unsafe { from_glib(ffi::gimp_edit_cut(drawables.to_glib_none().0)) }
@@ -1246,6 +3092,22 @@ pub fn edit_named_copy(drawables: &[Drawable], buffer_name: &str) -> Option<glib
     }
 }
 
+/// Copy from the projection into a named buffer.
+///
+/// This procedure works like [`edit_copy_visible()`][crate::edit_copy_visible()], but additionally
+/// stores the copied buffer into a named buffer that will stay
+/// available for later pasting, regardless of any intermediate copy or
+/// cut operations.
+/// ## `image`
+/// The image to copy from.
+/// ## `buffer_name`
+/// The name of the buffer to create.
+///
+/// # Returns
+///
+///
+///  The real name given to the buffer, or NULL if the copy failed.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_edit_named_copy_visible")]
 pub fn edit_named_copy_visible(image: &Image, buffer_name: &str) -> Option<glib::GString> {
     unsafe {
@@ -1256,6 +3118,22 @@ pub fn edit_named_copy_visible(image: &Image, buffer_name: &str) -> Option<glib:
     }
 }
 
+/// Cut into a named buffer.
+///
+/// This procedure works like [`edit_cut()`][crate::edit_cut()], but additionally stores
+/// the cut buffer into a named buffer that will stay available for
+/// later pasting, regardless of any intermediate copy or cut
+/// operations.
+/// ## `drawables`
+/// The drawables to cut from.
+/// ## `buffer_name`
+/// The name of the buffer to create.
+///
+/// # Returns
+///
+///
+///  The real name given to the buffer, or NULL if the cut failed.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_edit_named_cut")]
 pub fn edit_named_cut(drawables: &[Drawable], buffer_name: &str) -> Option<glib::GString> {
     unsafe {
@@ -1266,6 +3144,20 @@ pub fn edit_named_cut(drawables: &[Drawable], buffer_name: &str) -> Option<glib:
     }
 }
 
+/// Paste named buffer to the specified drawable.
+///
+/// This procedure works like [`edit_paste()`][crate::edit_paste()] but pastes a named
+/// buffer instead of the global buffer.
+/// ## `drawable`
+/// The drawable to paste to.
+/// ## `buffer_name`
+/// The name of the buffer to paste.
+/// ## `paste_into`
+/// Clear selection, or paste behind it?
+///
+/// # Returns
+///
+/// The new floating selection.
 #[doc(alias = "gimp_edit_named_paste")]
 pub fn edit_named_paste(
     drawable: &impl IsA<Drawable>,
@@ -1281,6 +3173,16 @@ pub fn edit_named_paste(
     }
 }
 
+/// Paste named buffer to a new image.
+///
+/// This procedure works like [`edit_paste_as_new_image()`][crate::edit_paste_as_new_image()] but pastes
+/// a named buffer instead of the global buffer.
+/// ## `buffer_name`
+/// The name of the buffer to paste.
+///
+/// # Returns
+///
+/// The new image.
 #[doc(alias = "gimp_edit_named_paste_as_new_image")]
 pub fn edit_named_paste_as_new_image(buffer_name: &str) -> Option<Image> {
     unsafe {
@@ -1290,6 +3192,34 @@ pub fn edit_named_paste_as_new_image(buffer_name: &str) -> Option<Image> {
     }
 }
 
+/// Paste buffer to the specified drawable.
+///
+/// This procedure pastes a copy of the internal GIMP edit buffer to the
+/// specified drawable. The GIMP edit buffer will be empty unless a call
+/// was previously made to either [`edit_cut()`][crate::edit_cut()] or
+/// `gimp_edit_copy()`. The \"paste_into\" option specifies whether
+/// to clear the current image selection, or to paste the buffer
+/// \"behind\" the selection. This allows the selection to act as a mask
+/// for the pasted buffer. Anywhere that the selection mask is non-zero,
+/// the pasted buffer will show through. The pasted data may be a
+/// floating selection when relevant, layers otherwise. If the image has
+/// a floating selection at the time of pasting, the old floating
+/// selection will be anchored to its drawable before the new floating
+/// selection is added.
+/// This procedure returns the new drawables (floating or not). If the
+/// result is a floating selection, it will already be attached to the
+/// specified drawable, and a subsequent call to
+/// [`floating_sel_attach()`][crate::floating_sel_attach()] is not needed.
+/// ## `drawable`
+/// The drawable to paste to.
+/// ## `paste_into`
+/// Clear selection, or paste behind it?
+///
+/// # Returns
+///
+///
+///  The list of pasted layers.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_edit_paste")]
 pub fn edit_paste(drawable: &impl IsA<Drawable>, paste_into: bool) -> Vec<Drawable> {
     unsafe {
@@ -1300,6 +3230,16 @@ pub fn edit_paste(drawable: &impl IsA<Drawable>, paste_into: bool) -> Vec<Drawab
     }
 }
 
+/// Paste buffer to a new image.
+///
+/// This procedure pastes a copy of the internal GIMP edit buffer to a
+/// new image. The GIMP edit buffer will be empty unless a call was
+/// previously made to either [`edit_cut()`][crate::edit_cut()] or `gimp_edit_copy()`. This
+/// procedure returns the new image or -1 if the edit buffer was empty.
+///
+/// # Returns
+///
+/// The new image.
 #[doc(alias = "gimp_edit_paste_as_new_image")]
 pub fn edit_paste_as_new_image() -> Option<Image> {
     unsafe { from_glib_none(ffi::gimp_edit_paste_as_new_image()) }
@@ -1335,6 +3275,12 @@ pub fn edit_paste_as_new_image() -> Option<Image> {
 //    unsafe { TODO: call ffi:gimp_enum_value_get_help() }
 //}
 
+/// This function gives access to the list of enums registered by libgimp.
+/// The returned array is static and must not be modified.
+///
+/// # Returns
+///
+/// an array with type names
 #[doc(alias = "gimp_enums_get_type_names")]
 pub fn enums_get_type_names() -> Vec<glib::GString> {
     unsafe {
@@ -1347,6 +3293,11 @@ pub fn enums_get_type_names() -> Vec<glib::GString> {
     }
 }
 
+/// This function makes sure all the enum types are registered
+/// with the `GType` system. This is intended for use by language
+/// bindings that need the symbols early, before gimp_main is run.
+/// It's not necessary for plug-ins to call this directly, because
+/// the normal plug-in initialization code will handle it implicitly.
 #[doc(alias = "gimp_enums_init")]
 pub fn enums_init() {
     unsafe {
@@ -1354,6 +3305,25 @@ pub fn enums_init() {
     }
 }
 
+/// Erase using the current brush.
+///
+/// This tool erases using the current brush mask. If the specified
+/// drawable contains an alpha channel, then the erased pixels will
+/// become transparent. Otherwise, the eraser tool replaces the contents
+/// of the drawable with the background color. Like paintbrush, this
+/// tool linearly interpolates between the specified stroke coordinates.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+/// ## `hardness`
+/// How to apply the brush.
+/// ## `method`
+/// The paint method to use.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_eraser")]
 pub fn eraser(
     drawable: &impl IsA<Drawable>,
@@ -1373,6 +3343,21 @@ pub fn eraser(
     }
 }
 
+/// Erase using the current brush.
+///
+/// This tool erases using the current brush mask. This function
+/// performs exactly the same as the [`eraser()`][crate::eraser()] function except that
+/// the tools arguments are obtained from the eraser option dialog. It
+/// this dialog has not been activated then the dialogs default values
+/// will be used.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_eraser_default")]
 pub fn eraser_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -1385,41 +3370,111 @@ pub fn eraser_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     }
 }
 
+/// This function returns a copy of `str` with all underline converted
+/// to two adjacent underlines. This comes in handy when needing to display
+/// strings with underlines (like filenames) in a place that would convert
+/// them to mnemonics.
+/// ## `str`
+/// Underline infested string (or [`None`])
+///
+/// # Returns
+///
+/// A (possibly escaped) copy of `str` which should be
+/// freed using `g_free()` when it is not needed any longer.
 #[doc(alias = "gimp_escape_uline")]
 pub fn escape_uline(str: Option<&str>) -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_escape_uline(str.to_glib_none().0)) }
 }
 
+/// Returns whether file plug-ins should default to exporting the
+/// image's color profile.
+///
+/// # Returns
+///
+/// TRUE if preferences are set to export the color profile.
 #[doc(alias = "gimp_export_color_profile")]
 pub fn export_color_profile() -> bool {
     unsafe { from_glib(ffi::gimp_export_color_profile()) }
 }
 
+/// Returns whether file plug-ins should default to exporting the
+/// image's comment.
+///
+/// # Returns
+///
+/// TRUE if preferences are set to export the comment.
 #[doc(alias = "gimp_export_comment")]
 pub fn export_comment() -> bool {
     unsafe { from_glib(ffi::gimp_export_comment()) }
 }
 
+/// Returns whether file plug-ins should default to exporting Exif
+/// metadata, according preferences (original settings is [`false`] since
+/// metadata can contain sensitive information).
+///
+/// # Returns
+///
+/// TRUE if preferences are set to export Exif.
 #[doc(alias = "gimp_export_exif")]
 pub fn export_exif() -> bool {
     unsafe { from_glib(ffi::gimp_export_exif()) }
 }
 
+/// Returns whether file plug-ins should default to exporting IPTC
+/// metadata, according preferences (original settings is [`false`] since
+/// metadata can contain sensitive information).
+///
+/// # Returns
+///
+/// TRUE if preferences are set to export IPTC.
 #[doc(alias = "gimp_export_iptc")]
 pub fn export_iptc() -> bool {
     unsafe { from_glib(ffi::gimp_export_iptc()) }
 }
 
+/// Returns whether file plug-ins should default to exporting the
+/// image's comment.
+///
+/// # Returns
+///
+/// TRUE if preferences are set to export the thumbnail.
 #[doc(alias = "gimp_export_thumbnail")]
 pub fn export_thumbnail() -> bool {
     unsafe { from_glib(ffi::gimp_export_thumbnail()) }
 }
 
+/// Returns whether file plug-ins should default to exporting XMP
+/// metadata, according preferences (original settings is [`false`] since
+/// metadata can contain sensitive information).
+///
+/// # Returns
+///
+/// TRUE if preferences are set to export XMP.
 #[doc(alias = "gimp_export_xmp")]
 pub fn export_xmp() -> bool {
     unsafe { from_glib(ffi::gimp_export_xmp()) }
 }
 
+/// Creates a thumbnail of `image` for the given `file`
+///
+/// This procedure creates a thumbnail for the given `file` and stores it
+/// according to relevant standards.
+/// In particular, it will follow the [Free Desktop Thumbnail Managing
+/// Standard](https://specifications.freedesktop.org/thumbnail-spec/late
+/// st/thumbsave.html) when relevant.
+///
+/// The thumbnail is stored so that it belongs to the given `file`. This
+/// means you have to save `image` under this name first. As a fallback,
+/// the call will work if `image` was exported or imported as `file`. In
+/// any other case, this procedure will fail.
+/// ## `image`
+/// The image.
+/// ## `file`
+/// The file the thumbnail belongs to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_file_create_thumbnail")]
 pub fn file_create_thumbnail(image: &Image, file: &impl IsA<gio::File>) -> bool {
     unsafe {
@@ -1430,6 +3485,17 @@ pub fn file_create_thumbnail(image: &Image, file: &impl IsA<gio::File>) -> bool 
     }
 }
 
+/// Unexpands `file`'s path using `gimp_config_path_unexpand()` and
+/// returns the unexpanded path.
+///
+/// The inverse operation of [`file_new_for_config_path()`][crate::file_new_for_config_path()].
+/// ## `file`
+/// a [`gio::File`][crate::gio::File]
+///
+/// # Returns
+///
+/// a newly allocated NUL-terminated UTF-8 string, or [`None`] if
+///  unexpanding failed.
 #[doc(alias = "gimp_file_get_config_path")]
 pub fn file_get_config_path(file: &impl IsA<gio::File>) -> Result<glib::GString, glib::Error> {
     unsafe {
@@ -1443,11 +3509,42 @@ pub fn file_get_config_path(file: &impl IsA<gio::File>) -> Result<glib::GString,
     }
 }
 
+/// This function works like [`filename_to_utf8()`][crate::filename_to_utf8()] and returns
+/// a UTF-8 encoded string that does not need to be freed.
+///
+/// It converts a [`gio::File`][crate::gio::File]'s path or uri to UTF-8 temporarily. The
+/// return value is a pointer to a string that is guaranteed to be
+/// valid only during the current iteration of the main loop or until
+/// the next call to [`file_get_utf8_name()`][crate::file_get_utf8_name()].
+///
+/// The only purpose of this function is to provide an easy way to pass
+/// a [`gio::File`][crate::gio::File]'s name to a function that expects an UTF-8 encoded string.
+///
+/// See [`FileExtManual::parse_name()`][crate::gio::prelude::FileExtManual::parse_name()].
+/// ## `file`
+/// a [`gio::File`][crate::gio::File]
+///
+/// # Returns
+///
+/// A temporarily valid UTF-8 representation of `file`'s name.
+///  This string must not be changed or freed.
 #[doc(alias = "gimp_file_get_utf8_name")]
 pub fn file_get_utf8_name(file: &impl IsA<gio::File>) -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_file_get_utf8_name(file.as_ref().to_glib_none().0)) }
 }
 
+/// This function checks if `file`'s URI ends with `extension`. It behaves
+/// like `g_str_has_suffix()` on [`FileExtManual::uri()`][crate::gio::prelude::FileExtManual::uri()], except that the string
+/// comparison is done case-insensitively using `g_ascii_strcasecmp()`.
+/// ## `file`
+/// a [`gio::File`][crate::gio::File]
+/// ## `extension`
+/// an ASCII extension
+///
+/// # Returns
+///
+/// [`true`] if `file`'s URI ends with `extension`,
+///  [`false`] otherwise.
 #[doc(alias = "gimp_file_has_extension")]
 pub fn file_has_extension(file: &impl IsA<gio::File>, extension: &str) -> bool {
     unsafe {
@@ -1458,6 +3555,19 @@ pub fn file_has_extension(file: &impl IsA<gio::File>, extension: &str) -> bool {
     }
 }
 
+/// Loads an image file by invoking the right load handler.
+///
+/// This procedure invokes the correct file load handler using magic if
+/// possible, and falling back on the file's extension and/or prefix if
+/// not. Note that the loaded image will be marked as clean.
+/// ## `run_mode`
+/// The run mode.
+/// ## `file`
+/// The file to load.
+///
+/// # Returns
+///
+/// The output image.
 #[doc(alias = "gimp_file_load")]
 pub fn file_load(run_mode: RunMode, file: &impl IsA<gio::File>) -> Option<Image> {
     unsafe {
@@ -1468,6 +3578,22 @@ pub fn file_load(run_mode: RunMode, file: &impl IsA<gio::File>) -> Option<Image>
     }
 }
 
+/// Loads an image file as a layer for an existing image.
+///
+/// This procedure behaves like the file-load procedure but opens the
+/// specified image as a layer for an existing image. The returned layer
+/// needs to be added to the existing image with
+/// [`Image::insert_layer()`][crate::Image::insert_layer()].
+/// ## `run_mode`
+/// The run mode.
+/// ## `image`
+/// Destination image.
+/// ## `file`
+/// The file to load.
+///
+/// # Returns
+///
+/// The layer created when loading the image file.
 #[doc(alias = "gimp_file_load_layer")]
 pub fn file_load_layer(
     run_mode: RunMode,
@@ -1483,6 +3609,24 @@ pub fn file_load_layer(
     }
 }
 
+/// Loads an image file as layers for an existing image.
+///
+/// This procedure behaves like the file-load procedure but opens the
+/// specified image as layers for an existing image. The returned layers
+/// needs to be added to the existing image with
+/// [`Image::insert_layer()`][crate::Image::insert_layer()].
+/// ## `run_mode`
+/// The run mode.
+/// ## `image`
+/// Destination image.
+/// ## `file`
+/// The file to load.
+///
+/// # Returns
+///
+///
+///  The list of loaded layers.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_file_load_layers")]
 pub fn file_load_layers(
     run_mode: RunMode,
@@ -1498,6 +3642,17 @@ pub fn file_load_layers(
     }
 }
 
+/// Expands `path` using `gimp_config_path_expand()` and returns a [`gio::File`][crate::gio::File]
+/// for the expanded path.
+///
+/// To reverse the expansion, use [`file_get_config_path()`][crate::file_get_config_path()].
+/// ## `path`
+/// a NUL-terminated string in UTF-8 encoding
+///
+/// # Returns
+///
+/// a newly allocated [`gio::File`][crate::gio::File],
+///  or [`None`] if the expansion failed.
 #[doc(alias = "gimp_file_new_for_config_path")]
 pub fn file_new_for_config_path(path: &str) -> Result<Option<gio::File>, glib::Error> {
     unsafe {
@@ -1511,6 +3666,25 @@ pub fn file_new_for_config_path(path: &str) -> Result<Option<gio::File>, glib::E
     }
 }
 
+/// Saves to XCF or export `image` to any supported format by extension.
+///
+/// This procedure invokes the correct file save/export handler
+/// according to `file`'s extension and/or prefix.
+///
+/// The `options` argument is currently unused and should be set to [`None`]
+/// right now.
+/// ## `run_mode`
+/// The run mode.
+/// ## `image`
+/// Input image.
+/// ## `file`
+/// The file to save or export the image in.
+/// ## `options`
+/// Export option settings.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_file_save")]
 pub fn file_save(
     run_mode: RunMode,
@@ -1528,6 +3702,14 @@ pub fn file_save(
     }
 }
 
+/// Shows `file` in the system file manager.
+/// ## `file`
+/// a [`gio::File`][crate::gio::File]
+///
+/// # Returns
+///
+/// [`true`] on success, [`false`] otherwise. On [`false`], `error`
+///  is set.
 #[doc(alias = "gimp_file_show_in_file_manager")]
 pub fn file_show_in_file_manager(file: &impl IsA<gio::File>) -> Result<(), glib::Error> {
     unsafe {
@@ -1542,6 +3724,21 @@ pub fn file_show_in_file_manager(file: &impl IsA<gio::File>) -> Result<(), glib:
     }
 }
 
+/// Convert a filename in the filesystem's encoding to UTF-8
+/// temporarily. The return value is a pointer to a string that is
+/// guaranteed to be valid only during the current iteration of the
+/// main loop or until the next call to [`filename_to_utf8()`][crate::filename_to_utf8()].
+///
+/// The only purpose of this function is to provide an easy way to pass
+/// a filename in the filesystem encoding to a function that expects an
+/// UTF-8 encoded filename.
+/// ## `filename`
+/// The filename to be converted to UTF-8.
+///
+/// # Returns
+///
+/// A temporarily valid UTF-8 representation of `filename`.
+///  This string must not be changed or freed.
 #[doc(alias = "gimp_filename_to_utf8")]
 pub fn filename_to_utf8(filename: &str) -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_filename_to_utf8(filename.to_glib_none().0)) }
@@ -1577,6 +3774,18 @@ pub fn filename_to_utf8(filename: &str) -> Option<glib::GString> {
 //    unsafe { TODO: call ffi:gimp_flags_value_get_help() }
 //}
 
+/// Anchor the specified floating selection to its associated drawable.
+///
+/// This procedure anchors the floating selection to its associated
+/// drawable. This is similar to merging with a merge type of
+/// ClipToBottomLayer. The floating selection layer is no longer valid
+/// after this operation.
+/// ## `floating_sel`
+/// The floating selection.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_floating_sel_anchor")]
 pub fn floating_sel_anchor(floating_sel: &impl IsA<Layer>) -> bool {
     unsafe {
@@ -1586,6 +3795,18 @@ pub fn floating_sel_anchor(floating_sel: &impl IsA<Layer>) -> bool {
     }
 }
 
+/// Attach the specified layer as floating to the specified drawable.
+///
+/// This procedure attaches the layer as floating selection to the
+/// drawable.
+/// ## `layer`
+/// The layer (is attached as floating selection).
+/// ## `drawable`
+/// The drawable (where to attach the floating selection).
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_floating_sel_attach")]
 pub fn floating_sel_attach(layer: &impl IsA<Layer>, drawable: &impl IsA<Drawable>) -> bool {
     unsafe {
@@ -1596,6 +3817,17 @@ pub fn floating_sel_attach(layer: &impl IsA<Layer>, drawable: &impl IsA<Drawable
     }
 }
 
+/// Remove the specified floating selection from its associated
+/// drawable.
+///
+/// This procedure removes the floating selection completely, without
+/// any side effects. The associated drawable is then set to active.
+/// ## `floating_sel`
+/// The floating selection.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_floating_sel_remove")]
 pub fn floating_sel_remove(floating_sel: &impl IsA<Layer>) -> bool {
     unsafe {
@@ -1605,6 +3837,22 @@ pub fn floating_sel_remove(floating_sel: &impl IsA<Layer>) -> bool {
     }
 }
 
+/// Transforms the specified floating selection into a layer.
+///
+/// This procedure transforms the specified floating selection into a
+/// layer with the same offsets and extents. The composited image will
+/// look precisely the same, but the floating selection layer will no
+/// longer be clipped to the extents of the drawable it was attached to.
+/// The floating selection will become the active layer. This procedure
+/// will not work if the floating selection has a different base type
+/// from the underlying image. This might be the case if the floating
+/// selection is above an auxiliary channel or a layer mask.
+/// ## `floating_sel`
+/// The floating selection.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_floating_sel_to_layer")]
 pub fn floating_sel_to_layer(floating_sel: &impl IsA<Layer>) -> bool {
     unsafe {
@@ -1614,11 +3862,34 @@ pub fn floating_sel_to_layer(floating_sel: &impl IsA<Layer>) -> bool {
     }
 }
 
+/// Close the font selection dialog.
+///
+/// Closes an open font selection dialog.
+/// ## `font_callback`
+/// The name of the callback registered in the PDB for this dialog.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_fonts_close_popup")]
 pub fn fonts_close_popup(font_callback: &str) -> bool {
     unsafe { from_glib(ffi::gimp_fonts_close_popup(font_callback.to_glib_none().0)) }
 }
 
+/// Retrieve the list of loaded fonts.
+///
+/// This procedure returns a list of the fonts that are currently
+/// available.
+/// Each font returned can be used as input to
+/// [`context_set_font()`][crate::context_set_font()].
+/// ## `filter`
+/// An optional regular expression used to filter the list.
+///
+/// # Returns
+///
+///
+///  The list of fonts.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_fonts_get_list")]
 pub fn fonts_get_list(filter: Option<&str>) -> Vec<Font> {
     unsafe {
@@ -1626,6 +3897,21 @@ pub fn fonts_get_list(filter: Option<&str>) -> Vec<Font> {
     }
 }
 
+/// Invokes the Gimp font selection dialog.
+///
+/// Opens a dialog letting a user choose a font.
+/// ## `font_callback`
+/// The callback PDB proc to call when user chooses a font.
+/// ## `popup_title`
+/// Title of the font selection dialog.
+/// ## `initial_font`
+/// The name of the initial font choice.
+/// ## `parent_window`
+/// An optional parent window handle for the popup to be set transient to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_fonts_popup")]
 pub fn fonts_popup(
     font_callback: &str,
@@ -1643,11 +3929,31 @@ pub fn fonts_popup(
     }
 }
 
+/// Refresh current fonts. This function always succeeds.
+///
+/// This procedure retrieves all fonts currently in the user's font path
+/// and updates the font dialogs accordingly. Depending on the amount of
+/// fonts on the system, this can take considerable time.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_fonts_refresh")]
 pub fn fonts_refresh() -> bool {
     unsafe { from_glib(ffi::gimp_fonts_refresh()) }
 }
 
+/// Sets the current font in a font selection dialog.
+///
+/// Sets the current font in a font selection dialog.
+/// ## `font_callback`
+/// The name of the callback registered in the PDB for the dialog.
+/// ## `font`
+/// The font to set as selected.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_fonts_set_popup")]
 pub fn fonts_set_popup(font_callback: &str, font: &Font) -> bool {
     unsafe {
@@ -1658,36 +3964,90 @@ pub fn fonts_set_popup(font_callback: &str, font: &Font) -> bool {
     }
 }
 
+/// Retrieve a copy of the current color management configuration.
+///
+/// # Returns
+///
+/// A copy of the core's [`ColorConfig`][crate::ColorConfig]. You
+///  should unref this copy if you don't need it any longer.
 #[doc(alias = "gimp_get_color_configuration")]
 #[doc(alias = "get_color_configuration")]
 pub fn color_configuration() -> Option<ColorConfig> {
     unsafe { from_glib_full(ffi::gimp_get_color_configuration()) }
 }
 
+/// Get the default image comment as specified in the Preferences.
+///
+/// Returns a copy of the default image comment.
+///
+/// # Returns
+///
+/// Default image comment.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_get_default_comment")]
 #[doc(alias = "get_default_comment")]
 pub fn default_comment() -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_get_default_comment()) }
 }
 
+/// Get the default unit (taken from the user's locale).
+///
+/// Returns the default unit.
+///
+/// # Returns
+///
+/// Default unit.
 #[doc(alias = "gimp_get_default_unit")]
 #[doc(alias = "get_default_unit")]
 pub fn default_unit() -> Option<Unit> {
     unsafe { from_glib_none(ffi::gimp_get_default_unit()) }
 }
 
+/// Returns the list of images currently open.
+///
+/// This procedure returns the list of images currently open in GIMP.
+///
+/// # Returns
+///
+///
+///  The list of images currently open.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_get_images")]
 #[doc(alias = "get_images")]
 pub fn images() -> Vec<Image> {
     unsafe { FromGlibPtrContainer::from_glib_container(ffi::gimp_get_images()) }
 }
 
+/// Get the list of modules which should not be loaded.
+///
+/// Returns a copy of the list of modules which should not be loaded.
+///
+/// # Returns
+///
+/// The list of modules.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_get_module_load_inhibit")]
 #[doc(alias = "get_module_load_inhibit")]
 pub fn module_load_inhibit() -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_get_module_load_inhibit()) }
 }
 
+/// Get the monitor resolution as specified in the Preferences.
+///
+/// Returns the resolution of the monitor in pixels/inch. This value is
+/// taken from the Preferences (or the windowing system if this is set
+/// in the Preferences) and there's no guarantee for the value to be
+/// reasonable.
+///
+/// # Returns
+///
+/// TRUE on success.
+///
+/// ## `xres`
+/// X resolution.
+///
+/// ## `yres`
+/// Y resolution.
 #[doc(alias = "gimp_get_monitor_resolution")]
 #[doc(alias = "get_monitor_resolution")]
 pub fn monitor_resolution() -> Option<(f64, f64)> {
@@ -1706,52 +4066,134 @@ pub fn monitor_resolution() -> Option<(f64, f64)> {
     }
 }
 
+/// Returns the number of threads set explicitly by the user in the
+/// preferences. This information can be used by plug-ins wishing to
+/// follow user settings for multi-threaded implementations.
+///
+/// # Returns
+///
+/// the preferred number of threads to use.
 #[doc(alias = "gimp_get_num_processors")]
 #[doc(alias = "get_num_processors")]
 pub fn num_processors() -> i32 {
     unsafe { ffi::gimp_get_num_processors() }
 }
 
+/// Look up a global parasite.
+///
+/// Finds and returns the global parasite that was previously attached.
+/// ## `name`
+/// The name of the parasite to find.
+///
+/// # Returns
+///
+/// The found parasite.
 #[doc(alias = "gimp_get_parasite")]
 #[doc(alias = "get_parasite")]
 pub fn parasite(name: &str) -> Option<Parasite> {
     unsafe { from_glib_full(ffi::gimp_get_parasite(name.to_glib_none().0)) }
 }
 
+/// List all parasites.
+///
+/// Returns a list of all currently attached global parasites.
+///
+/// # Returns
+///
+///
+///  The names of currently attached parasites.
+///  The returned value must be freed with `g_strfreev()`.
 #[doc(alias = "gimp_get_parasite_list")]
 #[doc(alias = "get_parasite_list")]
 pub fn parasite_list() -> Vec<glib::GString> {
     unsafe { FromGlibPtrContainer::from_glib_full(ffi::gimp_get_parasite_list()) }
 }
 
+/// This function returns the plug-in's [`PDB`][crate::PDB] instance, which is a
+/// singleton that can exist exactly once per running plug-in.
+///
+/// # Returns
+///
+/// The plug-in's [`PDB`][crate::PDB] singleton.
 #[doc(alias = "gimp_get_pdb")]
 #[doc(alias = "get_pdb")]
 pub fn pdb() -> Option<PDB> {
     unsafe { from_glib_none(ffi::gimp_get_pdb()) }
 }
 
+/// This function returns the plug-in's [`PlugIn`][crate::PlugIn] instance, which is
+/// a a singleton that can exist exactly once per running plug-in.
+///
+/// # Returns
+///
+/// The plug-in's [`PlugIn`][crate::PlugIn] singleton.
 #[doc(alias = "gimp_get_plug_in")]
 #[doc(alias = "get_plug_in")]
 pub fn plug_in() -> Option<PlugIn> {
     unsafe { from_glib_none(ffi::gimp_get_plug_in()) }
 }
 
+/// Returns the plug-in's executable name.
+///
+/// # Returns
+///
+/// the executable name
 #[doc(alias = "gimp_get_progname")]
 #[doc(alias = "get_progname")]
 pub fn progname() -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_get_progname()) }
 }
 
+/// Returns the PID of the host GIMP process.
+///
+/// This procedure returns the process ID of the currently running GIMP.
+///
+/// # Returns
+///
+/// The PID.
 #[doc(alias = "gimp_getpid")]
 pub fn getpid() -> i32 {
     unsafe { ffi::gimp_getpid() }
 }
 
+/// Queries the gimprc file parser for information on a specified token.
+///
+/// This procedure is used to locate additional information contained in
+/// the gimprc file considered extraneous to the operation of GIMP.
+/// Plug-ins that need configuration information can expect it will be
+/// stored in the user gimprc file and can use this procedure to
+/// retrieve it. This query procedure will return the value associated
+/// with the specified token. This corresponds _only_ to entries with
+/// the format: (&lt;token&gt; &lt;value&gt;). The value must be a
+/// string. Entries not corresponding to this format will cause warnings
+/// to be issued on gimprc parsing and will not be queryable.
+/// ## `token`
+/// The token to query for.
+///
+/// # Returns
+///
+/// The value associated with the queried token.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_gimprc_query")]
 pub fn gimprc_query(token: &str) -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_gimprc_query(token.to_glib_none().0)) }
 }
 
+/// Sets a gimprc token to a value and saves it in the gimprc.
+///
+/// This procedure is used to add or change additional information in
+/// the gimprc file that is considered extraneous to the operation of
+/// GIMP. Plug-ins that need configuration information can use this
+/// function to store it, and [`gimprc_query()`][crate::gimprc_query()] to retrieve it. This
+/// will accept _only_ string values in UTF-8 encoding.
+/// ## `token`
+/// The token to add or modify.
+/// ## `value`
+/// The value to set the token to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_gimprc_set")]
 pub fn gimprc_set(token: &str, value: &str) -> bool {
     unsafe {
@@ -1762,6 +4204,15 @@ pub fn gimprc_set(token: &str, value: &str) -> bool {
     }
 }
 
+/// Close the gradient selection dialog.
+///
+/// Closes an open gradient selection dialog.
+/// ## `gradient_callback`
+/// The name of the callback registered for this pop-up.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_gradients_close_popup")]
 pub fn gradients_close_popup(gradient_callback: &str) -> bool {
     unsafe {
@@ -1771,6 +4222,20 @@ pub fn gradients_close_popup(gradient_callback: &str) -> bool {
     }
 }
 
+/// Retrieve the list of loaded gradients.
+///
+/// This procedure returns a list of the gradients that are currently
+/// loaded.
+/// Each gradient returned can be used as input to
+/// [`context_set_gradient()`][crate::context_set_gradient()].
+/// ## `filter`
+/// An optional regular expression used to filter the list.
+///
+/// # Returns
+///
+///
+///  The list of gradients.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_gradients_get_list")]
 pub fn gradients_get_list(filter: Option<&str>) -> Vec<Gradient> {
     unsafe {
@@ -1780,6 +4245,21 @@ pub fn gradients_get_list(filter: Option<&str>) -> Vec<Gradient> {
     }
 }
 
+/// Invokes the Gimp gradients selection dialog.
+///
+/// Opens a dialog letting a user choose a gradient.
+/// ## `gradient_callback`
+/// The callback PDB proc to call when user chooses a gradient.
+/// ## `popup_title`
+/// Title of the gradient selection dialog.
+/// ## `initial_gradient`
+/// The initial gradient choice.
+/// ## `parent_window`
+/// An optional parent window handle for the popup to be set transient to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_gradients_popup")]
 pub fn gradients_popup(
     gradient_callback: &str,
@@ -1797,11 +4277,30 @@ pub fn gradients_popup(
     }
 }
 
+/// Refresh current gradients. This function always succeeds.
+///
+/// This procedure retrieves all gradients currently in the user's
+/// gradient path and updates the gradient dialogs accordingly.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_gradients_refresh")]
 pub fn gradients_refresh() -> bool {
     unsafe { from_glib(ffi::gimp_gradients_refresh()) }
 }
 
+/// Sets the current gradient in a gradient selection dialog.
+///
+/// Sets the current gradient in a gradient selection dialog.
+/// ## `gradient_callback`
+/// The name of the callback registered for this pop-up.
+/// ## `gradient`
+/// The gradient to set as selected.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_gradients_set_popup")]
 pub fn gradients_set_popup(gradient_callback: &str, gradient: &Gradient) -> bool {
     unsafe {
@@ -1812,6 +4311,28 @@ pub fn gradients_set_popup(gradient_callback: &str, gradient: &Gradient) -> bool
     }
 }
 
+/// Heal from the source to the dest drawable using the current brush
+///
+/// This tool heals the source drawable starting at the specified source
+/// coordinates to the dest drawable. For image healing, if the sum of
+/// the src coordinates and subsequent stroke offsets exceeds the
+/// extents of the src drawable, then no paint is transferred. The
+/// healing tool is capable of transforming between any image types
+/// except RGB-&gt;Indexed.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `src_drawable`
+/// The source drawable.
+/// ## `src_x`
+/// The x coordinate in the source image.
+/// ## `src_y`
+/// The y coordinate in the source image.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_heal")]
 pub fn heal(
     drawable: &impl IsA<Drawable>,
@@ -1833,6 +4354,22 @@ pub fn heal(
     }
 }
 
+/// Heal from the source to the dest drawable using the current brush
+///
+/// This tool heals from the source drawable starting at the specified
+/// source coordinates to the dest drawable. This function performs
+/// exactly the same as the [`heal()`][crate::heal()] function except that the tools
+/// arguments are obtained from the healing option dialog. It this
+/// dialog has not been activated then the dialogs default values will
+/// be used.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_heal_default")]
 pub fn heal_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -1845,6 +4382,22 @@ pub fn heal_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     }
 }
 
+/// Load a help page.
+///
+/// This procedure loads the specified help page into the helpbrowser or
+/// what ever is configured as help viewer. The help page is identified
+/// by its domain and ID: if help_domain is NULL, we use the help_domain
+/// which was registered using the `gimp_plugin_help_register()`
+/// procedure. If help_domain is NULL and no help domain was registered,
+/// the help domain of the main GIMP installation is used.
+/// ## `help_domain`
+/// The help domain in which help_id is registered.
+/// ## `help_id`
+/// The help page's ID.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_help")]
 pub fn help(help_domain: Option<&str>, help_id: &str) -> bool {
     unsafe {
@@ -1855,16 +4408,47 @@ pub fn help(help_domain: Option<&str>, help_id: &str) -> bool {
     }
 }
 
+/// Returns the directory of the current icon theme.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the icon theme directory
 #[doc(alias = "gimp_icon_theme_dir")]
 pub fn icon_theme_dir() -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_icon_theme_dir()) }
 }
 
+/// Close the image selection dialog.
+///
+/// Closes an open image selection dialog.
+/// ## `callback`
+/// The name of the callback registered for this pop-up.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_images_close_popup")]
 pub fn images_close_popup(callback: &str) -> bool {
     unsafe { from_glib(ffi::gimp_images_close_popup(callback.to_glib_none().0)) }
 }
 
+/// Invokes the image selection dialog.
+///
+/// Opens a dialog letting a user choose an image.
+/// ## `callback`
+/// The callback PDB proc to call when user chooses an image.
+/// ## `popup_title`
+/// Title of the image selection dialog.
+/// ## `initial_image`
+/// The image to set as the initial choice.
+/// ## `parent_window`
+/// An optional parent window handle for the popup to be set transient to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_images_popup")]
 pub fn images_popup(
     callback: &str,
@@ -1882,6 +4466,17 @@ pub fn images_popup(
     }
 }
 
+/// Sets the selected image in a image selection dialog.
+///
+/// Sets the selected image in a image selection dialog.
+/// ## `callback`
+/// The name of the callback registered for this pop-up.
+/// ## `image`
+/// The image to set as selected.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_images_set_popup")]
 pub fn images_set_popup(callback: &str, image: &Image) -> bool {
     unsafe {
@@ -1892,6 +4487,23 @@ pub fn images_set_popup(callback: &str, image: &Image) -> bool {
     }
 }
 
+/// Returns the top installation directory of GIMP. On Unix the
+/// compile-time defined installation prefix is used. On Windows, the
+/// installation directory as deduced from the executable's full
+/// filename is used. On OSX we ask [NSBundle mainBundle] for the
+/// resource path to check if GIMP is part of a relocatable bundle.
+///
+/// In config files such as gimprc, the string ${gimp_installation_dir}
+/// expands to this directory.
+///
+/// The returned string is owned by GIMP and must not be modified or
+/// freed. The returned string is in the encoding used for filenames by
+/// GLib, which isn't necessarily UTF-8. (On Windows it always is
+/// UTF-8.)
+///
+/// # Returns
+///
+/// The toplevel installation directory of GIMP.
 #[doc(alias = "gimp_installation_directory")]
 pub fn installation_directory() -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_installation_directory()) }
@@ -1902,6 +4514,17 @@ pub fn installation_directory() -> Option<glib::GString> {
 //    unsafe { TODO: call ffi:gimp_installation_directory_file() }
 //}
 
+/// Checks if `identifier` is canonical and non-[`None`].
+///
+/// Canonical identifiers are e.g. expected by the PDB for procedure
+/// and parameter names. Every character of the input string must be
+/// either '-', 'a-z', 'A-Z' or '0-9'.
+/// ## `identifier`
+/// The identifier string to check.
+///
+/// # Returns
+///
+/// [`true`] if `identifier` is canonical, [`false`] otherwise.
 #[doc(alias = "gimp_is_canonical_identifier")]
 pub fn is_canonical_identifier(identifier: &str) -> bool {
     unsafe {
@@ -1911,11 +4534,37 @@ pub fn is_canonical_identifier(identifier: &str) -> bool {
     }
 }
 
+/// Close the item selection dialog.
+///
+/// Closes an open item selection dialog.
+/// ## `callback`
+/// The name of the callback registered for this pop-up.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_items_close_popup")]
 pub fn items_close_popup(callback: &str) -> bool {
     unsafe { from_glib(ffi::gimp_items_close_popup(callback.to_glib_none().0)) }
 }
 
+/// Invokes the item selection dialog.
+///
+/// Opens a dialog letting a user choose an item .
+/// ## `callback`
+/// The callback PDB proc to call when user chooses an item.
+/// ## `popup_title`
+/// Title of the item selection dialog.
+/// ## `item_type`
+/// The name of the GIMP_TYPE_ITEM subtype.
+/// ## `initial_item`
+/// The item to set as the initial choice.
+/// ## `parent_window`
+/// An optional parent window handle for the popup to be set transient to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_items_popup")]
 pub fn items_popup(
     callback: &str,
@@ -1935,6 +4584,17 @@ pub fn items_popup(
     }
 }
 
+/// Sets the selected item in a item selection dialog.
+///
+/// Sets the selected item in a item selection dialog.
+/// ## `callback`
+/// The name of the callback registered for this pop-up.
+/// ## `item`
+/// The item to set as selected.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_items_set_popup")]
 pub fn items_set_popup(callback: &str, item: &impl IsA<Item>) -> bool {
     unsafe {
@@ -1945,11 +4605,39 @@ pub fn items_set_popup(callback: &str, item: &impl IsA<Item>) -> bool {
     }
 }
 
+/// Returns the list of images currently open.
+///
+/// This procedure returns the list of images currently open in GIMP.
+///
+/// # Returns
+///
+///
+///  The list of images currently open.
+///  The returned list must be freed with `g_list_free()`. Image
+///  elements belong to libgimp and must not be freed.
 #[doc(alias = "gimp_list_images")]
 pub fn list_images() -> Vec<Image> {
     unsafe { FromGlibPtrContainer::from_glib_container(ffi::gimp_list_images()) }
 }
 
+/// Returns the top directory for GIMP locale files. If the environment
+/// variable GIMP3_LOCALEDIR exists, that is used. It should be an
+/// absolute pathname. Otherwise, on Unix the compile-time defined
+/// directory is used. On Windows, the installation directory as deduced
+/// from the executable's full filename is used.
+///
+/// The returned string is owned by GIMP and must not be modified or
+/// freed. The returned string encoding depends on the system where GIMP
+/// is running: on UNIX it's in the encoding used for filenames by
+/// the C library (which isn't necessarily UTF-8); on Windows it's UTF-8.
+///
+/// On UNIX the returned string can be passed directly to the `bindtextdomain()`
+/// function from libintl; on Windows the returned string can be converted to
+/// UTF-16 and passed to the `wbindtextdomain()` function from libintl.
+///
+/// # Returns
+///
+/// The top directory for GIMP locale files.
 #[doc(alias = "gimp_locale_directory")]
 pub fn locale_directory() -> Option<std::path::PathBuf> {
     unsafe { from_glib_none(ffi::gimp_locale_directory()) }
@@ -1960,26 +4648,89 @@ pub fn locale_directory() -> Option<std::path::PathBuf> {
 //    unsafe { TODO: call ffi:gimp_locale_directory_file() }
 //}
 
+/// Displays a dialog box with a message.
+///
+/// Displays a dialog box with a message. Useful for status or error
+/// reporting. The message must be in UTF-8 encoding.
+/// ## `message`
+/// Message to display in the dialog.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_message")]
 pub fn message(message: &str) -> bool {
     unsafe { from_glib(ffi::gimp_message(message.to_glib_none().0)) }
 }
 
+/// Returns the current state of where warning messages are displayed.
+///
+/// This procedure returns the way g_message warnings are displayed.
+/// They can be shown in a dialog box or printed on the console where
+/// gimp was started.
+///
+/// # Returns
+///
+/// The current handler type.
 #[doc(alias = "gimp_message_get_handler")]
 pub fn message_get_handler() -> MessageHandlerType {
     unsafe { from_glib(ffi::gimp_message_get_handler()) }
 }
 
+/// Controls where warning messages are displayed.
+///
+/// This procedure controls how g_message warnings are displayed. They
+/// can be shown in a dialog box or printed on the console where gimp
+/// was started.
+/// ## `handler`
+/// The new handler type.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_message_set_handler")]
 pub fn message_set_handler(handler: MessageHandlerType) -> bool {
     unsafe { from_glib(ffi::gimp_message_set_handler(handler.into_glib())) }
 }
 
+/// Returns the monitor number to be used for plug-in windows.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the monitor number
 #[doc(alias = "gimp_monitor_number")]
 pub fn monitor_number() -> i32 {
     unsafe { ffi::gimp_monitor_number() }
 }
 
+/// Paint in the current brush with optional fade out parameter and pull
+/// colors from a gradient.
+///
+/// This tool is the standard paintbrush. It draws linearly interpolated
+/// lines through the specified stroke coordinates. It operates on the
+/// specified drawable in the foreground color with the active brush.
+/// The 'fade-out' parameter is measured in pixels and allows the brush
+/// stroke to linearly fall off. The pressure is set to the maximum at
+/// the beginning of the stroke. As the distance of the stroke nears the
+/// fade-out value, the pressure will approach zero. The gradient-length
+/// is the distance to spread the gradient over. It is measured in
+/// pixels. If the gradient-length is 0, no gradient is used.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `fade_out`
+/// Fade out parameter.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+/// ## `method`
+/// The paint method to use.
+/// ## `gradient_length`
+/// Length of gradient to draw.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_paintbrush")]
 pub fn paintbrush(
     drawable: &impl IsA<Drawable>,
@@ -2001,6 +4752,30 @@ pub fn paintbrush(
     }
 }
 
+/// Paint in the current brush. The fade out parameter and pull colors
+/// from a gradient parameter are set from the paintbrush options
+/// dialog. If this dialog has not been activated then the dialog
+/// defaults will be used.
+///
+/// This tool is similar to the standard paintbrush. It draws linearly
+/// interpolated lines through the specified stroke coordinates. It
+/// operates on the specified drawable in the foreground color with the
+/// active brush. The 'fade-out' parameter is measured in pixels and
+/// allows the brush stroke to linearly fall off (value obtained from
+/// the option dialog). The pressure is set to the maximum at the
+/// beginning of the stroke. As the distance of the stroke nears the
+/// fade-out value, the pressure will approach zero. The gradient-length
+/// (value obtained from the option dialog) is the distance to spread
+/// the gradient over. It is measured in pixels. If the gradient-length
+/// is 0, no gradient is used.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_paintbrush_default")]
 pub fn paintbrush_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -2013,6 +4788,15 @@ pub fn paintbrush_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> boo
     }
 }
 
+/// Close the palette selection dialog.
+///
+/// Closes an open palette selection dialog.
+/// ## `palette_callback`
+/// The name of the callback registered for this pop-up.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_palettes_close_popup")]
 pub fn palettes_close_popup(palette_callback: &str) -> bool {
     unsafe {
@@ -2022,6 +4806,19 @@ pub fn palettes_close_popup(palette_callback: &str) -> bool {
     }
 }
 
+/// Retrieves a list of all of the available palettes
+///
+/// This procedure returns a complete listing of available palettes.
+/// Each palette returned can be used as input to
+/// [`context_set_palette()`][crate::context_set_palette()].
+/// ## `filter`
+/// An optional regular expression used to filter the list.
+///
+/// # Returns
+///
+///
+///  The list of palettes.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_palettes_get_list")]
 pub fn palettes_get_list(filter: Option<&str>) -> Vec<Palette> {
     unsafe {
@@ -2031,6 +4828,21 @@ pub fn palettes_get_list(filter: Option<&str>) -> Vec<Palette> {
     }
 }
 
+/// Invokes the Gimp palette selection dialog.
+///
+/// Opens a dialog letting a user choose a palette.
+/// ## `palette_callback`
+/// The callback PDB proc to call when user chooses a palette.
+/// ## `popup_title`
+/// Title of the palette selection dialog.
+/// ## `initial_palette`
+/// The palette to set as the initial choice.
+/// ## `parent_window`
+/// An optional parent window handle for the popup to be set transient to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_palettes_popup")]
 pub fn palettes_popup(
     palette_callback: &str,
@@ -2048,11 +4860,30 @@ pub fn palettes_popup(
     }
 }
 
+/// Refreshes current palettes. This function always succeeds.
+///
+/// This procedure retrieves all palettes currently in the user's
+/// palette path and updates the palette dialogs accordingly.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_palettes_refresh")]
 pub fn palettes_refresh() -> bool {
     unsafe { from_glib(ffi::gimp_palettes_refresh()) }
 }
 
+/// Sets the current palette in a palette selection dialog.
+///
+/// Sets the current palette in a palette selection dialog.
+/// ## `palette_callback`
+/// The name of the callback registered for this pop-up.
+/// ## `palette`
+/// The palette to set as selected.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_palettes_set_popup")]
 pub fn palettes_set_popup(palette_callback: &str, palette: &Palette) -> bool {
     unsafe {
@@ -2063,6 +4894,22 @@ pub fn palettes_set_popup(palette_callback: &str, palette: &Palette) -> bool {
     }
 }
 
+/// Creates a new `GimpParamSpecArray` specifying a
+/// [`Array`][crate::Array] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecArray`.
 #[doc(alias = "gimp_param_spec_array")]
 pub fn param_spec_array(
     name: &str,
@@ -2080,6 +4927,26 @@ pub fn param_spec_array(
     }
 }
 
+/// Creates a new `GimpParamSpecBrush` specifying a
+/// [`Brush`][crate::Brush] property. See also [`param_spec_resource()`][crate::param_spec_resource()].
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether [`None`] is a valid value.
+/// ## `default_value`
+/// Default brush.
+/// ## `default_to_context`
+/// Whether the context is the context's brush.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecBrush`.
 #[doc(alias = "gimp_param_spec_brush")]
 pub fn param_spec_brush(
     name: &str,
@@ -2103,6 +4970,24 @@ pub fn param_spec_brush(
     }
 }
 
+/// Creates a new `GimpParamSpecChannel` specifying a
+/// [`Channel`][crate::Channel] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecChannel`.
 #[doc(alias = "gimp_param_spec_channel")]
 pub fn param_spec_channel(
     name: &str,
@@ -2122,6 +5007,25 @@ pub fn param_spec_channel(
     }
 }
 
+/// Creates a new `GimpParamSpecChoice` specifying a
+/// `G_TYPE_STRING` property.
+/// This `GimpParamSpecChoice` takes ownership of the reference on `choice`.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `choice`
+/// the `GimpChoice` describing allowed choices.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecChoice`.
 #[doc(alias = "gimp_param_spec_choice")]
 pub fn param_spec_choice(
     name: &str,
@@ -2143,6 +5047,12 @@ pub fn param_spec_choice(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a `GimpParamSpecChoice` value.
+///
+/// # Returns
+///
+/// the choice object defining the valid values.
 #[doc(alias = "gimp_param_spec_choice_get_choice")]
 pub fn param_spec_choice_get_choice(pspec: impl AsRef<glib::ParamSpec>) -> Option<Choice> {
     unsafe {
@@ -2152,6 +5062,12 @@ pub fn param_spec_choice_get_choice(pspec: impl AsRef<glib::ParamSpec>) -> Optio
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a `GimpParamSpecChoice` value.
+///
+/// # Returns
+///
+/// the default value.
 #[doc(alias = "gimp_param_spec_choice_get_default")]
 pub fn param_spec_choice_get_default(pspec: impl AsRef<glib::ParamSpec>) -> Option<glib::GString> {
     unsafe {
@@ -2161,6 +5077,25 @@ pub fn param_spec_choice_get_default(pspec: impl AsRef<glib::ParamSpec>) -> Opti
     }
 }
 
+/// Creates a new [`glib::ParamSpec`][crate::glib::ParamSpec] instance specifying a [`gegl::Color`][crate::gegl::Color] property.
+/// Note that the `default_color` is duplicated, so reusing object will
+/// not change the default color of the returned `GimpParamSpecColor`.
+/// ## `name`
+/// canonical name of the property specified
+/// ## `nick`
+/// nick name for the property specified
+/// ## `blurb`
+/// description of the property specified
+/// ## `has_alpha`
+/// [`true`] if the alpha channel has relevance.
+/// ## `default_color`
+/// the default value for the property specified
+/// ## `flags`
+/// flags for the property specified
+///
+/// # Returns
+///
+/// a newly created parameter specification
 #[doc(alias = "gimp_param_spec_color")]
 pub fn param_spec_color(
     name: &str,
@@ -2182,6 +5117,23 @@ pub fn param_spec_color(
     }
 }
 
+/// Creates a new [`glib::ParamSpec`][crate::glib::ParamSpec] instance specifying a [`gegl::Color`][crate::gegl::Color] property.
+/// ## `name`
+/// canonical name of the property specified
+/// ## `nick`
+/// nick name for the property specified
+/// ## `blurb`
+/// description of the property specified
+/// ## `has_alpha`
+/// [`true`] if the alpha channel has relevance.
+/// ## `default_color_string`
+/// the default value for the property specified
+/// ## `flags`
+/// flags for the property specified
+///
+/// # Returns
+///
+/// a newly created parameter specification
 #[doc(alias = "gimp_param_spec_color_from_string")]
 pub fn param_spec_color_from_string(
     name: &str,
@@ -2203,6 +5155,12 @@ pub fn param_spec_color_from_string(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold an [`gegl::Color`][crate::gegl::Color] value.
+///
+/// # Returns
+///
+/// [`true`] if the alpha channel is relevant.
 #[doc(alias = "gimp_param_spec_color_has_alpha")]
 pub fn param_spec_color_has_alpha(pspec: impl AsRef<glib::ParamSpec>) -> bool {
     unsafe {
@@ -2212,6 +5170,25 @@ pub fn param_spec_color_has_alpha(pspec: impl AsRef<glib::ParamSpec>) -> bool {
     }
 }
 
+/// Creates a param spec to hold a filename, dir name,
+/// or list of file or dir names.
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for more information.
+/// ## `name`
+/// Canonical name of the param
+/// ## `nick`
+/// Nickname of the param
+/// ## `blurb`
+/// Brief description of param.
+/// ## `type_`
+/// a [`ConfigPathType`][crate::ConfigPathType] value.
+/// ## `default_value`
+/// Value to use if none is assigned.
+/// ## `flags`
+/// a combination of [`glib::ParamFlags`][crate::glib::ParamFlags]
+///
+/// # Returns
+///
+/// a newly allocated [`glib::ParamSpec`][crate::glib::ParamSpec] instance
 #[doc(alias = "gimp_param_spec_config_path")]
 pub fn param_spec_config_path(
     name: &str,
@@ -2233,6 +5210,14 @@ pub fn param_spec_config_path(
     }
 }
 
+/// Tells whether the path param encodes a filename,
+/// dir name, or list of file or dir names.
+/// ## `pspec`
+/// A [`glib::ParamSpec`][crate::glib::ParamSpec] for a path param
+///
+/// # Returns
+///
+/// a [`ConfigPathType`][crate::ConfigPathType] value
 #[doc(alias = "gimp_param_spec_config_path_type")]
 pub fn param_spec_config_path_type(pspec: impl AsRef<glib::ParamSpec>) -> ConfigPathType {
     unsafe {
@@ -2242,6 +5227,24 @@ pub fn param_spec_config_path_type(pspec: impl AsRef<glib::ParamSpec>) -> Config
     }
 }
 
+/// Creates a new `GimpParamSpecCoreObjectArray` specifying a
+/// `GimpCoreObjectArray` property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `object_type`
+/// GType of the array's elements.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecCoreObjectArray`.
 #[doc(alias = "gimp_param_spec_core_object_array")]
 pub fn param_spec_core_object_array(
     name: &str,
@@ -2261,6 +5264,12 @@ pub fn param_spec_core_object_array(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a `GimpParamSpecCoreObjectArray` value.
+///
+/// # Returns
+///
+/// the type for objects in the object array.
 #[doc(alias = "gimp_param_spec_core_object_array_get_object_type")]
 pub fn param_spec_core_object_array_get_object_type(
     pspec: impl AsRef<glib::ParamSpec>,
@@ -2272,6 +5281,24 @@ pub fn param_spec_core_object_array_get_object_type(
     }
 }
 
+/// Creates a new `GimpParamSpecCurve` specifying a
+/// [`Curve`][crate::Curve] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecCurve`.
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_param_spec_curve")]
@@ -2293,6 +5320,24 @@ pub fn param_spec_curve(
     }
 }
 
+/// Creates a new `GimpParamSpecDisplay` specifying a
+/// [`Display`][crate::Display] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecDisplay`.
 #[doc(alias = "gimp_param_spec_display")]
 pub fn param_spec_display(
     name: &str,
@@ -2312,6 +5357,12 @@ pub fn param_spec_display(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a [`Display`][crate::Display] value.
+///
+/// # Returns
+///
+/// [`true`] if a [`None`] value is allowed.
 #[doc(alias = "gimp_param_spec_display_none_allowed")]
 pub fn param_spec_display_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool {
     unsafe {
@@ -2321,6 +5372,22 @@ pub fn param_spec_display_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bo
     }
 }
 
+/// Creates a new `GimpParamSpecDoubleArray` specifying a
+/// `GIMP_TYPE_DOUBLE_ARRAY` property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecDoubleArray`.
 #[doc(alias = "gimp_param_spec_double_array")]
 pub fn param_spec_double_array(
     name: &str,
@@ -2338,6 +5405,24 @@ pub fn param_spec_double_array(
     }
 }
 
+/// Creates a new `GimpParamSpecDrawable` specifying a
+/// [`Drawable`][crate::Drawable] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecDrawable`.
 #[doc(alias = "gimp_param_spec_drawable")]
 pub fn param_spec_drawable(
     name: &str,
@@ -2357,6 +5442,24 @@ pub fn param_spec_drawable(
     }
 }
 
+/// Creates a new `GimpParamSpecDrawableFilter` specifying a
+/// [`DrawableFilter`][crate::DrawableFilter] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecPath`.
 #[doc(alias = "gimp_param_spec_drawable_filter")]
 pub fn param_spec_drawable_filter(
     name: &str,
@@ -2376,6 +5479,12 @@ pub fn param_spec_drawable_filter(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a [`DrawableFilter`][crate::DrawableFilter] value.
+///
+/// # Returns
+///
+/// [`true`] if a [`None`] value is allowed.
 #[doc(alias = "gimp_param_spec_drawable_filter_none_allowed")]
 pub fn param_spec_drawable_filter_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool {
     unsafe {
@@ -2385,6 +5494,22 @@ pub fn param_spec_drawable_filter_none_allowed(pspec: impl AsRef<glib::ParamSpec
     }
 }
 
+/// Creates a new `GimpParamSpecExportOptions` specifying a
+/// `G_TYPE_INT` property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecExportOptions`.
 #[doc(alias = "gimp_param_spec_export_options")]
 pub fn param_spec_export_options(
     name: &str,
@@ -2402,6 +5527,26 @@ pub fn param_spec_export_options(
     }
 }
 
+/// Creates a param spec to hold a file param.
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for more information.
+/// ## `name`
+/// Canonical name of the param
+/// ## `nick`
+/// Nickname of the param
+/// ## `blurb`
+/// Brief description of param.
+/// ## `action`
+/// The type of file to expect.
+/// ## `none_ok`
+/// Whether [`None`] is allowed.
+/// ## `default_value`
+/// File to use if none is assigned.
+/// ## `flags`
+/// a combination of [`glib::ParamFlags`][crate::glib::ParamFlags]
+///
+/// # Returns
+///
+/// a newly allocated [`glib::ParamSpec`][crate::glib::ParamSpec] instance
 #[doc(alias = "gimp_param_spec_file")]
 pub fn param_spec_file(
     name: &str,
@@ -2425,6 +5570,12 @@ pub fn param_spec_file(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a [`gio::File`][crate::gio::File] value.
+///
+/// # Returns
+///
+/// the file action tied to `pspec`.
 #[doc(alias = "gimp_param_spec_file_get_action")]
 pub fn param_spec_file_get_action(pspec: impl AsRef<glib::ParamSpec>) -> FileChooserAction {
     unsafe {
@@ -2434,6 +5585,12 @@ pub fn param_spec_file_get_action(pspec: impl AsRef<glib::ParamSpec>) -> FileCho
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a [`gio::File`][crate::gio::File] value.
+///
+/// # Returns
+///
+/// [`true`] if a [`None`] value is allowed.
 #[doc(alias = "gimp_param_spec_file_none_allowed")]
 pub fn param_spec_file_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool {
     unsafe {
@@ -2443,6 +5600,11 @@ pub fn param_spec_file_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool 
     }
 }
 
+/// Change the file action tied to `pspec`.
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a [`gio::File`][crate::gio::File] value.
+/// ## `action`
+/// new action for `pspec`.
 #[doc(alias = "gimp_param_spec_file_set_action")]
 pub fn param_spec_file_set_action(pspec: impl AsRef<glib::ParamSpec>, action: FileChooserAction) {
     unsafe {
@@ -2450,6 +5612,26 @@ pub fn param_spec_file_set_action(pspec: impl AsRef<glib::ParamSpec>, action: Fi
     }
 }
 
+/// Creates a new `GimpParamSpecFont` specifying a
+/// [`Font`][crate::Font] property. See also [`param_spec_resource()`][crate::param_spec_resource()].
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether [`None`] is a valid value.
+/// ## `default_value`
+/// Default font.
+/// ## `default_to_context`
+/// Whether the context is the context's font.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecFont`.
 #[doc(alias = "gimp_param_spec_font")]
 pub fn param_spec_font(
     name: &str,
@@ -2473,6 +5655,26 @@ pub fn param_spec_font(
     }
 }
 
+/// Creates a new `GimpParamSpecGradient` specifying a
+/// [`Gradient`][crate::Gradient] property. See also [`param_spec_resource()`][crate::param_spec_resource()].
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether [`None`] is a valid value.
+/// ## `default_value`
+/// Default gradient.
+/// ## `default_to_context`
+/// Whether the context is the context's gradient.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecGradient`.
 #[doc(alias = "gimp_param_spec_gradient")]
 pub fn param_spec_gradient(
     name: &str,
@@ -2496,6 +5698,24 @@ pub fn param_spec_gradient(
     }
 }
 
+/// Creates a new `GimpParamSpecGroupLayer` specifying a
+/// [`GroupLayer`][crate::GroupLayer] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether [`None`] is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecGroupLayer`.
 #[doc(alias = "gimp_param_spec_group_layer")]
 pub fn param_spec_group_layer(
     name: &str,
@@ -2515,6 +5735,24 @@ pub fn param_spec_group_layer(
     }
 }
 
+/// Creates a new `GimpParamSpecImage` specifying a
+/// [`Image`][crate::Image] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecImage`.
 #[doc(alias = "gimp_param_spec_image")]
 pub fn param_spec_image(
     name: &str,
@@ -2534,6 +5772,12 @@ pub fn param_spec_image(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a [`Image`][crate::Image] value.
+///
+/// # Returns
+///
+/// [`true`] if a [`None`] value is allowed.
 #[doc(alias = "gimp_param_spec_image_none_allowed")]
 pub fn param_spec_image_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool {
     unsafe {
@@ -2543,6 +5787,22 @@ pub fn param_spec_image_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool
     }
 }
 
+/// Creates a new `GimpParamSpecInt32Array` specifying a
+/// `GIMP_TYPE_INT32_ARRAY` property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecInt32Array`.
 #[doc(alias = "gimp_param_spec_int32_array")]
 pub fn param_spec_int32_array(
     name: &str,
@@ -2560,6 +5820,24 @@ pub fn param_spec_int32_array(
     }
 }
 
+/// Creates a new `GimpParamSpecItem` specifying a
+/// [`Item`][crate::Item] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecItem`.
 #[doc(alias = "gimp_param_spec_item")]
 pub fn param_spec_item(
     name: &str,
@@ -2579,6 +5857,12 @@ pub fn param_spec_item(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a [`Item`][crate::Item] value.
+///
+/// # Returns
+///
+/// [`true`] if a [`None`] value is allowed.
 #[doc(alias = "gimp_param_spec_item_none_allowed")]
 pub fn param_spec_item_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool {
     unsafe {
@@ -2588,6 +5872,24 @@ pub fn param_spec_item_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool 
     }
 }
 
+/// Creates a new `GimpParamSpecLayer` specifying a
+/// [`Layer`][crate::Layer] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecLayer`.
 #[doc(alias = "gimp_param_spec_layer")]
 pub fn param_spec_layer(
     name: &str,
@@ -2607,6 +5909,24 @@ pub fn param_spec_layer(
     }
 }
 
+/// Creates a new `GimpParamSpecLayerMask` specifying a
+/// [`LayerMask`][crate::LayerMask] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecLayerMask`.
 #[doc(alias = "gimp_param_spec_layer_mask")]
 pub fn param_spec_layer_mask(
     name: &str,
@@ -2626,6 +5946,24 @@ pub fn param_spec_layer_mask(
     }
 }
 
+/// Creates a new `GimpParamSpecLinkLayer` specifying a
+/// [`LinkLayer`][crate::LinkLayer] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecLinkLayer`.
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_param_spec_link_layer")]
@@ -2647,6 +5985,22 @@ pub fn param_spec_link_layer(
     }
 }
 
+/// Creates a param spec to hold a [`Matrix2`][crate::Matrix2] value.
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for more information.
+/// ## `name`
+/// Canonical name of the param
+/// ## `nick`
+/// Nickname of the param
+/// ## `blurb`
+/// Brief description of param.
+/// ## `default_value`
+/// Value to use if none is assigned.
+/// ## `flags`
+/// a combination of [`glib::ParamFlags`][crate::glib::ParamFlags]
+///
+/// # Returns
+///
+/// a newly allocated [`glib::ParamSpec`][crate::glib::ParamSpec] instance
 #[doc(alias = "gimp_param_spec_matrix2")]
 pub fn param_spec_matrix2(
     name: &str,
@@ -2666,6 +6020,22 @@ pub fn param_spec_matrix2(
     }
 }
 
+/// Creates a param spec to hold a [`Matrix3`][crate::Matrix3] value.
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for more information.
+/// ## `name`
+/// Canonical name of the param
+/// ## `nick`
+/// Nickname of the param
+/// ## `blurb`
+/// Brief description of param.
+/// ## `default_value`
+/// Value to use if none is assigned.
+/// ## `flags`
+/// a combination of [`glib::ParamFlags`][crate::glib::ParamFlags]
+///
+/// # Returns
+///
+/// a newly allocated [`glib::ParamSpec`][crate::glib::ParamSpec] instance
 #[doc(alias = "gimp_param_spec_matrix3")]
 pub fn param_spec_matrix3(
     name: &str,
@@ -2685,6 +6055,26 @@ pub fn param_spec_matrix3(
     }
 }
 
+/// Creates a param spec to hold a memory size value.
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for more information.
+/// ## `name`
+/// Canonical name of the param
+/// ## `nick`
+/// Nickname of the param
+/// ## `blurb`
+/// Brief description of param.
+/// ## `minimum`
+/// Smallest allowed value of the parameter.
+/// ## `maximum`
+/// Largest allowed value of the parameter.
+/// ## `default_value`
+/// Value to use if none is assigned.
+/// ## `flags`
+/// a combination of [`glib::ParamFlags`][crate::glib::ParamFlags]
+///
+/// # Returns
+///
+/// a newly allocated [`glib::ParamSpec`][crate::glib::ParamSpec] instance
 #[doc(alias = "gimp_param_spec_memsize")]
 pub fn param_spec_memsize(
     name: &str,
@@ -2708,6 +6098,26 @@ pub fn param_spec_memsize(
     }
 }
 
+/// Creates a new `GimpParamSpecPalette` specifying a
+/// [`Palette`][crate::Palette] property. See also [`param_spec_resource()`][crate::param_spec_resource()].
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether [`None`] is a valid value.
+/// ## `default_value`
+/// Default palette.
+/// ## `default_to_context`
+/// Whether the context is the context's palette.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecPalette`.
 #[doc(alias = "gimp_param_spec_palette")]
 pub fn param_spec_palette(
     name: &str,
@@ -2731,6 +6141,22 @@ pub fn param_spec_palette(
     }
 }
 
+/// Creates a new `GimpParamSpecParasite` specifying a
+/// [`Parasite`][crate::Parasite] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecParasite`.
 #[doc(alias = "gimp_param_spec_parasite")]
 pub fn param_spec_parasite(
     name: &str,
@@ -2748,6 +6174,24 @@ pub fn param_spec_parasite(
     }
 }
 
+/// Creates a new `GimpParamSpecPath` specifying a
+/// [`Path`][crate::Path] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecPath`.
 #[doc(alias = "gimp_param_spec_path")]
 pub fn param_spec_path(
     name: &str,
@@ -2767,6 +6211,26 @@ pub fn param_spec_path(
     }
 }
 
+/// Creates a new `GimpParamSpecPattern` specifying a
+/// [`Pattern`][crate::Pattern] property. See also [`param_spec_resource()`][crate::param_spec_resource()].
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether [`None`] is a valid value.
+/// ## `default_value`
+/// Default pattern.
+/// ## `default_to_context`
+/// Whether the context is the context's pattern.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecPattern`.
 #[doc(alias = "gimp_param_spec_pattern")]
 pub fn param_spec_pattern(
     name: &str,
@@ -2790,6 +6254,25 @@ pub fn param_spec_pattern(
     }
 }
 
+/// Creates a new `GimpParamSpecRasterizable` specifying a
+/// [`Rasterizable`][crate::Rasterizable] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created
+/// `GimpParamSpecRasterizable`.
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_param_spec_rasterizable")]
@@ -2811,6 +6294,35 @@ pub fn param_spec_rasterizable(
     }
 }
 
+/// Creates a new `GimpParamSpecResource` specifying a [`Resource`][crate::Resource] property.
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+///
+/// `default_to_context` cannot be [`true`] for a `resource_type` of value
+/// [`Resource`][crate::Resource], but only for specific subtypes. If it is
+/// [`true`], `default_value` must be [`None`]. Instead of a fixed default,
+/// whatever is the context's resource for the given type at run time
+/// will be used as dynamic default.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `resource_type`
+/// a `GType`, subtype of [`Resource`][crate::Resource].
+/// ## `none_ok`
+/// Whether [`None`] is a valid value.
+/// ## `default_value`
+/// Default resource.
+/// ## `default_to_context`
+/// Whether the context is the context's resource
+///  for the given `resource_type`.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecResource`.
 #[doc(alias = "gimp_param_spec_resource")]
 pub fn param_spec_resource(
     name: &str,
@@ -2854,6 +6366,24 @@ pub fn param_spec_resource_none_allowed(pspec: impl AsRef<glib::ParamSpec>) -> b
     }
 }
 
+/// Creates a new `GimpParamSpecSelection` specifying a
+/// [`Selection`][crate::Selection] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecSelection`.
 #[doc(alias = "gimp_param_spec_selection")]
 pub fn param_spec_selection(
     name: &str,
@@ -2873,6 +6403,24 @@ pub fn param_spec_selection(
     }
 }
 
+/// Creates a new `GimpParamSpecTextLayer` specifying a
+/// [`TextLayer`][crate::TextLayer] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecTextLayer`.
 #[doc(alias = "gimp_param_spec_text_layer")]
 pub fn param_spec_text_layer(
     name: &str,
@@ -2892,6 +6440,26 @@ pub fn param_spec_text_layer(
     }
 }
 
+/// Creates a param spec to hold a units param.
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for more information.
+/// ## `name`
+/// Canonical name of the param
+/// ## `nick`
+/// Nickname of the param
+/// ## `blurb`
+/// Brief description of param.
+/// ## `allow_pixel`
+/// Whether "pixels" is an allowed unit.
+/// ## `allow_percent`
+/// Whether "percent" is an allowed unit.
+/// ## `default_value`
+/// Unit to use if none is assigned.
+/// ## `flags`
+/// a combination of [`glib::ParamFlags`][crate::glib::ParamFlags]
+///
+/// # Returns
+///
+/// a newly allocated [`glib::ParamSpec`][crate::glib::ParamSpec] instance
 #[doc(alias = "gimp_param_spec_unit")]
 pub fn param_spec_unit(
     name: &str,
@@ -2915,6 +6483,12 @@ pub fn param_spec_unit(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold an [`Unit`][crate::Unit] value.
+///
+/// # Returns
+///
+/// [`true`] if the [`Unit::percent()`][crate::Unit::percent()] unit is allowed.
 #[doc(alias = "gimp_param_spec_unit_percent_allowed")]
 pub fn param_spec_unit_percent_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool {
     unsafe {
@@ -2924,6 +6498,12 @@ pub fn param_spec_unit_percent_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bo
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold an [`Unit`][crate::Unit] value.
+///
+/// # Returns
+///
+/// [`true`] if the [`Unit::pixel()`][crate::Unit::pixel()] unit is allowed.
 #[doc(alias = "gimp_param_spec_unit_pixel_allowed")]
 pub fn param_spec_unit_pixel_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool {
     unsafe {
@@ -2933,6 +6513,25 @@ pub fn param_spec_unit_pixel_allowed(pspec: impl AsRef<glib::ParamSpec>) -> bool
     }
 }
 
+/// Creates a new `GimpParamSpecValueArray` specifying a
+/// [`glib::ValueArray`][crate::glib::ValueArray] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `element_spec`
+/// [`glib::ParamSpec`][crate::glib::ParamSpec] the contained array's elements
+///  have comply to, or [`None`].
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecValueArray`.
 #[doc(alias = "gimp_param_spec_value_array")]
 pub fn param_spec_value_array(
     name: &str,
@@ -2952,6 +6551,12 @@ pub fn param_spec_value_array(
     }
 }
 
+/// ## `pspec`
+/// a [`glib::ParamSpec`][crate::glib::ParamSpec] to hold a `GimpParamSpecValueArray` value.
+///
+/// # Returns
+///
+/// param spec for elements of the value array.
 #[doc(alias = "gimp_param_spec_value_array_get_element_spec")]
 pub fn param_spec_value_array_get_element_spec(
     pspec: impl AsRef<glib::ParamSpec>,
@@ -2963,6 +6568,24 @@ pub fn param_spec_value_array_get_element_spec(
     }
 }
 
+/// Creates a new `GimpParamSpecVectorLayer` specifying a
+/// [`VectorLayer`][crate::VectorLayer] property.
+///
+/// See [`glib::ParamSpec::internal()`][crate::glib::ParamSpec::internal()] for details on property names.
+/// ## `name`
+/// Canonical name of the property specified.
+/// ## `nick`
+/// Nick name of the property specified.
+/// ## `blurb`
+/// Description of the property specified.
+/// ## `none_ok`
+/// Whether no is a valid value.
+/// ## `flags`
+/// Flags for the property specified.
+///
+/// # Returns
+///
+/// The newly created `GimpParamSpecVectorLayer`.
 #[cfg(feature = "v3_2")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
 #[doc(alias = "gimp_param_spec_vector_layer")]
@@ -2984,6 +6607,15 @@ pub fn param_spec_vector_layer(
     }
 }
 
+/// Close the pattern selection dialog.
+///
+/// Closes an open pattern selection dialog.
+/// ## `pattern_callback`
+/// The name of the callback registered for this pop-up.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_patterns_close_popup")]
 pub fn patterns_close_popup(pattern_callback: &str) -> bool {
     unsafe {
@@ -2993,6 +6625,20 @@ pub fn patterns_close_popup(pattern_callback: &str) -> bool {
     }
 }
 
+/// Retrieve a complete listing of the available patterns.
+///
+/// This procedure returns a complete listing of available GIMP
+/// patterns.
+/// Each pattern returned can be used as input to
+/// [`context_set_pattern()`][crate::context_set_pattern()].
+/// ## `filter`
+/// An optional regular expression used to filter the list.
+///
+/// # Returns
+///
+///
+///  The list of patterns.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_patterns_get_list")]
 pub fn patterns_get_list(filter: Option<&str>) -> Vec<Pattern> {
     unsafe {
@@ -3002,6 +6648,21 @@ pub fn patterns_get_list(filter: Option<&str>) -> Vec<Pattern> {
     }
 }
 
+/// Invokes the Gimp pattern selection.
+///
+/// Opens the pattern selection dialog.
+/// ## `pattern_callback`
+/// The callback PDB proc to call when the user chooses a pattern.
+/// ## `popup_title`
+/// Title of the pattern selection dialog.
+/// ## `initial_pattern`
+/// The pattern to set as the initial choice.
+/// ## `parent_window`
+/// An optional parent window handle for the popup to be set transient to.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_patterns_popup")]
 pub fn patterns_popup(
     pattern_callback: &str,
@@ -3019,11 +6680,30 @@ pub fn patterns_popup(
     }
 }
 
+/// Refresh current patterns. This function always succeeds.
+///
+/// This procedure retrieves all patterns currently in the user's
+/// pattern path and updates all pattern dialogs accordingly.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_patterns_refresh")]
 pub fn patterns_refresh() -> bool {
     unsafe { from_glib(ffi::gimp_patterns_refresh()) }
 }
 
+/// Sets the current pattern in a pattern selection dialog.
+///
+/// Sets the current pattern in a pattern selection dialog.
+/// ## `pattern_callback`
+/// The name of the callback registered for this pop-up.
+/// ## `pattern`
+/// The pattern to set as selected.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_patterns_set_popup")]
 pub fn patterns_set_popup(pattern_callback: &str, pattern: &Pattern) -> bool {
     unsafe {
@@ -3034,6 +6714,22 @@ pub fn patterns_set_popup(pattern_callback: &str, pattern: &Pattern) -> bool {
     }
 }
 
+/// Paint in the current brush without sub-pixel sampling.
+///
+/// This tool is the standard pencil. It draws linearly interpolated
+/// lines through the specified stroke coordinates. It operates on the
+/// specified drawable in the foreground color with the active brush.
+/// The brush mask is treated as though it contains only black and white
+/// values. Any value below half is treated as black; any above half, as
+/// white.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_pencil")]
 pub fn pencil(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -3046,11 +6742,32 @@ pub fn pencil(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     }
 }
 
+/// Returns a [`gegl::Buffer`][crate::gegl::Buffer] that's either backed by the `pixbuf`'s pixels,
+/// or a copy of them. This function tries to not copy the `pixbuf`'s
+/// pixels. If the pixbuf's rowstride is a multiple of its bpp, a
+/// simple reference to the `pixbuf`'s pixels is made and `pixbuf` will
+/// be kept around for as long as the buffer exists; otherwise the
+/// pixels are copied.
+/// ## `pixbuf`
+/// a [`gdk_pixbuf::Pixbuf`][crate::gdk_pixbuf::Pixbuf]
+///
+/// # Returns
+///
+/// a new [`gegl::Buffer`][crate::gegl::Buffer].
 #[doc(alias = "gimp_pixbuf_create_buffer")]
 pub fn pixbuf_create_buffer(pixbuf: &gdk_pixbuf::Pixbuf) -> Option<gegl::Buffer> {
     unsafe { from_glib_full(ffi::gimp_pixbuf_create_buffer(pixbuf.to_glib_none().0)) }
 }
 
+/// Returns the ICC profile attached to the `pixbuf`, or [`None`] if there
+/// is none.
+/// ## `pixbuf`
+/// a [`gdk_pixbuf::Pixbuf`][crate::gdk_pixbuf::Pixbuf]
+///
+/// # Returns
+///
+/// The ICC profile data, or [`None`].
+///  The value should be freed with `g_free()`.
 #[doc(alias = "gimp_pixbuf_get_icc_profile")]
 pub fn pixbuf_get_icc_profile(pixbuf: &gdk_pixbuf::Pixbuf) -> Vec<u8> {
     unsafe {
@@ -3063,6 +6780,17 @@ pub fn pixbuf_get_icc_profile(pixbuf: &gdk_pixbuf::Pixbuf) -> Vec<u8> {
     }
 }
 
+/// Converts a `value` specified in pixels to `unit`.
+/// ## `pixels`
+/// value in pixels
+/// ## `unit`
+/// unit to convert to
+/// ## `resolution`
+/// resolution in DPI
+///
+/// # Returns
+///
+/// `pixels` converted to units.
 #[doc(alias = "gimp_pixels_to_units")]
 pub fn pixels_to_units(pixels: f64, unit: &Unit, resolution: f64) -> f64 {
     unsafe { ffi::gimp_pixels_to_units(pixels, unit.to_glib_none().0, resolution) }
@@ -3096,6 +6824,15 @@ pub fn pixels_to_units(pixels: f64, unit: &Unit, resolution: f64) -> f64 {
 //    unsafe { TODO: call ffi:gimp_pixpipe_params_parse() }
 //}
 
+/// Cancels a running progress.
+///
+/// This function cancels the currently running progress.
+/// ## `progress_callback`
+/// The name of the callback registered for this progress.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_progress_cancel")]
 pub fn progress_cancel(progress_callback: &str) -> bool {
     unsafe {
@@ -3105,16 +6842,49 @@ pub fn progress_cancel(progress_callback: &str) -> bool {
     }
 }
 
+/// Ends the progress bar for the current plug-in.
+///
+/// Ends the progress display for the current plug-in. Most plug-ins
+/// don't need to call this, they just exit when the work is done. It is
+/// only valid to call this procedure from a plug-in.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_progress_end")]
 pub fn progress_end() -> bool {
     unsafe { from_glib(ffi::gimp_progress_end()) }
 }
 
+/// Returns the native handle of the toplevel window this plug-in's
+/// progress is or would be displayed in.
+///
+/// This function returns the native handle allowing to identify the
+/// toplevel window this plug-in's progress is displayed in. It should
+/// still work even if the progress bar has not been initialized yet,
+/// unless the plug-in wasn't called from a GUI.
+/// This handle can be of various types (integer, string, etc.)
+/// depending on the platform you are running on which is why it returns
+/// a GBytes. There are usually no reasons to call this directly.
+///
+/// # Returns
+///
+/// The progress bar's toplevel window's handle.
 #[doc(alias = "gimp_progress_get_window_handle")]
 pub fn progress_get_window_handle() -> Option<glib::Bytes> {
     unsafe { from_glib_full(ffi::gimp_progress_get_window_handle()) }
 }
 
+/// Initializes the progress bar for the current plug-in.
+///
+/// Initializes the progress bar for the current plug-in. It is only
+/// valid to call this procedure from a plug-in.
+/// ## `message`
+/// Message to use in the progress dialog.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_progress_init")]
 pub fn progress_init(message: &str) -> bool {
     unsafe { from_glib(ffi::gimp_progress_init(message.to_glib_none().0)) }
@@ -3130,11 +6900,33 @@ pub fn progress_init(message: &str) -> bool {
 //    unsafe { TODO: call ffi:gimp_progress_install_vtable() }
 //}
 
+/// Pulses the progress bar for the current plug-in.
+///
+/// Updates the progress bar for the current plug-in. It is only valid
+/// to call this procedure from a plug-in. Use this function instead of
+/// [`progress_update()`][crate::progress_update()] if you cannot tell how much progress has been
+/// made. This usually causes the the progress bar to enter \"activity
+/// mode\", where a block bounces back and forth.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_progress_pulse")]
 pub fn progress_pulse() -> bool {
     unsafe { from_glib(ffi::gimp_progress_pulse()) }
 }
 
+/// Changes the text in the progress bar for the current plug-in.
+///
+/// This function changes the text in the progress bar for the current
+/// plug-in. Unlike [`progress_init()`][crate::progress_init()] it does not change the
+/// displayed value.
+/// ## `message`
+/// Message to use in the progress dialog.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_progress_set_text")]
 pub fn progress_set_text(message: Option<&str>) -> bool {
     unsafe { from_glib(ffi::gimp_progress_set_text(message.to_glib_none().0)) }
@@ -3145,6 +6937,10 @@ pub fn progress_set_text(message: Option<&str>) -> bool {
 //    unsafe { TODO: call ffi:gimp_progress_set_text_printf() }
 //}
 
+/// Uninstalls a temporary progress procedure that was installed using
+/// `gimp_progress_install()`.
+/// ## `progress_callback`
+/// the name of the temporary procedure to uninstall
 #[doc(alias = "gimp_progress_uninstall")]
 pub fn progress_uninstall(progress_callback: &str) {
     unsafe {
@@ -3152,11 +6948,38 @@ pub fn progress_uninstall(progress_callback: &str) {
     }
 }
 
+/// Updates the progress bar for the current plug-in.
+///
+/// The library will handle over-updating by possibly dropping silently
+/// some updates when they happen too close next to each other (either
+/// time-wise or step-wise).
+/// The caller does not have to take care of this aspect of progression
+/// and can focus on computing relevant progression steps.
+/// ## `percentage`
+/// Percentage of progress completed (in the range from 0.0
+///  to 1.0).
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_progress_update")]
 pub fn progress_update(percentage: f64) -> bool {
     unsafe { from_glib(ffi::gimp_progress_update(percentage)) }
 }
 
+/// Forcefully causes the GIMP library to exit and close down its
+/// connection to main gimp application. This function never returns.
+///
+/// It is highly unadvised to use this function since the plug-in will
+/// not properly return. If you need to return from a plug-in in error,
+/// gracefully return with [`ProcedureExtManual::new_return_values()`][crate::prelude::ProcedureExtManual::new_return_values()] setting
+/// [`PDBStatusType::ExecutionError`][crate::PDBStatusType::ExecutionError] as a status and with a well
+/// written [`glib::Error`][crate::glib::Error] message to display.
+///
+/// # Deprecated
+///
+/// there are no alternatives. Quit your plug-ins cleanly
+///  instead.
 #[doc(alias = "gimp_quit")]
 pub fn quit() {
     unsafe {
@@ -3164,6 +6987,36 @@ pub fn quit() {
     }
 }
 
+/// This function proposes reasonable settings for increments and display
+/// digits. These can be used for instance on `GtkRange` or other widgets
+/// using a `GtkAdjustment` typically.
+/// Note that it will never return `digits` with value 0. If you know that
+/// your input needs to display integer values, there is no need to set
+/// `digits`.
+///
+/// There is no universal answer to the best increments and number of
+/// decimal places. It often depends on context of what the value is
+/// meant to represent. This function only tries to provide sensible
+/// generic values which can be used when it doesn't matter too much or
+/// for generated GUI for instance. If you know exactly how you want to
+/// show and interact with a given range, you don't have to use this
+/// function.
+/// ## `lower`
+/// the lower value.
+/// ## `upper`
+/// the higher value.
+///
+/// # Returns
+///
+///
+/// ## `step`
+/// the proposed step increment.
+///
+/// ## `page`
+/// the proposed page increment.
+///
+/// ## `digits`
+/// the proposed decimal places precision.
 #[doc(alias = "gimp_range_estimate_settings")]
 pub fn range_estimate_settings(lower: f64, upper: f64) -> (f64, f64, i32) {
     unsafe {
@@ -3181,6 +7034,43 @@ pub fn range_estimate_settings(lower: f64, upper: f64) -> (f64, f64, i32) {
     }
 }
 
+/// Calculates the intersection of two rectangles.
+/// ## `x1`
+/// origin of first rectangle
+/// ## `y1`
+/// origin of first rectangle
+/// ## `width1`
+/// width of first rectangle
+/// ## `height1`
+/// height of first rectangle
+/// ## `x2`
+/// origin of second rectangle
+/// ## `y2`
+/// origin of second rectangle
+/// ## `width2`
+/// width of second rectangle
+/// ## `height2`
+/// height of second rectangle
+///
+/// # Returns
+///
+/// [`true`] if the intersection is non-empty, [`false`] otherwise
+///
+/// ## `dest_x`
+/// return location for origin of intersection,
+///  or [`None`]
+///
+/// ## `dest_y`
+/// return location for origin of intersection,
+///  or [`None`]
+///
+/// ## `dest_width`
+/// return location for width of intersection,
+///  or [`None`]
+///
+/// ## `dest_height`
+/// return location for height of intersection,
+///  or [`None`]
 #[doc(alias = "gimp_rectangle_intersect")]
 pub fn rectangle_intersect(
     x1: i32,
@@ -3224,6 +7114,38 @@ pub fn rectangle_intersect(
     }
 }
 
+/// Calculates the union of two rectangles.
+/// ## `x1`
+/// origin of first rectangle
+/// ## `y1`
+/// origin of first rectangle
+/// ## `width1`
+/// width of first rectangle
+/// ## `height1`
+/// height of first rectangle
+/// ## `x2`
+/// origin of second rectangle
+/// ## `y2`
+/// origin of second rectangle
+/// ## `width2`
+/// width of second rectangle
+/// ## `height2`
+/// height of second rectangle
+///
+/// # Returns
+///
+///
+/// ## `dest_x`
+/// return location for origin of union, or [`None`]
+///
+/// ## `dest_y`
+/// return location for origin of union, or [`None`]
+///
+/// ## `dest_width`
+/// return location for width of union, or [`None`]
+///
+/// ## `dest_height`
+/// return location for height of union, or [`None`]
 #[doc(alias = "gimp_rectangle_union")]
 pub fn rectangle_union(
     x1: i32,
@@ -3263,6 +7185,17 @@ pub fn rectangle_union(
     }
 }
 
+/// Returns whether the resource with the given `resource_type` were
+/// loaded.
+///
+/// In particular, it would return FALSE if GIMP was started with
+/// `--no-data` (or `--no-fonts` for fonts).
+/// ## `resource_type`
+/// The `GType` of the resource.
+///
+/// # Returns
+///
+/// Whether resources of `resource_type` were loaded.
 #[cfg(feature = "v3_2_4")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_2_4")))]
 #[doc(alias = "gimp_resources_loaded")]
@@ -3270,11 +7203,34 @@ pub fn resources_loaded(resource_type: glib::types::Type) -> bool {
     unsafe { from_glib(ffi::gimp_resources_loaded(resource_type.into_glib())) }
 }
 
+/// Returns whether or not GimpDialog should automatically add a help
+/// button if help_func and help_id are given.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the show_help_button boolean
 #[doc(alias = "gimp_show_help_button")]
 pub fn show_help_button() -> bool {
     unsafe { from_glib(ffi::gimp_show_help_button()) }
 }
 
+/// Smudge image with varying pressure.
+///
+/// This tool simulates a smudge using the current brush. High pressure
+/// results in a greater smudge of paint while low pressure results in a
+/// lesser smudge.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `pressure`
+/// The pressure of the smudge strokes.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_smudge")]
 pub fn smudge(drawable: &impl IsA<Drawable>, pressure: f64, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -3288,6 +7244,20 @@ pub fn smudge(drawable: &impl IsA<Drawable>, pressure: f64, strokes: &[f64]) -> 
     }
 }
 
+/// Smudge image with varying pressure.
+///
+/// This tool simulates a smudge using the current brush. It behaves
+/// exactly the same as [`smudge()`][crate::smudge()] except that the pressure value is
+/// taken from the smudge tool options or the options default if the
+/// tools option dialog has not been activated.
+/// ## `drawable`
+/// The affected drawable.
+/// ## `strokes`
+/// Array of stroke coordinates: { s1.x, s1.y, s2.x, s2.y, ..., sn.x, sn.y }.
+///
+/// # Returns
+///
+/// TRUE on success.
 #[doc(alias = "gimp_smudge_default")]
 pub fn smudge_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     let num_strokes = strokes.len() as _;
@@ -3300,6 +7270,19 @@ pub fn smudge_default(drawable: &impl IsA<Drawable>, strokes: &[f64]) -> bool {
     }
 }
 
+/// Returns [`true`] if we have dependencies to generate backtraces. If
+/// `optimal` is [`true`], the function will return [`true`] only when we
+/// are able to generate optimal traces (i.e. with GDB or LLDB);
+/// otherwise we return [`true`] even if only `backtrace()` API is available.
+///
+/// On Win32, we return TRUE if Dr. Mingw is built-in, FALSE otherwise.
+///
+/// Note: this function is not crash-safe, i.e. you should not try to use
+/// it in a callback when the program is already crashing. In such a
+/// case, call `gimp_stack_trace_print()` or [`stack_trace_query()`][crate::stack_trace_query()]
+/// directly.
+/// ## `optimal`
+/// whether we get optimal traces.
 #[doc(alias = "gimp_stack_trace_available")]
 pub fn stack_trace_available(optimal: bool) -> bool {
     unsafe { from_glib(ffi::gimp_stack_trace_available(optimal.into_glib())) }
@@ -3310,6 +7293,12 @@ pub fn stack_trace_available(optimal: bool) -> bool {
 //    unsafe { TODO: call ffi:gimp_stack_trace_print() }
 //}
 
+/// This is mostly the same as `g_on_error_query()` except that we use our
+/// own backtrace function, much more complete.
+/// `prog_name` must be the current program name (argv[0]).
+/// It does nothing on Win32.
+/// ## `prog_name`
+/// the program to attach to.
 #[doc(alias = "gimp_stack_trace_query")]
 pub fn stack_trace_query(prog_name: &str) {
     unsafe {
@@ -3317,11 +7306,43 @@ pub fn stack_trace_query(prog_name: &str) {
     }
 }
 
+/// This function returns a copy of `str` stripped of underline
+/// characters. This comes in handy when needing to strip mnemonics
+/// from menu paths etc.
+///
+/// In some languages, mnemonics are handled by adding the mnemonic
+/// character in brackets (like "File (_F)"). This function recognizes
+/// this construct and removes the whole bracket construction to get
+/// rid of the mnemonic (see bug 157561).
+/// ## `str`
+/// underline infested string (or [`None`])
+///
+/// # Returns
+///
+/// A (possibly stripped) copy of `str` which should be
+///  freed using `g_free()` when it is not needed any longer.
 #[doc(alias = "gimp_strip_uline")]
 pub fn strip_uline(str: Option<&str>) -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_strip_uline(str.to_glib_none().0)) }
 }
 
+/// Returns the top directory for GIMP config files. If the environment
+/// variable GIMP3_SYSCONFDIR exists, that is used. It should be an
+/// absolute pathname. Otherwise, on Unix the compile-time defined
+/// directory is used. On Windows, the installation directory as deduced
+/// from the executable's full filename is used.
+///
+/// In config files such as gimprc, the string ${gimp_sysconf_dir}
+/// expands to this directory.
+///
+/// The returned string is owned by GIMP and must not be modified or
+/// freed. The returned string is in the encoding used for filenames by
+/// GLib, which isn't necessarily UTF-8. (On Windows it always is
+/// UTF-8.).
+///
+/// # Returns
+///
+/// The top directory for GIMP config files.
 #[doc(alias = "gimp_sysconf_directory")]
 pub fn sysconf_directory() -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_sysconf_directory()) }
@@ -3332,16 +7353,83 @@ pub fn sysconf_directory() -> Option<glib::GString> {
 //    unsafe { TODO: call ffi:gimp_sysconf_directory_file() }
 //}
 
+/// Returns the default top directory for GIMP temporary files. If the
+/// environment variable `GIMP3_TEMPDIR` exists, that is used. It
+/// should be an absolute pathname. Otherwise, a subdirectory of the
+/// directory returned by `g_get_tmp_dir()` is used.
+///
+/// In config files such as gimprc, the string ${gimp_temp_dir} expands
+/// to this directory.
+///
+/// Note that the actual directories used for GIMP temporary files can
+/// be overridden by the user in the preferences dialog.
+///
+/// The returned string is owned by GIMP and must not be modified or
+/// freed. The returned string is in the encoding used for filenames by
+/// GLib, which isn't necessarily UTF-8 (On Windows it always is UTF-8.).
+///
+/// The returned directory path might already exists, or it might not. It
+/// is your responsibility to make sure it does before using it.
+///
+/// # Returns
+///
+/// The default top directory for GIMP temporary files.
 #[doc(alias = "gimp_temp_directory")]
 pub fn temp_directory() -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_temp_directory()) }
 }
 
+/// Generates a unique temporary file.
+///
+/// Generates a unique file using the temp path supplied in the user's
+/// gimprc.
+/// ## `extension`
+/// The extension the file will have.
+///
+/// # Returns
+///
+/// The new temp file.
 #[doc(alias = "gimp_temp_file")]
 pub fn temp_file(extension: Option<&str>) -> Option<gio::File> {
     unsafe { from_glib_full(ffi::gimp_temp_file(extension.to_glib_none().0)) }
 }
 
+/// Add text at the specified location as a floating selection or a new
+/// layer.
+///
+/// The x and y parameters together control the placement of the new
+/// text by specifying the upper left corner of the text bounding box.
+/// If the specified drawable parameter is valid, the text will be
+/// created as a floating selection attached to the drawable. If the
+/// drawable parameter is not valid ([`None`]), the text will appear as a
+/// new layer. Finally, a border can be specified around the final
+/// rendered text. The border is measured in pixels.
+/// The size is always in pixels. If you need to display a font in
+/// points, divide the size in points by 72.0 and multiply it by the
+/// image's vertical resolution.
+/// ## `image`
+/// The image.
+/// ## `drawable`
+/// The affected drawable: ([`None`] for a new text layer).
+/// ## `x`
+/// The x coordinate for the left of the text bounding box.
+/// ## `y`
+/// The y coordinate for the top of the text bounding box.
+/// ## `text`
+/// The text to generate (in UTF-8 encoding).
+/// ## `border`
+/// The size of the border.
+/// ## `antialias`
+/// Antialiasing.
+/// ## `size`
+/// The size of text in pixels.
+/// ## `font`
+/// The font.
+///
+/// # Returns
+///
+///
+///  The new text layer or [`None`] if no layer was created.
 #[doc(alias = "gimp_text_font")]
 pub fn text_font(
     image: &Image,
@@ -3369,6 +7457,41 @@ pub fn text_font(
     }
 }
 
+/// Get extents of the bounding box for the specified text.
+///
+/// This tool returns the width and height of a bounding box for the
+/// specified text rendered with the specified font information. Ascent
+/// and descent of the glyph extents are returned as well.
+/// The ascent is the distance from the baseline to the highest point of
+/// the character. This is positive if the glyph ascends above the
+/// baseline. The descent is the distance from the baseline to the
+/// lowest point of the character. This is positive if the glyph
+/// descends below the baseline.
+/// The size is always in pixels. If you need to set a font in points,
+/// divide the size in points by 72.0 and multiply it by the vertical
+/// resolution of the image you are taking into account.
+/// ## `text`
+/// The text to generate (in UTF-8 encoding).
+/// ## `size`
+/// The size of text in either pixels or points.
+/// ## `font`
+/// The name of the font.
+///
+/// # Returns
+///
+/// TRUE on success.
+///
+/// ## `width`
+/// The width of the glyph extents.
+///
+/// ## `height`
+/// The height of the glyph extents.
+///
+/// ## `ascent`
+/// The ascent of the glyph extents.
+///
+/// ## `descent`
+/// The descent of the glyph extents.
 #[doc(alias = "gimp_text_get_extents_font")]
 pub fn text_get_extents_font(text: &str, size: f64, font: &Font) -> Option<(i32, i32, i32, i32)> {
     unsafe {
@@ -3398,26 +7521,69 @@ pub fn text_get_extents_font(text: &str, size: f64, font: &Font) -> Option<(i32,
     }
 }
 
+/// Returns the tile height GIMP is using.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the tile_height
 #[doc(alias = "gimp_tile_height")]
 pub fn tile_height() -> u32 {
     unsafe { ffi::gimp_tile_height() }
 }
 
+/// Returns the tile width GIMP is using.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the tile_width
 #[doc(alias = "gimp_tile_width")]
 pub fn tile_width() -> u32 {
     unsafe { ffi::gimp_tile_width() }
 }
 
+/// Retrieves the translation context that has been previously set
+/// using [`type_set_translation_context()`][crate::type_set_translation_context()]. You should not need to
+/// use this function directly, use `gimp_enum_get_value()` or
+/// `gimp_enum_value_get_desc()` instead.
+/// ## `type_`
+/// a `GType`
+///
+/// # Returns
+///
+/// the translation context associated with `type_`
+///  or [`None`] if no context was set
 #[doc(alias = "gimp_type_get_translation_context")]
 pub fn type_get_translation_context(type_: glib::types::Type) -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_type_get_translation_context(type_.into_glib())) }
 }
 
+/// Retrieves the gettext translation domain identifier that has been
+/// previously set using [`type_set_translation_domain()`][crate::type_set_translation_domain()]. You should
+/// not need to use this function directly, use `gimp_enum_get_value()`
+/// or `gimp_enum_value_get_desc()` instead.
+/// ## `type_`
+/// a `GType`
+///
+/// # Returns
+///
+/// the translation domain associated with `type_`
+///  or [`None`] if no domain was set
 #[doc(alias = "gimp_type_get_translation_domain")]
 pub fn type_get_translation_domain(type_: glib::types::Type) -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_type_get_translation_domain(type_.into_glib())) }
 }
 
+/// This function attaches a constant string as a translation context
+/// to a `GType`. The only purpose of this function is to use it when
+/// registering a `G_TYPE_ENUM` with translatable value names.
+/// ## `type_`
+/// a `GType`
+/// ## `context`
+/// a constant string that identifies a translation context or [`None`]
 #[doc(alias = "gimp_type_set_translation_context")]
 pub fn type_set_translation_context(type_: glib::types::Type, context: &str) {
     unsafe {
@@ -3425,6 +7591,14 @@ pub fn type_set_translation_context(type_: glib::types::Type, context: &str) {
     }
 }
 
+/// This function attaches a constant string as a gettext translation
+/// domain identifier to a `GType`. The only purpose of this function is
+/// to use it when registering a `G_TYPE_ENUM` with translatable value
+/// names.
+/// ## `type_`
+/// a `GType`
+/// ## `domain`
+/// a constant string that identifies a translation domain or [`None`]
 #[doc(alias = "gimp_type_set_translation_domain")]
 pub fn type_set_translation_domain(type_: glib::types::Type, domain: &str) {
     unsafe {
@@ -3432,16 +7606,50 @@ pub fn type_set_translation_domain(type_: glib::types::Type, domain: &str) {
     }
 }
 
+/// Converts a `value` specified in `unit` to pixels.
+/// ## `value`
+/// value in units
+/// ## `unit`
+/// unit of `value`
+/// ## `resolution`
+/// resolution in DPI
+///
+/// # Returns
+///
+/// `value` converted to pixels.
 #[doc(alias = "gimp_units_to_pixels")]
 pub fn units_to_pixels(value: f64, unit: &Unit, resolution: f64) -> f64 {
     unsafe { ffi::gimp_units_to_pixels(value, unit.to_glib_none().0, resolution) }
 }
 
+/// Converts a `value` specified in `unit` to points.
+/// ## `value`
+/// value in units
+/// ## `unit`
+/// unit of `value`
+/// ## `resolution`
+/// resolution in DPI
+///
+/// # Returns
+///
+/// `value` converted to points.
 #[doc(alias = "gimp_units_to_points")]
 pub fn units_to_points(value: f64, unit: &Unit, resolution: f64) -> f64 {
     unsafe { ffi::gimp_units_to_points(value, unit.to_glib_none().0, resolution) }
 }
 
+/// Returns whether file plug-ins should update the
+/// image's metadata.
+///
+/// Note that metadata that reflects the image characteristics
+/// will still be updated even if this is set to FALSE. This only
+/// concerns metadata changes that are nonessential, like setting
+/// GIMP in Exif.Image.Software, synchronizing the comment with its
+/// equivalent metadata tags, etc.
+///
+/// # Returns
+///
+/// TRUE if preferences are set to update the metadata.
 #[cfg(feature = "v3_1")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v3_1")))]
 #[doc(alias = "gimp_update_metadata")]
@@ -3449,16 +7657,45 @@ pub fn update_metadata() -> bool {
     unsafe { from_glib(ffi::gimp_update_metadata()) }
 }
 
+/// Returns the timestamp of the user interaction that should be set on
+/// the plug-in window. This is handled transparently, plug-in authors
+/// do not have to care about it.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// timestamp for plug-in window
 #[doc(alias = "gimp_user_time")]
 pub fn user_time() -> u32 {
     unsafe { ffi::gimp_user_time() }
 }
 
+/// Creates a (possibly trimmed) copy of `str`. The string is cut if it
+/// exceeds `max_chars` characters or on the first newline. The fact
+/// that the string was trimmed is indicated by appending an ellipsis.
+/// ## `str`
+/// an UTF-8 encoded string (or [`None`])
+/// ## `max_chars`
+/// the maximum number of characters before the string get
+/// trimmed
+///
+/// # Returns
+///
+/// A (possibly trimmed) copy of `str` which should be freed
+/// using `g_free()` when it is not needed any longer.
 #[doc(alias = "gimp_utf8_strtrim")]
 pub fn utf8_strtrim(str: Option<&str>, max_chars: i32) -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_utf8_strtrim(str.to_glib_none().0, max_chars)) }
 }
 
+/// Gets the contents of a `GIMP_TYPE_DOUBLE_ARRAY` [`glib::Value`][crate::glib::Value]
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_DOUBLE_ARRAY`
+///
+/// # Returns
+///
+/// The contents of `value`
 #[doc(alias = "gimp_value_dup_double_array")]
 pub fn value_dup_double_array(value: &glib::Value) -> Vec<f64> {
     unsafe {
@@ -3471,6 +7708,13 @@ pub fn value_dup_double_array(value: &glib::Value) -> Vec<f64> {
     }
 }
 
+/// Gets the contents of a `GIMP_TYPE_INT32_ARRAY` [`glib::Value`][crate::glib::Value]
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_INT32_ARRAY`
+///
+/// # Returns
+///
+/// The contents of `value`
 #[doc(alias = "gimp_value_dup_int32_array")]
 pub fn value_dup_int32_array(value: &glib::Value) -> Vec<i32> {
     unsafe {
@@ -3483,6 +7727,13 @@ pub fn value_dup_int32_array(value: &glib::Value) -> Vec<i32> {
     }
 }
 
+/// Gets the contents of a `GIMP_TYPE_DOUBLE_ARRAY` [`glib::Value`][crate::glib::Value]
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_DOUBLE_ARRAY`
+///
+/// # Returns
+///
+/// The contents of `value`
 #[doc(alias = "gimp_value_get_double_array")]
 pub fn value_get_double_array(value: &glib::Value) -> Vec<f64> {
     unsafe {
@@ -3495,6 +7746,13 @@ pub fn value_get_double_array(value: &glib::Value) -> Vec<f64> {
     }
 }
 
+/// Gets the contents of a `GIMP_TYPE_INT32_ARRAY` [`glib::Value`][crate::glib::Value]
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_INT32_ARRAY`
+///
+/// # Returns
+///
+/// The contents of `value`
 #[doc(alias = "gimp_value_get_int32_array")]
 pub fn value_get_int32_array(value: &glib::Value) -> Vec<i32> {
     unsafe {
@@ -3507,6 +7765,11 @@ pub fn value_get_int32_array(value: &glib::Value) -> Vec<i32> {
     }
 }
 
+/// Sets the contents of `value` to `data`.
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_DOUBLE_ARRAY`
+/// ## `data`
+/// A `gdouble` array
 #[doc(alias = "gimp_value_set_double_array")]
 pub fn value_set_double_array(value: &mut glib::Value, data: &[f64]) {
     let length = data.len() as _;
@@ -3515,6 +7778,11 @@ pub fn value_set_double_array(value: &mut glib::Value, data: &[f64]) {
     }
 }
 
+/// Sets the contents of `value` to `data`.
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_INT32_ARRAY`
+/// ## `data`
+/// A `gint32` array
 #[doc(alias = "gimp_value_set_int32_array")]
 pub fn value_set_int32_array(value: &mut glib::Value, data: &[i32]) {
     let length = data.len() as _;
@@ -3523,6 +7791,11 @@ pub fn value_set_int32_array(value: &mut glib::Value, data: &[i32]) {
     }
 }
 
+/// Sets the contents of `value` to `data`, without copying the data.
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_DOUBLE_ARRAY`
+/// ## `data`
+/// A `gdouble` array
 #[doc(alias = "gimp_value_set_static_double_array")]
 pub fn value_set_static_double_array(value: &mut glib::Value, data: &[f64]) {
     let length = data.len() as _;
@@ -3535,6 +7808,11 @@ pub fn value_set_static_double_array(value: &mut glib::Value, data: &[f64]) {
     }
 }
 
+/// Sets the contents of `value` to `data`, without copying the data.
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_INT32_ARRAY`
+/// ## `data`
+/// A `gint32` array
 #[doc(alias = "gimp_value_set_static_int32_array")]
 pub fn value_set_static_int32_array(value: &mut glib::Value, data: &[i32]) {
     let length = data.len() as _;
@@ -3547,6 +7825,11 @@ pub fn value_set_static_int32_array(value: &mut glib::Value, data: &[i32]) {
     }
 }
 
+/// Sets the contents of `value` to `data`, and takes ownership of `data`.
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_DOUBLE_ARRAY`
+/// ## `data`
+/// A `gdouble` array
 #[doc(alias = "gimp_value_take_double_array")]
 pub fn value_take_double_array(value: &mut glib::Value, data: &[f64]) {
     let length = data.len() as _;
@@ -3555,6 +7838,11 @@ pub fn value_take_double_array(value: &mut glib::Value, data: &[f64]) {
     }
 }
 
+/// Sets the contents of `value` to `data`, and takes ownership of `data`.
+/// ## `value`
+/// A valid value of type `GIMP_TYPE_int32_ARRAY`
+/// ## `data`
+/// A `gint32` array
 #[doc(alias = "gimp_value_take_int32_array")]
 pub fn value_take_int32_array(value: &mut glib::Value, data: &[i32]) {
     let length = data.len() as _;
@@ -3563,6 +7851,29 @@ pub fn value_take_int32_array(value: &mut glib::Value, data: &[i32]) {
     }
 }
 
+/// \"Compute screen (sx, sy) - (sx + w, sy + h) to 3D unit square
+/// mapping. The plane to map to is given in the z field of p. The
+/// observer is located at position vp (vp->z != 0.0).\"
+///
+/// In other words, this computes the projection of the point (`x`, `y`)
+/// to the plane z = `p`->z (parallel to XY), from the `vp` point of view
+/// through the screen (`sx`, `sy`)->(`sx` + `w`, `sy` + `h`)
+/// ## `sx`
+/// the abscissa of the upper-left screen rectangle.
+/// ## `sy`
+/// the ordinate of the upper-left screen rectangle.
+/// ## `w`
+/// the width of the screen rectangle.
+/// ## `h`
+/// the height of the screen rectangle.
+/// ## `x`
+/// the abscissa of the point in the screen rectangle to map.
+/// ## `y`
+/// the ordinate of the point in the screen rectangle to map.
+/// ## `vp`
+/// the position of the observer.
+/// ## `p`
+/// the resulting point.
 #[doc(alias = "gimp_vector_2d_to_3d")]
 pub fn vector_2d_to_3d(
     sx: i32,
@@ -3588,6 +7899,33 @@ pub fn vector_2d_to_3d(
     }
 }
 
+/// Convert the given 3D point to 2D (project it onto the viewing
+/// plane, (sx, sy, 0) - (sx + w, sy + h, 0). The input is assumed to
+/// be in the unit square (0, 0, z) - (1, 1, z). The viewpoint of the
+/// observer is passed in vp.
+///
+/// This is basically the opposite of [`vector_2d_to_3d()`][crate::vector_2d_to_3d()].
+/// ## `sx`
+/// the abscissa of the upper-left screen rectangle.
+/// ## `sy`
+/// the ordinate of the upper-left screen rectangle.
+/// ## `w`
+/// the width of the screen rectangle.
+/// ## `h`
+/// the height of the screen rectangle.
+/// ## `vp`
+/// position of the observer.
+/// ## `p`
+/// the 3D point to project to the plane.
+///
+/// # Returns
+///
+///
+/// ## `x`
+/// the abscissa of the point in the screen rectangle to map.
+///
+/// ## `y`
+/// the ordinate of the point in the screen rectangle to map.
 #[doc(alias = "gimp_vector_3d_to_2d")]
 pub fn vector_3d_to_2d(sx: i32, sy: i32, w: i32, h: i32, vp: &Vector3, p: &Vector3) -> (f64, f64) {
     unsafe {
@@ -3607,11 +7945,27 @@ pub fn vector_3d_to_2d(sx: i32, sy: i32, w: i32, h: i32, vp: &Vector3, p: &Vecto
     }
 }
 
+/// Returns the host GIMP version.
+///
+/// This procedure returns the version number of the currently running
+/// GIMP.
+///
+/// # Returns
+///
+/// GIMP version number.
+///  The returned value must be freed with `g_free()`.
 #[doc(alias = "gimp_version")]
 pub fn version() -> Option<glib::GString> {
     unsafe { from_glib_full(ffi::gimp_version()) }
 }
 
+/// Returns the window manager class to be used for plug-in windows.
+///
+/// This is a constant value given at plug-in configuration time.
+///
+/// # Returns
+///
+/// the window manager class
 #[doc(alias = "gimp_wm_class")]
 pub fn wm_class() -> Option<glib::GString> {
     unsafe { from_glib_none(ffi::gimp_wm_class()) }

@@ -6,6 +6,11 @@
 use crate::{ffi, Procedure};
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`ProcedureExt`][trait@crate::prelude::ProcedureExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpThumbnailProcedure")]
     pub struct ThumbnailProcedure(Object<ffi::GimpThumbnailProcedure, ffi::GimpThumbnailProcedureClass>) @extends Procedure;
 

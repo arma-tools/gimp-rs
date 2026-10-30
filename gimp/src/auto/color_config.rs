@@ -12,6 +12,81 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// Color management settings.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `cmyk-profile`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `display-optimize`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `display-profile`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `display-profile-from-gdk`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `display-rendering-intent`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `display-use-black-point-compensation`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `gray-profile`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `mode`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `out-of-gamut-color`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `rgb-profile`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `show-hsv`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `show-rgb-u8`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `simulation-gamut-check`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `simulation-optimize`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `simulation-profile`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `simulation-rendering-intent`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `simulation-use-black-point-compensation`
+    ///  Readable | Writeable | Construct
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`], [`ConfigInterfaceExt`][trait@crate::prelude::ConfigInterfaceExt]
     #[doc(alias = "GimpColorConfig")]
     pub struct ColorConfig(Object<ffi::GimpColorConfig, ffi::GimpColorConfigClass>) @implements ConfigInterface;
 
@@ -21,6 +96,10 @@ glib::wrapper! {
 }
 
 impl ColorConfig {
+    ///
+    /// # Returns
+    ///
+    /// the default CMYK color profile.
     #[doc(alias = "gimp_color_config_get_cmyk_color_profile")]
     #[doc(alias = "get_cmyk_color_profile")]
     pub fn cmyk_color_profile(&self) -> Result<ColorProfile, glib::Error> {
@@ -46,6 +125,10 @@ impl ColorConfig {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the default display color profile.
     #[doc(alias = "gimp_color_config_get_display_color_profile")]
     #[doc(alias = "get_display_color_profile")]
     pub fn display_color_profile(&self) -> Result<ColorProfile, glib::Error> {
@@ -93,6 +176,10 @@ impl ColorConfig {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the default grayscale color profile.
     #[doc(alias = "gimp_color_config_get_gray_color_profile")]
     #[doc(alias = "get_gray_color_profile")]
     pub fn gray_color_profile(&self) -> Result<ColorProfile, glib::Error> {
@@ -114,6 +201,11 @@ impl ColorConfig {
         unsafe { from_glib(ffi::gimp_color_config_get_mode(self.to_glib_none().0)) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the [`gegl::Color`][crate::gegl::Color] to use to represent
+    ///  out-of-gamut pixels.
     #[doc(alias = "gimp_color_config_get_out_of_gamut_color")]
     #[doc(alias = "get_out_of_gamut_color")]
     #[doc(alias = "out-of-gamut-color")]
@@ -125,6 +217,10 @@ impl ColorConfig {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the default RGB color profile.
     #[doc(alias = "gimp_color_config_get_rgb_color_profile")]
     #[doc(alias = "get_rgb_color_profile")]
     pub fn rgb_color_profile(&self) -> Result<ColorProfile, glib::Error> {
@@ -150,6 +246,11 @@ impl ColorConfig {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the default soft-proofing color
+    ///  profile.
     #[doc(alias = "gimp_color_config_get_simulation_color_profile")]
     #[doc(alias = "get_simulation_color_profile")]
     pub fn simulation_color_profile(&self) -> Result<ColorProfile, glib::Error> {

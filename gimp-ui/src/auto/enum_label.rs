@@ -12,6 +12,486 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A `GtkLabel` subclass that displays an enum value.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `enum-type`
+    ///  The `GType` of the enum.
+    ///
+    /// Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `enum-value`
+    ///  The value to display.
+    ///
+    /// Writeable | Construct
+    /// <details><summary><h4>Label</h4></summary>
+    ///
+    ///
+    /// #### `angle`
+    ///  The angle that the baseline of the label makes with the horizontal,
+    /// in degrees, measured counterclockwise. An angle of 90 reads from
+    /// from bottom to top, an angle of 270, from top to bottom. Ignored
+    /// if the label is selectable.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `attributes`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `cursor-position`
+    ///  Readable
+    ///
+    ///
+    /// #### `ellipsize`
+    ///  The preferred place to ellipsize the string, if the label does
+    /// not have enough room to display the entire string, specified as a
+    /// `PangoEllipsizeMode`.
+    ///
+    /// Note that setting this property to a value other than
+    /// `PANGO_ELLIPSIZE_NONE` has the side-effect that the label requests
+    /// only enough space to display the ellipsis "...". In particular, this
+    /// means that ellipsizing labels do not work well in notebook tabs, unless
+    /// the `GtkNotebook` tab-expand child property is set to [`true`]. Other ways
+    /// to set a label's width are [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] and
+    /// `gtk_label_set_width_chars()`.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `justify`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `label`
+    ///  The contents of the label.
+    ///
+    /// If the string contains [Pango XML markup][PangoMarkupFormat], you will
+    /// have to set the `GtkLabel:use-markup` property to [`true`] in order for the
+    /// label to display the markup attributes. See also `gtk_label_set_markup()`
+    /// for a convenience function that sets both this property and the
+    /// `GtkLabel:use-markup` property at the same time.
+    ///
+    /// If the string contains underlines acting as mnemonics, you will have to
+    /// set the `GtkLabel:use-underline` property to [`true`] in order for the label
+    /// to display them.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `lines`
+    ///  The number of lines to which an ellipsized, wrapping label
+    /// should be limited. This property has no effect if the
+    /// label is not wrapping or ellipsized. Set this property to
+    /// -1 if you don't want to limit the number of lines.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `max-width-chars`
+    ///  The desired maximum width of the label, in characters. If this property
+    /// is set to -1, the width will be calculated automatically.
+    ///
+    /// See the section on [text layout][label-text-layout]
+    /// for details of how `GtkLabel:width-chars` and `GtkLabel:max-width-chars`
+    /// determine the width of ellipsized and wrapped labels.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `mnemonic-keyval`
+    ///  Readable
+    ///
+    ///
+    /// #### `mnemonic-widget`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `pattern`
+    ///  Writeable
+    ///
+    ///
+    /// #### `selectable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `selection-bound`
+    ///  Readable
+    ///
+    ///
+    /// #### `single-line-mode`
+    ///  Whether the label is in single line mode. In single line mode,
+    /// the height of the label does not depend on the actual text, it
+    /// is always set to ascent + descent of the font. This can be an
+    /// advantage in situations where resizing the label because of text
+    /// changes would be distracting, e.g. in a statusbar.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `track-visited-links`
+    ///  Set this property to [`true`] to make the label track which links
+    /// have been visited. It will then apply the `GTK_STATE_FLAG_VISITED`
+    /// when rendering this link, in addition to `GTK_STATE_FLAG_LINK`.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `use-markup`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `use-underline`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-chars`
+    ///  The desired width of the label, in characters. If this property is set to
+    /// -1, the width will be calculated automatically.
+    ///
+    /// See the section on [text layout][label-text-layout]
+    /// for details of how `GtkLabel:width-chars` and `GtkLabel:max-width-chars`
+    /// determine the width of ellipsized and wrapped labels.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `wrap`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `wrap-mode`
+    ///  If line wrapping is on (see the `GtkLabel:wrap` property) this controls
+    /// how the line wrapping is done. The default is `PANGO_WRAP_WORD`, which
+    /// means wrap on word boundaries.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `xalign`
+    ///  The xalign property determines the horizontal aligment of the label text
+    /// inside the labels size allocation. Compare this to [`halign`][struct@crate::gtk::Widget#halign],
+    /// which determines how the labels size allocation is positioned in the
+    /// space available for the label.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `yalign`
+    ///  The yalign property determines the vertical aligment of the label text
+    /// inside the labels size allocation. Compare this to [`valign`][struct@crate::gtk::Widget#valign],
+    /// which determines how the labels size allocation is positioned in the
+    /// space available for the label.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Misc</h4></summary>
+    ///
+    ///
+    /// #### `xalign`
+    ///  The horizontal alignment. A value of 0.0 means left alignment (or right
+    /// on RTL locales); a value of 1.0 means right alignment (or left on RTL
+    /// locales).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `xpad`
+    ///  The amount of space to add on the left and right of the widget, in
+    /// pixels.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `yalign`
+    ///  The vertical alignment. A value of 0.0 means top alignment;
+    /// a value of 1.0 means bottom alignment.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `ypad`
+    ///  The amount of space to add on the top and bottom of the widget, in
+    /// pixels.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpEnumLabel")]
     pub struct EnumLabel(Object<ffi::GimpEnumLabel, ffi::GimpEnumLabelClass>) @extends gtk::Widget, @implements gtk::Buildable;
 
@@ -21,6 +501,14 @@ glib::wrapper! {
 }
 
 impl EnumLabel {
+    /// ## `enum_type`
+    /// the `GType` of an enum
+    /// ## `value`
+    /// an enum value
+    ///
+    /// # Returns
+    ///
+    /// a new [`EnumLabel`][crate::EnumLabel].
     #[doc(alias = "gimp_enum_label_new")]
     pub fn new(enum_type: glib::types::Type, value: i32) -> EnumLabel {
         unsafe {
@@ -29,6 +517,8 @@ impl EnumLabel {
         }
     }
 
+    /// ## `value`
+    /// an enum value
     #[doc(alias = "gimp_enum_label_set_value")]
     pub fn set_value(&self, value: i32) {
         unsafe {
@@ -36,11 +526,13 @@ impl EnumLabel {
         }
     }
 
+    /// The `GType` of the enum.
     #[doc(alias = "enum-type")]
     pub fn enum_type(&self) -> glib::types::Type {
         ObjectExt::property(self, "enum-type")
     }
 
+    /// The value to display.
     #[doc(alias = "enum-value")]
     pub fn set_enum_value(&self, enum_value: i32) {
         ObjectExt::set_property(self, "enum-value", enum_value)

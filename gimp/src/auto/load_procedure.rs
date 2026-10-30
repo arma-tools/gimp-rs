@@ -7,6 +7,28 @@ use crate::{ffi, FileProcedure, Procedure};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// A [`Procedure`][crate::Procedure] subclass that makes it easier to write file load
+    /// procedures.
+    ///
+    /// It automatically adds the standard
+    ///
+    /// ( [`RunMode`][crate::RunMode], [`gio::File`][crate::gio::File] )
+    ///
+    /// arguments and the standard
+    ///
+    /// ( [`Image`][crate::Image] )
+    ///
+    /// return value of a load procedure. It is possible to add additional
+    /// arguments.
+    ///
+    /// When invoked via `gimp_procedure_run()`, it unpacks these standard
+    /// arguments and calls `run_func` which is a `GimpRunImageFunc`. The
+    /// "args" [`ValueArray`][crate::ValueArray] of `GimpRunImageFunc` only contains
+    /// additionally added arguments.
+    ///
+    /// # Implements
+    ///
+    /// [`LoadProcedureExt`][trait@crate::prelude::LoadProcedureExt], [`FileProcedureExt`][trait@crate::prelude::FileProcedureExt], [`ProcedureExt`][trait@crate::prelude::ProcedureExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpLoadProcedure")]
     pub struct LoadProcedure(Object<ffi::GimpLoadProcedure, ffi::GimpLoadProcedureClass>) @extends FileProcedure, Procedure;
 
@@ -19,7 +41,18 @@ impl LoadProcedure {
     pub const NONE: Option<&'static LoadProcedure> = None;
 }
 
+/// Trait containing all [`struct@LoadProcedure`] methods.
+///
+/// # Implementors
+///
+/// [`LoadProcedure`][struct@crate::LoadProcedure], [`VectorLoadProcedure`][struct@crate::VectorLoadProcedure]
 pub trait LoadProcedureExt: IsA<LoadProcedure> + 'static {
+    /// Returns the procedure's 'handles raw' flag as set with
+    /// [`set_handles_raw()`][Self::set_handles_raw()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's 'handles raw' flag.
     #[doc(alias = "gimp_load_procedure_get_handles_raw")]
     #[doc(alias = "get_handles_raw")]
     fn is_handles_raw(&self) -> bool {
@@ -30,6 +63,12 @@ pub trait LoadProcedureExt: IsA<LoadProcedure> + 'static {
         }
     }
 
+    /// Returns the procedure's thumbnail loader procedure as set with
+    /// [`set_thumbnail_loader()`][Self::set_thumbnail_loader()].
+    ///
+    /// # Returns
+    ///
+    /// The procedure's thumbnail loader procedure
     #[doc(alias = "gimp_load_procedure_get_thumbnail_loader")]
     #[doc(alias = "get_thumbnail_loader")]
     fn thumbnail_loader(&self) -> Option<glib::GString> {
@@ -40,6 +79,12 @@ pub trait LoadProcedureExt: IsA<LoadProcedure> + 'static {
         }
     }
 
+    /// Registers a load procedure as capable of handling raw digital camera loads.
+    ///
+    /// Note that you cannot call this function on [`VectorLoadProcedure`][crate::VectorLoadProcedure]
+    /// subclass objects.
+    /// ## `handles_raw`
+    /// The procedure's handles raw flag.
     #[doc(alias = "gimp_load_procedure_set_handles_raw")]
     fn set_handles_raw(&self, handles_raw: bool) {
         unsafe {
@@ -50,6 +95,16 @@ pub trait LoadProcedureExt: IsA<LoadProcedure> + 'static {
         }
     }
 
+    /// Associates a thumbnail loader with a file load procedure.
+    ///
+    /// Some file formats allow for embedded thumbnails, other file formats
+    /// contain a scalable image or provide the image data in different
+    /// resolutions. A file plug-in for such a format may register a
+    /// special procedure that allows GIMP to load a thumbnail preview of
+    /// the image. This procedure is then associated with the standard
+    /// load procedure using this function.
+    /// ## `thumbnail_proc`
+    /// The name of the thumbnail load procedure.
     #[doc(alias = "gimp_load_procedure_set_thumbnail_loader")]
     fn set_thumbnail_loader(&self, thumbnail_proc: &str) {
         unsafe {

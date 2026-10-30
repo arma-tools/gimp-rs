@@ -8,6 +8,11 @@ use crate::ffi;
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`PreviewImageExt`][trait@crate::prelude::PreviewImageExt]
     #[doc(alias = "GExiv2PreviewImage")]
     pub struct PreviewImage(Object<ffi::GExiv2PreviewImage, ffi::GExiv2PreviewImageClass>);
 
@@ -20,7 +25,16 @@ impl PreviewImage {
     pub const NONE: Option<&'static PreviewImage> = None;
 }
 
+/// Trait containing all [`struct@PreviewImage`] methods.
+///
+/// # Implementors
+///
+/// [`PreviewImage`][struct@crate::PreviewImage]
 pub trait PreviewImageExt: IsA<PreviewImage> + 'static {
+    ///
+    /// # Returns
+    ///
+    /// The raw image data
     #[doc(alias = "gexiv2_preview_image_get_data")]
     #[doc(alias = "get_data")]
     fn data(&self) -> Vec<u8> {
@@ -37,6 +51,10 @@ pub trait PreviewImageExt: IsA<PreviewImage> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The preview image's recommended file extension.
     #[doc(alias = "gexiv2_preview_image_get_extension")]
     #[doc(alias = "get_extension")]
     fn extension(&self) -> Option<glib::GString> {
@@ -47,12 +65,20 @@ pub trait PreviewImageExt: IsA<PreviewImage> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The preview image's display height in pixels.
     #[doc(alias = "gexiv2_preview_image_get_height")]
     #[doc(alias = "get_height")]
     fn height(&self) -> u32 {
         unsafe { ffi::gexiv2_preview_image_get_height(self.as_ref().to_glib_none().0) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The preview image's MIME type.
     #[doc(alias = "gexiv2_preview_image_get_mime_type")]
     #[doc(alias = "get_mime_type")]
     fn mime_type(&self) -> Option<glib::GString> {
@@ -63,12 +89,22 @@ pub trait PreviewImageExt: IsA<PreviewImage> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The preview image's display width in pixels.
     #[doc(alias = "gexiv2_preview_image_get_width")]
     #[doc(alias = "get_width")]
     fn width(&self) -> u32 {
         unsafe { ffi::gexiv2_preview_image_get_width(self.as_ref().to_glib_none().0) }
     }
 
+    /// ## `path`
+    /// The file path to write the preview image to.
+    ///
+    /// # Returns
+    ///
+    /// The number of bytes written to the file.
     #[cfg(feature = "v0_14")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v0_14")))]
     #[doc(alias = "gexiv2_preview_image_try_write_file")]
@@ -88,6 +124,16 @@ pub trait PreviewImageExt: IsA<PreviewImage> + 'static {
         }
     }
 
+    ///
+    /// # Deprecated since 0.14
+    ///
+    /// Use [`try_write_file()`][Self::try_write_file()] instead.
+    /// ## `path`
+    /// The file path to write the preview image to.
+    ///
+    /// # Returns
+    ///
+    /// The number of bytes written to the file.
     #[cfg_attr(feature = "v0_14", deprecated = "Since 0.14")]
     #[allow(deprecated)]
     #[doc(alias = "gexiv2_preview_image_write_file")]

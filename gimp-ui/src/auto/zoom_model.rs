@@ -13,6 +13,51 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A model for zoom values.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `fraction`
+    ///  The zoom factor expressed as a fraction.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `maximum`
+    ///  The maximum zoom factor.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `minimum`
+    ///  The minimum zoom factor.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `percentage`
+    ///  The zoom factor expressed as percentage.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `value`
+    ///  The zoom factor.
+    ///
+    /// Readable | Writeable
+    ///
+    /// ## Signals
+    ///
+    ///
+    /// #### `zoomed`
+    ///  Emitted when the zoom factor of the zoom model changes.
+    ///
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpZoomModel")]
     pub struct ZoomModel(Object<ffi::GimpZoomModel, ffi::GimpZoomModelClass>);
 
@@ -22,17 +67,43 @@ glib::wrapper! {
 }
 
 impl ZoomModel {
+    /// Creates a new [`ZoomModel`][crate::ZoomModel].
+    ///
+    /// # Returns
+    ///
+    /// a new [`ZoomModel`][crate::ZoomModel].
+    ///
+    /// Since GIMP 2.4
     #[doc(alias = "gimp_zoom_model_new")]
     pub fn new() -> ZoomModel {
         unsafe { from_glib_full(ffi::gimp_zoom_model_new()) }
     }
 
+    /// Retrieves the current zoom factor of `self`.
+    ///
+    /// # Returns
+    ///
+    /// the current scale factor
+    ///
+    /// Since GIMP 2.4
     #[doc(alias = "gimp_zoom_model_get_factor")]
     #[doc(alias = "get_factor")]
     pub fn factor(&self) -> f64 {
         unsafe { ffi::gimp_zoom_model_get_factor(self.to_glib_none().0) }
     }
 
+    /// Retrieves the current zoom factor of `self` as a fraction.
+    ///
+    /// Since GIMP 2.4
+    ///
+    /// # Returns
+    ///
+    ///
+    /// ## `numerator`
+    /// return location for numerator
+    ///
+    /// ## `denominator`
+    /// return location for denominator
     #[doc(alias = "gimp_zoom_model_get_fraction")]
     #[doc(alias = "get_fraction")]
     pub fn fraction(&self) -> (i32, i32) {
@@ -48,6 +119,13 @@ impl ZoomModel {
         }
     }
 
+    /// Sets the allowed range of the `self`.
+    ///
+    /// Since GIMP 2.4
+    /// ## `min`
+    /// new lower limit for zoom factor
+    /// ## `max`
+    /// new upper limit for zoom factor
     #[doc(alias = "gimp_zoom_model_set_range")]
     pub fn set_range(&self, min: f64, max: f64) {
         unsafe {
@@ -55,6 +133,11 @@ impl ZoomModel {
         }
     }
 
+    /// Since GIMP 2.4
+    /// ## `zoom_type`
+    /// the [`ZoomType`][crate::ZoomType]
+    /// ## `scale`
+    /// ignored unless `zoom_type` == `GIMP_ZOOM_TO`
     #[doc(alias = "gimp_zoom_model_zoom")]
     pub fn zoom(&self, zoom_type: ZoomType, scale: f64) {
         unsafe {
@@ -62,39 +145,64 @@ impl ZoomModel {
         }
     }
 
+    /// The maximum zoom factor.
     pub fn maximum(&self) -> f64 {
         ObjectExt::property(self, "maximum")
     }
 
+    /// The maximum zoom factor.
     pub fn set_maximum(&self, maximum: f64) {
         ObjectExt::set_property(self, "maximum", maximum)
     }
 
+    /// The minimum zoom factor.
     pub fn minimum(&self) -> f64 {
         ObjectExt::property(self, "minimum")
     }
 
+    /// The minimum zoom factor.
     pub fn set_minimum(&self, minimum: f64) {
         ObjectExt::set_property(self, "minimum", minimum)
     }
 
+    /// The zoom factor expressed as percentage.
     pub fn percentage(&self) -> Option<glib::GString> {
         ObjectExt::property(self, "percentage")
     }
 
+    /// The zoom factor.
     pub fn value(&self) -> f64 {
         ObjectExt::property(self, "value")
     }
 
+    /// The zoom factor.
     pub fn set_value(&self, value: f64) {
         ObjectExt::set_property(self, "value", value)
     }
 
+    /// Utility function to calculate a new scale factor.
+    /// ## `zoom_type`
+    /// the zoom type
+    /// ## `scale`
+    /// ignored unless `zoom_type` == `GIMP_ZOOM_TO`
+    /// ## `delta`
+    /// the delta from a smooth zoom event
+    ///
+    /// # Returns
+    ///
+    /// the new scale factor
+    ///
+    /// Since GIMP 2.4
     #[doc(alias = "gimp_zoom_model_zoom_step")]
     pub fn zoom_step(zoom_type: ZoomType, scale: f64, delta: f64) -> f64 {
         unsafe { ffi::gimp_zoom_model_zoom_step(zoom_type.into_glib(), scale, delta) }
     }
 
+    /// Emitted when the zoom factor of the zoom model changes.
+    /// ## `old_factor`
+    /// the zoom factor before it changes
+    /// ## `new_factor`
+    /// the zoom factor after it has changed.
     #[doc(alias = "zoomed")]
     pub fn connect_zoomed<F: Fn(&Self, f64, f64) + 'static>(&self, f: F) -> SignalHandlerId {
         unsafe extern "C" fn zoomed_trampoline<F: Fn(&ZoomModel, f64, f64) + 'static>(

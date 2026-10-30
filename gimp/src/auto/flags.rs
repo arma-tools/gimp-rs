@@ -7,31 +7,44 @@ use crate::ffi;
 use glib::{bitflags::bitflags, prelude::*, translate::*};
 
 bitflags! {
+    /// Types of detectable CPU accelerations
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GimpCpuAccelFlags")]
     pub struct CpuAccelFlags: u32 {
+        /// None
         #[doc(alias = "GIMP_CPU_ACCEL_NONE")]
         const NONE = ffi::GIMP_CPU_ACCEL_NONE as _;
+        /// MMX
         #[doc(alias = "GIMP_CPU_ACCEL_X86_MMX")]
         const X86_MMX = ffi::GIMP_CPU_ACCEL_X86_MMX as _;
+        /// 3dNow
         #[doc(alias = "GIMP_CPU_ACCEL_X86_3DNOW")]
         const X86_3DNOW = ffi::GIMP_CPU_ACCEL_X86_3DNOW as _;
+        /// MMXEXT
         #[doc(alias = "GIMP_CPU_ACCEL_X86_MMXEXT")]
         const X86_MMXEXT = ffi::GIMP_CPU_ACCEL_X86_MMXEXT as _;
+        /// SSE
         #[doc(alias = "GIMP_CPU_ACCEL_X86_SSE")]
         const X86_SSE = ffi::GIMP_CPU_ACCEL_X86_SSE as _;
+        /// SSE2
         #[doc(alias = "GIMP_CPU_ACCEL_X86_SSE2")]
         const X86_SSE2 = ffi::GIMP_CPU_ACCEL_X86_SSE2 as _;
+        /// SSE3
         #[doc(alias = "GIMP_CPU_ACCEL_X86_SSE3")]
         const X86_SSE3 = ffi::GIMP_CPU_ACCEL_X86_SSE3 as _;
+        /// SSSE3
         #[doc(alias = "GIMP_CPU_ACCEL_X86_SSSE3")]
         const X86_SSSE3 = ffi::GIMP_CPU_ACCEL_X86_SSSE3 as _;
+        /// SSE4_1
         #[doc(alias = "GIMP_CPU_ACCEL_X86_SSE4_1")]
         const X86_SSE4_1 = ffi::GIMP_CPU_ACCEL_X86_SSE4_1 as _;
+        /// SSE4_2
         #[doc(alias = "GIMP_CPU_ACCEL_X86_SSE4_2")]
         const X86_SSE4_2 = ffi::GIMP_CPU_ACCEL_X86_SSE4_2 as _;
+        /// AVX
         #[doc(alias = "GIMP_CPU_ACCEL_X86_AVX")]
         const X86_AVX = ffi::GIMP_CPU_ACCEL_X86_AVX as _;
+        /// Altivec
         #[doc(alias = "GIMP_CPU_ACCEL_PPC_ALTIVEC")]
         const PPC_ALTIVEC = ffi::GIMP_CPU_ACCEL_PPC_ALTIVEC as _;
     }
@@ -56,29 +69,41 @@ impl FromGlib<ffi::GimpCpuAccelFlags> for CpuAccelFlags {
 }
 
 bitflags! {
+    /// The types of images and layers an export procedure can handle
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GimpExportCapabilities")]
     pub struct ExportCapabilities: u32 {
+        /// Handles RGB images
         #[doc(alias = "GIMP_EXPORT_CAN_HANDLE_RGB")]
         const CAN_HANDLE_RGB = ffi::GIMP_EXPORT_CAN_HANDLE_RGB as _;
+        /// Handles grayscale images
         #[doc(alias = "GIMP_EXPORT_CAN_HANDLE_GRAY")]
         const CAN_HANDLE_GRAY = ffi::GIMP_EXPORT_CAN_HANDLE_GRAY as _;
+        /// Handles indexed images
         #[doc(alias = "GIMP_EXPORT_CAN_HANDLE_INDEXED")]
         const CAN_HANDLE_INDEXED = ffi::GIMP_EXPORT_CAN_HANDLE_INDEXED as _;
+        /// Handles two-color indexed images
         #[doc(alias = "GIMP_EXPORT_CAN_HANDLE_BITMAP")]
         const CAN_HANDLE_BITMAP = ffi::GIMP_EXPORT_CAN_HANDLE_BITMAP as _;
+        /// Handles alpha channels
         #[doc(alias = "GIMP_EXPORT_CAN_HANDLE_ALPHA")]
         const CAN_HANDLE_ALPHA = ffi::GIMP_EXPORT_CAN_HANDLE_ALPHA as _;
+        /// Handles layers
         #[doc(alias = "GIMP_EXPORT_CAN_HANDLE_LAYERS")]
         const CAN_HANDLE_LAYERS = ffi::GIMP_EXPORT_CAN_HANDLE_LAYERS as _;
+        /// Handles animation of layers
         #[doc(alias = "GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION")]
         const CAN_HANDLE_LAYERS_AS_ANIMATION = ffi::GIMP_EXPORT_CAN_HANDLE_LAYERS_AS_ANIMATION as _;
+        /// Handles layer masks
         #[doc(alias = "GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS")]
         const CAN_HANDLE_LAYER_MASKS = ffi::GIMP_EXPORT_CAN_HANDLE_LAYER_MASKS as _;
+        /// Handles layer effects
         #[doc(alias = "GIMP_EXPORT_CAN_HANDLE_LAYER_EFFECTS")]
         const CAN_HANDLE_LAYER_EFFECTS = ffi::GIMP_EXPORT_CAN_HANDLE_LAYER_EFFECTS as _;
+        /// Needs alpha channels
         #[doc(alias = "GIMP_EXPORT_NEEDS_ALPHA")]
         const NEEDS_ALPHA = ffi::GIMP_EXPORT_NEEDS_ALPHA as _;
+        /// Needs to crop content to image bounds
         #[doc(alias = "GIMP_EXPORT_NEEDS_CROP")]
         const NEEDS_CROP = ffi::GIMP_EXPORT_NEEDS_CROP as _;
     }
@@ -157,19 +182,26 @@ impl From<ExportCapabilities> for glib::Value {
 }
 
 bitflags! {
+    /// What metadata to load when importing images.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GimpMetadataLoadFlags")]
     pub struct MetadataLoadFlags: u32 {
+        /// Do not load the metadata
         #[doc(alias = "GIMP_METADATA_LOAD_NONE")]
         const NONE = ffi::GIMP_METADATA_LOAD_NONE as _;
+        /// Load the comment
         #[doc(alias = "GIMP_METADATA_LOAD_COMMENT")]
         const COMMENT = ffi::GIMP_METADATA_LOAD_COMMENT as _;
+        /// Load the resolution
         #[doc(alias = "GIMP_METADATA_LOAD_RESOLUTION")]
         const RESOLUTION = ffi::GIMP_METADATA_LOAD_RESOLUTION as _;
+        /// Load the orientation (rotation)
         #[doc(alias = "GIMP_METADATA_LOAD_ORIENTATION")]
         const ORIENTATION = ffi::GIMP_METADATA_LOAD_ORIENTATION as _;
+        /// Load the colorspace
         #[doc(alias = "GIMP_METADATA_LOAD_COLORSPACE")]
         const COLORSPACE = ffi::GIMP_METADATA_LOAD_COLORSPACE as _;
+        /// Load all of the above
         #[doc(alias = "GIMP_METADATA_LOAD_ALL")]
         const ALL = ffi::GIMP_METADATA_LOAD_ALL as _;
     }
@@ -194,23 +226,35 @@ impl FromGlib<ffi::GimpMetadataLoadFlags> for MetadataLoadFlags {
 }
 
 bitflags! {
+    /// What kinds of metadata to save when exporting images.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GimpMetadataSaveFlags")]
     pub struct MetadataSaveFlags: u32 {
+        /// Save EXIF
         #[doc(alias = "GIMP_METADATA_SAVE_EXIF")]
         const EXIF = ffi::GIMP_METADATA_SAVE_EXIF as _;
+        /// Save XMP
         #[doc(alias = "GIMP_METADATA_SAVE_XMP")]
         const XMP = ffi::GIMP_METADATA_SAVE_XMP as _;
+        /// Save IPTC
         #[doc(alias = "GIMP_METADATA_SAVE_IPTC")]
         const IPTC = ffi::GIMP_METADATA_SAVE_IPTC as _;
+        /// Save a thumbnail of the image
         #[doc(alias = "GIMP_METADATA_SAVE_THUMBNAIL")]
         const THUMBNAIL = ffi::GIMP_METADATA_SAVE_THUMBNAIL as _;
+        /// Save the image's color profile
+        ///  Since: 2.10.10
         #[doc(alias = "GIMP_METADATA_SAVE_COLOR_PROFILE")]
         const COLOR_PROFILE = ffi::GIMP_METADATA_SAVE_COLOR_PROFILE as _;
+        /// Save the image's comment
+        ///  Since: 3.0
         #[doc(alias = "GIMP_METADATA_SAVE_COMMENT")]
         const COMMENT = ffi::GIMP_METADATA_SAVE_COMMENT as _;
+        /// Update metadata automatically
+        ///  Since: 3.2
         #[doc(alias = "GIMP_METADATA_SAVE_UPDATE")]
         const UPDATE = ffi::GIMP_METADATA_SAVE_UPDATE as _;
+        /// Save all of the above
         #[doc(alias = "GIMP_METADATA_SAVE_ALL")]
         const ALL = ffi::GIMP_METADATA_SAVE_ALL as _;
     }
@@ -235,15 +279,20 @@ impl FromGlib<ffi::GimpMetadataSaveFlags> for MetadataSaveFlags {
 }
 
 bitflags! {
+    /// The cases when a [`Procedure`][crate::Procedure] should be shown as sensitive.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GimpProcedureSensitivityMask")]
     pub struct ProcedureSensitivityMask: u32 {
+        /// Handles image with one selected drawable.
         #[doc(alias = "GIMP_PROCEDURE_SENSITIVE_DRAWABLE")]
         const DRAWABLE = ffi::GIMP_PROCEDURE_SENSITIVE_DRAWABLE as _;
+        /// Handles image with several selected drawables.
         #[doc(alias = "GIMP_PROCEDURE_SENSITIVE_DRAWABLES")]
         const DRAWABLES = ffi::GIMP_PROCEDURE_SENSITIVE_DRAWABLES as _;
+        /// Handles image with no selected drawables.
         #[doc(alias = "GIMP_PROCEDURE_SENSITIVE_NO_DRAWABLES")]
         const NO_DRAWABLES = ffi::GIMP_PROCEDURE_SENSITIVE_NO_DRAWABLES as _;
+        /// Handles no image.
         #[doc(alias = "GIMP_PROCEDURE_SENSITIVE_NO_IMAGE")]
         const NO_IMAGE = ffi::GIMP_PROCEDURE_SENSITIVE_NO_IMAGE as _;
         #[doc(alias = "GIMP_PROCEDURE_SENSITIVE_ALWAYS")]

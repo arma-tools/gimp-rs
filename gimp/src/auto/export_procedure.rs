@@ -12,6 +12,74 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// Export procedures implement image export.
+    ///
+    /// Registered export procedures will be automatically available in the export
+    /// interfaces and functions of GIMP. The detection (to decide which file is
+    /// redirected to which plug-in procedure) depends on the various methods set
+    /// with [`FileProcedure`][crate::FileProcedure] API.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `capabilities`
+    ///  What [`ExportCapabilities`][crate::ExportCapabilities] are supported
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `supports-comment`
+    ///  Whether the export procedure supports storing a comment.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `supports-exif`
+    ///  Whether the export procedure supports EXIF.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `supports-iptc`
+    ///  Whether the export procedure supports IPTC.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `supports-profile`
+    ///  Whether the export procedure supports ICC color profiles.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `supports-thumbnail`
+    ///  Whether the export procedure supports storing a thumbnail.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `supports-xmp`
+    ///  Whether the export procedure supports XMP.
+    ///
+    /// Readable | Writeable | Construct
+    /// <details><summary><h4>Procedure</h4></summary>
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `plug-in`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `procedure-type`
+    ///  Readable | Writeable | Construct Only
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`FileProcedureExt`][trait@crate::prelude::FileProcedureExt], [`ProcedureExt`][trait@crate::prelude::ProcedureExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpExportProcedure")]
     pub struct ExportProcedure(Object<ffi::GimpExportProcedure, ffi::GimpExportProcedureClass>) @extends FileProcedure, Procedure;
 
@@ -21,6 +89,10 @@ glib::wrapper! {
 }
 
 impl ExportProcedure {
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `self` supports comment exporting.
     #[doc(alias = "gimp_export_procedure_get_support_comment")]
     #[doc(alias = "get_support_comment")]
     pub fn supports_comment(&self) -> bool {
@@ -31,6 +103,10 @@ impl ExportProcedure {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `self` supports Exif exporting.
     #[doc(alias = "gimp_export_procedure_get_support_exif")]
     #[doc(alias = "get_support_exif")]
     pub fn supports_exif(&self) -> bool {
@@ -41,6 +117,10 @@ impl ExportProcedure {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `self` supports IPTC exporting.
     #[doc(alias = "gimp_export_procedure_get_support_iptc")]
     #[doc(alias = "get_support_iptc")]
     pub fn supports_iptc(&self) -> bool {
@@ -51,6 +131,10 @@ impl ExportProcedure {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `self` supports ICC color profile exporting.
     #[doc(alias = "gimp_export_procedure_get_support_profile")]
     #[doc(alias = "get_support_profile")]
     pub fn supports_profile(&self) -> bool {
@@ -61,6 +145,10 @@ impl ExportProcedure {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `self` supports thumbnail exporting.
     #[doc(alias = "gimp_export_procedure_get_support_thumbnail")]
     #[doc(alias = "get_support_thumbnail")]
     pub fn supports_thumbnail(&self) -> bool {
@@ -71,6 +159,10 @@ impl ExportProcedure {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `self` supports XMP exporting.
     #[doc(alias = "gimp_export_procedure_get_support_xmp")]
     #[doc(alias = "get_support_xmp")]
     pub fn supports_xmp(&self) -> bool {
@@ -81,6 +173,24 @@ impl ExportProcedure {
         }
     }
 
+    /// Sets default [`ExportCapabilities`][crate::ExportCapabilities] for image export.
+    ///
+    /// `capabilities` and `get_capabilities_func` are overlapping arguments.
+    /// Either set `capabilities` if your format capabilities are stable or
+    /// `get_capabilities_func` if they depend on other options.
+    /// If `get_capabilities_func` is set, `capabilities` must be 0.
+    ///
+    /// If set, `get_capabilities_func` will be called every time an argument
+    /// in the [`ProcedureConfig`][crate::ProcedureConfig] is edited and it will be used to
+    /// edit the export capabilities dynamically.
+    /// ## `capabilities`
+    /// a [`ExportCapabilities`][crate::ExportCapabilities] bitfield.
+    /// ## `get_capabilities_func`
+    /// callback function to update export options
+    /// ## `get_capabilities_data`
+    /// data for `get_capabilities_func`
+    /// ## `get_capabilities_data_destroy`
+    /// free function for `get_capabilities_data`, or [`None`]
     #[doc(alias = "gimp_export_procedure_set_capabilities")]
     #[doc(alias = "capabilities")]
     pub fn set_capabilities(
@@ -171,6 +281,27 @@ impl ExportProcedure {
         }
     }
 
+    /// Determine whether `self` supports exporting a comment. By default,
+    /// it won't (so there is usually no reason to run this function with
+    /// [`false`]).
+    ///
+    /// This will have several consequences:
+    ///
+    /// - Automatically adds a standard argument "include-comment" in the end
+    ///  of the argument list of `self`, with relevant blurb and
+    ///  description.
+    /// - If used with other gimp_export_procedure_set_support_*() functions,
+    ///  they will always be ordered the same (the order of the calls don't
+    ///  matter), keeping all export procedures consistent.
+    /// - Generated GimpExportProcedureDialog will contain the metadata
+    ///  options, once again always in the same order and with consistent
+    ///  GUI style across plug-ins.
+    /// - API from [`ProcedureConfig`][crate::ProcedureConfig] will automatically process these
+    ///  properties to decide whether to export a given metadata or not.
+    ///
+    /// By default, the value will be [`export_comment()`][crate::export_comment()].
+    /// ## `supports`
+    /// whether a comment can be stored.
     #[doc(alias = "gimp_export_procedure_set_support_comment")]
     pub fn set_support_comment(&self, supports: bool) {
         unsafe {
@@ -181,6 +312,28 @@ impl ExportProcedure {
         }
     }
 
+    /// Determine whether `self` supports exporting Exif data. By default,
+    /// it won't (so there is usually no reason to run this function with
+    /// [`false`]).
+    ///
+    /// This will have several consequences:
+    ///
+    /// - Automatically adds a standard argument "include-exif" in the
+    ///  end of the argument list of `self`, with relevant blurb and
+    ///  description.
+    /// - If used with other `gimp_export_procedure_set_support_*()` functions,
+    ///  they will always be ordered the same (the order of the calls don't
+    ///  matter), keeping all export procedures consistent.
+    /// - Generated
+    ///  [`GimpExportProcedureDialog`](https://developer.gimp.org/api/3.0/libgimpui/class.ExportProcedureDialog.html)
+    ///  will contain the metadata options, once again always in the same
+    ///  order and with consistent GUI style across plug-ins.
+    /// - API from [`ProcedureConfig`][crate::ProcedureConfig] will automatically process these
+    ///  properties to decide whether to export a given metadata or not.
+    ///
+    /// By default, the value will be [`export_exif()`][crate::export_exif()].
+    /// ## `supports`
+    /// whether Exif metadata are supported.
     #[doc(alias = "gimp_export_procedure_set_support_exif")]
     pub fn set_support_exif(&self, supports: bool) {
         unsafe {
@@ -191,6 +344,27 @@ impl ExportProcedure {
         }
     }
 
+    /// Determine whether `self` supports exporting IPTC data. By default,
+    /// it won't (so there is usually no reason to run this function with
+    /// [`false`]).
+    ///
+    /// This will have several consequences:
+    ///
+    /// - Automatically adds a standard argument "include-iptc" in the
+    ///  end of the argument list of `self`, with relevant blurb and
+    ///  description.
+    /// - If used with other gimp_export_procedure_set_support_*() functions,
+    ///  they will always be ordered the same (the order of the calls don't
+    ///  matter), keeping all export procedures consistent.
+    /// - Generated GimpExportProcedureDialog will contain the metadata
+    ///  options, once again always in the same order and with consistent
+    ///  GUI style across plug-ins.
+    /// - API from [`ProcedureConfig`][crate::ProcedureConfig] will automatically process these
+    ///  properties to decide whether to export a given metadata or not.
+    ///
+    /// By default, the value will be [`export_iptc()`][crate::export_iptc()].
+    /// ## `supports`
+    /// whether IPTC metadata are supported.
     #[doc(alias = "gimp_export_procedure_set_support_iptc")]
     pub fn set_support_iptc(&self, supports: bool) {
         unsafe {
@@ -201,6 +375,27 @@ impl ExportProcedure {
         }
     }
 
+    /// Determine whether `self` supports exporting ICC color profiles. By
+    /// default, it won't (so there is usually no reason to run this function
+    /// with [`false`]).
+    ///
+    /// This will have several consequences:
+    ///
+    /// - Automatically adds a standard argument "include-color-profile" in
+    ///  the end of the argument list of `self`, with relevant blurb and
+    ///  description.
+    /// - If used with other gimp_export_procedure_set_support_*() functions,
+    ///  they will always be ordered the same (the order of the calls don't
+    ///  matter), keeping all export procedures consistent.
+    /// - Generated GimpExportProcedureDialog will contain the metadata
+    ///  options, once again always in the same order and with consistent
+    ///  GUI style across plug-ins.
+    /// - API from [`ProcedureConfig`][crate::ProcedureConfig] will automatically process these
+    ///  properties to decide whether to export a given metadata or not.
+    ///
+    /// By default, the value will be [`export_color_profile()`][crate::export_color_profile()].
+    /// ## `supports`
+    /// whether color profiles can be stored.
     #[doc(alias = "gimp_export_procedure_set_support_profile")]
     pub fn set_support_profile(&self, supports: bool) {
         unsafe {
@@ -211,6 +406,27 @@ impl ExportProcedure {
         }
     }
 
+    /// Determine whether `self` supports exporting a thumbnail. By default,
+    /// it won't (so there is usually no reason to run this function with
+    /// [`false`]).
+    ///
+    /// This will have several consequences:
+    ///
+    /// - Automatically adds a standard argument "include-thumbnail" in the
+    ///  end of the argument list of `self`, with relevant blurb
+    ///  and description.
+    /// - If used with other gimp_export_procedure_set_support_*() functions,
+    ///  they will always be ordered the same (the order of the calls don't
+    ///  matter), keeping all export procedures consistent.
+    /// - Generated GimpExportProcedureDialog will contain the metadata
+    ///  options, once again always in the same order and with consistent
+    ///  GUI style across plug-ins.
+    /// - API from [`ProcedureConfig`][crate::ProcedureConfig] will automatically process these
+    ///  properties to decide whether to export a given metadata or not.
+    ///
+    /// By default, the value will be [`export_thumbnail()`][crate::export_thumbnail()].
+    /// ## `supports`
+    /// whether a thumbnail can be stored.
     #[doc(alias = "gimp_export_procedure_set_support_thumbnail")]
     pub fn set_support_thumbnail(&self, supports: bool) {
         unsafe {
@@ -221,6 +437,27 @@ impl ExportProcedure {
         }
     }
 
+    /// Determine whether `self` supports exporting XMP data. By default,
+    /// it won't (so there is usually no reason to run this function with
+    /// [`false`]).
+    ///
+    /// This will have several consequences:
+    ///
+    /// - Automatically adds a standard argument "include-xmp" in the
+    ///  end of the argument list of `self`, with relevant blurb and
+    ///  description.
+    /// - If used with other gimp_export_procedure_set_support_*() functions,
+    ///  they will always be ordered the same (the order of the calls don't
+    ///  matter), keeping all export procedures consistent.
+    /// - Generated GimpExportProcedureDialog will contain the metadata
+    ///  options, once again always in the same order and with consistent
+    ///  GUI style across plug-ins.
+    /// - API from [`ProcedureConfig`][crate::ProcedureConfig] will automatically process these
+    ///  properties to decide whether to export a given metadata or not.
+    ///
+    /// By default, the value will be [`export_xmp()`][crate::export_xmp()].
+    /// ## `supports`
+    /// whether XMP metadata are supported.
     #[doc(alias = "gimp_export_procedure_set_support_xmp")]
     pub fn set_support_xmp(&self, supports: bool) {
         unsafe {
@@ -228,6 +465,7 @@ impl ExportProcedure {
         }
     }
 
+    /// What [`ExportCapabilities`][crate::ExportCapabilities] are supported
     pub fn capabilities(&self) -> ExportCapabilities {
         ObjectExt::property(self, "capabilities")
     }

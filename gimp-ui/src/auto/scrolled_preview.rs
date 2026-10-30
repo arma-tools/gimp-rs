@@ -7,6 +7,13 @@ use crate::{ffi, Preview};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// A widget providing a [`Preview`][crate::Preview] enhanced by scrolling capabilities.
+    ///
+    /// This is an Abstract Base Class, you cannot instantiate it.
+    ///
+    /// # Implements
+    ///
+    /// [`ScrolledPreviewExt`][trait@crate::prelude::ScrolledPreviewExt], [`PreviewExt`][trait@crate::prelude::PreviewExt], [`trait@gtk::prelude::BoxExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpScrolledPreview")]
     pub struct ScrolledPreview(Object<ffi::GimpScrolledPreview, ffi::GimpScrolledPreviewClass>) @extends Preview, gtk::Box, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 
@@ -19,7 +26,17 @@ impl ScrolledPreview {
     pub const NONE: Option<&'static ScrolledPreview> = None;
 }
 
+/// Trait containing all [`struct@ScrolledPreview`] methods.
+///
+/// # Implementors
+///
+/// [`DrawablePreview`][struct@crate::DrawablePreview], [`ScrolledPreview`][struct@crate::ScrolledPreview], [`ZoomPreview`][struct@crate::ZoomPreview]
 pub trait ScrolledPreviewExt: IsA<ScrolledPreview> + 'static {
+    /// While the `self` is frozen, it is not going to redraw itself in
+    /// response to scroll events.
+    ///
+    /// This function should only be used to implement widgets derived from
+    /// [`ScrolledPreview`][crate::ScrolledPreview]. There is no point in calling this from a plug-in.
     #[doc(alias = "gimp_scrolled_preview_freeze")]
     fn freeze(&self) {
         unsafe {
@@ -27,6 +44,15 @@ pub trait ScrolledPreviewExt: IsA<ScrolledPreview> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    ///
+    /// ## `hadj`
+    /// Horizontal adjustment
+    ///
+    /// ## `vadj`
+    /// Vertical adjustment
     #[doc(alias = "gimp_scrolled_preview_get_adjustments")]
     #[doc(alias = "get_adjustments")]
     fn adjustments(&self) -> (gtk::Adjustment, gtk::Adjustment) {
@@ -47,6 +73,10 @@ pub trait ScrolledPreviewExt: IsA<ScrolledPreview> + 'static {
     //    unsafe { TODO: call ffi:gimp_scrolled_preview_set_policy() }
     //}
 
+    /// ## `x`
+    /// horizontal scroll offset
+    /// ## `y`
+    /// vertical scroll offset
     #[doc(alias = "gimp_scrolled_preview_set_position")]
     fn set_position(&self, x: i32, y: i32) {
         unsafe {
@@ -54,6 +84,11 @@ pub trait ScrolledPreviewExt: IsA<ScrolledPreview> + 'static {
         }
     }
 
+    /// While the `self` is frozen, it is not going to redraw itself in
+    /// response to scroll events.
+    ///
+    /// This function should only be used to implement widgets derived from
+    /// [`ScrolledPreview`][crate::ScrolledPreview]. There is no point in calling this from a plug-in.
     #[doc(alias = "gimp_scrolled_preview_thaw")]
     fn thaw(&self) {
         unsafe {

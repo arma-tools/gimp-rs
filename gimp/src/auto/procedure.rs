@@ -11,6 +11,31 @@ use crate::{
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// Procedures are registered functions which can be run across GIMP ecosystem.
+    /// They can be created by plug-ins and can then run by the core application
+    /// when called from menus (or through other interaction depending on specific
+    /// procedure subclasses).
+    ///
+    /// A plug-in can also run procedures created by the core, but also the ones
+    /// created by other plug-ins (see [`PDB`][crate::PDB]).
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `plug-in`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `procedure-type`
+    ///  Readable | Writeable | Construct Only
+    ///
+    /// # Implements
+    ///
+    /// [`ProcedureExt`][trait@crate::prelude::ProcedureExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpProcedure")]
     pub struct Procedure(Object<ffi::GimpProcedure, ffi::GimpProcedureClass>);
 
@@ -23,7 +48,25 @@ impl Procedure {
     pub const NONE: Option<&'static Procedure> = None;
 }
 
+/// Trait containing all [`struct@Procedure`] methods.
+///
+/// # Implementors
+///
+/// [`BatchProcedure`][struct@crate::BatchProcedure], [`FileProcedure`][struct@crate::FileProcedure], [`ImageProcedure`][struct@crate::ImageProcedure], [`Procedure`][struct@crate::Procedure], [`ThumbnailProcedure`][struct@crate::ThumbnailProcedure]
 pub trait ProcedureExt: IsA<Procedure> + 'static {
+    /// Add a new boolean argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_boolean_argument")]
     fn add_boolean_argument(
         &self,
@@ -45,6 +88,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new boolean auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_boolean_aux_argument")]
     fn add_boolean_aux_argument(
         &self,
@@ -66,6 +122,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new boolean return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_boolean_return_value")]
     fn add_boolean_return_value(
         &self,
@@ -87,6 +156,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Brush`][crate::Brush] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// whether [`None`] is a valid value.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's brush as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_brush_argument")]
     fn add_brush_argument(
         &self,
@@ -112,6 +198,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Brush`][crate::Brush] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's brush as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_brush_aux_argument")]
     fn add_brush_aux_argument(
         &self,
@@ -135,6 +236,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Brush`][crate::Brush] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_brush_return_value")]
     fn add_brush_return_value(
         &self,
@@ -154,6 +266,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`glib::Bytes`][crate::glib::Bytes] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_bytes_argument")]
     fn add_bytes_argument(
         &self,
@@ -173,6 +296,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`glib::Bytes`][crate::glib::Bytes] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_bytes_aux_argument")]
     fn add_bytes_aux_argument(
         &self,
@@ -192,6 +326,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`glib::Bytes`][crate::glib::Bytes] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_bytes_return_value")]
     fn add_bytes_return_value(
         &self,
@@ -211,6 +356,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Channel`][crate::Channel] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_channel_argument")]
     fn add_channel_argument(
         &self,
@@ -232,6 +390,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Channel`][crate::Channel] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_channel_aux_argument")]
     fn add_channel_aux_argument(
         &self,
@@ -253,6 +424,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Channel`][crate::Channel] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_channel_return_value")]
     fn add_channel_return_value(
         &self,
@@ -274,6 +458,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Choice`][crate::Choice] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `choice`
+    /// the [`Choice`][crate::Choice]
+    /// ## `value`
+    /// the default value for [`Choice`][crate::Choice].
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_choice_argument")]
     fn add_choice_argument(
         &self,
@@ -297,6 +496,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Choice`][crate::Choice] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `choice`
+    /// the [`Choice`][crate::Choice]
+    /// ## `value`
+    /// the default value for [`Choice`][crate::Choice].
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_choice_aux_argument")]
     fn add_choice_aux_argument(
         &self,
@@ -320,6 +534,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Choice`][crate::Choice] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `choice`
+    /// the [`Choice`][crate::Choice]
+    /// ## `value`
+    /// the default value for [`Choice`][crate::Choice].
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_choice_return_value")]
     fn add_choice_return_value(
         &self,
@@ -343,6 +572,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`gegl::Color`][crate::gegl::Color] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `has_alpha`
+    /// whether the argument has transparency.
+    /// ## `value`
+    /// the default [`gegl::Color`][crate::gegl::Color] value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_color_argument")]
     fn add_color_argument(
         &self,
@@ -366,6 +610,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`gegl::Color`][crate::gegl::Color] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `has_alpha`
+    /// whether the argument has transparency.
+    /// ## `value`
+    /// the default [`gegl::Color`][crate::gegl::Color] value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_color_aux_argument")]
     fn add_color_aux_argument(
         &self,
@@ -389,6 +648,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`gegl::Color`][crate::gegl::Color] argument to `self` from a string representation.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `has_alpha`
+    /// whether the argument has transparency.
+    /// ## `value`
+    /// the default [`gegl::Color`][crate::gegl::Color] value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_color_from_string_argument")]
     fn add_color_from_string_argument(
         &self,
@@ -412,6 +686,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`gegl::Color`][crate::gegl::Color] auxiliary argument to `self` from a string representation.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `has_alpha`
+    /// whether the argument has transparency.
+    /// ## `value`
+    /// the default [`gegl::Color`][crate::gegl::Color] value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_color_from_string_aux_argument")]
     fn add_color_from_string_aux_argument(
         &self,
@@ -435,6 +724,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`gegl::Color`][crate::gegl::Color] return value to `self` from a string representation.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `has_alpha`
+    /// whether the argument has transparency.
+    /// ## `value`
+    /// the default [`gegl::Color`][crate::gegl::Color] value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_color_from_string_return_value")]
     fn add_color_from_string_return_value(
         &self,
@@ -458,6 +762,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`gegl::Color`][crate::gegl::Color] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `has_alpha`
+    /// whether the argument has transparency.
+    /// ## `value`
+    /// the default [`gegl::Color`][crate::gegl::Color] value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_color_return_value")]
     fn add_color_return_value(
         &self,
@@ -481,6 +800,18 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new object array argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// `object_type` the type of object stored in the array
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_core_object_array_argument")]
     fn add_core_object_array_argument(
         &self,
@@ -502,6 +833,18 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new object array auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// `object_type` the type of object stored in the array
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_core_object_array_aux_argument")]
     fn add_core_object_array_aux_argument(
         &self,
@@ -523,6 +866,18 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new object array return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// `object_type` the type of object stored in the array
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_core_object_array_return_value")]
     fn add_core_object_array_return_value(
         &self,
@@ -544,6 +899,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Display`][crate::Display] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_display_argument")]
     fn add_display_argument(
         &self,
@@ -565,6 +933,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Display`][crate::Display] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_display_aux_argument")]
     fn add_display_aux_argument(
         &self,
@@ -586,6 +967,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Display`][crate::Display] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_display_return_value")]
     fn add_display_return_value(
         &self,
@@ -607,6 +1001,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new floating-point in double precision argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `min`
+    /// the minimum value for this argument
+    /// ## `max`
+    /// the maximum value for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_double_argument")]
     fn add_double_argument(
         &self,
@@ -632,6 +1043,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new double array argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_double_array_argument")]
     fn add_double_array_argument(
         &self,
@@ -651,6 +1073,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new double array auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_double_array_aux_argument")]
     fn add_double_array_aux_argument(
         &self,
@@ -670,6 +1103,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new double array return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_double_array_return_value")]
     fn add_double_array_return_value(
         &self,
@@ -689,6 +1133,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new floating-point in double precision auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `min`
+    /// the minimum value for this argument
+    /// ## `max`
+    /// the maximum value for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_double_aux_argument")]
     fn add_double_aux_argument(
         &self,
@@ -714,6 +1175,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new floating-point in double precision return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `min`
+    /// the minimum value for this argument
+    /// ## `max`
+    /// the maximum value for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_double_return_value")]
     fn add_double_return_value(
         &self,
@@ -739,6 +1217,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Drawable`][crate::Drawable] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_drawable_argument")]
     fn add_drawable_argument(
         &self,
@@ -760,6 +1251,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Drawable`][crate::Drawable] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_drawable_aux_argument")]
     fn add_drawable_aux_argument(
         &self,
@@ -781,6 +1285,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Drawable`][crate::Drawable] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_drawable_return_value")]
     fn add_drawable_return_value(
         &self,
@@ -802,6 +1319,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new enum argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `enum_type`
+    /// the `GType` for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_enum_argument")]
     fn add_enum_argument(
         &self,
@@ -825,6 +1357,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new enum auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `enum_type`
+    /// the `GType` for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_enum_aux_argument")]
     fn add_enum_aux_argument(
         &self,
@@ -848,6 +1395,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new enum return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `enum_type`
+    /// the `GType` for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_enum_return_value")]
     fn add_enum_return_value(
         &self,
@@ -871,6 +1433,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`gio::File`][crate::gio::File] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// The name of the argument to be created.
+    /// ## `nick`
+    /// The label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// A more detailed help description.
+    /// ## `action`
+    /// The type of file to expect.
+    /// ## `none_ok`
+    /// Whether [`None`] is allowed.
+    /// ## `default_file`
+    /// File to use if none is assigned.
+    /// ## `flags`
+    /// Argument flags.
     #[doc(alias = "gimp_procedure_add_file_argument")]
     fn add_file_argument(
         &self,
@@ -896,6 +1475,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`gio::File`][crate::gio::File] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// The name of the argument to be created.
+    /// ## `nick`
+    /// The label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// A more detailed help description.
+    /// ## `action`
+    /// The type of file to expect.
+    /// ## `none_ok`
+    /// Whether [`None`] is allowed.
+    /// ## `default_file`
+    /// File to use if none is assigned.
+    /// ## `flags`
+    /// Argument flags.
     #[doc(alias = "gimp_procedure_add_file_aux_argument")]
     fn add_file_aux_argument(
         &self,
@@ -921,6 +1517,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`gio::File`][crate::gio::File] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_file_return_value")]
     fn add_file_return_value(
         &self,
@@ -940,6 +1547,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Font`][crate::Font] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// whether [`None`] is a valid value.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's font as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_font_argument")]
     fn add_font_argument(
         &self,
@@ -965,6 +1589,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Font`][crate::Font] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's font as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_font_aux_argument")]
     fn add_font_aux_argument(
         &self,
@@ -988,6 +1627,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Font`][crate::Font] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_font_return_value")]
     fn add_font_return_value(
         &self,
@@ -1007,6 +1657,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Gradient`][crate::Gradient] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// whether [`None`] is a valid value.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's gradient as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_gradient_argument")]
     fn add_gradient_argument(
         &self,
@@ -1032,6 +1699,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Gradient`][crate::Gradient] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's gradient as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_gradient_aux_argument")]
     fn add_gradient_aux_argument(
         &self,
@@ -1055,6 +1737,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Gradient`][crate::Gradient] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_gradient_return_value")]
     fn add_gradient_return_value(
         &self,
@@ -1074,6 +1767,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`GroupLayer`][crate::GroupLayer] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_group_layer_argument")]
     fn add_group_layer_argument(
         &self,
@@ -1095,6 +1801,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`GroupLayer`][crate::GroupLayer] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_group_layer_aux_argument")]
     fn add_group_layer_aux_argument(
         &self,
@@ -1116,6 +1835,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`GroupLayer`][crate::GroupLayer] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_group_layer_return_value")]
     fn add_group_layer_return_value(
         &self,
@@ -1137,6 +1869,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Image`][crate::Image] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_image_argument")]
     fn add_image_argument(
         &self,
@@ -1158,6 +1903,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Image`][crate::Image] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_image_aux_argument")]
     fn add_image_aux_argument(
         &self,
@@ -1179,6 +1937,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Image`][crate::Image] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_image_return_value")]
     fn add_image_return_value(
         &self,
@@ -1200,6 +1971,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new integer array argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_int32_array_argument")]
     fn add_int32_array_argument(
         &self,
@@ -1219,6 +2001,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new integer array auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_int32_array_aux_argument")]
     fn add_int32_array_aux_argument(
         &self,
@@ -1238,6 +2031,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new integer array return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_int32_array_return_value")]
     fn add_int32_array_return_value(
         &self,
@@ -1257,6 +2061,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new integer argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `min`
+    /// the minimum value for this argument
+    /// ## `max`
+    /// the maximum value for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_int_argument")]
     fn add_int_argument(
         &self,
@@ -1282,6 +2103,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new integer auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `min`
+    /// the minimum value for this argument
+    /// ## `max`
+    /// the maximum value for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_int_aux_argument")]
     fn add_int_aux_argument(
         &self,
@@ -1307,6 +2145,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new integer return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `min`
+    /// the minimum value for this argument
+    /// ## `max`
+    /// the maximum value for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_int_return_value")]
     fn add_int_return_value(
         &self,
@@ -1332,6 +2187,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Item`][crate::Item] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_item_argument")]
     fn add_item_argument(
         &self,
@@ -1353,6 +2221,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Item`][crate::Item] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_item_aux_argument")]
     fn add_item_aux_argument(
         &self,
@@ -1374,6 +2255,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Item`][crate::Item] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_item_return_value")]
     fn add_item_return_value(
         &self,
@@ -1395,6 +2289,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Layer`][crate::Layer] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_layer_argument")]
     fn add_layer_argument(
         &self,
@@ -1416,6 +2323,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Layer`][crate::Layer] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_layer_aux_argument")]
     fn add_layer_aux_argument(
         &self,
@@ -1437,6 +2357,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`LayerMask`][crate::LayerMask] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_layer_mask_argument")]
     fn add_layer_mask_argument(
         &self,
@@ -1458,6 +2391,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`LayerMask`][crate::LayerMask] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_layer_mask_aux_argument")]
     fn add_layer_mask_aux_argument(
         &self,
@@ -1479,6 +2425,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`LayerMask`][crate::LayerMask] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_layer_mask_return_value")]
     fn add_layer_mask_return_value(
         &self,
@@ -1500,6 +2459,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Layer`][crate::Layer] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_layer_return_value")]
     fn add_layer_return_value(
         &self,
@@ -1521,6 +2493,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`LinkLayer`][crate::LinkLayer] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_procedure_add_link_layer_argument")]
@@ -1544,6 +2529,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`LinkLayer`][crate::LinkLayer] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_procedure_add_link_layer_aux_argument")]
@@ -1567,6 +2565,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`LinkLayer`][crate::LinkLayer] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_procedure_add_link_layer_return_value")]
@@ -1590,6 +2601,39 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Adds a menu path to the procedure. Only procedures which have a menu
+    /// label can add a menu path.
+    ///
+    /// Menu paths are untranslated paths to known menus and submenus with the
+    /// syntax ``<Prefix>`/Path/To/Submenu`, for example ``<Image>`/Layer/Transform`.
+    /// GIMP will localize these.
+    /// Nevertheless you should localize unknown parts of the path. For instance, say
+    /// you want to create procedure to create customized layers and add a `Create`
+    /// submenu which you want to localize from your plug-in with gettext. You could
+    /// call:
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// path = g_build_path ("/", "<Image>/Layer", _("Create"), NULL);
+    /// gimp_procedure_add_menu_path (procedure, path);
+    /// g_free (path);
+    /// ```
+    ///
+    /// See also: [`PlugInExt::add_menu_branch()`][crate::prelude::PlugInExt::add_menu_branch()].
+    ///
+    /// GIMP menus also have a concept of named section. For instance, say you are
+    /// creating a plug-in which you want to show next to the "Export", "Export As"
+    /// plug-ins in the File menu. You would add it to the menu path "File/[Export]".
+    /// If you actually wanted to create a submenu called "[Export]" (with square
+    /// brackets), double the brackets: "File/[[Export]]"
+    ///
+    /// See also: https://gitlab.gnome.org/GNOME/gimp/-/blob/master/menus/image-menu.ui.in.in
+    ///
+    /// This function will place your procedure to the bottom of the selected path or
+    /// section. Order is not assured relatively to other plug-ins.
+    /// ## `menu_path`
+    /// The `self`'s additional menu path.
     #[doc(alias = "gimp_procedure_add_menu_path")]
     fn add_menu_path(&self, menu_path: &str) {
         unsafe {
@@ -1600,6 +2644,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Palette`][crate::Palette] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// whether [`None`] is a valid value.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's palette as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_palette_argument")]
     fn add_palette_argument(
         &self,
@@ -1625,6 +2686,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Palette`][crate::Palette] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's palette as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_palette_aux_argument")]
     fn add_palette_aux_argument(
         &self,
@@ -1648,6 +2724,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Palette`][crate::Palette] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_palette_return_value")]
     fn add_palette_return_value(
         &self,
@@ -1667,6 +2754,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new param argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `param_type`
+    /// the `GPParamType` for this argument
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_param_argument")]
     fn add_param_argument(
         &self,
@@ -1688,6 +2788,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new param auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `param_type`
+    /// the `GPParamType` for this argument
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_param_aux_argument")]
     fn add_param_aux_argument(
         &self,
@@ -1709,6 +2822,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new param return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `param_type`
+    /// the `GPParamType` for this argument
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_param_return_value")]
     fn add_param_return_value(
         &self,
@@ -1730,6 +2856,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Parasite`][crate::Parasite] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_parasite_argument")]
     fn add_parasite_argument(
         &self,
@@ -1749,6 +2886,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Parasite`][crate::Parasite] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_parasite_aux_argument")]
     fn add_parasite_aux_argument(
         &self,
@@ -1768,6 +2916,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Parasite`][crate::Parasite] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_parasite_return_value")]
     fn add_parasite_return_value(
         &self,
@@ -1787,6 +2946,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Path`][crate::Path] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_path_argument")]
     fn add_path_argument(
         &self,
@@ -1808,6 +2980,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Path`][crate::Path] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_path_aux_argument")]
     fn add_path_aux_argument(
         &self,
@@ -1829,6 +3014,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Path`][crate::Path] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_path_return_value")]
     fn add_path_return_value(
         &self,
@@ -1850,6 +3048,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Pattern`][crate::Pattern] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// whether [`None`] is a valid value.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's pattern as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_pattern_argument")]
     fn add_pattern_argument(
         &self,
@@ -1875,6 +3090,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Pattern`][crate::Pattern] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `default_value`
+    /// default value
+    /// ## `default_to_context`
+    /// Use the context's pattern as default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_pattern_aux_argument")]
     fn add_pattern_aux_argument(
         &self,
@@ -1898,6 +3128,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Pattern`][crate::Pattern] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_pattern_return_value")]
     fn add_pattern_return_value(
         &self,
@@ -1917,6 +3158,21 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Resource`][crate::Resource] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// whether [`None`] is a valid value.
+    /// ## `default_value`
+    /// default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_resource_argument")]
     fn add_resource_argument(
         &self,
@@ -1940,6 +3196,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Resource`][crate::Resource] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `default_value`
+    /// default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_resource_aux_argument")]
     fn add_resource_aux_argument(
         &self,
@@ -1961,6 +3230,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Resource`][crate::Resource] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_resource_return_value")]
     fn add_resource_return_value(
         &self,
@@ -1980,6 +3260,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Selection`][crate::Selection] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_selection_argument")]
     fn add_selection_argument(
         &self,
@@ -2001,6 +3294,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Selection`][crate::Selection] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_selection_aux_argument")]
     fn add_selection_aux_argument(
         &self,
@@ -2022,6 +3328,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Selection`][crate::Selection] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_selection_return_value")]
     fn add_selection_return_value(
         &self,
@@ -2043,6 +3362,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new string argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_string_argument")]
     fn add_string_argument(
         &self,
@@ -2064,6 +3396,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new string array argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_string_array_argument")]
     fn add_string_array_argument(
         &self,
@@ -2083,6 +3426,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new string array auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_string_array_aux_argument")]
     fn add_string_array_aux_argument(
         &self,
@@ -2102,6 +3456,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new string array return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_string_array_return_value")]
     fn add_string_array_return_value(
         &self,
@@ -2121,6 +3486,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new string auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_string_aux_argument")]
     fn add_string_aux_argument(
         &self,
@@ -2142,6 +3520,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new string return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_string_return_value")]
     fn add_string_return_value(
         &self,
@@ -2163,6 +3554,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`TextLayer`][crate::TextLayer] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_text_layer_argument")]
     fn add_text_layer_argument(
         &self,
@@ -2184,6 +3588,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`TextLayer`][crate::TextLayer] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_text_layer_aux_argument")]
     fn add_text_layer_aux_argument(
         &self,
@@ -2205,6 +3622,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`TextLayer`][crate::TextLayer] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_text_layer_return_value")]
     fn add_text_layer_return_value(
         &self,
@@ -2226,6 +3656,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new unsigned integer argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `min`
+    /// the minimum value for this argument
+    /// ## `max`
+    /// the maximum value for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_uint_argument")]
     fn add_uint_argument(
         &self,
@@ -2251,6 +3698,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new unsigned integer auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `min`
+    /// the minimum value for this argument
+    /// ## `max`
+    /// the maximum value for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_uint_aux_argument")]
     fn add_uint_aux_argument(
         &self,
@@ -2276,6 +3740,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new unsigned integer return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `min`
+    /// the minimum value for this argument
+    /// ## `max`
+    /// the maximum value for this argument
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_uint_return_value")]
     fn add_uint_return_value(
         &self,
@@ -2301,6 +3782,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Unit`][crate::Unit] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `show_pixels`
+    /// whether to allow pixels as a valid option
+    /// ## `show_percent`
+    /// whether to allow percent as a valid option
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_unit_argument")]
     fn add_unit_argument(
         &self,
@@ -2326,6 +3824,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Unit`][crate::Unit] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `show_pixels`
+    /// whether to allow pixels as a valid option
+    /// ## `show_percent`
+    /// whether to allow percent as a valid option
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_unit_aux_argument")]
     fn add_unit_aux_argument(
         &self,
@@ -2351,6 +3866,23 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`Unit`][crate::Unit] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `show_pixels`
+    /// whether to allow pixels as a valid option
+    /// ## `show_percent`
+    /// whether to allow percent as a valid option
+    /// ## `value`
+    /// the default value.
+    /// ## `flags`
+    /// argument flags.
     #[doc(alias = "gimp_procedure_add_unit_return_value")]
     fn add_unit_return_value(
         &self,
@@ -2376,6 +3908,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`VectorLayer`][crate::VectorLayer] argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_procedure_add_vector_layer_argument")]
@@ -2399,6 +3944,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`VectorLayer`][crate::VectorLayer] auxiliary argument to `self`.
+    ///
+    /// The argument `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_procedure_add_vector_layer_aux_argument")]
@@ -2422,6 +3980,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Add a new [`VectorLayer`][crate::VectorLayer] return value to `self`.
+    ///
+    /// The return value `name` must respect the rules for [canonical parameter names][`glib::ParamSpec`][crate::glib::ParamSpec] of `GObject`.
+    /// ## `name`
+    /// the name of the argument to be created.
+    /// ## `nick`
+    /// the label used in `GimpProcedureDialog`.
+    /// ## `blurb`
+    /// a more detailed help description.
+    /// ## `none_ok`
+    /// Whether no is a valid value.
+    /// ## `flags`
+    /// argument flags.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_procedure_add_vector_layer_return_value")]
@@ -2445,6 +4016,12 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Create a `GimpConfig` with properties that match `self`'s arguments, to be
+    /// used in [`run_config()`][Self::run_config()] method.
+    ///
+    /// # Returns
+    ///
+    /// The new `GimpConfig`.
     #[doc(alias = "gimp_procedure_create_config")]
     fn create_config(&self) -> Option<ProcedureConfig> {
         unsafe {
@@ -2454,6 +4031,14 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Searches the `self`'s arguments for a [`glib::ParamSpec`][crate::glib::ParamSpec] called `name`.
+    /// ## `name`
+    /// An argument name
+    ///
+    /// # Returns
+    ///
+    /// The `self`'s argument with `name` if it
+    ///  exists, or [`None`] otherwise.
     #[doc(alias = "gimp_procedure_find_argument")]
     fn find_argument(&self, name: &str) -> Option<glib::ParamSpec> {
         unsafe {
@@ -2464,6 +4049,15 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Searches the `self`'s auxiliary arguments for a [`glib::ParamSpec`][crate::glib::ParamSpec]
+    /// called `name`.
+    /// ## `name`
+    /// An auxiliary argument name
+    ///
+    /// # Returns
+    ///
+    /// The `self`'s auxiliary argument with
+    ///  `name` if it exists, or [`None`] otherwise.
     #[doc(alias = "gimp_procedure_find_aux_argument")]
     fn find_aux_argument(&self, name: &str) -> Option<glib::ParamSpec> {
         unsafe {
@@ -2474,6 +4068,15 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Searches the `self`'s return values for a [`glib::ParamSpec`][crate::glib::ParamSpec] called
+    /// `name`.
+    /// ## `name`
+    /// A return value name
+    ///
+    /// # Returns
+    ///
+    /// The `self`'s return values with `name`
+    ///  if it exists, or [`None`] otherwise.
     #[doc(alias = "gimp_procedure_find_return_value")]
     fn find_return_value(&self, name: &str) -> Option<glib::ParamSpec> {
         unsafe {
@@ -2484,6 +4087,13 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// ## `arg_name`
+    /// the name of one of `self`'s arguments or auxiliary arguments
+    ///
+    /// # Returns
+    ///
+    /// The [`ArgumentSync`][crate::ArgumentSync] value set with
+    ///  [`set_argument_sync()`][Self::set_argument_sync()]:
     #[doc(alias = "gimp_procedure_get_argument_sync")]
     #[doc(alias = "get_argument_sync")]
     fn argument_sync(&self, arg_name: &str) -> ArgumentSync {
@@ -2495,6 +4105,11 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// An array
+    ///  of [`glib::ParamSpec`][crate::glib::ParamSpec] in the order they were added in.
     #[doc(alias = "gimp_procedure_get_arguments")]
     #[doc(alias = "get_arguments")]
     fn arguments(&self) -> Vec<glib::ParamSpec> {
@@ -2511,6 +4126,10 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's authors given in [`set_attribution()`][Self::set_attribution()].
     #[doc(alias = "gimp_procedure_get_authors")]
     #[doc(alias = "get_authors")]
     fn authors(&self) -> Option<glib::GString> {
@@ -2521,6 +4140,11 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// An array
+    ///  of [`glib::ParamSpec`][crate::glib::ParamSpec] in the order they were added in.
     #[doc(alias = "gimp_procedure_get_aux_arguments")]
     #[doc(alias = "get_aux_arguments")]
     fn aux_arguments(&self) -> Vec<glib::ParamSpec> {
@@ -2537,6 +4161,11 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's blurb given in
+    /// [`set_documentation()`][Self::set_documentation()].
     #[doc(alias = "gimp_procedure_get_blurb")]
     #[doc(alias = "get_blurb")]
     fn blurb(&self) -> Option<glib::GString> {
@@ -2547,6 +4176,11 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's copyright given in
+    /// [`set_attribution()`][Self::set_attribution()].
     #[doc(alias = "gimp_procedure_get_copyright")]
     #[doc(alias = "get_copyright")]
     fn copyright(&self) -> Option<glib::GString> {
@@ -2557,18 +4191,32 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's date given in [`set_attribution()`][Self::set_attribution()].
     #[doc(alias = "gimp_procedure_get_date")]
     #[doc(alias = "get_date")]
     fn date(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::gimp_procedure_get_date(self.as_ref().to_glib_none().0)) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's help text given in
+    /// [`set_documentation()`][Self::set_documentation()].
     #[doc(alias = "gimp_procedure_get_help")]
     #[doc(alias = "get_help")]
     fn help(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::gimp_procedure_get_help(self.as_ref().to_glib_none().0)) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's help ID given in
+    /// [`set_documentation()`][Self::set_documentation()].
     #[doc(alias = "gimp_procedure_get_help_id")]
     #[doc(alias = "get_help_id")]
     fn help_id(&self) -> Option<glib::GString> {
@@ -2579,6 +4227,12 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Gets the file of the icon if one was set for `self`.
+    ///
+    /// # Returns
+    ///
+    /// the icon [`gio::File`][crate::gio::File] or [`None`] if no
+    ///  file was set.
     #[doc(alias = "gimp_procedure_get_icon_file")]
     #[doc(alias = "get_icon_file")]
     fn icon_file(&self) -> Option<gio::File> {
@@ -2589,6 +4243,11 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Gets the name of the icon if one was set for `self`.
+    ///
+    /// # Returns
+    ///
+    /// the icon name or [`None`] if no icon name was set.
     #[doc(alias = "gimp_procedure_get_icon_name")]
     #[doc(alias = "get_icon_name")]
     fn icon_name(&self) -> Option<glib::GString> {
@@ -2599,6 +4258,13 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Gets the [`gdk_pixbuf::Pixbuf`][crate::gdk_pixbuf::Pixbuf] of the icon if an icon was set this way for
+    /// `self`.
+    ///
+    /// # Returns
+    ///
+    /// the icon pixbuf or [`None`] if no
+    ///  icon name was set.
     #[doc(alias = "gimp_procedure_get_icon_pixbuf")]
     #[doc(alias = "get_icon_pixbuf")]
     fn icon_pixbuf(&self) -> Option<gdk_pixbuf::Pixbuf> {
@@ -2609,6 +4275,13 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Gets the type of data set as `self`'s icon. Depending on the
+    /// result, you can call the relevant specific function, such as
+    /// [`icon_name()`][Self::icon_name()].
+    ///
+    /// # Returns
+    ///
+    /// the [`IconType`][crate::IconType] of `self`'s icon.
     #[doc(alias = "gimp_procedure_get_icon_type")]
     #[doc(alias = "get_icon_type")]
     fn icon_type(&self) -> IconType {
@@ -2619,6 +4292,12 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// This function retrieves the list of image types the procedure can
+    /// operate on. See [`set_image_types()`][Self::set_image_types()].
+    ///
+    /// # Returns
+    ///
+    /// The image types.
     #[doc(alias = "gimp_procedure_get_image_types")]
     #[doc(alias = "get_image_types")]
     fn image_types(&self) -> Option<glib::GString> {
@@ -2629,6 +4308,11 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's menu label given in
+    ///  [`set_menu_label()`][Self::set_menu_label()].
     #[doc(alias = "gimp_procedure_get_menu_label")]
     #[doc(alias = "get_menu_label")]
     fn menu_label(&self) -> Option<glib::GString> {
@@ -2639,6 +4323,11 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the `self`'s
+    ///  menu paths as added with [`add_menu_path()`][Self::add_menu_path()].
     #[doc(alias = "gimp_procedure_get_menu_paths")]
     #[doc(alias = "get_menu_paths")]
     fn menu_paths(&self) -> Vec<glib::GString> {
@@ -2649,12 +4338,20 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's name given in [`Procedure::new()`][crate::Procedure::new()].
     #[doc(alias = "gimp_procedure_get_name")]
     #[doc(alias = "get_name")]
     fn name(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::gimp_procedure_get_name(self.as_ref().to_glib_none().0)) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The [`PlugIn`][crate::PlugIn] given in [`Procedure::new()`][crate::Procedure::new()].
     #[doc(alias = "gimp_procedure_get_plug_in")]
     #[doc(alias = "get_plug_in")]
     #[doc(alias = "plug-in")]
@@ -2666,6 +4363,10 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's type given in [`Procedure::new()`][crate::Procedure::new()].
     #[doc(alias = "gimp_procedure_get_proc_type")]
     #[doc(alias = "get_proc_type")]
     fn proc_type(&self) -> PDBProcType {
@@ -2676,6 +4377,11 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// An array
+    ///  of [`glib::ParamSpec`][crate::glib::ParamSpec] in the order they were added in.
     #[doc(alias = "gimp_procedure_get_return_values")]
     #[doc(alias = "get_return_values")]
     fn return_values(&self) -> Vec<glib::ParamSpec> {
@@ -2692,6 +4398,11 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// The procedure's sensitivity mask given in
+    ///  [`set_sensitivity_mask()`][Self::set_sensitivity_mask()].
     #[doc(alias = "gimp_procedure_get_sensitivity_mask")]
     #[doc(alias = "get_sensitivity_mask")]
     fn sensitivity_mask(&self) -> ProcedureSensitivityMask {
@@ -2702,6 +4413,13 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Provide the information if `self` is an internal procedure. Only
+    /// a procedure looked up in the [`PDB`][crate::PDB] can be internal.
+    /// Procedures created by a plug-in in particular are never internal.
+    ///
+    /// # Returns
+    ///
+    /// Whether `self` is an internal procedure or not.
     #[doc(alias = "gimp_procedure_is_internal")]
     fn is_internal(&self) -> bool {
         unsafe {
@@ -2711,6 +4429,17 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Notify the main GIMP application that the persistent procedure has
+    /// been properly initialized and is ready to run.
+    ///
+    /// This function _must_ be called from every procedure's `GimpRunFunc`
+    /// that was created as [`PDBProcType::Persistent`][crate::PDBProcType::Persistent].
+    ///
+    /// Subsequently, extensions can process temporary procedure run
+    /// requests using either [`PlugInExt::persistent_enable()`][crate::prelude::PlugInExt::persistent_enable()] or
+    /// [`PlugInExt::persistent_process()`][crate::prelude::PlugInExt::persistent_process()].
+    ///
+    /// See also: [`Procedure::new()`][crate::Procedure::new()].
     #[doc(alias = "gimp_procedure_persistent_ready")]
     fn persistent_ready(&self) {
         unsafe {
@@ -2723,6 +4452,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
     //    unsafe { TODO: call ffi:gimp_procedure_run() }
     //}
 
+    /// Runs `self`, calling the run_func given in [`Procedure::new()`][crate::Procedure::new()].
+    ///
+    /// Create `config` at default values with
+    /// [`create_config()`][Self::create_config()] then set any argument you wish
+    /// to change from defaults with [`ObjectExt::set()`][crate::glib::prelude::ObjectExt::set()].
+    ///
+    /// If `config` is [`None`], the default arguments of `self` will be used.
+    /// ## `config`
+    /// the `self`'s arguments.
+    ///
+    /// # Returns
+    ///
+    /// The `self`'s return values.
     #[doc(alias = "gimp_procedure_run_config")]
     fn run_config(&self, config: Option<&impl IsA<ProcedureConfig>>) -> Option<ValueArray> {
         unsafe {
@@ -2738,6 +4480,19 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
     //    unsafe { TODO: call ffi:gimp_procedure_run_valist() }
     //}
 
+    /// When the procedure's `run()` function exits, a [`Procedure`][crate::Procedure]'s arguments
+    /// or auxiliary arguments can be automatically synced with a [`Parasite`][crate::Parasite] of
+    /// the [`Image`][crate::Image] the procedure is running on.
+    ///
+    /// In order to enable this, set `sync` to [`ArgumentSync::Parasite`][crate::ArgumentSync::Parasite].
+    ///
+    /// Currently, it is possible to sync a string argument of type
+    /// `GParamSpecString` with an image parasite of the same name, for
+    /// example the "gimp-comment" parasite in file save procedures.
+    /// ## `arg_name`
+    /// the name of one of `self`'s arguments or auxiliary arguments.
+    /// ## `sync`
+    /// how to sync the argument or auxiliary argument.
     #[doc(alias = "gimp_procedure_set_argument_sync")]
     fn set_argument_sync(&self, arg_name: &str, sync: ArgumentSync) {
         unsafe {
@@ -2749,6 +4504,13 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Sets various attribution strings on `self`.
+    /// ## `authors`
+    /// The `self`'s author(s).
+    /// ## `copyright`
+    /// The `self`'s copyright.
+    /// ## `date`
+    /// The `self`'s date (written or published).
     #[doc(alias = "gimp_procedure_set_attribution")]
     fn set_attribution(&self, authors: &str, copyright: &str, date: &str) {
         unsafe {
@@ -2761,6 +4523,25 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Sets various documentation strings on `self`:
+    ///
+    /// * `blurb` is used for instance as the `self`'s tooltip when represented in
+    ///  the UI such as a menu entry.
+    /// * `help` is a free-form text that's meant as additional documentation for
+    ///  developers of scripts and plug-ins. If the `blurb` and the argument names
+    ///  and descriptions are enough for a quite self-explanatory procedure, you may
+    ///  set `help` to [`None`], rather than setting an uninformative `help` (avoid
+    ///  setting the same text as `blurb` or redundant information).
+    ///
+    /// Plug-ins are responsible for their own translations. You are expected to send
+    /// localized strings of `blurb` and `help` to GIMP if your plug-in is
+    /// internationalized.
+    /// ## `blurb`
+    /// The `self`'s blurb.
+    /// ## `help`
+    /// The `self`'s help text.
+    /// ## `help_id`
+    /// The `self`'s help ID.
     #[doc(alias = "gimp_procedure_set_documentation")]
     fn set_documentation(&self, blurb: &str, help: Option<&str>, help_id: Option<&str>) {
         unsafe {
@@ -2773,6 +4554,9 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Sets the icon for `self` to the contents of an image file.
+    /// ## `file`
+    /// a [`gio::File`][crate::gio::File] pointing to an image file.
     #[doc(alias = "gimp_procedure_set_icon_file")]
     fn set_icon_file(&self, file: Option<&impl IsA<gio::File>>) {
         unsafe {
@@ -2783,6 +4567,9 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Sets the icon for `self` to the icon referenced by `icon_name`.
+    /// ## `icon_name`
+    /// an icon name.
     #[doc(alias = "gimp_procedure_set_icon_name")]
     fn set_icon_name(&self, icon_name: Option<&str>) {
         unsafe {
@@ -2793,6 +4580,9 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Sets the icon for `self` to `pixbuf`.
+    /// ## `pixbuf`
+    /// a [`gdk_pixbuf::Pixbuf`][crate::gdk_pixbuf::Pixbuf].
     #[doc(alias = "gimp_procedure_set_icon_pixbuf")]
     fn set_icon_pixbuf(&self, pixbuf: Option<&gdk_pixbuf::Pixbuf>) {
         unsafe {
@@ -2803,6 +4593,15 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// This is a comma separated list of image types, or actually drawable
+    /// types, that this procedure can deal with. Wildcards are possible
+    /// here, so you could say "RGB\*" instead of "RGB, RGBA" or "\*" for all
+    /// image types.
+    ///
+    /// Supported types are "RGB", "GRAY", "INDEXED" and their variants
+    /// with alpha.
+    /// ## `image_types`
+    /// The image types this procedure can operate on.
     #[doc(alias = "gimp_procedure_set_image_types")]
     fn set_image_types(&self, image_types: &str) {
         unsafe {
@@ -2813,6 +4612,14 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Sets the label to use for the `self`'s menu entry, The
+    /// location(s) where to register in the menu hierarchy is chosen using
+    /// [`add_menu_path()`][Self::add_menu_path()].
+    ///
+    /// Plug-ins are responsible for their own translations. You are expected to send
+    /// localized strings to GIMP if your plug-in is internationalized.
+    /// ## `menu_label`
+    /// The `self`'s menu label.
     #[doc(alias = "gimp_procedure_set_menu_label")]
     fn set_menu_label(&self, menu_label: &str) {
         unsafe {
@@ -2823,6 +4630,25 @@ pub trait ProcedureExt: IsA<Procedure> + 'static {
         }
     }
 
+    /// Sets the cases when `self` is supposed to be sensitive or not.
+    ///
+    /// Note that it will be used by the core to determine whether to show a
+    /// procedure as sensitive (hence forbid running it otherwise), yet it
+    /// will not forbid thid-party plug-ins for instance to run manually your
+    /// registered procedure. Therefore you should still handle non-supported
+    /// cases appropriately by returning with [`PDBStatusType::ExecutionError`][crate::PDBStatusType::ExecutionError] and a
+    /// suitable error message.
+    ///
+    /// Similarly third-party plug-ins should verify they are allowed to call
+    /// a procedure with [`sensitivity_mask()`][Self::sensitivity_mask()] when running
+    /// with dynamic contents.
+    ///
+    /// Note that by default, a procedure works on an image with one or more
+    /// drawables selected. Hence not setting the mask, setting it with 0 or
+    /// setting it with `GIMP_PROCEDURE_SENSITIVE_DRAWABLE |
+    /// GIMP_PROCEDURE_SENSITIVE_DRAWABLES` are equivalent.
+    /// ## `sensitivity_mask`
+    /// A binary mask of [`ProcedureSensitivityMask`][crate::ProcedureSensitivityMask].
     #[doc(alias = "gimp_procedure_set_sensitivity_mask")]
     fn set_sensitivity_mask(&self, sensitivity_mask: ProcedureSensitivityMask) {
         unsafe {

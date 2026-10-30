@@ -7,6 +7,23 @@ use crate::ffi;
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// A model for integer based name-value pairs (e.g. enums)
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `user-data-type`
+    ///  Sets the `GType` for the GIMP_INT_STORE_USER_DATA column.
+    ///
+    /// You need to set this property when constructing the store if you want
+    /// to use the GIMP_INT_STORE_USER_DATA column and want to have the store
+    /// handle ref-counting of your user data.
+    ///
+    /// Readable | Writeable | Construct Only
+    ///
+    /// # Implements
+    ///
+    /// [`IntStoreExt`][trait@crate::prelude::IntStoreExt], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpIntStore")]
     pub struct IntStore(Object<ffi::GimpIntStore, ffi::GimpIntStoreClass>) @implements gtk::Buildable;
 
@@ -44,7 +61,17 @@ impl IntStore {
     //}
 }
 
+/// Trait containing all [`struct@IntStore`] methods.
+///
+/// # Implementors
+///
+/// [`EnumStore`][struct@crate::EnumStore], [`IntStore`][struct@crate::IntStore]
 pub trait IntStoreExt: IsA<IntStore> + 'static {
+    /// Sets the `GType` for the GIMP_INT_STORE_USER_DATA column.
+    ///
+    /// You need to set this property when constructing the store if you want
+    /// to use the GIMP_INT_STORE_USER_DATA column and want to have the store
+    /// handle ref-counting of your user data.
     #[doc(alias = "user-data-type")]
     fn user_data_type(&self) -> glib::types::Type {
         ObjectExt::property(self.as_ref(), "user-data-type")

@@ -7,6 +7,19 @@ use crate::{ffi, ConfigInterface};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// Functions to manipulate resources.
+    ///
+    /// This is an Abstract Base Class, you cannot instantiate it.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `id`
+    ///  Readable | Writeable | Construct Only
+    ///
+    /// # Implements
+    ///
+    /// [`ResourceExt`][trait@crate::prelude::ResourceExt], [`trait@glib::ObjectExt`], [`ConfigInterfaceExt`][trait@crate::prelude::ConfigInterfaceExt]
     #[doc(alias = "GimpResource")]
     pub struct Resource(Object<ffi::GimpResource, ffi::GimpResourceClass>) @implements ConfigInterface;
 
@@ -18,12 +31,39 @@ glib::wrapper! {
 impl Resource {
     pub const NONE: Option<&'static Resource> = None;
 
+    /// Returns a [`Resource`][crate::Resource] representing `resource_id`. Since [`Resource`][crate::Resource] is an
+    /// abstract class, the real object type will actually be the proper
+    /// subclass.
+    ///
+    /// Note: in most use cases, you should not need to retrieve a
+    /// [`Resource`][crate::Resource] by its ID, which is mostly internal data and not
+    /// reusable across sessions. Use the appropriate functions for your use
+    /// case instead.
+    /// ## `resource_id`
+    /// The resource id.
+    ///
+    /// # Returns
+    ///
+    /// a [`Resource`][crate::Resource] for `resource_id` or
+    ///  [`None`] if `resource_id` does not represent a valid resource.
+    ///  The object belongs to libgimp and you must not modify
+    ///  or unref it.
     #[doc(alias = "gimp_resource_get_by_id")]
     #[doc(alias = "get_by_id")]
     pub fn by_id(resource_id: i32) -> Option<Resource> {
         unsafe { from_glib_none(ffi::gimp_resource_get_by_id(resource_id)) }
     }
 
+    /// Returns the resource with the given `resource_type` and
+    /// `resource_name`.
+    /// ## `resource_type`
+    /// The `GType` of the resource.
+    /// ## `resource_name`
+    /// The name of the resource.
+    ///
+    /// # Returns
+    ///
+    /// The resource.
     #[doc(alias = "gimp_resource_get_by_name")]
     #[doc(alias = "get_by_name")]
     pub fn by_name(resource_type: glib::types::Type, resource_name: &str) -> Option<Resource> {
@@ -35,66 +75,177 @@ impl Resource {
         }
     }
 
+    /// Returns whether the resource ID is a brush.
+    ///
+    /// This procedure returns TRUE if the specified resource ID is a brush.
+    /// ## `resource_id`
+    /// The resource ID.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource ID is a brush, FALSE otherwise.
     #[doc(alias = "gimp_resource_id_is_brush")]
     pub fn id_is_brush(resource_id: i32) -> bool {
         unsafe { from_glib(ffi::gimp_resource_id_is_brush(resource_id)) }
     }
 
+    /// Returns whether the resource ID is a font.
+    ///
+    /// This procedure returns TRUE if the specified resource ID is a font.
+    /// ## `resource_id`
+    /// The resource ID.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource ID is a font, FALSE otherwise.
     #[doc(alias = "gimp_resource_id_is_font")]
     pub fn id_is_font(resource_id: i32) -> bool {
         unsafe { from_glib(ffi::gimp_resource_id_is_font(resource_id)) }
     }
 
+    /// Returns whether the resource ID is a gradient.
+    ///
+    /// This procedure returns TRUE if the specified resource ID is a
+    /// gradient.
+    /// ## `resource_id`
+    /// The resource ID.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource ID is a gradient, FALSE otherwise.
     #[doc(alias = "gimp_resource_id_is_gradient")]
     pub fn id_is_gradient(resource_id: i32) -> bool {
         unsafe { from_glib(ffi::gimp_resource_id_is_gradient(resource_id)) }
     }
 
+    /// Returns whether the resource ID is a palette.
+    ///
+    /// This procedure returns TRUE if the specified resource ID is a
+    /// palette.
+    /// ## `resource_id`
+    /// The resource ID.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource ID is a palette, FALSE otherwise.
     #[doc(alias = "gimp_resource_id_is_palette")]
     pub fn id_is_palette(resource_id: i32) -> bool {
         unsafe { from_glib(ffi::gimp_resource_id_is_palette(resource_id)) }
     }
 
+    /// Returns whether the resource ID is a pattern.
+    ///
+    /// This procedure returns TRUE if the specified resource ID is a
+    /// pattern.
+    /// ## `resource_id`
+    /// The resource ID.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource ID is a pattern, FALSE otherwise.
     #[doc(alias = "gimp_resource_id_is_pattern")]
     pub fn id_is_pattern(resource_id: i32) -> bool {
         unsafe { from_glib(ffi::gimp_resource_id_is_pattern(resource_id)) }
     }
 
+    /// Returns TRUE if the resource ID is valid.
+    ///
+    /// This procedure checks if the given resource ID is valid and refers
+    /// to an existing resource.
+    ///
+    /// *Note*: in most use cases, you should not use this function. If you
+    /// got a [`Resource`][crate::Resource] from the API, you should trust it is
+    /// valid. This function is mostly for internal usage.
+    /// ## `resource_id`
+    /// The resource ID to check.
+    ///
+    /// # Returns
+    ///
+    /// Whether the resource ID is valid.
     #[doc(alias = "gimp_resource_id_is_valid")]
     pub fn id_is_valid(resource_id: i32) -> bool {
         unsafe { from_glib(ffi::gimp_resource_id_is_valid(resource_id)) }
     }
 }
 
+/// Trait containing all [`struct@Resource`] methods.
+///
+/// # Implementors
+///
+/// [`Brush`][struct@crate::Brush], [`Font`][struct@crate::Font], [`Gradient`][struct@crate::Gradient], [`Palette`][struct@crate::Palette], [`Pattern`][struct@crate::Pattern], [`Resource`][struct@crate::Resource]
 pub trait ResourceExt: IsA<Resource> + 'static {
+    /// Deletes a resource.
+    ///
+    /// Deletes a resource. Returns an error if the resource is not
+    /// deletable. Deletes the resource's data. You should not use the
+    /// resource afterwards.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_resource_delete")]
     fn delete(&self) -> bool {
         unsafe { from_glib(ffi::gimp_resource_delete(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Duplicates a resource.
+    ///
+    /// Returns a copy having a different, unique ID.
+    ///
+    /// # Returns
+    ///
+    /// A copy of the resource.
     #[doc(alias = "gimp_resource_duplicate")]
     #[must_use]
     fn duplicate(&self) -> Option<Resource> {
         unsafe { from_glib_none(ffi::gimp_resource_duplicate(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Note: in most use cases, you should not need a resource's ID which is
+    /// mostly internal data and not reusable across sessions.
+    ///
+    /// # Returns
+    ///
+    /// the resource ID.
     #[doc(alias = "gimp_resource_get_id")]
     #[doc(alias = "get_id")]
     fn id(&self) -> i32 {
         unsafe { ffi::gimp_resource_get_id(self.as_ref().to_glib_none().0) }
     }
 
+    /// Returns the resource's name.
+    ///
+    /// This procedure returns the resource's name.
+    ///
+    /// # Returns
+    ///
+    /// The resource's name.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_resource_get_name")]
     #[doc(alias = "get_name")]
     fn name(&self) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_resource_get_name(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Returns whether the resource is a brush.
+    ///
+    /// This procedure returns TRUE if the specified resource is a brush.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource is a brush, FALSE otherwise.
     #[doc(alias = "gimp_resource_is_brush")]
     fn is_brush(&self) -> bool {
         unsafe { from_glib(ffi::gimp_resource_is_brush(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Whether the resource can be edited.
+    ///
+    /// Returns TRUE if you have permission to change the resource.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource can be edited.
     #[doc(alias = "gimp_resource_is_editable")]
     fn is_editable(&self) -> bool {
         unsafe {
@@ -104,11 +255,25 @@ pub trait ResourceExt: IsA<Resource> + 'static {
         }
     }
 
+    /// Returns whether the resource is a font.
+    ///
+    /// This procedure returns TRUE if the specified resource is a font.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource is a font, FALSE otherwise.
     #[doc(alias = "gimp_resource_is_font")]
     fn is_font(&self) -> bool {
         unsafe { from_glib(ffi::gimp_resource_is_font(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Returns whether the resource is a gradient.
+    ///
+    /// This procedure returns TRUE if the specified resource is a gradient.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource is a gradient, FALSE otherwise.
     #[doc(alias = "gimp_resource_is_gradient")]
     fn is_gradient(&self) -> bool {
         unsafe {
@@ -118,6 +283,13 @@ pub trait ResourceExt: IsA<Resource> + 'static {
         }
     }
 
+    /// Returns whether the resource is a palette.
+    ///
+    /// This procedure returns TRUE if the specified resource is a palette.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource is a palette, FALSE otherwise.
     #[doc(alias = "gimp_resource_is_palette")]
     fn is_palette(&self) -> bool {
         unsafe {
@@ -127,6 +299,13 @@ pub trait ResourceExt: IsA<Resource> + 'static {
         }
     }
 
+    /// Returns whether the resource is a pattern.
+    ///
+    /// This procedure returns TRUE if the specified resource is a pattern.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the resource is a pattern, FALSE otherwise.
     #[doc(alias = "gimp_resource_is_pattern")]
     fn is_pattern(&self) -> bool {
         unsafe {
@@ -136,11 +315,30 @@ pub trait ResourceExt: IsA<Resource> + 'static {
         }
     }
 
+    /// Returns TRUE if the resource is valid.
+    ///
+    /// This procedure checks if the given resource is valid and refers to an
+    /// existing resource.
+    ///
+    /// # Returns
+    ///
+    /// Whether the resource is valid.
     #[doc(alias = "gimp_resource_is_valid")]
     fn is_valid(&self) -> bool {
         unsafe { from_glib(ffi::gimp_resource_is_valid(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Renames a resource. When the name is in use, renames to a unique
+    /// name.
+    ///
+    /// Renames a resource. When the proposed name is already used, GIMP
+    /// generates a unique name.
+    /// ## `new_name`
+    /// The proposed new name of the resource.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_resource_rename")]
     fn rename(&self, new_name: &str) -> bool {
         unsafe {

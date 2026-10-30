@@ -12,6 +12,687 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    ///
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `label`
+    ///  Readable | Writeable
+    /// <details><summary><h4>SpinButton</h4></summary>
+    ///
+    ///
+    /// #### `adjustment`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `climb-rate`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `digits`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `numeric`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `snap-to-ticks`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `update-policy`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `value`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `wrap`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Entry</h4></summary>
+    ///
+    ///
+    /// #### `activates-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `attributes`
+    ///  A list of Pango attributes to apply to the text of the entry.
+    ///
+    /// This is mainly useful to change the size or weight of the text.
+    ///
+    /// The `PangoAttribute`'s `start_index` and `end_index` must refer to the
+    /// `GtkEntryBuffer` text, i.e. without the preedit string.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `buffer`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `caps-lock-warning`
+    ///  Whether password entries will show a warning when Caps Lock is on.
+    ///
+    /// Note that the warning is shown using a secondary icon, and thus
+    /// does not work if you are using the secondary icon position for some
+    /// other purpose.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `completion`
+    ///  The auxiliary completion object to use with the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `cursor-position`
+    ///  Readable
+    ///
+    ///
+    /// #### `editable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `enable-emoji-completion`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-frame`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `im-module`
+    ///  Which IM (input method) module should be used for this entry.
+    /// See `GtkIMContext`.
+    ///
+    /// Setting this to a non-[`None`] value overrides the
+    /// system-wide IM module setting. See the GtkSettings
+    /// `GtkSettings:gtk-im-module` property.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `inner-border`
+    ///  Sets the text area's border between the text and the frame.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `input-hints`
+    ///  Additional hints (beyond [`input-purpose`][struct@crate::gtk::Entry#input-purpose]) that
+    /// allow input methods to fine-tune their behaviour.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `input-purpose`
+    ///  The purpose of this text field.
+    ///
+    /// This property can be used by on-screen keyboards and other input
+    /// methods to adjust their behaviour.
+    ///
+    /// Note that setting the purpose to `GTK_INPUT_PURPOSE_PASSWORD` or
+    /// `GTK_INPUT_PURPOSE_PIN` is independent from setting
+    /// [`visibility`][struct@crate::gtk::Entry#visibility].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `invisible-char`
+    ///  The invisible character is used when masking entry contents (in
+    /// \"password mode\")"). When it is not explicitly set with the
+    /// [`invisible-char`][struct@crate::gtk::Entry#invisible-char] property, GTK+ determines the character
+    /// to use from a list of possible candidates, depending on availability
+    /// in the current font.
+    ///
+    /// This style property allows the theme to prepend a character
+    /// to the list of candidates.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `invisible-char-set`
+    ///  Whether the invisible char has been set for the [`gtk::Entry`][crate::gtk::Entry].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `max-length`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `max-width-chars`
+    ///  The desired maximum width of the entry, in characters.
+    /// If this property is set to -1, the width will be calculated
+    /// automatically.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `overwrite-mode`
+    ///  If text is overwritten when typing in the [`gtk::Entry`][crate::gtk::Entry].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `placeholder-text`
+    ///  The text that will be displayed in the [`gtk::Entry`][crate::gtk::Entry] when it is empty
+    /// and unfocused.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `populate-all`
+    ///  If :populate-all is [`true`], the [`populate-popup`][struct@crate::gtk::Entry#populate-popup]
+    /// signal is also emitted for touch popups.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-activatable`
+    ///  Whether the primary icon is activatable.
+    ///
+    /// GTK+ emits the [`icon-press`][struct@crate::gtk::Entry#icon-press] and [`icon-release`][struct@crate::gtk::Entry#icon-release]
+    /// signals only on sensitive, activatable icons.
+    ///
+    /// Sensitive, but non-activatable icons can be used for purely
+    /// informational purposes.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-gicon`
+    ///  The `GIcon` to use for the primary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-name`
+    ///  The icon name to use for the primary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-pixbuf`
+    ///  A pixbuf to use as the primary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-sensitive`
+    ///  Whether the primary icon is sensitive.
+    ///
+    /// An insensitive icon appears grayed out. GTK+ does not emit the
+    /// [`icon-press`][struct@crate::gtk::Entry#icon-press] and [`icon-release`][struct@crate::gtk::Entry#icon-release] signals and
+    /// does not allow DND from insensitive icons.
+    ///
+    /// An icon should be set insensitive if the action that would trigger
+    /// when clicked is currently not available.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-stock`
+    ///  The stock id to use for the primary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-storage-type`
+    ///  The representation which is used for the primary icon of the entry.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `primary-icon-tooltip-markup`
+    ///  The contents of the tooltip on the primary icon, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    ///
+    /// Also see [`EntryExtManual::set_icon_tooltip_markup()`][crate::gtk::prelude::EntryExtManual::set_icon_tooltip_markup()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-tooltip-text`
+    ///  The contents of the tooltip on the primary icon.
+    ///
+    /// Also see [`EntryExtManual::set_icon_tooltip_text()`][crate::gtk::prelude::EntryExtManual::set_icon_tooltip_text()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `progress-fraction`
+    ///  The current fraction of the task that's been completed.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `progress-pulse-step`
+    ///  The fraction of total entry width to move the progress
+    /// bouncing block for each call to [`EntryExtManual::progress_pulse()`][crate::gtk::prelude::EntryExtManual::progress_pulse()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `scroll-offset`
+    ///  Readable
+    ///
+    ///
+    /// #### `secondary-icon-activatable`
+    ///  Whether the secondary icon is activatable.
+    ///
+    /// GTK+ emits the [`icon-press`][struct@crate::gtk::Entry#icon-press] and [`icon-release`][struct@crate::gtk::Entry#icon-release]
+    /// signals only on sensitive, activatable icons.
+    ///
+    /// Sensitive, but non-activatable icons can be used for purely
+    /// informational purposes.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-gicon`
+    ///  The `GIcon` to use for the secondary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-name`
+    ///  The icon name to use for the secondary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-pixbuf`
+    ///  An pixbuf to use as the secondary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-sensitive`
+    ///  Whether the secondary icon is sensitive.
+    ///
+    /// An insensitive icon appears grayed out. GTK+ does not emit the
+    /// [`icon-press`][struct@crate::gtk::Entry#icon-press] and [`icon-release`][struct@crate::gtk::Entry#icon-release] signals and
+    /// does not allow DND from insensitive icons.
+    ///
+    /// An icon should be set insensitive if the action that would trigger
+    /// when clicked is currently not available.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-stock`
+    ///  The stock id to use for the secondary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-storage-type`
+    ///  The representation which is used for the secondary icon of the entry.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `secondary-icon-tooltip-markup`
+    ///  The contents of the tooltip on the secondary icon, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    ///
+    /// Also see [`EntryExtManual::set_icon_tooltip_markup()`][crate::gtk::prelude::EntryExtManual::set_icon_tooltip_markup()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-tooltip-text`
+    ///  The contents of the tooltip on the secondary icon.
+    ///
+    /// Also see [`EntryExtManual::set_icon_tooltip_text()`][crate::gtk::prelude::EntryExtManual::set_icon_tooltip_text()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `selection-bound`
+    ///  Readable
+    ///
+    ///
+    /// #### `shadow-type`
+    ///  Which kind of shadow to draw around the entry when
+    /// [`has-frame`][struct@crate::gtk::Entry#has-frame] is set to [`true`].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `show-emoji-icon`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `tabs`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `text`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `text-length`
+    ///  The length of the text in the [`gtk::Entry`][crate::gtk::Entry].
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `truncate-multiline`
+    ///  When [`true`], pasted multi-line text is truncated to the first line.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visibility`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-chars`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `xalign`
+    ///  The horizontal alignment, from 0 (left) to 1 (right).
+    /// Reversed for RTL layouts.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    /// <details><summary><h4>CellEditable</h4></summary>
+    ///
+    ///
+    /// #### `editing-canceled`
+    ///  Indicates whether editing on the cell has been canceled.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Orientable</h4></summary>
+    ///
+    ///
+    /// #### `orientation`
+    ///  The orientation of the orientable.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`SpinButtonExt`][trait@crate::prelude::SpinButtonExt], [`trait@gtk::prelude::EntryExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpSpinScale")]
     pub struct SpinScale(Object<ffi::GimpSpinScale, ffi::GimpSpinScaleClass>) @extends SpinButton, gtk::Entry, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 
@@ -55,12 +736,25 @@ impl SpinScale {
         unsafe { from_glib_none(ffi::gimp_spin_scale_get_label(self.to_glib_none().0)) }
     }
 
+    /// If `self` has been set with a mnemonic key in its label text, this function
+    /// returns the keyval used for the mnemonic accelerator.
+    ///
+    /// # Returns
+    ///
+    /// the keyval usable for accelerators, or `GDK_KEY_VoidSymbol`.
     #[doc(alias = "gimp_spin_scale_get_mnemonic_keyval")]
     #[doc(alias = "get_mnemonic_keyval")]
     pub fn mnemonic_keyval(&self) -> u32 {
         unsafe { ffi::gimp_spin_scale_get_mnemonic_keyval(self.to_glib_none().0) }
     }
 
+    /// If `constrain_drag` is TRUE, dragging the scale with the pointer will
+    /// only result into integer values. It will still possible to set the
+    /// scale to fractional values (if the spin scale "digits" is above 0)
+    /// for instance with keyboard edit.
+    /// ## `constrain`
+    /// whether constraining to integer values when dragging with
+    ///  pointer.
     #[doc(alias = "gimp_spin_scale_set_constrain_drag")]
     pub fn set_constrain_drag(&self, constrain: bool) {
         unsafe {

@@ -10,6 +10,11 @@ use crate::{
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// Operations on a single layer.
+    ///
+    /// # Implements
+    ///
+    /// [`LayerExt`][trait@crate::prelude::LayerExt], [`DrawableExt`][trait@crate::prelude::DrawableExt], [`ItemExt`][trait@crate::prelude::ItemExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpLayer")]
     pub struct Layer(Object<ffi::GimpLayer, ffi::GimpLayerClass>) @extends Drawable, Item;
 
@@ -21,6 +26,37 @@ glib::wrapper! {
 impl Layer {
     pub const NONE: Option<&'static Layer> = None;
 
+    /// Create a new layer.
+    ///
+    /// This procedure creates a new layer with the specified `width`,
+    /// `height` and `type_`. If `name` is [`None`], a default layer name will be
+    /// used. `opacity` and `mode` are also supplied parameters.
+    ///
+    /// The new layer still needs to be added to the image as this is not
+    /// automatic. Add the new layer with the [`Image::insert_layer()`][crate::Image::insert_layer()]
+    /// method.
+    ///
+    /// Other attributes such as layer mask and offsets should be set with
+    /// explicit procedure calls.
+    /// ## `image`
+    /// The image to which to add the layer.
+    /// ## `name`
+    /// The layer name.
+    /// ## `width`
+    /// The layer width.
+    /// ## `height`
+    /// The layer height.
+    /// ## `type_`
+    /// The layer type.
+    /// ## `opacity`
+    /// The layer opacity.
+    /// ## `mode`
+    /// The layer combination mode.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The newly created layer. The object belongs to libgimp and you should not free it.
     #[doc(alias = "gimp_layer_new")]
     pub fn new(
         image: &Image,
@@ -44,6 +80,25 @@ impl Layer {
         }
     }
 
+    /// Create a new layer by copying an existing drawable.
+    ///
+    /// This procedure creates a new layer as a copy of the specified
+    /// drawable.
+    ///
+    /// The new layer still needs to be added to the image as this is not
+    /// automatic. Add the new layer with the [`Image::insert_layer()`][crate::Image::insert_layer()]
+    /// method.
+    ///
+    /// Other attributes such as layer mask and offsets should be set with
+    /// explicit procedure calls.
+    /// ## `drawable`
+    /// The source drawable from where the new layer is copied.
+    /// ## `dest_image`
+    /// The destination image to which to add the layer.
+    ///
+    /// # Returns
+    ///
+    /// The newly copied layer.
     #[doc(alias = "gimp_layer_new_from_drawable")]
     #[doc(alias = "new_from_drawable")]
     pub fn from_drawable(drawable: &impl IsA<Drawable>, dest_image: &Image) -> Layer {
@@ -55,6 +110,34 @@ impl Layer {
         }
     }
 
+    /// Create a new layer from a [`gdk_pixbuf::Pixbuf`][crate::gdk_pixbuf::Pixbuf].
+    ///
+    /// This procedure creates a new layer from the given [`gdk_pixbuf::Pixbuf`][crate::gdk_pixbuf::Pixbuf]. The
+    /// image has to be an RGB image and just like with [`new()`][Self::new()]
+    /// you will still need to add the layer to it.
+    ///
+    /// If you pass `progress_end` > `progress_start` to this function,
+    /// [`progress_update()`][crate::progress_update()] will be called for. You have to call
+    /// [`progress_init()`][crate::progress_init()] beforehand then.
+    /// ## `image`
+    /// The RGB image to which to add the layer.
+    /// ## `name`
+    /// The layer name.
+    /// ## `pixbuf`
+    /// A GdkPixbuf.
+    /// ## `opacity`
+    /// The layer opacity.
+    /// ## `mode`
+    /// The layer combination mode.
+    /// ## `progress_start`
+    /// start of progress
+    /// ## `progress_end`
+    /// end of progress
+    ///
+    /// # Returns
+    ///
+    /// The newly created layer.
+    ///  The object belongs to libgimp and you should not free it.
     #[doc(alias = "gimp_layer_new_from_pixbuf")]
     #[doc(alias = "new_from_pixbuf")]
     pub fn from_pixbuf(
@@ -79,6 +162,27 @@ impl Layer {
         }
     }
 
+    /// Create a new layer from what is visible in an image.
+    ///
+    /// This procedure creates a new layer from what is visible in the given
+    /// image.
+    ///
+    /// The new layer still needs to be added to the image as this is not
+    /// automatic. Add the new layer with the [`Image::insert_layer()`][crate::Image::insert_layer()]
+    /// method.
+    ///
+    /// Other attributes such as layer mask and offsets should be set with
+    /// explicit procedure calls.
+    /// ## `image`
+    /// The source image from where the content is copied.
+    /// ## `dest_image`
+    /// The destination image to which to add the layer.
+    /// ## `name`
+    /// The layer name.
+    ///
+    /// # Returns
+    ///
+    /// The newly created layer.
     #[doc(alias = "gimp_layer_new_from_visible")]
     #[doc(alias = "new_from_visible")]
     pub fn from_visible(image: &Image, dest_image: &Image, name: Option<&str>) -> Layer {
@@ -91,11 +195,33 @@ impl Layer {
         }
     }
 
+    /// Get the specified mask's layer.
+    ///
+    /// This procedure returns the specified mask's layer , or -1 if none
+    /// exists.
+    /// ## `mask`
+    /// Mask for which to return the layer.
+    ///
+    /// # Returns
+    ///
+    /// The mask's layer.
     #[doc(alias = "gimp_layer_from_mask")]
     pub fn from_mask(mask: &LayerMask) -> Option<Layer> {
         unsafe { from_glib_none(ffi::gimp_layer_from_mask(mask.to_glib_none().0)) }
     }
 
+    /// Returns a [`Layer`][crate::Layer] representing `layer_id`. This function calls
+    /// [`Item::by_id()`][crate::Item::by_id()] and returns the item if it is layer or [`None`]
+    /// otherwise.
+    /// ## `layer_id`
+    /// The layer id.
+    ///
+    /// # Returns
+    ///
+    /// a [`Layer`][crate::Layer] for `layer_id` or
+    ///  [`None`] if `layer_id` does not represent a valid layer. The
+    ///  object belongs to libgimp and you must not modify or unref
+    ///  it.
     #[doc(alias = "gimp_layer_get_by_id")]
     #[doc(alias = "get_by_id")]
     pub fn by_id(layer_id: i32) -> Option<Layer> {
@@ -103,12 +229,43 @@ impl Layer {
     }
 }
 
+/// Trait containing all [`struct@Layer`] methods.
+///
+/// # Implementors
+///
+/// [`GroupLayer`][struct@crate::GroupLayer], [`Layer`][struct@crate::Layer], [`LinkLayer`][struct@crate::LinkLayer], [`TextLayer`][struct@crate::TextLayer], [`VectorLayer`][struct@crate::VectorLayer]
 pub trait LayerExt: IsA<Layer> + 'static {
+    /// Add an alpha channel to the layer if it doesn't already have one.
+    ///
+    /// This procedure adds an additional component to the specified layer
+    /// if it does not already possess an alpha channel. An alpha channel
+    /// makes it possible to clear and erase to transparency, instead of the
+    /// background color. This transforms layers of type RGB to RGBA, GRAY
+    /// to GRAYA, and INDEXED to INDEXEDA.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_add_alpha")]
     fn add_alpha(&self) -> bool {
         unsafe { from_glib(ffi::gimp_layer_add_alpha(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Add a layer mask to the specified layer.
+    ///
+    /// This procedure adds a layer mask to the specified layer. Layer masks
+    /// serve as an additional alpha channel for a layer. This procedure
+    /// will fail if a number of prerequisites aren't met. The layer cannot
+    /// already have a layer mask. The specified mask must exist and have
+    /// the same dimensions as the layer. The layer must have been created
+    /// for use with the specified image and the mask must have been created
+    /// with the procedure 'gimp-layer-create-mask'.
+    /// ## `mask`
+    /// The mask to add to the layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_add_mask")]
     fn add_mask(&self, mask: &LayerMask) -> bool {
         unsafe {
@@ -125,6 +282,35 @@ pub trait LayerExt: IsA<Layer> + 'static {
         unsafe { from_glib_none(ffi::gimp_layer_copy(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Create a layer mask for the specified layer.
+    ///
+    /// This procedure creates a layer mask for the specified layer.
+    /// Layer masks serve as an additional alpha channel for a layer.
+    /// Different types of masks are allowed for initialisation:
+    ///
+    /// - white mask (leaves the layer fully visible);
+    /// - black mask (gives the layer complete transparency);
+    /// - the layer's alpha channel (either a copy, or a transfer, which
+    /// leaves the layer fully visible, but which may be more useful than a
+    /// white mask);
+    /// - the current selection;
+    /// - a grayscale copy of the layer;
+    /// - or a copy of the active channel.
+    ///
+    /// The layer mask still needs to be added to the layer. This can be
+    /// done with a call to [`add_mask()`][Self::add_mask()].
+    ///
+    /// [`create_mask()`][Self::create_mask()] will fail if there are no active channels
+    /// on the image, when called with 'ADD-CHANNEL-MASK'. It will return a
+    /// black mask when called with 'ADD-ALPHA-MASK' or
+    /// 'ADD-ALPHA-TRANSFER-MASK' on a layer with no alpha channels, or with
+    /// 'ADD-SELECTION-MASK' when there is no selection on the image.
+    /// ## `mask_type`
+    /// The type of mask.
+    ///
+    /// # Returns
+    ///
+    /// The newly created mask.
     #[doc(alias = "gimp_layer_create_mask")]
     fn create_mask(&self, mask_type: AddMaskType) -> Option<LayerMask> {
         unsafe {
@@ -135,11 +321,30 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Remove the alpha channel from the layer if it has one.
+    ///
+    /// This procedure removes the alpha channel from a layer, blending all
+    /// (partially) transparent pixels in the layer against the background
+    /// color. This transforms layers of type RGBA to RGB, GRAYA to GRAY,
+    /// and INDEXEDA to INDEXED.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_flatten")]
     fn flatten(&self) -> bool {
         unsafe { from_glib(ffi::gimp_layer_flatten(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Get the apply mask setting of the specified layer.
+    ///
+    /// This procedure returns the specified layer's apply mask setting. If
+    /// the value is TRUE, then the layer mask for this layer is currently
+    /// being composited with the layer's alpha channel.
+    ///
+    /// # Returns
+    ///
+    /// The layer's apply mask setting.
     #[doc(alias = "gimp_layer_get_apply_mask")]
     #[doc(alias = "get_apply_mask")]
     fn is_apply_mask(&self) -> bool {
@@ -150,6 +355,13 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Get the blend space of the specified layer.
+    ///
+    /// This procedure returns the specified layer's blend space.
+    ///
+    /// # Returns
+    ///
+    /// The layer blend space.
     #[doc(alias = "gimp_layer_get_blend_space")]
     #[doc(alias = "get_blend_space")]
     fn blend_space(&self) -> LayerColorSpace {
@@ -160,6 +372,13 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Get the composite mode of the specified layer.
+    ///
+    /// This procedure returns the specified layer's composite mode.
+    ///
+    /// # Returns
+    ///
+    /// The layer composite mode.
     #[doc(alias = "gimp_layer_get_composite_mode")]
     #[doc(alias = "get_composite_mode")]
     fn composite_mode(&self) -> LayerCompositeMode {
@@ -170,6 +389,13 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Get the composite space of the specified layer.
+    ///
+    /// This procedure returns the specified layer's composite space.
+    ///
+    /// # Returns
+    ///
+    /// The layer composite space.
     #[doc(alias = "gimp_layer_get_composite_space")]
     #[doc(alias = "get_composite_space")]
     fn composite_space(&self) -> LayerColorSpace {
@@ -180,6 +406,15 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Get the edit mask setting of the specified layer.
+    ///
+    /// This procedure returns the specified layer's edit mask setting. If
+    /// the value is TRUE, then the layer mask for this layer is currently
+    /// active, and not the layer.
+    ///
+    /// # Returns
+    ///
+    /// The layer's edit mask setting.
     #[doc(alias = "gimp_layer_get_edit_mask")]
     #[doc(alias = "get_edit_mask")]
     fn is_edit_mask(&self) -> bool {
@@ -190,6 +425,14 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Get the lock alpha channel setting of the specified layer.
+    ///
+    /// This procedure returns the specified layer's lock alpha channel
+    /// setting.
+    ///
+    /// # Returns
+    ///
+    /// The layer's lock alpha channel setting.
     #[doc(alias = "gimp_layer_get_lock_alpha")]
     #[doc(alias = "get_lock_alpha")]
     fn is_lock_alpha(&self) -> bool {
@@ -200,24 +443,56 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Get the specified layer's mask if it exists.
+    ///
+    /// This procedure returns the specified layer's mask, or -1 if none
+    /// exists.
+    ///
+    /// # Returns
+    ///
+    /// The layer mask.
     #[doc(alias = "gimp_layer_get_mask")]
     #[doc(alias = "get_mask")]
     fn mask(&self) -> Option<LayerMask> {
         unsafe { from_glib_none(ffi::gimp_layer_get_mask(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Get the combination mode of the specified layer.
+    ///
+    /// This procedure returns the specified layer's combination mode.
+    ///
+    /// # Returns
+    ///
+    /// The layer combination mode.
     #[doc(alias = "gimp_layer_get_mode")]
     #[doc(alias = "get_mode")]
     fn mode(&self) -> LayerMode {
         unsafe { from_glib(ffi::gimp_layer_get_mode(self.as_ref().to_glib_none().0)) }
     }
 
+    /// Get the opacity of the specified layer.
+    ///
+    /// This procedure returns the specified layer's opacity.
+    ///
+    /// # Returns
+    ///
+    /// The layer opacity.
     #[doc(alias = "gimp_layer_get_opacity")]
     #[doc(alias = "get_opacity")]
     fn opacity(&self) -> f64 {
         unsafe { ffi::gimp_layer_get_opacity(self.as_ref().to_glib_none().0) }
     }
 
+    /// Get the show mask setting of the specified layer.
+    ///
+    /// This procedure returns the specified layer's show mask setting. This
+    /// controls whether the layer or its mask is visible. TRUE indicates
+    /// that the mask should be visible. If the layer has no mask, then this
+    /// function returns an error.
+    ///
+    /// # Returns
+    ///
+    /// The layer's show mask setting.
     #[doc(alias = "gimp_layer_get_show_mask")]
     #[doc(alias = "get_show_mask")]
     fn shows_mask(&self) -> bool {
@@ -228,6 +503,15 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Is the specified layer a floating selection?
+    ///
+    /// This procedure returns whether the layer is a floating selection.
+    /// Floating selections are special cases of layers which are attached
+    /// to a specific drawable.
+    ///
+    /// # Returns
+    ///
+    /// TRUE if the layer is a floating selection.
     #[doc(alias = "gimp_layer_is_floating_sel")]
     fn is_floating_sel(&self) -> bool {
         unsafe {
@@ -237,6 +521,16 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Remove the specified layer mask from the layer.
+    ///
+    /// This procedure removes the specified layer mask from the layer. If
+    /// the mask doesn't exist, an error is returned.
+    /// ## `mode`
+    /// Removal mode.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_remove_mask")]
     fn remove_mask(&self, mode: MaskApplyMode) -> bool {
         unsafe {
@@ -247,6 +541,24 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Resize the layer to the specified extents.
+    ///
+    /// This procedure resizes the layer so that its new width and height
+    /// are equal to the supplied parameters. Offsets are also provided
+    /// which describe the position of the previous layer's content. This
+    /// operation only works if the layer has been added to an image.
+    /// ## `new_width`
+    /// New layer width.
+    /// ## `new_height`
+    /// New layer height.
+    /// ## `offx`
+    /// x offset between upper left corner of old and new layers: (old - new).
+    /// ## `offy`
+    /// y offset between upper left corner of old and new layers: (old - new).
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_resize")]
     fn resize(&self, new_width: i32, new_height: i32, offx: i32, offy: i32) -> bool {
         unsafe {
@@ -260,6 +572,14 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Resize a layer to the image size.
+    ///
+    /// This procedure resizes the layer so that it's new width and height
+    /// are equal to the width and height of its image container.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_resize_to_image_size")]
     fn resize_to_image_size(&self) -> bool {
         unsafe {
@@ -269,6 +589,24 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Scale the layer using the default interpolation method.
+    ///
+    /// This procedure scales the layer so that its new width and height are
+    /// equal to the supplied parameters. The 'local-origin' parameter
+    /// specifies whether to scale from the center of the layer, or from the
+    /// image origin. This operation only works if the layer has been added
+    /// to an image. The interpolation method used can be set with
+    /// [`context_set_interpolation()`][crate::context_set_interpolation()].
+    /// ## `new_width`
+    /// New layer width.
+    /// ## `new_height`
+    /// New layer height.
+    /// ## `local_origin`
+    /// Use a local origin (as opposed to the image origin).
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_scale")]
     fn scale(&self, new_width: i32, new_height: i32, local_origin: bool) -> bool {
         unsafe {
@@ -281,6 +619,18 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the apply mask setting of the specified layer.
+    ///
+    /// This procedure sets the specified layer's apply mask setting. This
+    /// controls whether the layer's mask is currently affecting the alpha
+    /// channel. If there is no layer mask, this function will return an
+    /// error.
+    /// ## `apply_mask`
+    /// The new layer's apply mask setting.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_apply_mask")]
     fn set_apply_mask(&self, apply_mask: bool) -> bool {
         unsafe {
@@ -291,6 +641,15 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the blend space of the specified layer.
+    ///
+    /// This procedure sets the specified layer's blend space.
+    /// ## `blend_space`
+    /// The new layer blend space.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_blend_space")]
     fn set_blend_space(&self, blend_space: LayerColorSpace) -> bool {
         unsafe {
@@ -301,6 +660,15 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the composite mode of the specified layer.
+    ///
+    /// This procedure sets the specified layer's composite mode.
+    /// ## `composite_mode`
+    /// The new layer composite mode.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_composite_mode")]
     fn set_composite_mode(&self, composite_mode: LayerCompositeMode) -> bool {
         unsafe {
@@ -311,6 +679,15 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the composite space of the specified layer.
+    ///
+    /// This procedure sets the specified layer's composite space.
+    /// ## `composite_space`
+    /// The new layer composite space.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_composite_space")]
     fn set_composite_space(&self, composite_space: LayerColorSpace) -> bool {
         unsafe {
@@ -321,6 +698,18 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the edit mask setting of the specified layer.
+    ///
+    /// This procedure sets the specified layer's edit mask setting. This
+    /// controls whether the layer or it's mask is currently active for
+    /// editing. If the specified layer has no layer mask, then this
+    /// procedure will return an error.
+    /// ## `edit_mask`
+    /// The new layer's edit mask setting.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_edit_mask")]
     fn set_edit_mask(&self, edit_mask: bool) -> bool {
         unsafe {
@@ -331,6 +720,16 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the lock alpha channel setting of the specified layer.
+    ///
+    /// This procedure sets the specified layer's lock alpha channel
+    /// setting.
+    /// ## `lock_alpha`
+    /// The new layer's lock alpha channel setting.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_lock_alpha")]
     fn set_lock_alpha(&self, lock_alpha: bool) -> bool {
         unsafe {
@@ -341,6 +740,15 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the combination mode of the specified layer.
+    ///
+    /// This procedure sets the specified layer's combination mode.
+    /// ## `mode`
+    /// The new layer combination mode.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_mode")]
     fn set_mode(&self, mode: LayerMode) -> bool {
         unsafe {
@@ -351,6 +759,19 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the layer offsets.
+    ///
+    /// This procedure sets the offsets for the specified layer. The offsets
+    /// are relative to the image origin and can be any values. This
+    /// operation is valid only on layers which have been added to an image.
+    /// ## `offx`
+    /// Offset in x direction.
+    /// ## `offy`
+    /// Offset in y direction.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_offsets")]
     fn set_offsets(&self, offx: i32, offy: i32) -> bool {
         unsafe {
@@ -362,6 +783,15 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the opacity of the specified layer.
+    ///
+    /// This procedure sets the specified layer's opacity.
+    /// ## `opacity`
+    /// The new layer opacity.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_opacity")]
     fn set_opacity(&self, opacity: f64) -> bool {
         unsafe {
@@ -372,6 +802,18 @@ pub trait LayerExt: IsA<Layer> + 'static {
         }
     }
 
+    /// Set the show mask setting of the specified layer.
+    ///
+    /// This procedure sets the specified layer's show mask setting. This
+    /// controls whether the layer or its mask is visible. TRUE indicates
+    /// that the mask should be visible. If there is no layer mask, this
+    /// function will return an error.
+    /// ## `show_mask`
+    /// The new layer's show mask setting.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_layer_set_show_mask")]
     fn set_show_mask(&self, show_mask: bool) -> bool {
         unsafe {

@@ -2,13 +2,17 @@
 #![doc = include_str!("../README.md")]
 
 pub use babl;
+pub use cairo;
 pub use ffi;
+pub use gdk_pixbuf;
 pub use gegl;
 pub use gexiv2;
 pub use gio;
 pub use glib;
+pub use pango;
 
 #[allow(clippy::too_many_arguments)]
+#[allow(clippy::doc_lazy_continuation)]
 #[allow(clippy::let_unit_value)]
 #[allow(clippy::type_complexity)]
 #[allow(clippy::let_and_return)]

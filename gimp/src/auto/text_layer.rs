@@ -13,6 +13,11 @@ use crate::{CapStyle, JoinStyle, TextOutline, TextOutlineDirection};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// Functions for querying and manipulating text layers.
+    ///
+    /// # Implements
+    ///
+    /// [`LayerExt`][trait@crate::prelude::LayerExt], [`DrawableExt`][trait@crate::prelude::DrawableExt], [`ItemExt`][trait@crate::prelude::ItemExt], [`trait@glib::ObjectExt`], [`RasterizableExt`][trait@crate::prelude::RasterizableExt]
     #[doc(alias = "GimpTextLayer")]
     pub struct TextLayer(Object<ffi::GimpTextLayer, ffi::GimpTextLayerClass>) @extends Layer, Drawable, Item, @implements Rasterizable;
 
@@ -22,6 +27,34 @@ glib::wrapper! {
 }
 
 impl TextLayer {
+    /// Creates a new text layer.
+    ///
+    /// This procedure creates a new text layer displaying the specified
+    /// `text`. By default the width and height of the layer will be
+    /// determined by the `text` contents, the `font`, `size` and `unit`.
+    ///
+    /// The new layer still needs to be added to the image as this is not
+    /// automatic. Add the new layer with the [`Image::insert_layer()`][crate::Image::insert_layer()]
+    /// method.
+    ///
+    /// The arguments are kept as simple as necessary for the basic case.
+    /// All text attributes, however, can be modified with the appropriate
+    /// `gimp_text_layer_set_*()` procedures.
+    /// ## `image`
+    /// The image.
+    /// ## `text`
+    /// The text to generate (in UTF-8 encoding).
+    /// ## `font`
+    /// The font to write the text with.
+    /// ## `size`
+    /// The size of text in either pixels or points.
+    /// ## `unit`
+    /// The units of specified size.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The new text layer. The object belongs to libgimp and you should not free it.
     #[doc(alias = "gimp_text_layer_new")]
     pub fn new(image: &Image, text: &str, font: &Font, size: f64, unit: &Unit) -> TextLayer {
         unsafe {
@@ -35,12 +68,28 @@ impl TextLayer {
         }
     }
 
+    /// Check if antialiasing is used in the text layer.
+    ///
+    /// This procedure checks if antialiasing is enabled in the specified
+    /// text layer.
+    ///
+    /// # Returns
+    ///
+    /// A flag which is true if antialiasing is used for rendering the font in the text layer.
     #[doc(alias = "gimp_text_layer_get_antialias")]
     #[doc(alias = "get_antialias")]
     pub fn is_antialias(&self) -> bool {
         unsafe { from_glib(ffi::gimp_text_layer_get_antialias(self.to_glib_none().0)) }
     }
 
+    /// Get the base direction used for rendering the text layer.
+    ///
+    /// This procedure returns the base direction used for rendering the
+    /// text in the text layer
+    ///
+    /// # Returns
+    ///
+    /// The based direction used for the text layer.
     #[doc(alias = "gimp_text_layer_get_base_direction")]
     #[doc(alias = "get_base_direction")]
     pub fn base_direction(&self) -> TextDirection {
@@ -51,18 +100,45 @@ impl TextLayer {
         }
     }
 
+    /// Get the color of the text in a text layer.
+    ///
+    /// This procedure returns the color of the text in a text layer.
+    ///
+    /// # Returns
+    ///
+    /// The color of the text.
     #[doc(alias = "gimp_text_layer_get_color")]
     #[doc(alias = "get_color")]
     pub fn color(&self) -> Option<gegl::Color> {
         unsafe { from_glib_full(ffi::gimp_text_layer_get_color(self.to_glib_none().0)) }
     }
 
+    /// Get the font from a text layer as string.
+    ///
+    /// This procedure returns the font from a text layer.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The font which is used in the specified text layer.
     #[doc(alias = "gimp_text_layer_get_font")]
     #[doc(alias = "get_font")]
     pub fn font(&self) -> Option<Font> {
         unsafe { from_glib_none(ffi::gimp_text_layer_get_font(self.to_glib_none().0)) }
     }
 
+    /// Get the font size from a text layer.
+    ///
+    /// This procedure returns the size of the font which is used in a text
+    /// layer. You will receive the size as a double 'font-size' in 'unit'
+    /// units.
+    ///
+    /// # Returns
+    ///
+    /// The font size.
+    ///
+    /// ## `unit`
+    /// The unit used for the font size.
     #[doc(alias = "gimp_text_layer_get_font_size")]
     #[doc(alias = "get_font_size")]
     pub fn font_size(&self) -> (f64, Unit) {
@@ -73,18 +149,43 @@ impl TextLayer {
         }
     }
 
+    /// Get information about hinting in the specified text layer.
+    ///
+    /// This procedure provides information about the hinting that is being
+    /// used in a text layer. Hinting can be optimized for fidelity or
+    /// contrast or it can be turned entirely off.
+    ///
+    /// # Returns
+    ///
+    /// The hint style used for font outlines.
     #[doc(alias = "gimp_text_layer_get_hint_style")]
     #[doc(alias = "get_hint_style")]
     pub fn hint_style(&self) -> TextHintStyle {
         unsafe { from_glib(ffi::gimp_text_layer_get_hint_style(self.to_glib_none().0)) }
     }
 
+    /// Get the line indentation of text layer.
+    ///
+    /// This procedure returns the indentation of the first line in a text
+    /// layer.
+    ///
+    /// # Returns
+    ///
+    /// The indentation value of the first line.
     #[doc(alias = "gimp_text_layer_get_indent")]
     #[doc(alias = "get_indent")]
     pub fn indent(&self) -> f64 {
         unsafe { ffi::gimp_text_layer_get_indent(self.to_glib_none().0) }
     }
 
+    /// Get the text justification information of the text layer.
+    ///
+    /// This procedure returns the alignment of the lines in the text layer
+    /// relative to each other.
+    ///
+    /// # Returns
+    ///
+    /// The justification used in the text layer.
     #[doc(alias = "gimp_text_layer_get_justification")]
     #[doc(alias = "get_justification")]
     pub fn justification(&self) -> TextJustification {
@@ -95,36 +196,88 @@ impl TextLayer {
         }
     }
 
+    /// Check if kerning is used in the text layer.
+    ///
+    /// This procedure checks if kerning is enabled in the specified text
+    /// layer.
+    ///
+    /// # Returns
+    ///
+    /// A flag which is true if kerning is used in the text layer.
     #[doc(alias = "gimp_text_layer_get_kerning")]
     #[doc(alias = "get_kerning")]
     pub fn is_kerning(&self) -> bool {
         unsafe { from_glib(ffi::gimp_text_layer_get_kerning(self.to_glib_none().0)) }
     }
 
+    /// Get the language used in the text layer.
+    ///
+    /// This procedure returns the language string which is set for the text
+    /// in the text layer.
+    ///
+    /// # Returns
+    ///
+    /// The language used in the text layer.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_text_layer_get_language")]
     #[doc(alias = "get_language")]
     pub fn language(&self) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_text_layer_get_language(self.to_glib_none().0)) }
     }
 
+    /// Get the letter spacing used in a text layer.
+    ///
+    /// This procedure returns the additional spacing between the single
+    /// glyphs in a text layer.
+    ///
+    /// # Returns
+    ///
+    /// The letter-spacing value.
     #[doc(alias = "gimp_text_layer_get_letter_spacing")]
     #[doc(alias = "get_letter_spacing")]
     pub fn letter_spacing(&self) -> f64 {
         unsafe { ffi::gimp_text_layer_get_letter_spacing(self.to_glib_none().0) }
     }
 
+    /// Get the spacing between lines of text.
+    ///
+    /// This procedure returns the line-spacing between lines of text in a
+    /// text layer.
+    ///
+    /// # Returns
+    ///
+    /// The line-spacing value.
     #[doc(alias = "gimp_text_layer_get_line_spacing")]
     #[doc(alias = "get_line_spacing")]
     pub fn line_spacing(&self) -> f64 {
         unsafe { ffi::gimp_text_layer_get_line_spacing(self.to_glib_none().0) }
     }
 
+    /// Get the markup from a text layer as string.
+    ///
+    /// This procedure returns the markup of the styles from a text layer.
+    /// The markup will be in the form of Pango's markup - See
+    /// https://www.pango.org/ for more information about Pango and its
+    /// markup.
+    ///
+    /// # Returns
+    ///
+    ///
+    ///  The markup which represents the style of the specified text layer.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_text_layer_get_markup")]
     #[doc(alias = "get_markup")]
     pub fn markup(&self) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_text_layer_get_markup(self.to_glib_none().0)) }
     }
 
+    /// Get the outline type from a text layer.
+    ///
+    /// This procedure returns the outline type of a text layer.
+    ///
+    /// # Returns
+    ///
+    /// The type of outline in the text layer.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_get_outline")]
@@ -133,6 +286,14 @@ impl TextLayer {
         unsafe { from_glib(ffi::gimp_text_layer_get_outline(self.to_glib_none().0)) }
     }
 
+    /// Get the outline antialias setting from a text layer.
+    ///
+    /// This procedure returns the antialias setting of the text outline in
+    /// a text layer.
+    ///
+    /// # Returns
+    ///
+    /// The text outline antialias setting.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_get_outline_antialias")]
@@ -145,6 +306,13 @@ impl TextLayer {
         }
     }
 
+    /// Get the outline cap style from a text layer.
+    ///
+    /// This procedure returns the outline cap style of a text layer.
+    ///
+    /// # Returns
+    ///
+    /// The cap style of the outline in the text layer.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_get_outline_cap_style")]
@@ -157,6 +325,14 @@ impl TextLayer {
         }
     }
 
+    /// Get the color of the text outline in a text layer.
+    ///
+    /// This procedure returns the color of the text outline in a text
+    /// layer.
+    ///
+    /// # Returns
+    ///
+    /// The color of the text outline.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_get_outline_color")]
@@ -169,6 +345,14 @@ impl TextLayer {
         }
     }
 
+    /// Get the outline dash offset from a text layer.
+    ///
+    /// This procedure returns the dash offset of the text outline in a text
+    /// layer.
+    ///
+    /// # Returns
+    ///
+    /// The text outline dash offset.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_get_outline_dash_offset")]
@@ -177,6 +361,13 @@ impl TextLayer {
         unsafe { ffi::gimp_text_layer_get_outline_dash_offset(self.to_glib_none().0) }
     }
 
+    /// Get the outline direction from a text layer.
+    ///
+    /// This procedure returns the outline direction of a text layer.
+    ///
+    /// # Returns
+    ///
+    /// The direction of the outline in the text layer.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_get_outline_direction")]
@@ -189,6 +380,13 @@ impl TextLayer {
         }
     }
 
+    /// Get the outline join style from a text layer.
+    ///
+    /// This procedure returns the outline join style of a text layer.
+    ///
+    /// # Returns
+    ///
+    /// The join style of the outline in the text layer.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_get_outline_join_style")]
@@ -201,6 +399,14 @@ impl TextLayer {
         }
     }
 
+    /// Get the outline miter limit from a text layer.
+    ///
+    /// This procedure returns the miter limit of the text outline in a text
+    /// layer.
+    ///
+    /// # Returns
+    ///
+    /// The text outline miter limit.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_get_outline_miter_limit")]
@@ -209,6 +415,17 @@ impl TextLayer {
         unsafe { ffi::gimp_text_layer_get_outline_miter_limit(self.to_glib_none().0) }
     }
 
+    /// Get the outline width from a text layer.
+    ///
+    /// This procedure returns the color of the text outline in a text
+    /// layer.
+    ///
+    /// # Returns
+    ///
+    /// The text outline width.
+    ///
+    /// ## `outline_unit`
+    /// The unit used for the outline width.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_get_outline_width")]
@@ -222,12 +439,33 @@ impl TextLayer {
         }
     }
 
+    /// Get the text from a text layer as string.
+    ///
+    /// This procedure returns the text from a text layer as a string.
+    ///
+    /// # Returns
+    ///
+    /// The text from the specified text layer.
+    ///  The returned value must be freed with `g_free()`.
     #[doc(alias = "gimp_text_layer_get_text")]
     #[doc(alias = "get_text")]
     pub fn text(&self) -> Option<glib::GString> {
         unsafe { from_glib_full(ffi::gimp_text_layer_get_text(self.to_glib_none().0)) }
     }
 
+    /// Resize the box of a text layer.
+    ///
+    /// This procedure changes the width and height of a text layer while
+    /// keeping it as a text layer and not converting it to a bitmap like
+    /// [`LayerExt::resize()`][crate::prelude::LayerExt::resize()] would do.
+    /// ## `width`
+    /// The new box width in pixels.
+    /// ## `height`
+    /// The new box height in pixels.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_resize")]
     pub fn resize(&self, width: f64, height: f64) -> bool {
         unsafe {
@@ -239,6 +477,16 @@ impl TextLayer {
         }
     }
 
+    /// Enable/disable anti-aliasing in a text layer.
+    ///
+    /// This procedure enables or disables anti-aliasing of the text in a
+    /// text layer.
+    /// ## `antialias`
+    /// Enable/disable antialiasing of the text.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_antialias")]
     pub fn set_antialias(&self, antialias: bool) -> bool {
         unsafe {
@@ -249,6 +497,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the base direction in the text layer.
+    ///
+    /// This procedure sets the base direction used in applying the Unicode
+    /// bidirectional algorithm when rendering the text.
+    /// ## `direction`
+    /// The base direction of the text.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_base_direction")]
     pub fn set_base_direction(&self, direction: TextDirection) -> bool {
         unsafe {
@@ -259,6 +517,15 @@ impl TextLayer {
         }
     }
 
+    /// Set the color of the text in the text layer.
+    ///
+    /// This procedure sets the text color in the text layer 'layer'.
+    /// ## `color`
+    /// The color to use for the text.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_color")]
     pub fn set_color(&self, color: &impl IsA<gegl::Color>) -> bool {
         unsafe {
@@ -269,6 +536,15 @@ impl TextLayer {
         }
     }
 
+    /// Set the font of a text layer.
+    ///
+    /// This procedure modifies the font used in the specified text layer.
+    /// ## `font`
+    /// The new font to use.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_font")]
     pub fn set_font(&self, font: &Font) -> bool {
         unsafe {
@@ -279,6 +555,18 @@ impl TextLayer {
         }
     }
 
+    /// Set the font size.
+    ///
+    /// This procedure changes the font size of a text layer. The size of
+    /// your font will be a double 'font-size' of 'unit' units.
+    /// ## `font_size`
+    /// The font size.
+    /// ## `unit`
+    /// The unit to use for the font size.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_font_size")]
     pub fn set_font_size(&self, font_size: f64, unit: &Unit) -> bool {
         unsafe {
@@ -290,6 +578,17 @@ impl TextLayer {
         }
     }
 
+    /// Control how font outlines are hinted in a text layer.
+    ///
+    /// This procedure sets the hint style for font outlines in a text
+    /// layer. This controls whether to fit font outlines to the pixel grid,
+    /// and if so, whether to optimize for fidelity or contrast.
+    /// ## `style`
+    /// The new hint style.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_hint_style")]
     pub fn set_hint_style(&self, style: TextHintStyle) -> bool {
         unsafe {
@@ -300,6 +599,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the indentation of the first line in a text layer.
+    ///
+    /// This procedure sets the indentation of the first line in the text
+    /// layer.
+    /// ## `indent`
+    /// The indentation for the first line.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_indent")]
     pub fn set_indent(&self, indent: f64) -> bool {
         unsafe {
@@ -310,6 +619,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the justification of the text in a text layer.
+    ///
+    /// This procedure sets the alignment of the lines in the text layer
+    /// relative to each other.
+    /// ## `justify`
+    /// The justification for your text.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_justification")]
     pub fn set_justification(&self, justify: TextJustification) -> bool {
         unsafe {
@@ -320,6 +639,15 @@ impl TextLayer {
         }
     }
 
+    /// Enable/disable kerning in a text layer.
+    ///
+    /// This procedure enables or disables kerning in a text layer.
+    /// ## `kerning`
+    /// Enable/disable kerning in the text.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_kerning")]
     pub fn set_kerning(&self, kerning: bool) -> bool {
         unsafe {
@@ -330,6 +658,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the language of the text layer.
+    ///
+    /// This procedure sets the language of the text in text layer. For some
+    /// scripts the language has an influence of how the text is rendered.
+    /// ## `language`
+    /// The new language to use for the text layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_language")]
     pub fn set_language(&self, language: &str) -> bool {
         unsafe {
@@ -340,6 +678,16 @@ impl TextLayer {
         }
     }
 
+    /// Adjust the letter spacing in a text layer.
+    ///
+    /// This procedure sets the additional spacing between the single glyphs
+    /// in a text layer.
+    /// ## `letter_spacing`
+    /// The additional letter spacing to use.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_letter_spacing")]
     pub fn set_letter_spacing(&self, letter_spacing: f64) -> bool {
         unsafe {
@@ -350,6 +698,16 @@ impl TextLayer {
         }
     }
 
+    /// Adjust the line spacing in a text layer.
+    ///
+    /// This procedure sets the additional spacing used between lines a text
+    /// layer.
+    /// ## `line_spacing`
+    /// The additional line spacing to use.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_line_spacing")]
     pub fn set_line_spacing(&self, line_spacing: f64) -> bool {
         unsafe {
@@ -360,6 +718,20 @@ impl TextLayer {
         }
     }
 
+    /// Set the markup for a text layer from a string.
+    ///
+    /// This procedure sets the markup of the styles for a text layer. The
+    /// markup should be in the form of Pango's markup - See
+    /// https://docs.gtk.org/Pango/pango_markup.html for a reference.
+    /// Note that GIMP's text tool does not support all of Pango markup. Any
+    /// unsupported markup will still be applied to your text layer, yet
+    /// would be dropped as soon as you edit text with the tool.
+    /// ## `markup`
+    /// The new markup to set.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_markup")]
     pub fn set_markup(&self, markup: &str) -> bool {
         unsafe {
@@ -370,6 +742,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the outline type for the text layer.
+    ///
+    /// This procedure sets the type of the outline in the text layer
+    /// 'layer'.
+    /// ## `outline`
+    /// The type of outline in the text layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_set_outline")]
@@ -382,6 +764,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the outline antialias setting from a text layer.
+    ///
+    /// This procedure sets the text outline antialias in the text layer
+    /// 'layer'.
+    /// ## `outline_antialias`
+    /// The text outline antialias setting.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_set_outline_antialias")]
@@ -394,6 +786,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the outline cap style for the text layer.
+    ///
+    /// This procedure sets the cap style of the outline in the text layer
+    /// 'layer'.
+    /// ## `outline_cap_style`
+    /// The cap style of the outline in the text layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_set_outline_cap_style")]
@@ -406,6 +808,15 @@ impl TextLayer {
         }
     }
 
+    /// Set the color of the text outline in the text layer.
+    ///
+    /// This procedure sets the outline color in the text layer 'layer'.
+    /// ## `color`
+    /// The color to use for the text outline.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_set_outline_color")]
@@ -418,6 +829,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the outline dash offset from a text layer.
+    ///
+    /// This procedure sets the outline dash offset in the text layer
+    /// 'layer'.
+    /// ## `outline_dash_offset`
+    /// The text outline dash offset.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_set_outline_dash_offset")]
@@ -430,6 +851,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the outline direction for the text layer.
+    ///
+    /// This procedure sets the direction of the outline in the text layer
+    /// 'layer'.
+    /// ## `outline_direction`
+    /// The direction of the outline in the text layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_set_outline_direction")]
@@ -442,6 +873,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the outline join style for the text layer.
+    ///
+    /// This procedure sets the join style of the outline in the text layer
+    /// 'layer'.
+    /// ## `outline_join_style`
+    /// The join style of the outline in the text layer.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_set_outline_join_style")]
@@ -454,6 +895,16 @@ impl TextLayer {
         }
     }
 
+    /// Set the outline miter limit from a text layer.
+    ///
+    /// This procedure sets the text outline miter limit in the text layer
+    /// 'layer'.
+    /// ## `outline_miter_limit`
+    /// The text outline miter limit.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_set_outline_miter_limit")]
@@ -466,6 +917,18 @@ impl TextLayer {
         }
     }
 
+    /// Set the outline width from a text layer.
+    ///
+    /// This procedure sets the text outline color in the text layer
+    /// 'layer'.
+    /// ## `outline_width`
+    /// The text outline width.
+    /// ## `outline_unit`
+    /// The unit to use for the outline width.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_text_layer_set_outline_width")]
@@ -479,6 +942,15 @@ impl TextLayer {
         }
     }
 
+    /// Set the text of a text layer.
+    ///
+    /// This procedure changes the text of a text layer.
+    /// ## `text`
+    /// The new text to set.
+    ///
+    /// # Returns
+    ///
+    /// TRUE on success.
     #[doc(alias = "gimp_text_layer_set_text")]
     pub fn set_text(&self, text: &str) -> bool {
         unsafe {
@@ -489,6 +961,18 @@ impl TextLayer {
         }
     }
 
+    /// Returns a [`TextLayer`][crate::TextLayer] representing `layer_id`. This function calls
+    /// [`Item::by_id()`][crate::Item::by_id()] and returns the item if it is layer or [`None`]
+    /// otherwise.
+    /// ## `layer_id`
+    /// The layer id.
+    ///
+    /// # Returns
+    ///
+    /// a [`TextLayer`][crate::TextLayer] for `layer_id` or
+    ///  [`None`] if `layer_id` does not represent a valid layer. The
+    ///  object belongs to libgimp and you must not modify or unref
+    ///  it.
     #[doc(alias = "gimp_text_layer_get_by_id")]
     #[doc(alias = "get_by_id")]
     pub fn by_id(layer_id: i32) -> Option<TextLayer> {

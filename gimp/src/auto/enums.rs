@@ -6,22 +6,30 @@
 use crate::ffi;
 use glib::{prelude::*, translate::*};
 
+/// Modes of initialising a layer mask.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpAddMaskType")]
 pub enum AddMaskType {
+    /// White (full opacity)
     #[doc(alias = "GIMP_ADD_MASK_WHITE")]
     White,
+    /// Black (full transparency)
     #[doc(alias = "GIMP_ADD_MASK_BLACK")]
     Black,
+    /// Layer's alpha channel
     #[doc(alias = "GIMP_ADD_MASK_ALPHA")]
     Alpha,
+    /// Transfer layer's alpha channel
     #[doc(alias = "GIMP_ADD_MASK_ALPHA_TRANSFER")]
     AlphaTransfer,
+    /// Selection
     #[doc(alias = "GIMP_ADD_MASK_SELECTION")]
     Selection,
+    /// Grayscale copy of layer
     #[doc(alias = "GIMP_ADD_MASK_COPY")]
     Copy,
+    /// Channel
     #[doc(alias = "GIMP_ADD_MASK_CHANNEL")]
     Channel,
     #[doc(hidden)]
@@ -118,12 +126,15 @@ impl From<AddMaskType> for glib::Value {
     }
 }
 
+/// Methods of syncing procedure arguments.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpArgumentSync")]
 pub enum ArgumentSync {
+    /// Don't sync this argument
     #[doc(alias = "GIMP_ARGUMENT_SYNC_NONE")]
     None,
+    /// Sync this argument with an image parasite
     #[doc(alias = "GIMP_ARGUMENT_SYNC_PARASITE")]
     Parasite,
     #[doc(hidden)]
@@ -156,12 +167,15 @@ impl FromGlib<ffi::GimpArgumentSync> for ArgumentSync {
     }
 }
 
+/// Extracted from app/paint/paint-enums.h
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpBrushApplicationMode")]
 pub enum BrushApplicationMode {
+    /// GIMP_BRUSH_HARD
     #[doc(alias = "GIMP_BRUSH_HARD")]
     Hard,
+    /// GIMP_BRUSH_SOFT
     #[doc(alias = "GIMP_BRUSH_SOFT")]
     Soft,
     #[doc(hidden)]
@@ -248,14 +262,18 @@ impl From<BrushApplicationMode> for glib::Value {
     }
 }
 
+/// Shapes of generated brushes.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpBrushGeneratedShape")]
 pub enum BrushGeneratedShape {
+    /// Circle
     #[doc(alias = "GIMP_BRUSH_GENERATED_CIRCLE")]
     Circle,
+    /// Square
     #[doc(alias = "GIMP_BRUSH_GENERATED_SQUARE")]
     Square,
+    /// Diamond
     #[doc(alias = "GIMP_BRUSH_GENERATED_DIAMOND")]
     Diamond,
     #[doc(hidden)]
@@ -344,14 +362,18 @@ impl From<BrushGeneratedShape> for glib::Value {
     }
 }
 
+/// Style of line endings.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpCapStyle")]
 pub enum CapStyle {
+    /// Butt
     #[doc(alias = "GIMP_CAP_BUTT")]
     Butt,
+    /// Round
     #[doc(alias = "GIMP_CAP_ROUND")]
     Round,
+    /// Square
     #[doc(alias = "GIMP_CAP_SQUARE")]
     Square,
     #[doc(hidden)]
@@ -440,16 +462,21 @@ impl From<CapStyle> for glib::Value {
     }
 }
 
+/// Operations to combine channels and selections.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpChannelOps")]
 pub enum ChannelOps {
+    /// Add to the current selection
     #[doc(alias = "GIMP_CHANNEL_OP_ADD")]
     Add,
+    /// Subtract from the current selection
     #[doc(alias = "GIMP_CHANNEL_OP_SUBTRACT")]
     Subtract,
+    /// Replace the current selection
     #[doc(alias = "GIMP_CHANNEL_OP_REPLACE")]
     Replace,
+    /// Intersect with the current selection
     #[doc(alias = "GIMP_CHANNEL_OP_INTERSECT")]
     Intersect,
     #[doc(hidden)]
@@ -540,20 +567,27 @@ impl From<ChannelOps> for glib::Value {
     }
 }
 
+/// Channels (as in color components).
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpChannelType")]
 pub enum ChannelType {
+    /// Red
     #[doc(alias = "GIMP_CHANNEL_RED")]
     Red,
+    /// Green
     #[doc(alias = "GIMP_CHANNEL_GREEN")]
     Green,
+    /// Blue
     #[doc(alias = "GIMP_CHANNEL_BLUE")]
     Blue,
+    /// Gray
     #[doc(alias = "GIMP_CHANNEL_GRAY")]
     Gray,
+    /// Indexed
     #[doc(alias = "GIMP_CHANNEL_INDEXED")]
     Indexed,
+    /// Alpha
     #[doc(alias = "GIMP_CHANNEL_ALPHA")]
     Alpha,
     #[doc(hidden)]
@@ -648,14 +682,18 @@ impl From<ChannelType> for glib::Value {
     }
 }
 
+/// Size of the checkerboard indicating transparency.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpCheckSize")]
 pub enum CheckSize {
+    /// Small
     #[doc(alias = "GIMP_CHECK_SIZE_SMALL_CHECKS")]
     SmallChecks,
+    /// Medium
     #[doc(alias = "GIMP_CHECK_SIZE_MEDIUM_CHECKS")]
     MediumChecks,
+    /// Large
     #[doc(alias = "GIMP_CHECK_SIZE_LARGE_CHECKS")]
     LargeChecks,
     #[doc(hidden)]
@@ -744,22 +782,30 @@ impl From<CheckSize> for glib::Value {
     }
 }
 
+/// Color/Brightness of the checkerboard indicating transparency.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpCheckType")]
 pub enum CheckType {
+    /// Light checks
     #[doc(alias = "GIMP_CHECK_TYPE_LIGHT_CHECKS")]
     LightChecks,
+    /// Mid-tone checks
     #[doc(alias = "GIMP_CHECK_TYPE_GRAY_CHECKS")]
     GrayChecks,
+    /// Dark checks
     #[doc(alias = "GIMP_CHECK_TYPE_DARK_CHECKS")]
     DarkChecks,
+    /// White only
     #[doc(alias = "GIMP_CHECK_TYPE_WHITE_ONLY")]
     WhiteOnly,
+    /// Gray only
     #[doc(alias = "GIMP_CHECK_TYPE_GRAY_ONLY")]
     GrayOnly,
+    /// Black only
     #[doc(alias = "GIMP_CHECK_TYPE_BLACK_ONLY")]
     BlackOnly,
+    /// Custom checks
     #[doc(alias = "GIMP_CHECK_TYPE_CUSTOM_CHECKS")]
     CustomChecks,
     #[doc(hidden)]
@@ -856,12 +902,15 @@ impl From<CheckType> for glib::Value {
     }
 }
 
+/// Clone sources.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpCloneType")]
 pub enum CloneType {
+    /// Clone from an image/drawable source
     #[doc(alias = "GIMP_CLONE_IMAGE")]
     Image,
+    /// Clone from a pattern source
     #[doc(alias = "GIMP_CLONE_PATTERN")]
     Pattern,
     #[doc(hidden)]
@@ -948,14 +997,18 @@ impl From<CloneType> for glib::Value {
     }
 }
 
+/// Modes of color management.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpColorManagementMode")]
 pub enum ColorManagementMode {
+    /// Color management is off
     #[doc(alias = "GIMP_COLOR_MANAGEMENT_OFF")]
     Off,
+    /// Color managed display
     #[doc(alias = "GIMP_COLOR_MANAGEMENT_DISPLAY")]
     Display,
+    /// Soft-proofing
     #[doc(alias = "GIMP_COLOR_MANAGEMENT_SOFTPROOF")]
     Softproof,
     #[doc(hidden)]
@@ -1044,16 +1097,21 @@ impl From<ColorManagementMode> for glib::Value {
     }
 }
 
+/// Intents for color management.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpColorRenderingIntent")]
 pub enum ColorRenderingIntent {
+    /// Perceptual
     #[doc(alias = "GIMP_COLOR_RENDERING_INTENT_PERCEPTUAL")]
     Perceptual,
+    /// Relative colorimetric
     #[doc(alias = "GIMP_COLOR_RENDERING_INTENT_RELATIVE_COLORIMETRIC")]
     RelativeColorimetric,
+    /// Saturation
     #[doc(alias = "GIMP_COLOR_RENDERING_INTENT_SATURATION")]
     Saturation,
+    /// Absolute colorimetric
     #[doc(alias = "GIMP_COLOR_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC")]
     AbsoluteColorimetric,
     #[doc(hidden)]
@@ -1144,26 +1202,36 @@ impl From<ColorRenderingIntent> for glib::Value {
     }
 }
 
+/// Possible tag colors.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpColorTag")]
 pub enum ColorTag {
+    /// None
     #[doc(alias = "GIMP_COLOR_TAG_NONE")]
     None,
+    /// Blue
     #[doc(alias = "GIMP_COLOR_TAG_BLUE")]
     Blue,
+    /// Green
     #[doc(alias = "GIMP_COLOR_TAG_GREEN")]
     Green,
+    /// Yellow
     #[doc(alias = "GIMP_COLOR_TAG_YELLOW")]
     Yellow,
+    /// Orange
     #[doc(alias = "GIMP_COLOR_TAG_ORANGE")]
     Orange,
+    /// Brown
     #[doc(alias = "GIMP_COLOR_TAG_BROWN")]
     Brown,
+    /// Red
     #[doc(alias = "GIMP_COLOR_TAG_RED")]
     Red,
+    /// Violet
     #[doc(alias = "GIMP_COLOR_TAG_VIOLET")]
     Violet,
+    /// Gray
     #[doc(alias = "GIMP_COLOR_TAG_GRAY")]
     Gray,
     #[doc(hidden)]
@@ -1264,14 +1332,21 @@ impl From<ColorTag> for glib::Value {
     }
 }
 
+/// Flags for modifying [`ColorTransform`][crate::ColorTransform]'s behavior.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpColorTransformFlags")]
 pub enum ColorTransformFlags {
+    /// optimize for accuracy rather
+    ///  than for speed
     #[doc(alias = "GIMP_COLOR_TRANSFORM_FLAGS_NOOPTIMIZE")]
     Nooptimize,
+    /// mark out of gamut colors in the
+    ///  transform result
     #[doc(alias = "GIMP_COLOR_TRANSFORM_FLAGS_GAMUT_CHECK")]
     GamutCheck,
+    /// do black point
+    ///  compensation
     #[doc(alias = "GIMP_COLOR_TRANSFORM_FLAGS_BLACK_POINT_COMPENSATION")]
     BlackPointCompensation,
     #[doc(hidden)]
@@ -1310,20 +1385,27 @@ impl FromGlib<ffi::GimpColorTransformFlags> for ColorTransformFlags {
     }
 }
 
+/// Encoding types of image components.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpComponentType")]
 pub enum ComponentType {
+    /// 8-bit integer
     #[doc(alias = "GIMP_COMPONENT_TYPE_U8")]
     U8,
+    /// 16-bit integer
     #[doc(alias = "GIMP_COMPONENT_TYPE_U16")]
     U16,
+    /// 32-bit integer
     #[doc(alias = "GIMP_COMPONENT_TYPE_U32")]
     U32,
+    /// 16-bit floating point
     #[doc(alias = "GIMP_COMPONENT_TYPE_HALF")]
     Half,
+    /// 32-bit floating point
     #[doc(alias = "GIMP_COMPONENT_TYPE_FLOAT")]
     Float,
+    /// 64-bit floating point
     #[doc(alias = "GIMP_COMPONENT_TYPE_DOUBLE")]
     Double,
     #[doc(hidden)]
@@ -1418,18 +1500,24 @@ impl From<ComponentType> for glib::Value {
     }
 }
 
+/// The possible values of a [`glib::Error`][crate::glib::Error] thrown by libgimpconfig.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpConfigError")]
 pub enum ConfigError {
+    /// open failed
     #[doc(alias = "GIMP_CONFIG_ERROR_OPEN")]
     Open,
+    /// file does not exist
     #[doc(alias = "GIMP_CONFIG_ERROR_OPEN_ENOENT")]
     OpenEnoent,
+    /// write failed
     #[doc(alias = "GIMP_CONFIG_ERROR_WRITE")]
     Write,
+    /// parser error
     #[doc(alias = "GIMP_CONFIG_ERROR_PARSE")]
     Parse,
+    /// parser failed due to version mismatch
     #[doc(alias = "GIMP_CONFIG_ERROR_VERSION")]
     Version,
     #[doc(hidden)]
@@ -1488,16 +1576,21 @@ impl glib::error::ErrorDomain for ConfigError {
     }
 }
 
+/// Types of config paths.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpConfigPathType")]
 pub enum ConfigPathType {
+    /// A single file
     #[doc(alias = "GIMP_CONFIG_PATH_FILE")]
     File,
+    /// A list of files
     #[doc(alias = "GIMP_CONFIG_PATH_FILE_LIST")]
     FileList,
+    /// A single folder
     #[doc(alias = "GIMP_CONFIG_PATH_DIR")]
     Dir,
+    /// A list of folders
     #[doc(alias = "GIMP_CONFIG_PATH_DIR_LIST")]
     DirList,
     #[doc(hidden)]
@@ -1534,16 +1627,21 @@ impl FromGlib<ffi::GimpConfigPathType> for ConfigPathType {
     }
 }
 
+/// Extracted from app/core/core-enums.h
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpConvertDitherType")]
 pub enum ConvertDitherType {
+    /// GIMP_CONVERT_DITHER_NONE
     #[doc(alias = "GIMP_CONVERT_DITHER_NONE")]
     None,
+    /// GIMP_CONVERT_DITHER_FS
     #[doc(alias = "GIMP_CONVERT_DITHER_FS")]
     Fs,
+    /// GIMP_CONVERT_DITHER_FS_LOWBLEED
     #[doc(alias = "GIMP_CONVERT_DITHER_FS_LOWBLEED")]
     FsLowbleed,
+    /// GIMP_CONVERT_DITHER_FIXED
     #[doc(alias = "GIMP_CONVERT_DITHER_FIXED")]
     Fixed,
     #[doc(hidden)]
@@ -1634,16 +1732,21 @@ impl From<ConvertDitherType> for glib::Value {
     }
 }
 
+/// Types of palettes for indexed conversion.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpConvertPaletteType")]
 pub enum ConvertPaletteType {
+    /// Generate optimum palette
     #[doc(alias = "GIMP_CONVERT_PALETTE_GENERATE")]
     Generate,
+    /// Use web-optimized palette
     #[doc(alias = "GIMP_CONVERT_PALETTE_WEB")]
     Web,
+    /// Use black and white (1-bit) palette
     #[doc(alias = "GIMP_CONVERT_PALETTE_MONO")]
     Mono,
+    /// Use custom palette
     #[doc(alias = "GIMP_CONVERT_PALETTE_CUSTOM")]
     Custom,
     #[doc(hidden)]
@@ -1734,12 +1837,15 @@ impl From<ConvertPaletteType> for glib::Value {
     }
 }
 
+/// Types of convolutions.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpConvolveType")]
 pub enum ConvolveType {
+    /// Blur
     #[doc(alias = "GIMP_CONVOLVE_BLUR")]
     Blur,
+    /// Sharpen
     #[doc(alias = "GIMP_CONVOLVE_SHARPEN")]
     Sharpen,
     #[doc(hidden)]
@@ -1826,12 +1932,15 @@ impl From<ConvolveType> for glib::Value {
     }
 }
 
+/// Extracted from app/core/core-enums.h
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpCurvePointType")]
 pub enum CurvePointType {
+    /// GIMP_CURVE_POINT_SMOOTH
     #[doc(alias = "GIMP_CURVE_POINT_SMOOTH")]
     Smooth,
+    /// GIMP_CURVE_POINT_CORNER
     #[doc(alias = "GIMP_CURVE_POINT_CORNER")]
     Corner,
     #[doc(hidden)]
@@ -1918,12 +2027,15 @@ impl From<CurvePointType> for glib::Value {
     }
 }
 
+/// Extracted from app/core/core-enums.h
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpCurveType")]
 pub enum CurveType {
+    /// GIMP_CURVE_SMOOTH
     #[doc(alias = "GIMP_CURVE_SMOOTH")]
     Smooth,
+    /// GIMP_CURVE_FREE
     #[doc(alias = "GIMP_CURVE_FREE")]
     Free,
     #[doc(hidden)]
@@ -2010,18 +2122,24 @@ impl From<CurveType> for glib::Value {
     }
 }
 
+/// Grayscale conversion methods.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpDesaturateMode")]
 pub enum DesaturateMode {
+    /// Lightness (HSL)
     #[doc(alias = "GIMP_DESATURATE_LIGHTNESS")]
     Lightness,
+    /// Luma
     #[doc(alias = "GIMP_DESATURATE_LUMA")]
     Luma,
+    /// Average (HSI Intensity)
     #[doc(alias = "GIMP_DESATURATE_AVERAGE")]
     Average,
+    /// Luminance
     #[doc(alias = "GIMP_DESATURATE_LUMINANCE")]
     Luminance,
+    /// Value (HSV)
     #[doc(alias = "GIMP_DESATURATE_VALUE")]
     Value,
     #[doc(hidden)]
@@ -2114,12 +2232,15 @@ impl From<DesaturateMode> for glib::Value {
     }
 }
 
+/// Methods for the dodge/burn operation.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpDodgeBurnType")]
 pub enum DodgeBurnType {
+    /// Dodge
     #[doc(alias = "GIMP_DODGE_BURN_TYPE_DODGE")]
     Dodge,
+    /// Burn
     #[doc(alias = "GIMP_DODGE_BURN_TYPE_BURN")]
     Burn,
     #[doc(hidden)]
@@ -2206,12 +2327,15 @@ impl From<DodgeBurnType> for glib::Value {
     }
 }
 
+/// Possible return values of [`ExportOptions::image()`][crate::ExportOptions::image()].
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpExportReturn")]
 pub enum ExportReturn {
+    /// The image is unmodified but export shall continue anyway
     #[doc(alias = "GIMP_EXPORT_IGNORE")]
     Ignore,
+    /// The chosen transforms were applied to a new image
     #[doc(alias = "GIMP_EXPORT_EXPORT")]
     Export,
     #[doc(hidden)]
@@ -2244,18 +2368,27 @@ impl FromGlib<ffi::GimpExportReturn> for ExportReturn {
     }
 }
 
+/// A type of file to choose from when actions are expected to choose a
+/// file. This is basically a mapping to `GtkFileChooserAction` except for
+/// [`Any`][Self::Any] which should not be used for any
+/// GUI functions since we can't know what you are looking for.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpFileChooserAction")]
 pub enum FileChooserAction {
+    /// No restriction.
     #[doc(alias = "GIMP_FILE_CHOOSER_ACTION_ANY")]
     Any,
+    /// Opens an existing file.
     #[doc(alias = "GIMP_FILE_CHOOSER_ACTION_OPEN")]
     Open,
+    /// Saves a file (over a new file or an existing one.
     #[doc(alias = "GIMP_FILE_CHOOSER_ACTION_SAVE")]
     Save,
+    /// Picks an existing folder.
     #[doc(alias = "GIMP_FILE_CHOOSER_ACTION_SELECT_FOLDER")]
     SelectFolder,
+    /// Picks an existing or new folder.
     #[doc(alias = "GIMP_FILE_CHOOSER_ACTION_CREATE_FOLDER")]
     CreateFolder,
     #[doc(hidden)]
@@ -2348,20 +2481,27 @@ impl From<FileChooserAction> for glib::Value {
     }
 }
 
+/// Types of filling.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpFillType")]
 pub enum FillType {
+    /// Foreground color
     #[doc(alias = "GIMP_FILL_FOREGROUND")]
     Foreground,
+    /// Background color
     #[doc(alias = "GIMP_FILL_BACKGROUND")]
     Background,
+    /// Middle Gray (CIELAB)
     #[doc(alias = "GIMP_FILL_CIELAB_MIDDLE_GRAY")]
     CielabMiddleGray,
+    /// White
     #[doc(alias = "GIMP_FILL_WHITE")]
     White,
+    /// Transparency
     #[doc(alias = "GIMP_FILL_TRANSPARENT")]
     Transparent,
+    /// Pattern
     #[doc(alias = "GIMP_FILL_PATTERN")]
     Pattern,
     #[doc(hidden)]
@@ -2456,10 +2596,12 @@ impl From<FillType> for glib::Value {
     }
 }
 
+/// Foreground extract engines.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpForegroundExtractMode")]
 pub enum ForegroundExtractMode {
+    /// Matting (Since 2.10)
     #[doc(alias = "GIMP_FOREGROUND_EXTRACT_MATTING")]
     Matting,
     #[doc(hidden)]
@@ -2544,14 +2686,18 @@ impl From<ForegroundExtractMode> for glib::Value {
     }
 }
 
+/// Color space for blending gradients.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpGradientBlendColorSpace")]
 pub enum GradientBlendColorSpace {
+    /// Perceptual RGB
     #[doc(alias = "GIMP_GRADIENT_BLEND_RGB_PERCEPTUAL")]
     RgbPerceptual,
+    /// Linear RGB
     #[doc(alias = "GIMP_GRADIENT_BLEND_RGB_LINEAR")]
     RgbLinear,
+    /// CIE Lab
     #[doc(alias = "GIMP_GRADIENT_BLEND_CIE_LAB")]
     CieLab,
     #[doc(hidden)]
@@ -2640,14 +2786,18 @@ impl From<GradientBlendColorSpace> for glib::Value {
     }
 }
 
+/// Coloring types for gradient segments.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpGradientSegmentColor")]
 pub enum GradientSegmentColor {
+    /// RGB
     #[doc(alias = "GIMP_GRADIENT_SEGMENT_RGB")]
     Rgb,
+    /// HSV (counter-clockwise hue)
     #[doc(alias = "GIMP_GRADIENT_SEGMENT_HSV_CCW")]
     HsvCcw,
+    /// HSV (clockwise hue)
     #[doc(alias = "GIMP_GRADIENT_SEGMENT_HSV_CW")]
     HsvCw,
     #[doc(hidden)]
@@ -2736,20 +2886,27 @@ impl From<GradientSegmentColor> for glib::Value {
     }
 }
 
+/// Transition functions for gradient segments.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpGradientSegmentType")]
 pub enum GradientSegmentType {
+    /// Linear
     #[doc(alias = "GIMP_GRADIENT_SEGMENT_LINEAR")]
     Linear,
+    /// Curved
     #[doc(alias = "GIMP_GRADIENT_SEGMENT_CURVED")]
     Curved,
+    /// Sinusoidal
     #[doc(alias = "GIMP_GRADIENT_SEGMENT_SINE")]
     Sine,
+    /// Spherical (increasing)
     #[doc(alias = "GIMP_GRADIENT_SEGMENT_SPHERE_INCREASING")]
     SphereIncreasing,
+    /// Spherical (decreasing)
     #[doc(alias = "GIMP_GRADIENT_SEGMENT_SPHERE_DECREASING")]
     SphereDecreasing,
+    /// Step
     #[doc(alias = "GIMP_GRADIENT_SEGMENT_STEP")]
     Step,
     #[doc(hidden)]
@@ -2844,30 +3001,42 @@ impl From<GradientSegmentType> for glib::Value {
     }
 }
 
+/// Gradient shapes.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpGradientType")]
 pub enum GradientType {
+    /// Linear
     #[doc(alias = "GIMP_GRADIENT_LINEAR")]
     Linear,
+    /// Bi-linear
     #[doc(alias = "GIMP_GRADIENT_BILINEAR")]
     Bilinear,
+    /// Radial
     #[doc(alias = "GIMP_GRADIENT_RADIAL")]
     Radial,
+    /// Square
     #[doc(alias = "GIMP_GRADIENT_SQUARE")]
     Square,
+    /// Conical (symmetric)
     #[doc(alias = "GIMP_GRADIENT_CONICAL_SYMMETRIC")]
     ConicalSymmetric,
+    /// Conical (asymmetric)
     #[doc(alias = "GIMP_GRADIENT_CONICAL_ASYMMETRIC")]
     ConicalAsymmetric,
+    /// Shaped (angular)
     #[doc(alias = "GIMP_GRADIENT_SHAPEBURST_ANGULAR")]
     ShapeburstAngular,
+    /// Shaped (spherical)
     #[doc(alias = "GIMP_GRADIENT_SHAPEBURST_SPHERICAL")]
     ShapeburstSpherical,
+    /// Shaped (dimpled)
     #[doc(alias = "GIMP_GRADIENT_SHAPEBURST_DIMPLED")]
     ShapeburstDimpled,
+    /// Spiral (clockwise)
     #[doc(alias = "GIMP_GRADIENT_SPIRAL_CLOCKWISE")]
     SpiralClockwise,
+    /// Spiral (counter-clockwise)
     #[doc(alias = "GIMP_GRADIENT_SPIRAL_ANTICLOCKWISE")]
     SpiralAnticlockwise,
     #[doc(hidden)]
@@ -2972,18 +3141,24 @@ impl From<GradientType> for glib::Value {
     }
 }
 
+/// Rendering types for the display grid.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpGridStyle")]
 pub enum GridStyle {
+    /// Intersections (dots)
     #[doc(alias = "GIMP_GRID_DOTS")]
     Dots,
+    /// Intersections (crosshairs)
     #[doc(alias = "GIMP_GRID_INTERSECTIONS")]
     Intersections,
+    /// Dashed
     #[doc(alias = "GIMP_GRID_ON_OFF_DASH")]
     OnOffDash,
+    /// Double dashed
     #[doc(alias = "GIMP_GRID_DOUBLE_DASH")]
     DoubleDash,
+    /// Solid
     #[doc(alias = "GIMP_GRID_SOLID")]
     Solid,
     #[doc(hidden)]
@@ -3076,20 +3251,27 @@ impl From<GridStyle> for glib::Value {
     }
 }
 
+/// Extracted from app/core/core-enums.h
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpHistogramChannel")]
 pub enum HistogramChannel {
+    /// GIMP_HISTOGRAM_VALUE
     #[doc(alias = "GIMP_HISTOGRAM_VALUE")]
     Value,
+    /// GIMP_HISTOGRAM_RED
     #[doc(alias = "GIMP_HISTOGRAM_RED")]
     Red,
+    /// GIMP_HISTOGRAM_GREEN
     #[doc(alias = "GIMP_HISTOGRAM_GREEN")]
     Green,
+    /// GIMP_HISTOGRAM_BLUE
     #[doc(alias = "GIMP_HISTOGRAM_BLUE")]
     Blue,
+    /// GIMP_HISTOGRAM_ALPHA
     #[doc(alias = "GIMP_HISTOGRAM_ALPHA")]
     Alpha,
+    /// GIMP_HISTOGRAM_LUMINANCE
     #[doc(alias = "GIMP_HISTOGRAM_LUMINANCE")]
     Luminance,
     #[doc(hidden)]
@@ -3184,22 +3366,30 @@ impl From<HistogramChannel> for glib::Value {
     }
 }
 
+/// Hue ranges.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpHueRange")]
 pub enum HueRange {
+    /// All hues
     #[doc(alias = "GIMP_HUE_RANGE_ALL")]
     All,
+    /// Red hues
     #[doc(alias = "GIMP_HUE_RANGE_RED")]
     Red,
+    /// Yellow hues
     #[doc(alias = "GIMP_HUE_RANGE_YELLOW")]
     Yellow,
+    /// Green hues
     #[doc(alias = "GIMP_HUE_RANGE_GREEN")]
     Green,
+    /// Cyan hues
     #[doc(alias = "GIMP_HUE_RANGE_CYAN")]
     Cyan,
+    /// Blue hues
     #[doc(alias = "GIMP_HUE_RANGE_BLUE")]
     Blue,
+    /// Magenta hues
     #[doc(alias = "GIMP_HUE_RANGE_MAGENTA")]
     Magenta,
     #[doc(hidden)]
@@ -3296,14 +3486,18 @@ impl From<HueRange> for glib::Value {
     }
 }
 
+/// Icon types for plug-ins to register.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpIconType")]
 pub enum IconType {
+    /// Icon name
     #[doc(alias = "GIMP_ICON_TYPE_ICON_NAME")]
     IconName,
+    /// Inline pixbuf
     #[doc(alias = "GIMP_ICON_TYPE_PIXBUF")]
     Pixbuf,
+    /// Image file
     #[doc(alias = "GIMP_ICON_TYPE_IMAGE_FILE")]
     ImageFile,
     #[doc(hidden)]
@@ -3392,14 +3586,18 @@ impl From<IconType> for glib::Value {
     }
 }
 
+/// Image color models.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpImageBaseType")]
 pub enum ImageBaseType {
+    /// RGB color
     #[doc(alias = "GIMP_RGB")]
     Rgb,
+    /// Grayscale
     #[doc(alias = "GIMP_GRAY")]
     Gray,
+    /// Indexed color
     #[doc(alias = "GIMP_INDEXED")]
     Indexed,
     #[doc(hidden)]
@@ -3488,20 +3686,27 @@ impl From<ImageBaseType> for glib::Value {
     }
 }
 
+/// Possible drawable types.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpImageType")]
 pub enum ImageType {
+    /// RGB
     #[doc(alias = "GIMP_RGB_IMAGE")]
     RgbImage,
+    /// RGB-alpha
     #[doc(alias = "GIMP_RGBA_IMAGE")]
     RgbaImage,
+    /// Grayscale
     #[doc(alias = "GIMP_GRAY_IMAGE")]
     GrayImage,
+    /// Grayscale-alpha
     #[doc(alias = "GIMP_GRAYA_IMAGE")]
     GrayaImage,
+    /// Indexed
     #[doc(alias = "GIMP_INDEXED_IMAGE")]
     IndexedImage,
+    /// Indexed-alpha
     #[doc(alias = "GIMP_INDEXEDA_IMAGE")]
     IndexedaImage,
     #[doc(hidden)]
@@ -3596,14 +3801,18 @@ impl From<ImageType> for glib::Value {
     }
 }
 
+/// Ink tool tips.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpInkBlobType")]
 pub enum InkBlobType {
+    /// Circle
     #[doc(alias = "GIMP_INK_BLOB_TYPE_CIRCLE")]
     Circle,
+    /// Square
     #[doc(alias = "GIMP_INK_BLOB_TYPE_SQUARE")]
     Square,
+    /// Diamond
     #[doc(alias = "GIMP_INK_BLOB_TYPE_DIAMOND")]
     Diamond,
     #[doc(hidden)]
@@ -3692,18 +3901,24 @@ impl From<InkBlobType> for glib::Value {
     }
 }
 
+/// Interpolation types.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpInterpolationType")]
 pub enum InterpolationType {
+    /// None
     #[doc(alias = "GIMP_INTERPOLATION_NONE")]
     None,
+    /// Linear
     #[doc(alias = "GIMP_INTERPOLATION_LINEAR")]
     Linear,
+    /// Cubic
     #[doc(alias = "GIMP_INTERPOLATION_CUBIC")]
     Cubic,
+    /// NoHalo
     #[doc(alias = "GIMP_INTERPOLATION_NOHALO")]
     Nohalo,
+    /// LoHalo
     #[doc(alias = "GIMP_INTERPOLATION_LOHALO")]
     Lohalo,
     #[doc(hidden)]
@@ -3796,14 +4011,18 @@ impl From<InterpolationType> for glib::Value {
     }
 }
 
+/// Line join styles.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpJoinStyle")]
 pub enum JoinStyle {
+    /// Miter
     #[doc(alias = "GIMP_JOIN_MITER")]
     Miter,
+    /// Round
     #[doc(alias = "GIMP_JOIN_ROUND")]
     Round,
+    /// Bevel
     #[doc(alias = "GIMP_JOIN_BEVEL")]
     Bevel,
     #[doc(hidden)]
@@ -3892,18 +4111,24 @@ impl From<JoinStyle> for glib::Value {
     }
 }
 
+/// Extracted from app/operations/operations-enums.h
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpLayerColorSpace")]
 pub enum LayerColorSpace {
+    /// GIMP_LAYER_COLOR_SPACE_AUTO
     #[doc(alias = "GIMP_LAYER_COLOR_SPACE_AUTO")]
     Auto,
+    /// GIMP_LAYER_COLOR_SPACE_RGB_LINEAR
     #[doc(alias = "GIMP_LAYER_COLOR_SPACE_RGB_LINEAR")]
     RgbLinear,
+    /// GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR
     #[doc(alias = "GIMP_LAYER_COLOR_SPACE_RGB_NON_LINEAR")]
     RgbNonLinear,
+    /// GIMP_LAYER_COLOR_SPACE_LAB
     #[doc(alias = "GIMP_LAYER_COLOR_SPACE_LAB")]
     Lab,
+    /// GIMP_LAYER_COLOR_SPACE_RGB_PERCEPTUAL
     #[doc(alias = "GIMP_LAYER_COLOR_SPACE_RGB_PERCEPTUAL")]
     RgbPerceptual,
     #[doc(hidden)]
@@ -3996,18 +4221,24 @@ impl From<LayerColorSpace> for glib::Value {
     }
 }
 
+/// Extracted from app/operations/operations-enums.h
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpLayerCompositeMode")]
 pub enum LayerCompositeMode {
+    /// GIMP_LAYER_COMPOSITE_AUTO
     #[doc(alias = "GIMP_LAYER_COMPOSITE_AUTO")]
     Auto,
+    /// GIMP_LAYER_COMPOSITE_UNION
     #[doc(alias = "GIMP_LAYER_COMPOSITE_UNION")]
     Union,
+    /// GIMP_LAYER_COMPOSITE_CLIP_TO_BACKDROP
     #[doc(alias = "GIMP_LAYER_COMPOSITE_CLIP_TO_BACKDROP")]
     ClipToBackdrop,
+    /// GIMP_LAYER_COMPOSITE_CLIP_TO_LAYER
     #[doc(alias = "GIMP_LAYER_COMPOSITE_CLIP_TO_LAYER")]
     ClipToLayer,
+    /// GIMP_LAYER_COMPOSITE_INTERSECTION
     #[doc(alias = "GIMP_LAYER_COMPOSITE_INTERSECTION")]
     Intersection,
     #[doc(hidden)]
@@ -4100,136 +4331,201 @@ impl From<LayerCompositeMode> for glib::Value {
     }
 }
 
+/// Extracted from app/operations/operations-enums.h
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpLayerMode")]
 pub enum LayerMode {
+    /// GIMP_LAYER_MODE_NORMAL_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_NORMAL_LEGACY")]
     NormalLegacy,
+    /// GIMP_LAYER_MODE_DISSOLVE
     #[doc(alias = "GIMP_LAYER_MODE_DISSOLVE")]
     Dissolve,
+    /// GIMP_LAYER_MODE_BEHIND_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_BEHIND_LEGACY")]
     BehindLegacy,
+    /// GIMP_LAYER_MODE_MULTIPLY_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_MULTIPLY_LEGACY")]
     MultiplyLegacy,
+    /// GIMP_LAYER_MODE_SCREEN_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_SCREEN_LEGACY")]
     ScreenLegacy,
+    /// GIMP_LAYER_MODE_OVERLAY_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_OVERLAY_LEGACY")]
     OverlayLegacy,
+    /// GIMP_LAYER_MODE_DIFFERENCE_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_DIFFERENCE_LEGACY")]
     DifferenceLegacy,
+    /// GIMP_LAYER_MODE_ADDITION_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_ADDITION_LEGACY")]
     AdditionLegacy,
+    /// GIMP_LAYER_MODE_SUBTRACT_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_SUBTRACT_LEGACY")]
     SubtractLegacy,
+    /// GIMP_LAYER_MODE_DARKEN_ONLY_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_DARKEN_ONLY_LEGACY")]
     DarkenOnlyLegacy,
+    /// GIMP_LAYER_MODE_LIGHTEN_ONLY_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_LIGHTEN_ONLY_LEGACY")]
     LightenOnlyLegacy,
+    /// GIMP_LAYER_MODE_HSV_HUE_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_HSV_HUE_LEGACY")]
     HsvHueLegacy,
+    /// GIMP_LAYER_MODE_HSV_SATURATION_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_HSV_SATURATION_LEGACY")]
     HsvSaturationLegacy,
+    /// GIMP_LAYER_MODE_HSL_COLOR_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_HSL_COLOR_LEGACY")]
     HslColorLegacy,
+    /// GIMP_LAYER_MODE_HSV_VALUE_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_HSV_VALUE_LEGACY")]
     HsvValueLegacy,
+    /// GIMP_LAYER_MODE_DIVIDE_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_DIVIDE_LEGACY")]
     DivideLegacy,
+    /// GIMP_LAYER_MODE_DODGE_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_DODGE_LEGACY")]
     DodgeLegacy,
+    /// GIMP_LAYER_MODE_BURN_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_BURN_LEGACY")]
     BurnLegacy,
+    /// GIMP_LAYER_MODE_HARDLIGHT_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_HARDLIGHT_LEGACY")]
     HardlightLegacy,
+    /// GIMP_LAYER_MODE_SOFTLIGHT_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_SOFTLIGHT_LEGACY")]
     SoftlightLegacy,
+    /// GIMP_LAYER_MODE_GRAIN_EXTRACT_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_GRAIN_EXTRACT_LEGACY")]
     GrainExtractLegacy,
+    /// GIMP_LAYER_MODE_GRAIN_MERGE_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_GRAIN_MERGE_LEGACY")]
     GrainMergeLegacy,
+    /// GIMP_LAYER_MODE_COLOR_ERASE_LEGACY
     #[doc(alias = "GIMP_LAYER_MODE_COLOR_ERASE_LEGACY")]
     ColorEraseLegacy,
+    /// GIMP_LAYER_MODE_OVERLAY
     #[doc(alias = "GIMP_LAYER_MODE_OVERLAY")]
     Overlay,
+    /// GIMP_LAYER_MODE_LCH_HUE
     #[doc(alias = "GIMP_LAYER_MODE_LCH_HUE")]
     LchHue,
+    /// GIMP_LAYER_MODE_LCH_CHROMA
     #[doc(alias = "GIMP_LAYER_MODE_LCH_CHROMA")]
     LchChroma,
+    /// GIMP_LAYER_MODE_LCH_COLOR
     #[doc(alias = "GIMP_LAYER_MODE_LCH_COLOR")]
     LchColor,
+    /// GIMP_LAYER_MODE_LCH_LIGHTNESS
     #[doc(alias = "GIMP_LAYER_MODE_LCH_LIGHTNESS")]
     LchLightness,
+    /// GIMP_LAYER_MODE_NORMAL
     #[doc(alias = "GIMP_LAYER_MODE_NORMAL")]
     Normal,
+    /// GIMP_LAYER_MODE_BEHIND
     #[doc(alias = "GIMP_LAYER_MODE_BEHIND")]
     Behind,
+    /// GIMP_LAYER_MODE_MULTIPLY
     #[doc(alias = "GIMP_LAYER_MODE_MULTIPLY")]
     Multiply,
+    /// GIMP_LAYER_MODE_SCREEN
     #[doc(alias = "GIMP_LAYER_MODE_SCREEN")]
     Screen,
+    /// GIMP_LAYER_MODE_DIFFERENCE
     #[doc(alias = "GIMP_LAYER_MODE_DIFFERENCE")]
     Difference,
+    /// GIMP_LAYER_MODE_ADDITION
     #[doc(alias = "GIMP_LAYER_MODE_ADDITION")]
     Addition,
+    /// GIMP_LAYER_MODE_SUBTRACT
     #[doc(alias = "GIMP_LAYER_MODE_SUBTRACT")]
     Subtract,
+    /// GIMP_LAYER_MODE_DARKEN_ONLY
     #[doc(alias = "GIMP_LAYER_MODE_DARKEN_ONLY")]
     DarkenOnly,
+    /// GIMP_LAYER_MODE_LIGHTEN_ONLY
     #[doc(alias = "GIMP_LAYER_MODE_LIGHTEN_ONLY")]
     LightenOnly,
+    /// GIMP_LAYER_MODE_HSV_HUE
     #[doc(alias = "GIMP_LAYER_MODE_HSV_HUE")]
     HsvHue,
+    /// GIMP_LAYER_MODE_HSV_SATURATION
     #[doc(alias = "GIMP_LAYER_MODE_HSV_SATURATION")]
     HsvSaturation,
+    /// GIMP_LAYER_MODE_HSL_COLOR
     #[doc(alias = "GIMP_LAYER_MODE_HSL_COLOR")]
     HslColor,
+    /// GIMP_LAYER_MODE_HSV_VALUE
     #[doc(alias = "GIMP_LAYER_MODE_HSV_VALUE")]
     HsvValue,
+    /// GIMP_LAYER_MODE_DIVIDE
     #[doc(alias = "GIMP_LAYER_MODE_DIVIDE")]
     Divide,
+    /// GIMP_LAYER_MODE_DODGE
     #[doc(alias = "GIMP_LAYER_MODE_DODGE")]
     Dodge,
+    /// GIMP_LAYER_MODE_BURN
     #[doc(alias = "GIMP_LAYER_MODE_BURN")]
     Burn,
+    /// GIMP_LAYER_MODE_HARDLIGHT
     #[doc(alias = "GIMP_LAYER_MODE_HARDLIGHT")]
     Hardlight,
+    /// GIMP_LAYER_MODE_SOFTLIGHT
     #[doc(alias = "GIMP_LAYER_MODE_SOFTLIGHT")]
     Softlight,
+    /// GIMP_LAYER_MODE_GRAIN_EXTRACT
     #[doc(alias = "GIMP_LAYER_MODE_GRAIN_EXTRACT")]
     GrainExtract,
+    /// GIMP_LAYER_MODE_GRAIN_MERGE
     #[doc(alias = "GIMP_LAYER_MODE_GRAIN_MERGE")]
     GrainMerge,
+    /// GIMP_LAYER_MODE_VIVID_LIGHT
     #[doc(alias = "GIMP_LAYER_MODE_VIVID_LIGHT")]
     VividLight,
+    /// GIMP_LAYER_MODE_PIN_LIGHT
     #[doc(alias = "GIMP_LAYER_MODE_PIN_LIGHT")]
     PinLight,
+    /// GIMP_LAYER_MODE_LINEAR_LIGHT
     #[doc(alias = "GIMP_LAYER_MODE_LINEAR_LIGHT")]
     LinearLight,
+    /// GIMP_LAYER_MODE_HARD_MIX
     #[doc(alias = "GIMP_LAYER_MODE_HARD_MIX")]
     HardMix,
+    /// GIMP_LAYER_MODE_EXCLUSION
     #[doc(alias = "GIMP_LAYER_MODE_EXCLUSION")]
     Exclusion,
+    /// GIMP_LAYER_MODE_LINEAR_BURN
     #[doc(alias = "GIMP_LAYER_MODE_LINEAR_BURN")]
     LinearBurn,
+    /// GIMP_LAYER_MODE_LUMA_DARKEN_ONLY
     #[doc(alias = "GIMP_LAYER_MODE_LUMA_DARKEN_ONLY")]
     LumaDarkenOnly,
+    /// GIMP_LAYER_MODE_LUMA_LIGHTEN_ONLY
     #[doc(alias = "GIMP_LAYER_MODE_LUMA_LIGHTEN_ONLY")]
     LumaLightenOnly,
+    /// GIMP_LAYER_MODE_LUMINANCE
     #[doc(alias = "GIMP_LAYER_MODE_LUMINANCE")]
     Luminance,
+    /// GIMP_LAYER_MODE_COLOR_ERASE
     #[doc(alias = "GIMP_LAYER_MODE_COLOR_ERASE")]
     ColorErase,
+    /// GIMP_LAYER_MODE_ERASE
     #[doc(alias = "GIMP_LAYER_MODE_ERASE")]
     Erase,
+    /// GIMP_LAYER_MODE_MERGE
     #[doc(alias = "GIMP_LAYER_MODE_MERGE")]
     Merge,
+    /// GIMP_LAYER_MODE_SPLIT
     #[doc(alias = "GIMP_LAYER_MODE_SPLIT")]
     Split,
+    /// GIMP_LAYER_MODE_PASS_THROUGH
     #[doc(alias = "GIMP_LAYER_MODE_PASS_THROUGH")]
     PassThrough,
+    /// GIMP_LAYER_MODE_REPLACE
     #[doc(alias = "GIMP_LAYER_MODE_REPLACE")]
     Replace,
+    /// GIMP_LAYER_MODE_OVERWRITE
     #[doc(alias = "GIMP_LAYER_MODE_OVERWRITE")]
     Overwrite,
     #[doc(hidden)]
@@ -4438,12 +4734,15 @@ impl From<LayerMode> for glib::Value {
     }
 }
 
+/// Layer mask apply modes.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpMaskApplyMode")]
 pub enum MaskApplyMode {
+    /// Apply the mask
     #[doc(alias = "GIMP_MASK_APPLY")]
     Apply,
+    /// Discard the mask
     #[doc(alias = "GIMP_MASK_DISCARD")]
     Discard,
     #[doc(hidden)]
@@ -4530,16 +4829,21 @@ impl From<MaskApplyMode> for glib::Value {
     }
 }
 
+/// Types of merging layers.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpMergeType")]
 pub enum MergeType {
+    /// Expanded as necessary
     #[doc(alias = "GIMP_EXPAND_AS_NECESSARY")]
     ExpandAsNecessary,
+    /// Clipped to image
     #[doc(alias = "GIMP_CLIP_TO_IMAGE")]
     ClipToImage,
+    /// Clipped to bottom layer
     #[doc(alias = "GIMP_CLIP_TO_BOTTOM_LAYER")]
     ClipToBottomLayer,
+    /// Flatten
     #[doc(alias = "GIMP_FLATTEN_IMAGE")]
     FlattenImage,
     #[doc(hidden)]
@@ -4630,14 +4934,18 @@ impl From<MergeType> for glib::Value {
     }
 }
 
+/// How to present messages.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpMessageHandlerType")]
 pub enum MessageHandlerType {
+    /// A status bar message (if opened) or popup dialog (if not)
     #[doc(alias = "GIMP_MESSAGE_BOX")]
     MessageBox,
+    /// The terminal
     #[doc(alias = "GIMP_CONSOLE")]
     Console,
+    /// The error console dockable
     #[doc(alias = "GIMP_ERROR_CONSOLE")]
     ErrorConsole,
     #[doc(hidden)]
@@ -4726,16 +5034,21 @@ impl From<MessageHandlerType> for glib::Value {
     }
 }
 
+/// Well-defined colorspace information available from metadata
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpMetadataColorspace")]
 pub enum MetadataColorspace {
+    /// Unspecified
     #[doc(alias = "GIMP_METADATA_COLORSPACE_UNSPECIFIED")]
     Unspecified,
+    /// Uncalibrated
     #[doc(alias = "GIMP_METADATA_COLORSPACE_UNCALIBRATED")]
     Uncalibrated,
+    /// sRGB
     #[doc(alias = "GIMP_METADATA_COLORSPACE_SRGB")]
     Srgb,
+    /// Adobe RGB
     #[doc(alias = "GIMP_METADATA_COLORSPACE_ADOBERGB")]
     Adobergb,
     #[doc(hidden)]
@@ -4772,10 +5085,12 @@ impl FromGlib<ffi::GimpMetadataColorspace> for MetadataColorspace {
     }
 }
 
+/// Types of errors returned by modules
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpModuleError")]
 pub enum ModuleError {
+    /// Generic error condition
     #[doc(alias = "GIMP_MODULE_FAILED")]
     ModuleFailed,
     #[doc(hidden)]
@@ -4806,16 +5121,24 @@ impl FromGlib<ffi::GimpModuleError> for ModuleError {
     }
 }
 
+/// The possible states a `GimpModule` can be in.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpModuleState")]
 pub enum ModuleState {
+    /// Missing `gimp_module_register()` function
+    ///  or other error.
     #[doc(alias = "GIMP_MODULE_STATE_ERROR")]
     Error,
+    /// An instance of a type implemented by
+    ///  this module is allocated.
     #[doc(alias = "GIMP_MODULE_STATE_LOADED")]
     Loaded,
+    /// `gimp_module_register()` returned [`false`].
     #[doc(alias = "GIMP_MODULE_STATE_LOAD_FAILED")]
     LoadFailed,
+    /// There are no instances allocated of
+    ///  types implemented by this module.
     #[doc(alias = "GIMP_MODULE_STATE_NOT_LOADED")]
     NotLoaded,
     #[doc(hidden)]
@@ -4852,14 +5175,18 @@ impl FromGlib<ffi::GimpModuleState> for ModuleState {
     }
 }
 
+/// Background fill types for the offset operation.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpOffsetType")]
 pub enum OffsetType {
+    /// Color
     #[doc(alias = "GIMP_OFFSET_COLOR")]
     Color,
+    /// Transparent
     #[doc(alias = "GIMP_OFFSET_TRANSPARENT")]
     Transparent,
+    /// Wrap image around
     #[doc(alias = "GIMP_OFFSET_WRAP_AROUND")]
     WrapAround,
     #[doc(hidden)]
@@ -4948,14 +5275,18 @@ impl From<OffsetType> for glib::Value {
     }
 }
 
+/// Orientations for various purposes.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpOrientationType")]
 pub enum OrientationType {
+    /// Horizontal
     #[doc(alias = "GIMP_ORIENTATION_HORIZONTAL")]
     Horizontal,
+    /// Vertical
     #[doc(alias = "GIMP_ORIENTATION_VERTICAL")]
     Vertical,
+    /// Unknown
     #[doc(alias = "GIMP_ORIENTATION_UNKNOWN")]
     Unknown,
     #[doc(hidden)]
@@ -5044,12 +5375,15 @@ impl From<OrientationType> for glib::Value {
     }
 }
 
+/// PDB error handlers.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpPDBErrorHandler")]
 pub enum PDBErrorHandler {
+    /// Internal
     #[doc(alias = "GIMP_PDB_ERROR_HANDLER_INTERNAL")]
     Internal,
+    /// Plug-In
     #[doc(alias = "GIMP_PDB_ERROR_HANDLER_PLUGIN")]
     Plugin,
     #[doc(hidden)]
@@ -5136,16 +5470,21 @@ impl From<PDBErrorHandler> for glib::Value {
     }
 }
 
+/// Types of PDB procedures.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpPDBProcType")]
 pub enum PDBProcType {
+    /// Internal GIMP procedure
     #[doc(alias = "GIMP_PDB_PROC_TYPE_INTERNAL")]
     Internal,
+    /// GIMP Plug-In
     #[doc(alias = "GIMP_PDB_PROC_TYPE_PLUGIN")]
     Plugin,
+    /// GIMP Persistent Plug-in
     #[doc(alias = "GIMP_PDB_PROC_TYPE_PERSISTENT")]
     Persistent,
+    /// Temporary Procedure
     #[doc(alias = "GIMP_PDB_PROC_TYPE_TEMPORARY")]
     Temporary,
     #[doc(hidden)]
@@ -5236,18 +5575,24 @@ impl From<PDBProcType> for glib::Value {
     }
 }
 
+/// Return status of PDB calls.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpPDBStatusType")]
 pub enum PDBStatusType {
+    /// Execution error
     #[doc(alias = "GIMP_PDB_EXECUTION_ERROR")]
     ExecutionError,
+    /// Calling error
     #[doc(alias = "GIMP_PDB_CALLING_ERROR")]
     CallingError,
+    /// Pass through
     #[doc(alias = "GIMP_PDB_PASS_THROUGH")]
     PassThrough,
+    /// Success
     #[doc(alias = "GIMP_PDB_SUCCESS")]
     Success,
+    /// User cancel
     #[doc(alias = "GIMP_PDB_CANCEL")]
     Cancel,
     #[doc(hidden)]
@@ -5340,12 +5685,15 @@ impl From<PDBStatusType> for glib::Value {
     }
 }
 
+/// Paint application modes.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpPaintApplicationMode")]
 pub enum PaintApplicationMode {
+    /// Constant
     #[doc(alias = "GIMP_PAINT_CONSTANT")]
     Constant,
+    /// Incremental
     #[doc(alias = "GIMP_PAINT_INCREMENTAL")]
     Incremental,
     #[doc(hidden)]
@@ -5432,10 +5780,12 @@ impl From<PaintApplicationMode> for glib::Value {
     }
 }
 
+/// Possible type of strokes in path objects.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpPathStrokeType")]
 pub enum PathStrokeType {
+    /// A bezier stroke
     #[doc(alias = "GIMP_PATH_STROKE_TYPE_BEZIER")]
     Bezier,
     #[doc(hidden)]
@@ -5520,14 +5870,19 @@ impl From<PathStrokeType> for glib::Value {
     }
 }
 
+/// How to deal with transparency when creating thubnail pixbufs from
+/// images and drawables.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpPixbufTransparency")]
 pub enum PixbufTransparency {
+    /// Create a pixbuf with alpha
     #[doc(alias = "GIMP_PIXBUF_KEEP_ALPHA")]
     KeepAlpha,
+    /// Show transparency as small checks
     #[doc(alias = "GIMP_PIXBUF_SMALL_CHECKS")]
     SmallChecks,
+    /// Show transparency as large checks
     #[doc(alias = "GIMP_PIXBUF_LARGE_CHECKS")]
     LargeChecks,
     #[doc(hidden)]
@@ -5562,44 +5917,63 @@ impl FromGlib<ffi::GimpPixbufTransparency> for PixbufTransparency {
     }
 }
 
+/// Precisions for pixel encoding.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpPrecision")]
 pub enum Precision {
+    /// 8-bit linear integer
     #[doc(alias = "GIMP_PRECISION_U8_LINEAR")]
     U8Linear,
+    /// 8-bit non-linear integer
     #[doc(alias = "GIMP_PRECISION_U8_NON_LINEAR")]
     U8NonLinear,
+    /// 8-bit perceptual integer
     #[doc(alias = "GIMP_PRECISION_U8_PERCEPTUAL")]
     U8Perceptual,
+    /// 16-bit linear integer
     #[doc(alias = "GIMP_PRECISION_U16_LINEAR")]
     U16Linear,
+    /// 16-bit non-linear integer
     #[doc(alias = "GIMP_PRECISION_U16_NON_LINEAR")]
     U16NonLinear,
+    /// 16-bit perceptual integer
     #[doc(alias = "GIMP_PRECISION_U16_PERCEPTUAL")]
     U16Perceptual,
+    /// 32-bit linear integer
     #[doc(alias = "GIMP_PRECISION_U32_LINEAR")]
     U32Linear,
+    /// 32-bit non-linear integer
     #[doc(alias = "GIMP_PRECISION_U32_NON_LINEAR")]
     U32NonLinear,
+    /// 32-bit perceptual integer
     #[doc(alias = "GIMP_PRECISION_U32_PERCEPTUAL")]
     U32Perceptual,
+    /// 16-bit linear floating point
     #[doc(alias = "GIMP_PRECISION_HALF_LINEAR")]
     HalfLinear,
+    /// 16-bit non-linear floating point
     #[doc(alias = "GIMP_PRECISION_HALF_NON_LINEAR")]
     HalfNonLinear,
+    /// 16-bit perceptual floating point
     #[doc(alias = "GIMP_PRECISION_HALF_PERCEPTUAL")]
     HalfPerceptual,
+    /// 32-bit linear floating point
     #[doc(alias = "GIMP_PRECISION_FLOAT_LINEAR")]
     FloatLinear,
+    /// 32-bit non-linear floating point
     #[doc(alias = "GIMP_PRECISION_FLOAT_NON_LINEAR")]
     FloatNonLinear,
+    /// 32-bit perceptual floating point
     #[doc(alias = "GIMP_PRECISION_FLOAT_PERCEPTUAL")]
     FloatPerceptual,
+    /// 64-bit linear floating point
     #[doc(alias = "GIMP_PRECISION_DOUBLE_LINEAR")]
     DoubleLinear,
+    /// 64-bit non-linear floating point
     #[doc(alias = "GIMP_PRECISION_DOUBLE_NON_LINEAR")]
     DoubleNonLinear,
+    /// 64-bit perceptual floating point
     #[doc(alias = "GIMP_PRECISION_DOUBLE_PERCEPTUAL")]
     DoublePerceptual,
     #[doc(hidden)]
@@ -5716,20 +6090,27 @@ impl From<Precision> for glib::Value {
     }
 }
 
+/// Commands for the progress API.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpProgressCommand")]
 pub enum ProgressCommand {
+    /// Start a progress
     #[doc(alias = "GIMP_PROGRESS_COMMAND_START")]
     Start,
+    /// End the progress
     #[doc(alias = "GIMP_PROGRESS_COMMAND_END")]
     End,
+    /// Set the text
     #[doc(alias = "GIMP_PROGRESS_COMMAND_SET_TEXT")]
     SetText,
+    /// Set the percentage
     #[doc(alias = "GIMP_PROGRESS_COMMAND_SET_VALUE")]
     SetValue,
+    /// Pulse the progress
     #[doc(alias = "GIMP_PROGRESS_COMMAND_PULSE")]
     Pulse,
+    /// Get the window where the progress is shown
     #[doc(alias = "GIMP_PROGRESS_COMMAND_GET_WINDOW")]
     GetWindow,
     #[doc(hidden)]
@@ -5824,16 +6205,21 @@ impl From<ProgressCommand> for glib::Value {
     }
 }
 
+/// Repeat modes for example for gradients.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpRepeatMode")]
 pub enum RepeatMode {
+    /// None (extend)
     #[doc(alias = "GIMP_REPEAT_NONE")]
     None,
+    /// None (truncate)
     #[doc(alias = "GIMP_REPEAT_TRUNCATE")]
     Truncate,
+    /// Sawtooth wave
     #[doc(alias = "GIMP_REPEAT_SAWTOOTH")]
     Sawtooth,
+    /// Triangular wave
     #[doc(alias = "GIMP_REPEAT_TRIANGULAR")]
     Triangular,
     #[doc(hidden)]
@@ -5924,14 +6310,18 @@ impl From<RepeatMode> for glib::Value {
     }
 }
 
+/// Types of simple rotations.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpRotationType")]
 pub enum RotationType {
+    /// 90 degrees
     #[doc(alias = "GIMP_ROTATE_DEGREES90")]
     Degrees90,
+    /// 180 degrees
     #[doc(alias = "GIMP_ROTATE_DEGREES180")]
     Degrees180,
+    /// 270 degrees
     #[doc(alias = "GIMP_ROTATE_DEGREES270")]
     Degrees270,
     #[doc(hidden)]
@@ -6020,14 +6410,18 @@ impl From<RotationType> for glib::Value {
     }
 }
 
+/// Run modes for plug-ins.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpRunMode")]
 pub enum RunMode {
+    /// Run interactively
     #[doc(alias = "GIMP_RUN_INTERACTIVE")]
     Interactive,
+    /// Run non-interactively
     #[doc(alias = "GIMP_RUN_NONINTERACTIVE")]
     Noninteractive,
+    /// Run with last used values
     #[doc(alias = "GIMP_RUN_WITH_LAST_VALS")]
     WithLastVals,
     #[doc(hidden)]
@@ -6116,30 +6510,42 @@ impl From<RunMode> for glib::Value {
     }
 }
 
+/// Criterions for color similarity.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpSelectCriterion")]
 pub enum SelectCriterion {
+    /// Composite
     #[doc(alias = "GIMP_SELECT_CRITERION_COMPOSITE")]
     Composite,
+    /// Red
     #[doc(alias = "GIMP_SELECT_CRITERION_RGB_RED")]
     RgbRed,
+    /// Green
     #[doc(alias = "GIMP_SELECT_CRITERION_RGB_GREEN")]
     RgbGreen,
+    /// Blue
     #[doc(alias = "GIMP_SELECT_CRITERION_RGB_BLUE")]
     RgbBlue,
+    /// HSV Hue
     #[doc(alias = "GIMP_SELECT_CRITERION_HSV_HUE")]
     HsvHue,
+    /// HSV Saturation
     #[doc(alias = "GIMP_SELECT_CRITERION_HSV_SATURATION")]
     HsvSaturation,
+    /// HSV Value
     #[doc(alias = "GIMP_SELECT_CRITERION_HSV_VALUE")]
     HsvValue,
+    /// LCh Lightness
     #[doc(alias = "GIMP_SELECT_CRITERION_LCH_LIGHTNESS")]
     LchLightness,
+    /// LCh Chroma
     #[doc(alias = "GIMP_SELECT_CRITERION_LCH_CHROMA")]
     LchChroma,
+    /// LCh Hue
     #[doc(alias = "GIMP_SELECT_CRITERION_LCH_HUE")]
     LchHue,
+    /// Alpha
     #[doc(alias = "GIMP_SELECT_CRITERION_ALPHA")]
     Alpha,
     #[doc(hidden)]
@@ -6244,12 +6650,15 @@ impl From<SelectCriterion> for glib::Value {
     }
 }
 
+/// Size types for the old-style text API.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpSizeType")]
 pub enum SizeType {
+    /// Pixels
     #[doc(alias = "GIMP_PIXELS")]
     Pixels,
+    /// Points
     #[doc(alias = "GIMP_POINTS")]
     Points,
     #[doc(hidden)]
@@ -6336,14 +6745,18 @@ impl From<SizeType> for glib::Value {
     }
 }
 
+/// When to generate stack traces in case of an error.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpStackTraceMode")]
 pub enum StackTraceMode {
+    /// Never
     #[doc(alias = "GIMP_STACK_TRACE_NEVER")]
     Never,
+    /// Ask each time
     #[doc(alias = "GIMP_STACK_TRACE_QUERY")]
     Query,
+    /// Always
     #[doc(alias = "GIMP_STACK_TRACE_ALWAYS")]
     Always,
     #[doc(hidden)]
@@ -6432,12 +6845,15 @@ impl From<StackTraceMode> for glib::Value {
     }
 }
 
+/// Methods of stroking selections and paths.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpStrokeMethod")]
 pub enum StrokeMethod {
+    /// Stroke line
     #[doc(alias = "GIMP_STROKE_LINE")]
     Line,
+    /// Stroke with a paint tool
     #[doc(alias = "GIMP_STROKE_PAINT_METHOD")]
     PaintMethod,
     #[doc(hidden)]
@@ -6524,14 +6940,18 @@ impl From<StrokeMethod> for glib::Value {
     }
 }
 
+/// Extracted from app/core/core-enums.h
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpTRCType")]
 pub enum TRCType {
+    /// GIMP_TRC_LINEAR
     #[doc(alias = "GIMP_TRC_LINEAR")]
     Linear,
+    /// GIMP_TRC_NON_LINEAR
     #[doc(alias = "GIMP_TRC_NON_LINEAR")]
     NonLinear,
+    /// GIMP_TRC_PERCEPTUAL
     #[doc(alias = "GIMP_TRC_PERCEPTUAL")]
     Perceptual,
     #[doc(hidden)]
@@ -6620,20 +7040,27 @@ impl From<TRCType> for glib::Value {
     }
 }
 
+/// Text directions.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpTextDirection")]
 pub enum TextDirection {
+    /// From left to right
     #[doc(alias = "GIMP_TEXT_DIRECTION_LTR")]
     Ltr,
+    /// From right to left
     #[doc(alias = "GIMP_TEXT_DIRECTION_RTL")]
     Rtl,
+    /// Characters are from top to bottom, Lines are from right to left
     #[doc(alias = "GIMP_TEXT_DIRECTION_TTB_RTL")]
     TtbRtl,
+    /// Upright characters are from top to bottom, Lines are from right to left
     #[doc(alias = "GIMP_TEXT_DIRECTION_TTB_RTL_UPRIGHT")]
     TtbRtlUpright,
+    /// Characters are from top to bottom, Lines are from left to right
     #[doc(alias = "GIMP_TEXT_DIRECTION_TTB_LTR")]
     TtbLtr,
+    /// Upright characters are from top to bottom, Lines are from left to right
     #[doc(alias = "GIMP_TEXT_DIRECTION_TTB_LTR_UPRIGHT")]
     TtbLtrUpright,
     #[doc(hidden)]
@@ -6728,16 +7155,21 @@ impl From<TextDirection> for glib::Value {
     }
 }
 
+/// Text hint strengths.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpTextHintStyle")]
 pub enum TextHintStyle {
+    /// None
     #[doc(alias = "GIMP_TEXT_HINT_STYLE_NONE")]
     None,
+    /// Slight
     #[doc(alias = "GIMP_TEXT_HINT_STYLE_SLIGHT")]
     Slight,
+    /// Medium
     #[doc(alias = "GIMP_TEXT_HINT_STYLE_MEDIUM")]
     Medium,
+    /// Full
     #[doc(alias = "GIMP_TEXT_HINT_STYLE_FULL")]
     Full,
     #[doc(hidden)]
@@ -6828,16 +7260,21 @@ impl From<TextHintStyle> for glib::Value {
     }
 }
 
+/// Text justifications.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpTextJustification")]
 pub enum TextJustification {
+    /// Left justified
     #[doc(alias = "GIMP_TEXT_JUSTIFY_LEFT")]
     Left,
+    /// Right justified
     #[doc(alias = "GIMP_TEXT_JUSTIFY_RIGHT")]
     Right,
+    /// Centered
     #[doc(alias = "GIMP_TEXT_JUSTIFY_CENTER")]
     Center,
+    /// Filled
     #[doc(alias = "GIMP_TEXT_JUSTIFY_FILL")]
     Fill,
     #[doc(hidden)]
@@ -6928,14 +7365,18 @@ impl From<TextJustification> for glib::Value {
     }
 }
 
+/// Settings for text stroke and fill.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpTextOutline")]
 pub enum TextOutline {
+    /// Filled
     #[doc(alias = "GIMP_TEXT_OUTLINE_NONE")]
     None,
+    /// Outlined
     #[doc(alias = "GIMP_TEXT_OUTLINE_STROKE_ONLY")]
     StrokeOnly,
+    /// Outlined and filled
     #[doc(alias = "GIMP_TEXT_OUTLINE_STROKE_FILL")]
     StrokeFill,
     #[doc(hidden)]
@@ -7024,14 +7465,18 @@ impl From<TextOutline> for glib::Value {
     }
 }
 
+/// Options for how the text outline's stroke is drawn.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpTextOutlineDirection")]
 pub enum TextOutlineDirection {
+    /// Outer
     #[doc(alias = "GIMP_TEXT_OUTLINE_DIRECTION_OUTER")]
     Outer,
+    /// Inner
     #[doc(alias = "GIMP_TEXT_OUTLINE_DIRECTION_INNER")]
     Inner,
+    /// Centered
     #[doc(alias = "GIMP_TEXT_OUTLINE_DIRECTION_CENTERED")]
     Centered,
     #[doc(hidden)]
@@ -7120,14 +7565,18 @@ impl From<TextOutlineDirection> for glib::Value {
     }
 }
 
+/// For choosing which brightness ranges to transform.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpTransferMode")]
 pub enum TransferMode {
+    /// Shadows
     #[doc(alias = "GIMP_TRANSFER_SHADOWS")]
     Shadows,
+    /// Midtones
     #[doc(alias = "GIMP_TRANSFER_MIDTONES")]
     Midtones,
+    /// Highlights
     #[doc(alias = "GIMP_TRANSFER_HIGHLIGHTS")]
     Highlights,
     #[doc(hidden)]
@@ -7216,12 +7665,15 @@ impl From<TransferMode> for glib::Value {
     }
 }
 
+/// Transform directions.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpTransformDirection")]
 pub enum TransformDirection {
+    /// Normal (Forward)
     #[doc(alias = "GIMP_TRANSFORM_FORWARD")]
     Forward,
+    /// Corrective (Backward)
     #[doc(alias = "GIMP_TRANSFORM_BACKWARD")]
     Backward,
     #[doc(hidden)]
@@ -7308,16 +7760,21 @@ impl From<TransformDirection> for glib::Value {
     }
 }
 
+/// Ways of clipping the result when transforming drawables.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpTransformResize")]
 pub enum TransformResize {
+    /// Adjust
     #[doc(alias = "GIMP_TRANSFORM_RESIZE_ADJUST")]
     Adjust,
+    /// Clip
     #[doc(alias = "GIMP_TRANSFORM_RESIZE_CLIP")]
     Clip,
+    /// Crop to result
     #[doc(alias = "GIMP_TRANSFORM_RESIZE_CROP")]
     Crop,
+    /// Crop with aspect
     #[doc(alias = "GIMP_TRANSFORM_RESIZE_CROP_WITH_ASPECT")]
     CropWithAspect,
     #[doc(hidden)]
@@ -7408,22 +7865,32 @@ impl From<TransformResize> for glib::Value {
     }
 }
 
+/// Integer IDs of built-in units used for dimensions in images. These
+/// IDs are meant to stay stable but user-created units IDs may change
+/// from one session to another.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GimpUnitID")]
 pub enum UnitID {
+    /// Pixels
     #[doc(alias = "GIMP_UNIT_PIXEL")]
     Pixel,
+    /// Inches
     #[doc(alias = "GIMP_UNIT_INCH")]
     Inch,
+    /// Millimeters
     #[doc(alias = "GIMP_UNIT_MM")]
     Mm,
+    /// Points
     #[doc(alias = "GIMP_UNIT_POINT")]
     Point,
+    /// Picas
     #[doc(alias = "GIMP_UNIT_PICA")]
     Pica,
+    /// Marker for end-of-builtin-units
     #[doc(alias = "GIMP_UNIT_END")]
     End,
+    /// Pseudo-unit percent
     #[doc(alias = "GIMP_UNIT_PERCENT")]
     Percent,
     #[doc(hidden)]

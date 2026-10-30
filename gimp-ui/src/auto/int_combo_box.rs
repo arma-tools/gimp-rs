@@ -12,6 +12,455 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A widget providing a popup menu of integer values (e.g. enums).
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `ellipsize`
+    ///  Specifies the preferred place to ellipsize text in the combo-box,
+    /// if the cell renderer does not have enough room to display the
+    /// entire string.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `label`
+    ///  Sets a label on the combo-box, see [`IntComboBoxExt::set_label()`][crate::prelude::IntComboBoxExt::set_label()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `layout`
+    ///  Specifies the combo box layout.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `value`
+    ///  The active value (different from the "active" property of
+    /// GtkComboBox which is the active index).
+    ///
+    /// Readable | Writeable
+    /// <details><summary><h4>ComboBox</h4></summary>
+    ///
+    ///
+    /// #### `active`
+    ///  The item which is currently active. If the model is a non-flat treemodel,
+    /// and the active item is not an immediate child of the root of the tree,
+    /// this property has the value
+    /// `gtk_tree_path_get_indices (path)[0]`,
+    /// where `path` is the `GtkTreePath` of the active item.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `active-id`
+    ///  The value of the ID column of the active row.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `add-tearoffs`
+    ///  The add-tearoffs property controls whether generated menus
+    /// have tearoff menu items.
+    ///
+    /// Note that this only affects menu style combo boxes.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `button-sensitivity`
+    ///  Whether the dropdown button is sensitive when
+    /// the model is empty.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `cell-area`
+    ///  The `GtkCellArea` used to layout cell renderers for this combo box.
+    ///
+    /// If no area is specified when creating the combo box with [`gtk::ComboBox::with_area()`][crate::gtk::ComboBox::with_area()]
+    /// a horizontally oriented `GtkCellAreaBox` will be used.
+    ///
+    /// Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `column-span-column`
+    ///  If this is set to a non-negative value, it must be the index of a column
+    /// of type `G_TYPE_INT` in the model. The value in that column for each item
+    /// will determine how many columns that item will span in the popup.
+    /// Therefore, values in this column must be greater than zero, and the sum of
+    /// an item’s column position + span should not exceed [`wrap-width`][struct@crate::gtk::ComboBox#wrap-width].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `entry-text-column`
+    ///  The column in the combo box's model to associate with strings from the entry
+    /// if the combo was created with [`has-entry`][struct@crate::gtk::ComboBox#has-entry] = [`true`].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-entry`
+    ///  Whether the combo box has an entry.
+    ///
+    /// Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `has-frame`
+    ///  The has-frame property controls whether a frame
+    /// is drawn around the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `id-column`
+    ///  The column in the combo box's model that provides string
+    /// IDs for the values in the model, if != -1.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `model`
+    ///  The model from which the combo box takes the values shown
+    /// in the list.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `popup-fixed-width`
+    ///  Whether the popup's width should be a fixed width matching the
+    /// allocated width of the combo box.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `popup-shown`
+    ///  Whether the combo boxes dropdown is popped up.
+    /// Note that this property is mainly useful, because
+    /// it allows you to connect to notify::popup-shown.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `row-span-column`
+    ///  If this is set to a non-negative value, it must be the index of a column
+    /// of type `G_TYPE_INT` in the model. The value in that column for each item
+    /// will determine how many rows that item will span in the popup. Therefore,
+    /// values in this column must be greater than zero.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tearoff-title`
+    ///  A title that may be displayed by the window manager
+    /// when the popup is torn-off.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `wrap-width`
+    ///  If wrap-width is set to a positive value, items in the popup will be laid
+    /// out along multiple columns, starting a new row on reaching the wrap width.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Container</h4></summary>
+    ///
+    ///
+    /// #### `border-width`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `child`
+    ///  Writeable
+    ///
+    ///
+    /// #### `resize-mode`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    /// <details><summary><h4>CellEditable</h4></summary>
+    ///
+    ///
+    /// #### `editing-canceled`
+    ///  Indicates whether editing on the cell has been canceled.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`IntComboBoxExt`][trait@crate::prelude::IntComboBoxExt], [`trait@gtk::prelude::ComboBoxExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpIntComboBox")]
     pub struct IntComboBox(Object<ffi::GimpIntComboBox, ffi::GimpIntComboBoxClass>) @extends gtk::ComboBox, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -28,6 +477,14 @@ impl IntComboBox {
     //    unsafe { TODO: call ffi:gimp_int_combo_box_new() }
     //}
 
+    /// A variant of `gimp_int_combo_box_new()` that takes an array of labels.
+    /// The array indices are used as values.
+    /// ## `labels`
+    /// an array of labels
+    ///
+    /// # Returns
+    ///
+    /// a new [`IntComboBox`][crate::IntComboBox].
     #[doc(alias = "gimp_int_combo_box_new_array")]
     pub fn new_array(labels: &[&str]) -> IntComboBox {
         let n_values = labels.len() as _;
@@ -46,6 +503,11 @@ impl IntComboBox {
     //}
 }
 
+/// Trait containing all [`struct@IntComboBox`] methods.
+///
+/// # Implementors
+///
+/// [`ChannelComboBox`][struct@crate::ChannelComboBox], [`DrawableComboBox`][struct@crate::DrawableComboBox], [`EnumComboBox`][struct@crate::EnumComboBox], [`ImageComboBox`][struct@crate::ImageComboBox], [`IntComboBox`][struct@crate::IntComboBox], [`LayerComboBox`][struct@crate::LayerComboBox], [`PathComboBox`][struct@crate::PathComboBox]
 pub trait IntComboBoxExt: IsA<IntComboBox> + 'static {
     //#[doc(alias = "gimp_int_combo_box_append")]
     //fn append(&self, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
@@ -57,6 +519,15 @@ pub trait IntComboBoxExt: IsA<IntComboBox> + 'static {
     //    unsafe { TODO: call ffi:gimp_int_combo_box_connect() }
     //}
 
+    /// Retrieves the value of the selected (active) item in the `self`.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `value` has been set or [`false`] if no item was
+    ///  active.
+    ///
+    /// ## `value`
+    /// return location for the integer value
     #[doc(alias = "gimp_int_combo_box_get_active")]
     #[doc(alias = "get_active")]
     fn active(&self) -> Option<i32> {
@@ -80,6 +551,12 @@ pub trait IntComboBoxExt: IsA<IntComboBox> + 'static {
     //    unsafe { TODO: call ffi:gimp_int_combo_box_get_active_user_data() }
     //}
 
+    /// Returns the label previously set with [`set_label()`][Self::set_label()],
+    /// or [`None`],
+    ///
+    /// # Returns
+    ///
+    /// the `self`' label.
     #[doc(alias = "gimp_int_combo_box_get_label")]
     #[doc(alias = "get_label")]
     fn label(&self) -> Option<glib::GString> {
@@ -90,6 +567,11 @@ pub trait IntComboBoxExt: IsA<IntComboBox> + 'static {
         }
     }
 
+    /// Returns the layout of `self`
+    ///
+    /// # Returns
+    ///
+    /// the `self`'s layout.
     #[doc(alias = "gimp_int_combo_box_get_layout")]
     #[doc(alias = "get_layout")]
     fn layout(&self) -> IntComboBoxLayout {
@@ -105,6 +587,15 @@ pub trait IntComboBoxExt: IsA<IntComboBox> + 'static {
     //    unsafe { TODO: call ffi:gimp_int_combo_box_prepend() }
     //}
 
+    /// Looks up the item that belongs to the given `value` and makes it the
+    /// selected item in the `self`.
+    /// ## `value`
+    /// an integer value
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success (value changed or not) or [`false`] if there
+    ///  was no item for this value.
     #[doc(alias = "gimp_int_combo_box_set_active")]
     fn set_active(&self, value: i32) -> bool {
         unsafe {
@@ -120,6 +611,12 @@ pub trait IntComboBoxExt: IsA<IntComboBox> + 'static {
     //    unsafe { TODO: call ffi:gimp_int_combo_box_set_active_by_user_data() }
     //}
 
+    /// Sets a caption on the `self` that will be displayed
+    /// left-aligned inside the box. When a label is set, the remaining
+    /// contents of the box will be right-aligned. This is useful for
+    /// places where screen estate is rare, like in tool options.
+    /// ## `label`
+    /// a string to be shown as label
     #[doc(alias = "gimp_int_combo_box_set_label")]
     #[doc(alias = "label")]
     fn set_label(&self, label: &str) {
@@ -131,6 +628,9 @@ pub trait IntComboBoxExt: IsA<IntComboBox> + 'static {
         }
     }
 
+    /// Sets the layout of `self` to `layout`.
+    /// ## `layout`
+    /// the combo box layout
     #[doc(alias = "gimp_int_combo_box_set_layout")]
     #[doc(alias = "layout")]
     fn set_layout(&self, layout: IntComboBoxLayout) {
@@ -139,6 +639,14 @@ pub trait IntComboBoxExt: IsA<IntComboBox> + 'static {
         }
     }
 
+    /// Sets a function that is used to decide about the sensitivity of
+    /// rows in the `self`. Use this if you want to set certain rows
+    /// insensitive.
+    ///
+    /// Calling [`WidgetExtManual::queue_draw()`][crate::gtk::prelude::WidgetExtManual::queue_draw()] on the `self` will cause the
+    /// sensitivity to be updated.
+    /// ## `func`
+    /// a function that returns a boolean value, or [`None`] to unset
     #[doc(alias = "gimp_int_combo_box_set_sensitivity")]
     fn set_sensitivity<P: Fn(i32) -> bool + 'static>(&self, func: P) {
         let func_data: Box_<P> = Box_::new(func);
@@ -177,10 +685,14 @@ pub trait IntComboBoxExt: IsA<IntComboBox> + 'static {
     //    ObjectExt::set_property(self.as_ref(),"ellipsize", ellipsize)
     //}
 
+    /// The active value (different from the "active" property of
+    /// GtkComboBox which is the active index).
     fn value(&self) -> i32 {
         ObjectExt::property(self.as_ref(), "value")
     }
 
+    /// The active value (different from the "active" property of
+    /// GtkComboBox which is the active index).
     fn set_value(&self, value: i32) {
         ObjectExt::set_property(self.as_ref(), "value", value)
     }

@@ -12,6 +12,343 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// The chooser contains an optional label and other interface allowing
+    /// to select files for different use cases.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `action`
+    ///  The action determining the chooser UI.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `file`
+    ///  The currently selected file.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `label`
+    ///  Label text with mnemonic.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `title`
+    ///  The title to be used for the file selection popup dialog.
+    /// If [`None`], the "label" property is used instead.
+    ///
+    /// Readable | Writeable
+    /// <details><summary><h4>Box</h4></summary>
+    ///
+    ///
+    /// #### `baseline-position`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `homogeneous`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `spacing`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Container</h4></summary>
+    ///
+    ///
+    /// #### `border-width`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `child`
+    ///  Writeable
+    ///
+    ///
+    /// #### `resize-mode`
+    ///  Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    /// <details><summary><h4>Orientable</h4></summary>
+    ///
+    ///
+    /// #### `orientation`
+    ///  The orientation of the orientable.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::BoxExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpFileChooser")]
     pub struct FileChooser(Object<ffi::GimpFileChooser, ffi::GimpFileChooserClass>) @extends gtk::Box, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 
@@ -32,18 +369,37 @@ impl FileChooser {
     //    unsafe { TODO: call ffi:gimp_file_chooser_get_action() }
     //}
 
+    /// Gets the currently selected file.
+    ///
+    /// # Returns
+    ///
+    /// an internal copy of the file which must not be freed.
     #[doc(alias = "gimp_file_chooser_get_file")]
     #[doc(alias = "get_file")]
     pub fn file(&self) -> Option<gio::File> {
         unsafe { from_glib_none(ffi::gimp_file_chooser_get_file(self.to_glib_none().0)) }
     }
 
+    /// Gets the current label text. A [`None`] label means that the label
+    /// widget is hidden.
+    ///
+    /// Note: the label text may contain a mnemonic.
+    ///
+    /// # Returns
+    ///
+    /// the label set.
     #[doc(alias = "gimp_file_chooser_get_label")]
     #[doc(alias = "get_label")]
     pub fn label(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::gimp_file_chooser_get_label(self.to_glib_none().0)) }
     }
 
+    /// Returns the label widget. This can be useful for instance when
+    /// aligning dialog's widgets with a `GtkSizeGroup`.
+    ///
+    /// # Returns
+    ///
+    /// the [`gtk::Widget`][crate::gtk::Widget] showing the label text.
     #[doc(alias = "gimp_file_chooser_get_label_widget")]
     #[doc(alias = "get_label_widget")]
     pub fn label_widget(&self) -> Option<gtk::Widget> {
@@ -54,6 +410,15 @@ impl FileChooser {
         }
     }
 
+    /// Gets the text currently used for the file dialog's title and for
+    /// entry's placeholder text.
+    ///
+    /// A [`None`] value means that the file dialog uses default title and the
+    /// entry has no placeholder text.
+    ///
+    /// # Returns
+    ///
+    /// the text used for the title of `self`'s dialog.
     #[doc(alias = "gimp_file_chooser_get_title")]
     #[doc(alias = "get_title")]
     pub fn title(&self) -> Option<glib::GString> {
@@ -66,6 +431,9 @@ impl FileChooser {
     //    unsafe { TODO: call ffi:gimp_file_chooser_set_action() }
     //}
 
+    /// Sets the currently selected file.
+    /// ## `file`
+    /// File to set.
     #[doc(alias = "gimp_file_chooser_set_file")]
     #[doc(alias = "file")]
     pub fn set_file(&self, file: &impl IsA<gio::File>) {
@@ -74,6 +442,11 @@ impl FileChooser {
         }
     }
 
+    /// Set the label text with mnemonic.
+    ///
+    /// Setting a [`None`] label text will hide the label widget.
+    /// ## `text`
+    /// Label text.
     #[doc(alias = "gimp_file_chooser_set_label")]
     #[doc(alias = "label")]
     pub fn set_label(&self, text: Option<&str>) {
@@ -82,6 +455,13 @@ impl FileChooser {
         }
     }
 
+    /// Set the text to be used for the file dialog's title and for entry's
+    /// placeholder text.
+    ///
+    /// Setting a [`None`] title `text` will mean that the file dialog will use a
+    /// generic title and there will be no placeholder text in the entry.
+    /// ## `text`
+    /// Dialog's title text.
     #[doc(alias = "gimp_file_chooser_set_title")]
     #[doc(alias = "title")]
     pub fn set_title(&self, text: Option<&str>) {

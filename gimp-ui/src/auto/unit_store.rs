@@ -12,6 +12,33 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A model for `GimpUnit` views
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `has-percent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-pixels`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `long-format`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `num-values`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `short-format`
+    ///  Readable | Writeable
+    ///
+    /// # Implements
+    ///
+    /// [`UnitStoreExt`][trait@crate::prelude::UnitStoreExt], [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpUnitStore")]
     pub struct UnitStore(Object<ffi::GimpUnitStore, ffi::GimpUnitStoreClass>);
 
@@ -29,6 +56,11 @@ impl UnitStore {
     }
 }
 
+/// Trait containing all [`struct@UnitStore`] methods.
+///
+/// # Implementors
+///
+/// [`UnitStore`][struct@crate::UnitStore]
 pub trait UnitStoreExt: IsA<UnitStore> + 'static {
     #[doc(alias = "gimp_unit_store_get_has_percent")]
     #[doc(alias = "get_has_percent")]

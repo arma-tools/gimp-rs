@@ -6,6 +6,16 @@
 use crate::{ffi, ColorSelector};
 
 glib::wrapper! {
+    /// The [`ColorSelect`][crate::ColorSelect] widget is an implementation of a
+    /// [`ColorSelector`][crate::ColorSelector]. It shows a square area that supports
+    /// interactively changing two color channels and a smaller area to
+    /// change the third channel. You can select which channel should be
+    /// the third by calling [`ColorSelectorExt::set_channel()`][crate::prelude::ColorSelectorExt::set_channel()]. The widget
+    /// will then change the other two channels accordingly.
+    ///
+    /// # Implements
+    ///
+    /// [`ColorSelectorExt`][trait@crate::prelude::ColorSelectorExt], [`trait@gtk::prelude::BoxExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpColorSelect")]
     pub struct ColorSelect(Object<ffi::GimpColorSelect, ffi::GimpColorSelectClass>) @extends ColorSelector, gtk::Box, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 

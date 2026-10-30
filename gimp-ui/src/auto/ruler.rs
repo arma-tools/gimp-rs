@@ -12,6 +12,305 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A ruler widget with configurable unit and orientation.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `lower`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `max-size`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `orientation`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `position`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `unit`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `upper`
+    ///  Readable | Writeable
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpRuler")]
     pub struct Ruler(Object<ffi::GimpRuler, ffi::GimpRulerClass>) @extends gtk::Widget, @implements gtk::Buildable;
 
@@ -21,6 +320,13 @@ glib::wrapper! {
 }
 
 impl Ruler {
+    /// Creates a new ruler.
+    /// ## `orientation`
+    /// the ruler's orientation.
+    ///
+    /// # Returns
+    ///
+    /// a new [`Ruler`][crate::Ruler] widget.
     #[doc(alias = "gimp_ruler_new")]
     pub fn new(orientation: gtk::Orientation) -> Ruler {
         unsafe {
@@ -28,6 +334,13 @@ impl Ruler {
         }
     }
 
+    /// Adds a "track widget" to the ruler. The ruler will connect to
+    /// GtkWidget:motion-notify-event: on the track widget and update its
+    /// position marker accordingly. The marker is correctly updated also
+    /// for the track widget's children, regardless of whether they are
+    /// ordinary children of off-screen children.
+    /// ## `widget`
+    /// the track widget to add
     #[doc(alias = "gimp_ruler_add_track_widget")]
     pub fn add_track_widget(&self, widget: &impl IsA<gtk::Widget>) {
         unsafe {
@@ -38,12 +351,34 @@ impl Ruler {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the current position of the `self` widget.
     #[doc(alias = "gimp_ruler_get_position")]
     #[doc(alias = "get_position")]
     pub fn position(&self) -> f64 {
         unsafe { ffi::gimp_ruler_get_position(self.to_glib_none().0) }
     }
 
+    /// Retrieves values indicating the range and current position of a [`Ruler`][crate::Ruler].
+    /// See [`set_range()`][Self::set_range()].
+    ///
+    /// # Returns
+    ///
+    ///
+    /// ## `lower`
+    /// location to store lower limit of the ruler,
+    ///  or [`None`]
+    ///
+    /// ## `upper`
+    /// location to store upper limit of the ruler,
+    ///  or [`None`]
+    ///
+    /// ## `max_size`
+    /// location to store the maximum size of the ruler
+    ///  used when calculating the space to leave for
+    ///  the text, or [`None`].
     #[doc(alias = "gimp_ruler_get_range")]
     #[doc(alias = "get_range")]
     pub fn range(&self) -> (f64, f64, f64) {
@@ -71,6 +406,10 @@ impl Ruler {
     //    unsafe { TODO: call ffi:gimp_ruler_get_unit() }
     //}
 
+    /// Removes a previously added track widget from the ruler. See
+    /// [`add_track_widget()`][Self::add_track_widget()].
+    /// ## `widget`
+    /// the track widget to remove
     #[doc(alias = "gimp_ruler_remove_track_widget")]
     pub fn remove_track_widget(&self, widget: &impl IsA<gtk::Widget>) {
         unsafe {
@@ -81,6 +420,9 @@ impl Ruler {
         }
     }
 
+    /// This sets the position of the ruler.
+    /// ## `position`
+    /// the position to set the ruler to
     #[doc(alias = "gimp_ruler_set_position")]
     #[doc(alias = "position")]
     pub fn set_position(&self, position: f64) {
@@ -89,6 +431,14 @@ impl Ruler {
         }
     }
 
+    /// This sets the range of the ruler.
+    /// ## `lower`
+    /// the lower limit of the ruler
+    /// ## `upper`
+    /// the upper limit of the ruler
+    /// ## `max_size`
+    /// the maximum size of the ruler used when calculating the space to
+    /// leave for the text
     #[doc(alias = "gimp_ruler_set_range")]
     pub fn set_range(&self, lower: f64, upper: f64, max_size: f64) {
         unsafe {

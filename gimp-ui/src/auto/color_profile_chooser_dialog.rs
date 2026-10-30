@@ -6,6 +6,11 @@
 use crate::ffi;
 
 glib::wrapper! {
+    /// A `GtkFileChooser` subclass for selecting color profiles.
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::DialogExt`], [`trait@gtk::prelude::WindowExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpColorProfileChooserDialog")]
     pub struct ColorProfileChooserDialog(Object<ffi::GimpColorProfileChooserDialog, ffi::GimpColorProfileChooserDialogClass>) @extends gtk::Dialog, gtk::Window, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 

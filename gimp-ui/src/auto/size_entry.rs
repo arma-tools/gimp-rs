@@ -13,6 +13,857 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// This widget is used to enter pixel distances/sizes and resolutions.
+    ///
+    /// You can specify the number of fields the widget should provide. For
+    /// each field automatic mappings are performed between the field's
+    /// "reference value" and its "value".
+    ///
+    /// There is a [`UnitComboBox`][crate::UnitComboBox] right of the entry fields which lets
+    /// you specify the `GimpUnit` of the displayed values.
+    ///
+    /// For each field, there can be one or two `GtkSpinButton`'s to enter
+    /// "value" and "reference value". If you specify `show_refval` as
+    /// [`false`] in `gimp_size_entry_new()` there will be only one
+    /// `GtkSpinButton` and the [`UnitComboBox`][crate::UnitComboBox] will contain an item for
+    /// selecting GIMP_UNIT_PIXEL.
+    ///
+    /// The "reference value" is either of GIMP_UNIT_PIXEL or dpi,
+    /// depending on which [`SizeEntryUpdatePolicy`][crate::SizeEntryUpdatePolicy] you specify in
+    /// `gimp_size_entry_new()`. The "value" is either the size in pixels
+    /// mapped to the size in a real-world-unit (see `GimpUnit`) or the dpi
+    /// value mapped to pixels per real-world-unit.
+    ///
+    /// ## Signals
+    ///
+    ///
+    /// #### `refval-changed`
+    ///
+    ///
+    ///
+    /// #### `unit-changed`
+    ///
+    ///
+    ///
+    /// #### `value-changed`
+    ///
+    /// <details><summary><h4>Container</h4></summary>
+    ///
+    ///
+    /// #### `add`
+    ///
+    ///
+    ///
+    /// #### `check-resize`
+    ///
+    ///
+    ///
+    /// #### `remove`
+    ///
+    ///
+    ///
+    /// #### `set-focus-child`
+    ///
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `accel-closures-changed`
+    ///
+    ///
+    ///
+    /// #### `button-press-event`
+    ///  The ::button-press-event signal will be emitted when a button
+    /// (typically from a mouse) is pressed.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the
+    /// widget needs to enable the `GDK_BUTTON_PRESS_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `button-release-event`
+    ///  The ::button-release-event signal will be emitted when a button
+    /// (typically from a mouse) is released.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the
+    /// widget needs to enable the `GDK_BUTTON_RELEASE_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `can-activate-accel`
+    ///  Determines whether an accelerator that activates the signal
+    /// identified by `signal_id` can currently be activated.
+    /// This signal is present to allow applications and derived
+    /// widgets to override the default [`gtk::Widget`][crate::gtk::Widget] handling
+    /// for determining whether an accelerator can be activated.
+    ///
+    ///
+    ///
+    ///
+    /// #### `child-notify`
+    ///  The ::child-notify signal is emitted for each
+    /// [child property][child-properties] that has
+    /// changed on an object. The signal's detail holds the property name.
+    ///
+    /// Detailed
+    ///
+    ///
+    /// #### `composited-changed`
+    ///  The ::composited-changed signal is emitted when the composited
+    /// status of `widgets` screen changes.
+    /// See [`Screen::is_composited()`][crate::gdk::Screen::is_composited()].
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `configure-event`
+    ///  The ::configure-event signal will be emitted when the size, position or
+    /// stacking of the `widget`'s window has changed.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable this mask
+    /// automatically for all new windows.
+    ///
+    ///
+    ///
+    ///
+    /// #### `damage-event`
+    ///  Emitted when a redirected window belonging to `widget` gets drawn into.
+    /// The region/area members of the event shows what area of the redirected
+    /// drawable was drawn into.
+    ///
+    ///
+    ///
+    ///
+    /// #### `delete-event`
+    ///  The ::delete-event signal is emitted if a user requests that
+    /// a toplevel window is closed. The default handler for this signal
+    /// destroys the window. Connecting [`WidgetExtManual::hide_on_delete()`][crate::gtk::prelude::WidgetExtManual::hide_on_delete()] to
+    /// this signal will cause the window to be hidden instead, so that
+    /// it can later be shown again without reconstructing it.
+    ///
+    ///
+    ///
+    ///
+    /// #### `destroy`
+    ///  Signals that all holders of a reference to the widget should release
+    /// the reference that they hold. May result in finalization of the widget
+    /// if all references are released.
+    ///
+    /// This signal is not suitable for saving widget state.
+    ///
+    ///
+    ///
+    ///
+    /// #### `destroy-event`
+    ///  The ::destroy-event signal is emitted when a [`gdk::Window`][crate::gdk::Window] is destroyed.
+    /// You rarely get this signal, because most widgets disconnect themselves
+    /// from their window before they destroy it, so no widget owns the
+    /// window at destroy time.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable this mask
+    /// automatically for all new windows.
+    ///
+    ///
+    ///
+    ///
+    /// #### `direction-changed`
+    ///  The ::direction-changed signal is emitted when the text direction
+    /// of a widget changes.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-begin`
+    ///  The ::drag-begin signal is emitted on the drag source when a drag is
+    /// started. A typical reason to connect to this signal is to set up a
+    /// custom drag icon with e.g. [`WidgetExtManual::drag_source_set_icon_pixbuf()`][crate::gtk::prelude::WidgetExtManual::drag_source_set_icon_pixbuf()].
+    ///
+    /// Note that some widgets set up a drag icon in the default handler of
+    /// this signal, so you may have to use `g_signal_connect_after()` to
+    /// override what the default handler did.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-data-delete`
+    ///  The ::drag-data-delete signal is emitted on the drag source when a drag
+    /// with the action `GDK_ACTION_MOVE` is successfully completed. The signal
+    /// handler is responsible for deleting the data that has been dropped. What
+    /// "delete" means depends on the context of the drag operation.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-data-get`
+    ///  The ::drag-data-get signal is emitted on the drag source when the drop
+    /// site requests the data which is dragged. It is the responsibility of
+    /// the signal handler to fill `data` with the data in the format which
+    /// is indicated by `info`. See `gtk_selection_data_set()` and
+    /// `gtk_selection_data_set_text()`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-data-received`
+    ///  The ::drag-data-received signal is emitted on the drop site when the
+    /// dragged data has been received. If the data was received in order to
+    /// determine whether the drop will be accepted, the handler is expected
+    /// to call `gdk_drag_status()` and not finish the drag.
+    /// If the data was received in response to a [`drag-drop`][struct@crate::gtk::Widget#drag-drop] signal
+    /// (and this is the last target to be received), the handler for this
+    /// signal is expected to process the received data and then call
+    /// `gtk_drag_finish()`, setting the `success` parameter depending on
+    /// whether the data was processed successfully.
+    ///
+    /// Applications must create some means to determine why the signal was emitted
+    /// and therefore whether to call `gdk_drag_status()` or `gtk_drag_finish()`.
+    ///
+    /// The handler may inspect the selected action with
+    /// `gdk_drag_context_get_selected_action()` before calling
+    /// `gtk_drag_finish()`, e.g. to implement `GDK_ACTION_ASK` as
+    /// shown in the following example:
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// void
+    /// drag_data_received (GtkWidget          *widget,
+    ///                     GdkDragContext     *context,
+    ///                     gint                x,
+    ///                     gint                y,
+    ///                     GtkSelectionData   *data,
+    ///                     guint               info,
+    ///                     guint               time)
+    /// {
+    ///   if ((data->length >= 0) && (data->format == 8))
+    ///     {
+    ///       GdkDragAction action;
+    ///
+    ///       // handle data here
+    ///
+    ///       action = gdk_drag_context_get_selected_action (context);
+    ///       if (action == GDK_ACTION_ASK)
+    ///         {
+    ///           GtkWidget *dialog;
+    ///           gint response;
+    ///
+    ///           dialog = gtk_message_dialog_new (NULL,
+    ///                                            GTK_DIALOG_MODAL |
+    ///                                            GTK_DIALOG_DESTROY_WITH_PARENT,
+    ///                                            GTK_MESSAGE_INFO,
+    ///                                            GTK_BUTTONS_YES_NO,
+    ///                                            "Move the data ?\n");
+    ///           response = gtk_dialog_run (GTK_DIALOG (dialog));
+    ///           gtk_widget_destroy (dialog);
+    ///
+    ///           if (response == GTK_RESPONSE_YES)
+    ///             action = GDK_ACTION_MOVE;
+    ///           else
+    ///             action = GDK_ACTION_COPY;
+    ///          }
+    ///
+    ///       gtk_drag_finish (context, TRUE, action == GDK_ACTION_MOVE, time);
+    ///     }
+    ///   else
+    ///     gtk_drag_finish (context, FALSE, FALSE, time);
+    ///  }
+    /// ```
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-drop`
+    ///  The ::drag-drop signal is emitted on the drop site when the user drops
+    /// the data onto the widget. The signal handler must determine whether
+    /// the cursor position is in a drop zone or not. If it is not in a drop
+    /// zone, it returns [`false`] and no further processing is necessary.
+    /// Otherwise, the handler returns [`true`]. In this case, the handler must
+    /// ensure that `gtk_drag_finish()` is called to let the source know that
+    /// the drop is done. The call to `gtk_drag_finish()` can be done either
+    /// directly or in a [`drag-data-received`][struct@crate::gtk::Widget#drag-data-received] handler which gets
+    /// triggered by calling [`WidgetExtManual::drag_get_data()`][crate::gtk::prelude::WidgetExtManual::drag_get_data()] to receive the data for one
+    /// or more of the supported targets.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-end`
+    ///  The ::drag-end signal is emitted on the drag source when a drag is
+    /// finished. A typical reason to connect to this signal is to undo
+    /// things done in [`drag-begin`][struct@crate::gtk::Widget#drag-begin].
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-failed`
+    ///  The ::drag-failed signal is emitted on the drag source when a drag has
+    /// failed. The signal handler may hook custom code to handle a failed DnD
+    /// operation based on the type of error, it returns [`true`] is the failure has
+    /// been already handled (not showing the default "drag operation failed"
+    /// animation), otherwise it returns [`false`].
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-leave`
+    ///  The ::drag-leave signal is emitted on the drop site when the cursor
+    /// leaves the widget. A typical reason to connect to this signal is to
+    /// undo things done in [`drag-motion`][struct@crate::gtk::Widget#drag-motion], e.g. undo highlighting
+    /// with [`WidgetExtManual::drag_unhighlight()`][crate::gtk::prelude::WidgetExtManual::drag_unhighlight()].
+    ///
+    ///
+    /// Likewise, the [`drag-leave`][struct@crate::gtk::Widget#drag-leave] signal is also emitted before the
+    /// ::drag-drop signal, for instance to allow cleaning up of a preview item
+    /// created in the [`drag-motion`][struct@crate::gtk::Widget#drag-motion] signal handler.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-motion`
+    ///  The ::drag-motion signal is emitted on the drop site when the user
+    /// moves the cursor over the widget during a drag. The signal handler
+    /// must determine whether the cursor position is in a drop zone or not.
+    /// If it is not in a drop zone, it returns [`false`] and no further processing
+    /// is necessary. Otherwise, the handler returns [`true`]. In this case, the
+    /// handler is responsible for providing the necessary information for
+    /// displaying feedback to the user, by calling `gdk_drag_status()`.
+    ///
+    /// If the decision whether the drop will be accepted or rejected can't be
+    /// made based solely on the cursor position and the type of the data, the
+    /// handler may inspect the dragged data by calling [`WidgetExtManual::drag_get_data()`][crate::gtk::prelude::WidgetExtManual::drag_get_data()] and
+    /// defer the `gdk_drag_status()` call to the [`drag-data-received`][struct@crate::gtk::Widget#drag-data-received]
+    /// handler. Note that you must pass `GTK_DEST_DEFAULT_DROP`,
+    /// `GTK_DEST_DEFAULT_MOTION` or `GTK_DEST_DEFAULT_ALL` to [`WidgetExtManual::drag_dest_set()`][crate::gtk::prelude::WidgetExtManual::drag_dest_set()]
+    /// when using the drag-motion signal that way.
+    ///
+    /// Also note that there is no drag-enter signal. The drag receiver has to
+    /// keep track of whether he has received any drag-motion signals since the
+    /// last [`drag-leave`][struct@crate::gtk::Widget#drag-leave] and if not, treat the drag-motion signal as
+    /// an "enter" signal. Upon an "enter", the handler will typically highlight
+    /// the drop site with [`WidgetExtManual::drag_highlight()`][crate::gtk::prelude::WidgetExtManual::drag_highlight()].
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// static void
+    /// drag_motion (GtkWidget      *widget,
+    ///              GdkDragContext *context,
+    ///              gint            x,
+    ///              gint            y,
+    ///              guint           time)
+    /// {
+    ///   GdkAtom target;
+    ///
+    ///   PrivateData *private_data = GET_PRIVATE_DATA (widget);
+    ///
+    ///   if (!private_data->drag_highlight)
+    ///    {
+    ///      private_data->drag_highlight = 1;
+    ///      gtk_drag_highlight (widget);
+    ///    }
+    ///
+    ///   target = gtk_drag_dest_find_target (widget, context, NULL);
+    ///   if (target == GDK_NONE)
+    ///     gdk_drag_status (context, 0, time);
+    ///   else
+    ///    {
+    ///      private_data->pending_status
+    ///         = gdk_drag_context_get_suggested_action (context);
+    ///      gtk_drag_get_data (widget, context, target, time);
+    ///    }
+    ///
+    ///   return TRUE;
+    /// }
+    ///
+    /// static void
+    /// drag_data_received (GtkWidget        *widget,
+    ///                     GdkDragContext   *context,
+    ///                     gint              x,
+    ///                     gint              y,
+    ///                     GtkSelectionData *selection_data,
+    ///                     guint             info,
+    ///                     guint             time)
+    /// {
+    ///   PrivateData *private_data = GET_PRIVATE_DATA (widget);
+    ///
+    ///   if (private_data->suggested_action)
+    ///    {
+    ///      private_data->suggested_action = 0;
+    ///
+    ///      // We are getting this data due to a request in drag_motion,
+    ///      // rather than due to a request in drag_drop, so we are just
+    ///      // supposed to call gdk_drag_status(), not actually paste in
+    ///      // the data.
+    ///
+    ///      str = gtk_selection_data_get_text (selection_data);
+    ///      if (!data_is_acceptable (str))
+    ///        gdk_drag_status (context, 0, time);
+    ///      else
+    ///        gdk_drag_status (context,
+    ///                         private_data->suggested_action,
+    ///                         time);
+    ///    }
+    ///   else
+    ///    {
+    ///      // accept the drop
+    ///    }
+    /// }
+    /// ```
+    ///
+    ///
+    ///
+    ///
+    /// #### `draw`
+    ///  This signal is emitted when a widget is supposed to render itself.
+    /// The `widget`'s top left corner must be painted at the origin of
+    /// the passed in context and be sized to the values returned by
+    /// [`WidgetExtManual::allocated_width()`][crate::gtk::prelude::WidgetExtManual::allocated_width()] and
+    /// [`WidgetExtManual::allocated_height()`][crate::gtk::prelude::WidgetExtManual::allocated_height()].
+    ///
+    /// Signal handlers connected to this signal can modify the cairo
+    /// context passed as `cr` in any way they like and don't need to
+    /// restore it. The signal emission takes care of calling `cairo_save()`
+    /// before and `cairo_restore()` after invoking the handler.
+    ///
+    /// The signal handler will get a `cr` with a clip region already set to the
+    /// widget's dirty region, i.e. to the area that needs repainting. Complicated
+    /// widgets that want to avoid redrawing themselves completely can get the full
+    /// extents of the clip region with `gdk_cairo_get_clip_rectangle()`, or they can
+    /// get a finer-grained representation of the dirty region with
+    /// `cairo_copy_clip_rectangle_list()`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `enter-notify-event`
+    ///  The ::enter-notify-event will be emitted when the pointer enters
+    /// the `widget`'s window.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_ENTER_NOTIFY_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `event`
+    ///  The GTK+ main loop will emit three signals for each GDK event delivered
+    /// to a widget: one generic ::event signal, another, more specific,
+    /// signal that matches the type of event delivered (e.g.
+    /// [`key-press-event`][struct@crate::gtk::Widget#key-press-event]) and finally a generic
+    /// [`event-after`][struct@crate::gtk::Widget#event-after] signal.
+    ///
+    ///
+    ///
+    ///
+    /// #### `event-after`
+    ///  After the emission of the [`event`][struct@crate::gtk::Widget#event] signal and (optionally)
+    /// the second more specific signal, ::event-after will be emitted
+    /// regardless of the previous two signals handlers return values.
+    ///
+    ///
+    ///
+    ///
+    /// #### `focus`
+    ///
+    ///
+    ///
+    /// #### `focus-in-event`
+    ///  The ::focus-in-event signal will be emitted when the keyboard focus
+    /// enters the `widget`'s window.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_FOCUS_CHANGE_MASK` mask.
+    ///
+    ///
+    ///
+    ///
+    /// #### `focus-out-event`
+    ///  The ::focus-out-event signal will be emitted when the keyboard focus
+    /// leaves the `widget`'s window.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_FOCUS_CHANGE_MASK` mask.
+    ///
+    ///
+    ///
+    ///
+    /// #### `grab-broken-event`
+    ///  Emitted when a pointer or keyboard grab on a window belonging
+    /// to `widget` gets broken.
+    ///
+    /// On X11, this happens when the grab window becomes unviewable
+    /// (i.e. it or one of its ancestors is unmapped), or if the same
+    /// application grabs the pointer or keyboard again.
+    ///
+    ///
+    ///
+    ///
+    /// #### `grab-focus`
+    ///  Action
+    ///
+    ///
+    /// #### `grab-notify`
+    ///  The ::grab-notify signal is emitted when a widget becomes
+    /// shadowed by a GTK+ grab (not a pointer or keyboard grab) on
+    /// another widget, or when it becomes unshadowed due to a grab
+    /// being removed.
+    ///
+    /// A widget is shadowed by a [`WidgetExtManual::grab_add()`][crate::gtk::prelude::WidgetExtManual::grab_add()] when the topmost
+    /// grab widget in the grab stack of its window group is not
+    /// its ancestor.
+    ///
+    ///
+    ///
+    ///
+    /// #### `hide`
+    ///  The ::hide signal is emitted when `widget` is hidden, for example with
+    /// [`WidgetExtManual::hide()`][crate::gtk::prelude::WidgetExtManual::hide()].
+    ///
+    ///
+    ///
+    ///
+    /// #### `hierarchy-changed`
+    ///  The ::hierarchy-changed signal is emitted when the
+    /// anchored state of a widget changes. A widget is
+    /// “anchored” when its toplevel
+    /// ancestor is a [`gtk::Window`][crate::gtk::Window]. This signal is emitted when
+    /// a widget changes from un-anchored to anchored or vice-versa.
+    ///
+    ///
+    ///
+    ///
+    /// #### `key-press-event`
+    ///  The ::key-press-event signal is emitted when a key is pressed. The signal
+    /// emission will reoccur at the key-repeat rate when the key is kept pressed.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_KEY_PRESS_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `key-release-event`
+    ///  The ::key-release-event signal is emitted when a key is released.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_KEY_RELEASE_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `keynav-failed`
+    ///  Gets emitted if keyboard navigation fails.
+    /// See [`WidgetExtManual::keynav_failed()`][crate::gtk::prelude::WidgetExtManual::keynav_failed()] for details.
+    ///
+    ///
+    ///
+    ///
+    /// #### `leave-notify-event`
+    ///  The ::leave-notify-event will be emitted when the pointer leaves
+    /// the `widget`'s window.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_LEAVE_NOTIFY_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `map`
+    ///  The ::map signal is emitted when `widget` is going to be mapped, that is
+    /// when the widget is visible (which is controlled with
+    /// [`WidgetExtManual::set_visible()`][crate::gtk::prelude::WidgetExtManual::set_visible()]) and all its parents up to the toplevel widget
+    /// are also visible. Once the map has occurred, [`map-event`][struct@crate::gtk::Widget#map-event] will
+    /// be emitted.
+    ///
+    /// The ::map signal can be used to determine whether a widget will be drawn,
+    /// for instance it can resume an animation that was stopped during the
+    /// emission of [`unmap`][struct@crate::gtk::Widget#unmap].
+    ///
+    ///
+    ///
+    ///
+    /// #### `map-event`
+    ///  The ::map-event signal will be emitted when the `widget`'s window is
+    /// mapped. A window is mapped when it becomes visible on the screen.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable this mask
+    /// automatically for all new windows.
+    ///
+    ///
+    ///
+    ///
+    /// #### `mnemonic-activate`
+    ///  The default handler for this signal activates `widget` if `group_cycling`
+    /// is [`false`], or just makes `widget` grab focus if `group_cycling` is [`true`].
+    ///
+    ///
+    ///
+    ///
+    /// #### `motion-notify-event`
+    ///  The ::motion-notify-event signal is emitted when the pointer moves
+    /// over the widget's [`gdk::Window`][crate::gdk::Window].
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget
+    /// needs to enable the `GDK_POINTER_MOTION_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `move-focus`
+    ///  Action
+    ///
+    ///
+    /// #### `parent-set`
+    ///  The ::parent-set signal is emitted when a new parent
+    /// has been set on a widget.
+    ///
+    ///
+    ///
+    ///
+    /// #### `popup-menu`
+    ///  This signal gets emitted whenever a widget should pop up a context
+    /// menu. This usually happens through the standard key binding mechanism;
+    /// by pressing a certain key while a widget is focused, the user can cause
+    /// the widget to pop up a menu. For example, the [`gtk::Entry`][crate::gtk::Entry] widget creates
+    /// a menu with clipboard commands. See the
+    /// [Popup Menu Migration Checklist][checklist-popup-menu]
+    /// for an example of how to use this signal.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `property-notify-event`
+    ///  The ::property-notify-event signal will be emitted when a property on
+    /// the `widget`'s window has been changed or deleted.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_PROPERTY_CHANGE_MASK` mask.
+    ///
+    ///
+    ///
+    ///
+    /// #### `proximity-in-event`
+    ///  To receive this signal the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_PROXIMITY_IN_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `proximity-out-event`
+    ///  To receive this signal the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_PROXIMITY_OUT_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `query-tooltip`
+    ///  Emitted when [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip] is [`true`] and the hover timeout
+    /// has expired with the cursor hovering "above" `widget`; or emitted when `widget` got
+    /// focus in keyboard mode.
+    ///
+    /// Using the given coordinates, the signal handler should determine
+    /// whether a tooltip should be shown for `widget`. If this is the case
+    /// [`true`] should be returned, [`false`] otherwise. Note that if
+    /// `keyboard_mode` is [`true`], the values of `x` and `y` are undefined and
+    /// should not be used.
+    ///
+    /// The signal handler is free to manipulate `tooltip` with the therefore
+    /// destined function calls.
+    ///
+    ///
+    ///
+    ///
+    /// #### `realize`
+    ///  The ::realize signal is emitted when `widget` is associated with a
+    /// [`gdk::Window`][crate::gdk::Window], which means that [`WidgetExtManual::realize()`][crate::gtk::prelude::WidgetExtManual::realize()] has been called or the
+    /// widget has been mapped (that is, it is going to be drawn).
+    ///
+    ///
+    ///
+    ///
+    /// #### `screen-changed`
+    ///  The ::screen-changed signal gets emitted when the
+    /// screen of a widget has changed.
+    ///
+    ///
+    ///
+    ///
+    /// #### `scroll-event`
+    ///  The ::scroll-event signal is emitted when a button in the 4 to 7
+    /// range is pressed. Wheel mice are usually configured to generate
+    /// button press events for buttons 4 and 5 when the wheel is turned.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_SCROLL_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `selection-clear-event`
+    ///  The ::selection-clear-event signal will be emitted when the
+    /// the `widget`'s window has lost ownership of a selection.
+    ///
+    ///
+    ///
+    ///
+    /// #### `selection-get`
+    ///
+    ///
+    ///
+    /// #### `selection-notify-event`
+    ///
+    ///
+    ///
+    /// #### `selection-received`
+    ///
+    ///
+    ///
+    /// #### `selection-request-event`
+    ///  The ::selection-request-event signal will be emitted when
+    /// another client requests ownership of the selection owned by
+    /// the `widget`'s window.
+    ///
+    ///
+    ///
+    ///
+    /// #### `show`
+    ///  The ::show signal is emitted when `widget` is shown, for example with
+    /// [`WidgetExtManual::show()`][crate::gtk::prelude::WidgetExtManual::show()].
+    ///
+    ///
+    ///
+    ///
+    /// #### `show-help`
+    ///  Action
+    ///
+    ///
+    /// #### `size-allocate`
+    ///
+    ///
+    ///
+    /// #### `state-changed`
+    ///  The ::state-changed signal is emitted when the widget state changes.
+    /// See `gtk_widget_get_state()`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `state-flags-changed`
+    ///  The ::state-flags-changed signal is emitted when the widget state
+    /// changes, see [`WidgetExtManual::state_flags()`][crate::gtk::prelude::WidgetExtManual::state_flags()].
+    ///
+    ///
+    ///
+    ///
+    /// #### `style-set`
+    ///  The ::style-set signal is emitted when a new style has been set
+    /// on a widget. Note that style-modifying functions like
+    /// `gtk_widget_modify_base()` also cause this signal to be emitted.
+    ///
+    /// Note that this signal is emitted for changes to the deprecated
+    /// `GtkStyle`. To track changes to the `GtkStyleContext` associated
+    /// with a widget, use the [`style-updated`][struct@crate::gtk::Widget#style-updated] signal.
+    ///
+    ///
+    ///
+    ///
+    /// #### `style-updated`
+    ///  The ::style-updated signal is a convenience signal that is emitted when the
+    /// `GtkStyleContext::changed` signal is emitted on the `widget`'s associated
+    /// `GtkStyleContext` as returned by [`WidgetExtManual::style_context()`][crate::gtk::prelude::WidgetExtManual::style_context()].
+    ///
+    /// Note that style-modifying functions like [`WidgetExtManual::override_color()`][crate::gtk::prelude::WidgetExtManual::override_color()] also
+    /// cause this signal to be emitted.
+    ///
+    ///
+    ///
+    ///
+    /// #### `touch-event`
+    ///
+    ///
+    ///
+    /// #### `unmap`
+    ///  The ::unmap signal is emitted when `widget` is going to be unmapped, which
+    /// means that either it or any of its parents up to the toplevel widget have
+    /// been set as hidden.
+    ///
+    /// As ::unmap indicates that a widget will not be shown any longer, it can be
+    /// used to, for example, stop an animation on the widget.
+    ///
+    ///
+    ///
+    ///
+    /// #### `unmap-event`
+    ///  The ::unmap-event signal will be emitted when the `widget`'s window is
+    /// unmapped. A window is unmapped when it becomes invisible on the screen.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable this mask
+    /// automatically for all new windows.
+    ///
+    ///
+    ///
+    ///
+    /// #### `unrealize`
+    ///  The ::unrealize signal is emitted when the [`gdk::Window`][crate::gdk::Window] associated with
+    /// `widget` is destroyed, which means that [`WidgetExtManual::unrealize()`][crate::gtk::prelude::WidgetExtManual::unrealize()] has been
+    /// called or the widget has been unmapped (that is, it is going to be
+    /// hidden).
+    ///
+    ///
+    ///
+    ///
+    /// #### `visibility-notify-event`
+    ///  The ::visibility-notify-event will be emitted when the `widget`'s
+    /// window is obscured or unobscured.
+    ///
+    /// To receive this signal the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_VISIBILITY_NOTIFY_MASK` mask.
+    ///
+    ///
+    ///
+    ///
+    /// #### `window-state-event`
+    ///  The ::window-state-event will be emitted when the state of the
+    /// toplevel window associated to the `widget` changes.
+    ///
+    /// To receive this signal the [`gdk::Window`][crate::gdk::Window] associated to the widget
+    /// needs to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable
+    /// this mask automatically for all new windows.
+    ///
+    ///
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::GridExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpSizeEntry")]
     pub struct SizeEntry(Object<ffi::GimpSizeEntry, ffi::GimpSizeEntryClass>) @extends gtk::Grid, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 
@@ -32,6 +883,19 @@ impl SizeEntry {
     //    unsafe { TODO: call ffi:gimp_size_entry_add_field() }
     //}
 
+    /// Attaches a `GtkLabel` to the [`SizeEntry`][crate::SizeEntry] (which is a [`gtk::Grid`][crate::gtk::Grid]).
+    /// ## `text`
+    /// The text of the label.
+    /// ## `row`
+    /// The row where the label will be attached.
+    /// ## `column`
+    /// The column where the label will be attached.
+    /// ## `alignment`
+    /// The horizontal alignment of the label.
+    ///
+    /// # Returns
+    ///
+    /// A pointer to the new `GtkLabel` widget.
     #[doc(alias = "gimp_size_entry_attach_label")]
     pub fn attach_label(
         &self,
@@ -51,6 +915,15 @@ impl SizeEntry {
         }
     }
 
+    /// You shouldn't fiddle with the internals of a [`SizeEntry`][crate::SizeEntry] but
+    /// if you want to set tooltips using [`help_set_help_data()`][crate::help_set_help_data()] you
+    /// can use this function to get a pointer to the spinbuttons.
+    /// ## `field`
+    /// the index of the widget you want to get a pointer to
+    ///
+    /// # Returns
+    ///
+    /// a [`gtk::Widget`][crate::gtk::Widget] pointer that you can attach a tooltip to.
     #[doc(alias = "gimp_size_entry_get_help_widget")]
     #[doc(alias = "get_help_widget")]
     pub fn help_widget(&self, field: i32) -> Option<gtk::Widget> {
@@ -68,6 +941,17 @@ impl SizeEntry {
         unsafe { ffi::gimp_size_entry_get_n_fields(self.to_glib_none().0) }
     }
 
+    /// Returns the reference value for field # `field` of the [`SizeEntry`][crate::SizeEntry].
+    ///
+    /// The reference value is either a distance in pixels or a resolution
+    /// in dpi, depending on which [`SizeEntryUpdatePolicy`][crate::SizeEntryUpdatePolicy] you chose in
+    /// `gimp_size_entry_new()`.
+    /// ## `field`
+    /// The index of the field you want to know the reference value of.
+    ///
+    /// # Returns
+    ///
+    /// The reference value of the chosen `field`.
     #[doc(alias = "gimp_size_entry_get_refval")]
     #[doc(alias = "get_refval")]
     pub fn refval(&self, field: i32) -> f64 {
@@ -80,6 +964,10 @@ impl SizeEntry {
     //    unsafe { TODO: call ffi:gimp_size_entry_get_unit() }
     //}
 
+    ///
+    /// # Returns
+    ///
+    /// the size entry's [`UnitComboBox`][crate::UnitComboBox].
     #[doc(alias = "gimp_size_entry_get_unit_combo")]
     #[doc(alias = "get_unit_combo")]
     pub fn unit_combo(&self) -> Option<UnitComboBox> {
@@ -96,12 +984,29 @@ impl SizeEntry {
         }
     }
 
+    /// Returns the value of field # `field` of the [`SizeEntry`][crate::SizeEntry].
+    ///
+    /// The `value` returned is a distance or resolution
+    /// in the `GimpUnit` the user has selected in the [`SizeEntry`][crate::SizeEntry]'s
+    /// [`UnitComboBox`][crate::UnitComboBox].
+    ///
+    /// NOTE: In most cases you won't be interested in this value because the
+    ///  [`SizeEntry`][crate::SizeEntry]'s purpose is to shield the programmer from unit
+    ///  calculations. Use [`refval()`][Self::refval()] instead.
+    /// ## `field`
+    /// The index of the field you want to know the value of.
+    ///
+    /// # Returns
+    ///
+    /// The value of the chosen `field`.
     #[doc(alias = "gimp_size_entry_get_value")]
     #[doc(alias = "get_value")]
     pub fn value(&self, field: i32) -> f64 {
         unsafe { ffi::gimp_size_entry_get_value(self.to_glib_none().0, field) }
     }
 
+    /// This function is rather ugly and just a workaround for the fact that
+    /// it's impossible to implement [`WidgetExtManual::grab_focus()`][crate::gtk::prelude::WidgetExtManual::grab_focus()] for a [`gtk::Grid`][crate::gtk::Grid] (is this actually true after the Table->Grid conversion?).
     #[doc(alias = "gimp_size_entry_grab_focus")]
     pub fn grab_focus(&self) {
         unsafe {
@@ -109,6 +1014,10 @@ impl SizeEntry {
         }
     }
 
+    /// Iterates over all entries in the [`SizeEntry`][crate::SizeEntry] and calls
+    /// [`EntryExtManual::set_activates_default()`][crate::gtk::prelude::EntryExtManual::set_activates_default()] on them.
+    /// ## `setting`
+    /// [`true`] to activate window's default widget on Enter keypress
     #[doc(alias = "gimp_size_entry_set_activates_default")]
     pub fn set_activates_default(&self, setting: bool) {
         unsafe {
@@ -116,6 +1025,10 @@ impl SizeEntry {
         }
     }
 
+    /// This function allows you set up a [`SizeEntry`][crate::SizeEntry] so that sub-pixel
+    /// sizes can be entered.
+    /// ## `digits`
+    /// the number of digits to display for a pixel size
     #[doc(alias = "gimp_size_entry_set_pixel_digits")]
     pub fn set_pixel_digits(&self, digits: i32) {
         unsafe {
@@ -123,6 +1036,15 @@ impl SizeEntry {
         }
     }
 
+    /// Sets the reference value for field # `field` of the [`SizeEntry`][crate::SizeEntry].
+    ///
+    /// The `refval` passed is either a distance in pixels or a resolution in dpi,
+    /// depending on which [`SizeEntryUpdatePolicy`][crate::SizeEntryUpdatePolicy] you chose in
+    /// `gimp_size_entry_new()`.
+    /// ## `field`
+    /// The index of the field you want to set the reference value for.
+    /// ## `refval`
+    /// The new reference value for `field`.
     #[doc(alias = "gimp_size_entry_set_refval")]
     pub fn set_refval(&self, field: i32, refval: f64) {
         unsafe {
@@ -130,6 +1052,18 @@ impl SizeEntry {
         }
     }
 
+    /// Limits the range of possible reference values which can be entered in
+    /// field # `field` of the [`SizeEntry`][crate::SizeEntry].
+    ///
+    /// The current reference value of the `field` will be clamped to fit in the
+    /// `field`'s new boundaries.
+    /// ## `field`
+    /// The index of the field you want to set the reference value
+    ///  boundaries for.
+    /// ## `lower`
+    /// The new lower boundary of the reference value of the chosen `field`.
+    /// ## `upper`
+    /// The new upper boundary of the reference value of the chosen `field`.
     #[doc(alias = "gimp_size_entry_set_refval_boundaries")]
     pub fn set_refval_boundaries(&self, field: i32, lower: f64, upper: f64) {
         unsafe {
@@ -137,6 +1071,17 @@ impl SizeEntry {
         }
     }
 
+    /// Sets the decimal digits of field # `field` of the [`SizeEntry`][crate::SizeEntry] to
+    /// `digits`.
+    ///
+    /// If you don't specify this value explicitly, the reference value's number
+    /// of digits will equal to 0 for [`SizeEntryUpdatePolicy::Size`][crate::SizeEntryUpdatePolicy::Size] and to 2 for
+    /// [`SizeEntryUpdatePolicy::Resolution`][crate::SizeEntryUpdatePolicy::Resolution].
+    /// ## `field`
+    /// The index of the field you want to set the reference value for.
+    /// ## `digits`
+    /// The new number of decimal digits for the `GtkSpinButton` which
+    ///  displays `field`'s reference value.
     #[doc(alias = "gimp_size_entry_set_refval_digits")]
     pub fn set_refval_digits(&self, field: i32, digits: i32) {
         unsafe {
@@ -144,6 +1089,20 @@ impl SizeEntry {
         }
     }
 
+    /// Sets the resolution (in dpi) for field # `field` of the [`SizeEntry`][crate::SizeEntry].
+    ///
+    /// The `resolution` passed will be clamped to fit in
+    /// [`GIMP_MIN_RESOLUTION`..`GIMP_MAX_RESOLUTION`].
+    ///
+    /// This function does nothing if the [`SizeEntryUpdatePolicy`][crate::SizeEntryUpdatePolicy] specified in
+    /// `gimp_size_entry_new()` doesn't equal to [`SizeEntryUpdatePolicy::Size`][crate::SizeEntryUpdatePolicy::Size].
+    /// ## `field`
+    /// The index of the field you want to set the resolution for.
+    /// ## `resolution`
+    /// The new resolution (in dpi) for the chosen `field`.
+    /// ## `keep_size`
+    /// [`true`] if the `field`'s size in pixels should stay the same.
+    ///  [`false`] if the `field`'s size in units should stay the same.
     #[doc(alias = "gimp_size_entry_set_resolution")]
     pub fn set_resolution(&self, field: i32, resolution: f64, keep_size: bool) {
         unsafe {
@@ -156,6 +1115,21 @@ impl SizeEntry {
         }
     }
 
+    /// Sets the pixel values for field # `field` of the [`SizeEntry`][crate::SizeEntry]
+    /// which will be treated as 0% and 100%.
+    ///
+    /// These values will be used if you specified `menu_show_percent` as [`true`]
+    /// in `gimp_size_entry_new()` and the user has selected GIMP_UNIT_PERCENT in
+    /// the [`SizeEntry`][crate::SizeEntry]'s [`UnitComboBox`][crate::UnitComboBox].
+    ///
+    /// This function does nothing if the [`SizeEntryUpdatePolicy`][crate::SizeEntryUpdatePolicy] specified in
+    /// `gimp_size_entry_new()` doesn't equal to GIMP_SIZE_ENTRY_UPDATE_SIZE.
+    /// ## `field`
+    /// The index of the field you want to set the size for.
+    /// ## `lower`
+    /// The reference value which will be treated as 0%.
+    /// ## `upper`
+    /// The reference value which will be treated as 100%.
     #[doc(alias = "gimp_size_entry_set_size")]
     pub fn set_size(&self, field: i32, lower: f64, upper: f64) {
         unsafe {
@@ -168,6 +1142,19 @@ impl SizeEntry {
     //    unsafe { TODO: call ffi:gimp_size_entry_set_unit() }
     //}
 
+    /// Sets the value for field # `field` of the [`SizeEntry`][crate::SizeEntry].
+    ///
+    /// The `value` passed is treated to be a distance or resolution
+    /// in the `GimpUnit` the user has selected in the [`SizeEntry`][crate::SizeEntry]'s
+    /// [`UnitComboBox`][crate::UnitComboBox].
+    ///
+    /// NOTE: In most cases you won't be interested in this value because the
+    ///  [`SizeEntry`][crate::SizeEntry]'s purpose is to shield the programmer from unit
+    ///  calculations. Use [`set_refval()`][Self::set_refval()] instead.
+    /// ## `field`
+    /// The index of the field you want to set a value for.
+    /// ## `value`
+    /// The new value for `field`.
     #[doc(alias = "gimp_size_entry_set_value")]
     pub fn set_value(&self, field: i32, value: f64) {
         unsafe {
@@ -175,6 +1162,23 @@ impl SizeEntry {
         }
     }
 
+    /// Limits the range of possible values which can be entered in field # `field`
+    /// of the [`SizeEntry`][crate::SizeEntry].
+    ///
+    /// The current value of the `field` will be clamped to fit in the `field`'s
+    /// new boundaries.
+    ///
+    /// NOTE: In most cases you won't be interested in this function because the
+    ///  [`SizeEntry`][crate::SizeEntry]'s purpose is to shield the programmer from unit
+    ///  calculations. Use [`set_refval_boundaries()`][Self::set_refval_boundaries()] instead.
+    ///  Whatever you do, don't mix these calls. A size entry should either
+    ///  be clamped by the value or the reference value.
+    /// ## `field`
+    /// The index of the field you want to set value boundaries for.
+    /// ## `lower`
+    /// The new lower boundary of the value of the chosen `field`.
+    /// ## `upper`
+    /// The new upper boundary of the value of the chosen `field`.
     #[doc(alias = "gimp_size_entry_set_value_boundaries")]
     pub fn set_value_boundaries(&self, field: i32, lower: f64, upper: f64) {
         unsafe {
@@ -182,6 +1186,10 @@ impl SizeEntry {
         }
     }
 
+    /// Controls whether a unit menu is shown in the size entry. If
+    /// `show` is [`true`], the menu is shown; otherwise it is hidden.
+    /// ## `show`
+    /// Boolean
     #[doc(alias = "gimp_size_entry_show_unit_menu")]
     pub fn show_unit_menu(&self, show: bool) {
         unsafe {

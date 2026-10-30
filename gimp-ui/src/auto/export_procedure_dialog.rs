@@ -7,6 +7,11 @@ use crate::{ffi, Dialog, ProcedureDialog};
 use glib::translate::*;
 
 glib::wrapper! {
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`ProcedureDialogExt`][trait@crate::prelude::ProcedureDialogExt], [`GimpDialogExt`][trait@crate::prelude::GimpDialogExt], [`trait@gtk::prelude::DialogExt`], [`trait@gtk::prelude::WindowExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpExportProcedureDialog")]
     pub struct ExportProcedureDialog(Object<ffi::GimpExportProcedureDialog, ffi::GimpExportProcedureDialogClass>) @extends ProcedureDialog, Dialog, gtk::Dialog, gtk::Window, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 

@@ -28,9 +28,14 @@ Requires GIMP 3 development files (`gimp-3.0.pc`, `gimpui-3.0.pc`).
 
 ```sh
 git submodule update --init
+cargo install rustdoc-stripper
 gir-files-extra/fix.py      # only to update the GIR files from /usr/share/gir-1.0
 ./generate.sh
 ```
+
+`generate.sh` also embeds the documentation of the GIR files as doc comments
+into `src/auto/` of the high-level crates (with `gir -m doc` and
+`rustdoc-stripper`, as gtk-rs does).
 
 `fix.py` copies the GIMP and GExiv2 GIR files and fixes what g-ir-scanner got
 wrong (constants built from `G_PARAM_USER_SHIFT`, the gimpui pkg-config name,

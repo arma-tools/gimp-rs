@@ -13,6 +13,1743 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A [`gtk::Entry`][crate::gtk::Entry] subclass to enter ratios.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `allow-simplification`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `aspect`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `default-left-number`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `default-right-number`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `default-text`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `left-number`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `max-valid-value`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `min-valid-value`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `ratio`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `right-number`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `separators`
+    ///  Readable | Writeable | Construct Only
+    ///
+    ///
+    /// #### `user-override`
+    ///  Readable | Writeable
+    /// <details><summary><h4>Entry</h4></summary>
+    ///
+    ///
+    /// #### `activates-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `attributes`
+    ///  A list of Pango attributes to apply to the text of the entry.
+    ///
+    /// This is mainly useful to change the size or weight of the text.
+    ///
+    /// The `PangoAttribute`'s `start_index` and `end_index` must refer to the
+    /// `GtkEntryBuffer` text, i.e. without the preedit string.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `buffer`
+    ///  Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `caps-lock-warning`
+    ///  Whether password entries will show a warning when Caps Lock is on.
+    ///
+    /// Note that the warning is shown using a secondary icon, and thus
+    /// does not work if you are using the secondary icon position for some
+    /// other purpose.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `completion`
+    ///  The auxiliary completion object to use with the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `cursor-position`
+    ///  Readable
+    ///
+    ///
+    /// #### `editable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `enable-emoji-completion`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-frame`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `im-module`
+    ///  Which IM (input method) module should be used for this entry.
+    /// See `GtkIMContext`.
+    ///
+    /// Setting this to a non-[`None`] value overrides the
+    /// system-wide IM module setting. See the GtkSettings
+    /// `GtkSettings:gtk-im-module` property.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `inner-border`
+    ///  Sets the text area's border between the text and the frame.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `input-hints`
+    ///  Additional hints (beyond [`input-purpose`][struct@crate::gtk::Entry#input-purpose]) that
+    /// allow input methods to fine-tune their behaviour.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `input-purpose`
+    ///  The purpose of this text field.
+    ///
+    /// This property can be used by on-screen keyboards and other input
+    /// methods to adjust their behaviour.
+    ///
+    /// Note that setting the purpose to `GTK_INPUT_PURPOSE_PASSWORD` or
+    /// `GTK_INPUT_PURPOSE_PIN` is independent from setting
+    /// [`visibility`][struct@crate::gtk::Entry#visibility].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `invisible-char`
+    ///  The invisible character is used when masking entry contents (in
+    /// \"password mode\")"). When it is not explicitly set with the
+    /// [`invisible-char`][struct@crate::gtk::Entry#invisible-char] property, GTK+ determines the character
+    /// to use from a list of possible candidates, depending on availability
+    /// in the current font.
+    ///
+    /// This style property allows the theme to prepend a character
+    /// to the list of candidates.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `invisible-char-set`
+    ///  Whether the invisible char has been set for the [`gtk::Entry`][crate::gtk::Entry].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `max-length`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `max-width-chars`
+    ///  The desired maximum width of the entry, in characters.
+    /// If this property is set to -1, the width will be calculated
+    /// automatically.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `overwrite-mode`
+    ///  If text is overwritten when typing in the [`gtk::Entry`][crate::gtk::Entry].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `placeholder-text`
+    ///  The text that will be displayed in the [`gtk::Entry`][crate::gtk::Entry] when it is empty
+    /// and unfocused.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `populate-all`
+    ///  If :populate-all is [`true`], the [`populate-popup`][struct@crate::gtk::Entry#populate-popup]
+    /// signal is also emitted for touch popups.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-activatable`
+    ///  Whether the primary icon is activatable.
+    ///
+    /// GTK+ emits the [`icon-press`][struct@crate::gtk::Entry#icon-press] and [`icon-release`][struct@crate::gtk::Entry#icon-release]
+    /// signals only on sensitive, activatable icons.
+    ///
+    /// Sensitive, but non-activatable icons can be used for purely
+    /// informational purposes.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-gicon`
+    ///  The `GIcon` to use for the primary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-name`
+    ///  The icon name to use for the primary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-pixbuf`
+    ///  A pixbuf to use as the primary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-sensitive`
+    ///  Whether the primary icon is sensitive.
+    ///
+    /// An insensitive icon appears grayed out. GTK+ does not emit the
+    /// [`icon-press`][struct@crate::gtk::Entry#icon-press] and [`icon-release`][struct@crate::gtk::Entry#icon-release] signals and
+    /// does not allow DND from insensitive icons.
+    ///
+    /// An icon should be set insensitive if the action that would trigger
+    /// when clicked is currently not available.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-stock`
+    ///  The stock id to use for the primary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-storage-type`
+    ///  The representation which is used for the primary icon of the entry.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `primary-icon-tooltip-markup`
+    ///  The contents of the tooltip on the primary icon, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    ///
+    /// Also see [`EntryExtManual::set_icon_tooltip_markup()`][crate::gtk::prelude::EntryExtManual::set_icon_tooltip_markup()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `primary-icon-tooltip-text`
+    ///  The contents of the tooltip on the primary icon.
+    ///
+    /// Also see [`EntryExtManual::set_icon_tooltip_text()`][crate::gtk::prelude::EntryExtManual::set_icon_tooltip_text()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `progress-fraction`
+    ///  The current fraction of the task that's been completed.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `progress-pulse-step`
+    ///  The fraction of total entry width to move the progress
+    /// bouncing block for each call to [`EntryExtManual::progress_pulse()`][crate::gtk::prelude::EntryExtManual::progress_pulse()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `scroll-offset`
+    ///  Readable
+    ///
+    ///
+    /// #### `secondary-icon-activatable`
+    ///  Whether the secondary icon is activatable.
+    ///
+    /// GTK+ emits the [`icon-press`][struct@crate::gtk::Entry#icon-press] and [`icon-release`][struct@crate::gtk::Entry#icon-release]
+    /// signals only on sensitive, activatable icons.
+    ///
+    /// Sensitive, but non-activatable icons can be used for purely
+    /// informational purposes.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-gicon`
+    ///  The `GIcon` to use for the secondary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-name`
+    ///  The icon name to use for the secondary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-pixbuf`
+    ///  An pixbuf to use as the secondary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-sensitive`
+    ///  Whether the secondary icon is sensitive.
+    ///
+    /// An insensitive icon appears grayed out. GTK+ does not emit the
+    /// [`icon-press`][struct@crate::gtk::Entry#icon-press] and [`icon-release`][struct@crate::gtk::Entry#icon-release] signals and
+    /// does not allow DND from insensitive icons.
+    ///
+    /// An icon should be set insensitive if the action that would trigger
+    /// when clicked is currently not available.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-stock`
+    ///  The stock id to use for the secondary icon for the entry.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-storage-type`
+    ///  The representation which is used for the secondary icon of the entry.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `secondary-icon-tooltip-markup`
+    ///  The contents of the tooltip on the secondary icon, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    ///
+    /// Also see [`EntryExtManual::set_icon_tooltip_markup()`][crate::gtk::prelude::EntryExtManual::set_icon_tooltip_markup()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `secondary-icon-tooltip-text`
+    ///  The contents of the tooltip on the secondary icon.
+    ///
+    /// Also see [`EntryExtManual::set_icon_tooltip_text()`][crate::gtk::prelude::EntryExtManual::set_icon_tooltip_text()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `selection-bound`
+    ///  Readable
+    ///
+    ///
+    /// #### `shadow-type`
+    ///  Which kind of shadow to draw around the entry when
+    /// [`has-frame`][struct@crate::gtk::Entry#has-frame] is set to [`true`].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `show-emoji-icon`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `tabs`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `text`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `text-length`
+    ///  The length of the text in the [`gtk::Entry`][crate::gtk::Entry].
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `truncate-multiline`
+    ///  When [`true`], pasted multi-line text is truncated to the first line.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visibility`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-chars`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `xalign`
+    ///  The horizontal alignment, from 0 (left) to 1 (right).
+    /// Reversed for RTL layouts.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    /// <details><summary><h4>CellEditable</h4></summary>
+    ///
+    ///
+    /// #### `editing-canceled`
+    ///  Indicates whether editing on the cell has been canceled.
+    ///
+    /// Readable | Writeable
+    /// </details>
+    ///
+    /// ## Signals
+    ///
+    ///
+    /// #### `numbers-changed`
+    ///
+    ///
+    ///
+    /// #### `ratio-changed`
+    ///
+    /// <details><summary><h4>Entry</h4></summary>
+    ///
+    ///
+    /// #### `activate`
+    ///  The ::activate signal is emitted when the user hits
+    /// the Enter key.
+    ///
+    /// While this signal is used as a
+    /// [keybinding signal][GtkBindingSignal],
+    /// it is also commonly used by applications to intercept
+    /// activation of entries.
+    ///
+    /// The default bindings for this signal are all forms of the Enter key.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `backspace`
+    ///  The ::backspace signal is a
+    /// [keybinding signal][GtkBindingSignal]
+    /// which gets emitted when the user asks for it.
+    ///
+    /// The default bindings for this signal are
+    /// Backspace and Shift-Backspace.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `copy-clipboard`
+    ///  The ::copy-clipboard signal is a
+    /// [keybinding signal][GtkBindingSignal]
+    /// which gets emitted to copy the selection to the clipboard.
+    ///
+    /// The default bindings for this signal are
+    /// Ctrl-c and Ctrl-Insert.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `cut-clipboard`
+    ///  The ::cut-clipboard signal is a
+    /// [keybinding signal][GtkBindingSignal]
+    /// which gets emitted to cut the selection to the clipboard.
+    ///
+    /// The default bindings for this signal are
+    /// Ctrl-x and Shift-Delete.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `delete-from-cursor`
+    ///  The ::delete-from-cursor signal is a
+    /// [keybinding signal][GtkBindingSignal]
+    /// which gets emitted when the user initiates a text deletion.
+    ///
+    /// If the `type_` is `GTK_DELETE_CHARS`, GTK+ deletes the selection
+    /// if there is one, otherwise it deletes the requested number
+    /// of characters.
+    ///
+    /// The default bindings for this signal are
+    /// Delete for deleting a character and Ctrl-Delete for
+    /// deleting a word.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `icon-press`
+    ///  The ::icon-press signal is emitted when an activatable icon
+    /// is clicked.
+    ///
+    ///
+    ///
+    ///
+    /// #### `icon-release`
+    ///  The ::icon-release signal is emitted on the button release from a
+    /// mouse click over an activatable icon.
+    ///
+    ///
+    ///
+    ///
+    /// #### `insert-at-cursor`
+    ///  The ::insert-at-cursor signal is a
+    /// [keybinding signal][GtkBindingSignal]
+    /// which gets emitted when the user initiates the insertion of a
+    /// fixed string at the cursor.
+    ///
+    /// This signal has no default bindings.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `insert-emoji`
+    ///  The ::insert-emoji signal is a
+    /// [keybinding signal][GtkBindingSignal]
+    /// which gets emitted to present the Emoji chooser for the `entry`.
+    ///
+    /// The default bindings for this signal are Ctrl-. and Ctrl-;
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `move-cursor`
+    ///  The ::move-cursor signal is a
+    /// [keybinding signal][GtkBindingSignal]
+    /// which gets emitted when the user initiates a cursor movement.
+    /// If the cursor is not visible in `entry`, this signal causes
+    /// the viewport to be moved instead.
+    ///
+    /// Applications should not connect to it, but may emit it with
+    /// `g_signal_emit_by_name()` if they need to control the cursor
+    /// programmatically.
+    ///
+    /// The default bindings for this signal come in two variants,
+    /// the variant with the Shift modifier extends the selection,
+    /// the variant without the Shift modifer does not.
+    /// There are too many key combinations to list them all here.
+    /// - Arrow keys move by individual characters/lines
+    /// - Ctrl-arrow key combinations move by words/paragraphs
+    /// - Home/End keys move to the ends of the buffer
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `paste-clipboard`
+    ///  The ::paste-clipboard signal is a
+    /// [keybinding signal][GtkBindingSignal]
+    /// which gets emitted to paste the contents of the clipboard
+    /// into the text view.
+    ///
+    /// The default bindings for this signal are
+    /// Ctrl-v and Shift-Insert.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `populate-popup`
+    ///  The ::populate-popup signal gets emitted before showing the
+    /// context menu of the entry.
+    ///
+    /// If you need to add items to the context menu, connect
+    /// to this signal and append your items to the `widget`, which
+    /// will be a `GtkMenu` in this case.
+    ///
+    /// If [`populate-all`][struct@crate::gtk::Entry#populate-all] is [`true`], this signal will
+    /// also be emitted to populate touch popups. In this case,
+    /// `widget` will be a different container, e.g. a `GtkToolbar`.
+    /// The signal handler should not make assumptions about the
+    /// type of `widget`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `preedit-changed`
+    ///  If an input method is used, the typed text will not immediately
+    /// be committed to the buffer. So if you are interested in the text,
+    /// connect to this signal.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `toggle-direction`
+    ///  Action
+    ///
+    ///
+    /// #### `toggle-overwrite`
+    ///  The ::toggle-overwrite signal is a
+    /// [keybinding signal][GtkBindingSignal]
+    /// which gets emitted to toggle the overwrite mode of the entry.
+    ///
+    /// The default bindings for this signal is Insert.
+    ///
+    /// Action
+    /// </details>
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `accel-closures-changed`
+    ///
+    ///
+    ///
+    /// #### `button-press-event`
+    ///  The ::button-press-event signal will be emitted when a button
+    /// (typically from a mouse) is pressed.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the
+    /// widget needs to enable the `GDK_BUTTON_PRESS_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `button-release-event`
+    ///  The ::button-release-event signal will be emitted when a button
+    /// (typically from a mouse) is released.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the
+    /// widget needs to enable the `GDK_BUTTON_RELEASE_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `can-activate-accel`
+    ///  Determines whether an accelerator that activates the signal
+    /// identified by `signal_id` can currently be activated.
+    /// This signal is present to allow applications and derived
+    /// widgets to override the default [`gtk::Widget`][crate::gtk::Widget] handling
+    /// for determining whether an accelerator can be activated.
+    ///
+    ///
+    ///
+    ///
+    /// #### `child-notify`
+    ///  The ::child-notify signal is emitted for each
+    /// [child property][child-properties] that has
+    /// changed on an object. The signal's detail holds the property name.
+    ///
+    /// Detailed
+    ///
+    ///
+    /// #### `composited-changed`
+    ///  The ::composited-changed signal is emitted when the composited
+    /// status of `widgets` screen changes.
+    /// See [`Screen::is_composited()`][crate::gdk::Screen::is_composited()].
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `configure-event`
+    ///  The ::configure-event signal will be emitted when the size, position or
+    /// stacking of the `widget`'s window has changed.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable this mask
+    /// automatically for all new windows.
+    ///
+    ///
+    ///
+    ///
+    /// #### `damage-event`
+    ///  Emitted when a redirected window belonging to `widget` gets drawn into.
+    /// The region/area members of the event shows what area of the redirected
+    /// drawable was drawn into.
+    ///
+    ///
+    ///
+    ///
+    /// #### `delete-event`
+    ///  The ::delete-event signal is emitted if a user requests that
+    /// a toplevel window is closed. The default handler for this signal
+    /// destroys the window. Connecting [`WidgetExtManual::hide_on_delete()`][crate::gtk::prelude::WidgetExtManual::hide_on_delete()] to
+    /// this signal will cause the window to be hidden instead, so that
+    /// it can later be shown again without reconstructing it.
+    ///
+    ///
+    ///
+    ///
+    /// #### `destroy`
+    ///  Signals that all holders of a reference to the widget should release
+    /// the reference that they hold. May result in finalization of the widget
+    /// if all references are released.
+    ///
+    /// This signal is not suitable for saving widget state.
+    ///
+    ///
+    ///
+    ///
+    /// #### `destroy-event`
+    ///  The ::destroy-event signal is emitted when a [`gdk::Window`][crate::gdk::Window] is destroyed.
+    /// You rarely get this signal, because most widgets disconnect themselves
+    /// from their window before they destroy it, so no widget owns the
+    /// window at destroy time.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable this mask
+    /// automatically for all new windows.
+    ///
+    ///
+    ///
+    ///
+    /// #### `direction-changed`
+    ///  The ::direction-changed signal is emitted when the text direction
+    /// of a widget changes.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-begin`
+    ///  The ::drag-begin signal is emitted on the drag source when a drag is
+    /// started. A typical reason to connect to this signal is to set up a
+    /// custom drag icon with e.g. [`WidgetExtManual::drag_source_set_icon_pixbuf()`][crate::gtk::prelude::WidgetExtManual::drag_source_set_icon_pixbuf()].
+    ///
+    /// Note that some widgets set up a drag icon in the default handler of
+    /// this signal, so you may have to use `g_signal_connect_after()` to
+    /// override what the default handler did.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-data-delete`
+    ///  The ::drag-data-delete signal is emitted on the drag source when a drag
+    /// with the action `GDK_ACTION_MOVE` is successfully completed. The signal
+    /// handler is responsible for deleting the data that has been dropped. What
+    /// "delete" means depends on the context of the drag operation.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-data-get`
+    ///  The ::drag-data-get signal is emitted on the drag source when the drop
+    /// site requests the data which is dragged. It is the responsibility of
+    /// the signal handler to fill `data` with the data in the format which
+    /// is indicated by `info`. See `gtk_selection_data_set()` and
+    /// `gtk_selection_data_set_text()`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-data-received`
+    ///  The ::drag-data-received signal is emitted on the drop site when the
+    /// dragged data has been received. If the data was received in order to
+    /// determine whether the drop will be accepted, the handler is expected
+    /// to call `gdk_drag_status()` and not finish the drag.
+    /// If the data was received in response to a [`drag-drop`][struct@crate::gtk::Widget#drag-drop] signal
+    /// (and this is the last target to be received), the handler for this
+    /// signal is expected to process the received data and then call
+    /// `gtk_drag_finish()`, setting the `success` parameter depending on
+    /// whether the data was processed successfully.
+    ///
+    /// Applications must create some means to determine why the signal was emitted
+    /// and therefore whether to call `gdk_drag_status()` or `gtk_drag_finish()`.
+    ///
+    /// The handler may inspect the selected action with
+    /// `gdk_drag_context_get_selected_action()` before calling
+    /// `gtk_drag_finish()`, e.g. to implement `GDK_ACTION_ASK` as
+    /// shown in the following example:
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// void
+    /// drag_data_received (GtkWidget          *widget,
+    ///                     GdkDragContext     *context,
+    ///                     gint                x,
+    ///                     gint                y,
+    ///                     GtkSelectionData   *data,
+    ///                     guint               info,
+    ///                     guint               time)
+    /// {
+    ///   if ((data->length >= 0) && (data->format == 8))
+    ///     {
+    ///       GdkDragAction action;
+    ///
+    ///       // handle data here
+    ///
+    ///       action = gdk_drag_context_get_selected_action (context);
+    ///       if (action == GDK_ACTION_ASK)
+    ///         {
+    ///           GtkWidget *dialog;
+    ///           gint response;
+    ///
+    ///           dialog = gtk_message_dialog_new (NULL,
+    ///                                            GTK_DIALOG_MODAL |
+    ///                                            GTK_DIALOG_DESTROY_WITH_PARENT,
+    ///                                            GTK_MESSAGE_INFO,
+    ///                                            GTK_BUTTONS_YES_NO,
+    ///                                            "Move the data ?\n");
+    ///           response = gtk_dialog_run (GTK_DIALOG (dialog));
+    ///           gtk_widget_destroy (dialog);
+    ///
+    ///           if (response == GTK_RESPONSE_YES)
+    ///             action = GDK_ACTION_MOVE;
+    ///           else
+    ///             action = GDK_ACTION_COPY;
+    ///          }
+    ///
+    ///       gtk_drag_finish (context, TRUE, action == GDK_ACTION_MOVE, time);
+    ///     }
+    ///   else
+    ///     gtk_drag_finish (context, FALSE, FALSE, time);
+    ///  }
+    /// ```
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-drop`
+    ///  The ::drag-drop signal is emitted on the drop site when the user drops
+    /// the data onto the widget. The signal handler must determine whether
+    /// the cursor position is in a drop zone or not. If it is not in a drop
+    /// zone, it returns [`false`] and no further processing is necessary.
+    /// Otherwise, the handler returns [`true`]. In this case, the handler must
+    /// ensure that `gtk_drag_finish()` is called to let the source know that
+    /// the drop is done. The call to `gtk_drag_finish()` can be done either
+    /// directly or in a [`drag-data-received`][struct@crate::gtk::Widget#drag-data-received] handler which gets
+    /// triggered by calling [`WidgetExtManual::drag_get_data()`][crate::gtk::prelude::WidgetExtManual::drag_get_data()] to receive the data for one
+    /// or more of the supported targets.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-end`
+    ///  The ::drag-end signal is emitted on the drag source when a drag is
+    /// finished. A typical reason to connect to this signal is to undo
+    /// things done in [`drag-begin`][struct@crate::gtk::Widget#drag-begin].
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-failed`
+    ///  The ::drag-failed signal is emitted on the drag source when a drag has
+    /// failed. The signal handler may hook custom code to handle a failed DnD
+    /// operation based on the type of error, it returns [`true`] is the failure has
+    /// been already handled (not showing the default "drag operation failed"
+    /// animation), otherwise it returns [`false`].
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-leave`
+    ///  The ::drag-leave signal is emitted on the drop site when the cursor
+    /// leaves the widget. A typical reason to connect to this signal is to
+    /// undo things done in [`drag-motion`][struct@crate::gtk::Widget#drag-motion], e.g. undo highlighting
+    /// with [`WidgetExtManual::drag_unhighlight()`][crate::gtk::prelude::WidgetExtManual::drag_unhighlight()].
+    ///
+    ///
+    /// Likewise, the [`drag-leave`][struct@crate::gtk::Widget#drag-leave] signal is also emitted before the
+    /// ::drag-drop signal, for instance to allow cleaning up of a preview item
+    /// created in the [`drag-motion`][struct@crate::gtk::Widget#drag-motion] signal handler.
+    ///
+    ///
+    ///
+    ///
+    /// #### `drag-motion`
+    ///  The ::drag-motion signal is emitted on the drop site when the user
+    /// moves the cursor over the widget during a drag. The signal handler
+    /// must determine whether the cursor position is in a drop zone or not.
+    /// If it is not in a drop zone, it returns [`false`] and no further processing
+    /// is necessary. Otherwise, the handler returns [`true`]. In this case, the
+    /// handler is responsible for providing the necessary information for
+    /// displaying feedback to the user, by calling `gdk_drag_status()`.
+    ///
+    /// If the decision whether the drop will be accepted or rejected can't be
+    /// made based solely on the cursor position and the type of the data, the
+    /// handler may inspect the dragged data by calling [`WidgetExtManual::drag_get_data()`][crate::gtk::prelude::WidgetExtManual::drag_get_data()] and
+    /// defer the `gdk_drag_status()` call to the [`drag-data-received`][struct@crate::gtk::Widget#drag-data-received]
+    /// handler. Note that you must pass `GTK_DEST_DEFAULT_DROP`,
+    /// `GTK_DEST_DEFAULT_MOTION` or `GTK_DEST_DEFAULT_ALL` to [`WidgetExtManual::drag_dest_set()`][crate::gtk::prelude::WidgetExtManual::drag_dest_set()]
+    /// when using the drag-motion signal that way.
+    ///
+    /// Also note that there is no drag-enter signal. The drag receiver has to
+    /// keep track of whether he has received any drag-motion signals since the
+    /// last [`drag-leave`][struct@crate::gtk::Widget#drag-leave] and if not, treat the drag-motion signal as
+    /// an "enter" signal. Upon an "enter", the handler will typically highlight
+    /// the drop site with [`WidgetExtManual::drag_highlight()`][crate::gtk::prelude::WidgetExtManual::drag_highlight()].
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// static void
+    /// drag_motion (GtkWidget      *widget,
+    ///              GdkDragContext *context,
+    ///              gint            x,
+    ///              gint            y,
+    ///              guint           time)
+    /// {
+    ///   GdkAtom target;
+    ///
+    ///   PrivateData *private_data = GET_PRIVATE_DATA (widget);
+    ///
+    ///   if (!private_data->drag_highlight)
+    ///    {
+    ///      private_data->drag_highlight = 1;
+    ///      gtk_drag_highlight (widget);
+    ///    }
+    ///
+    ///   target = gtk_drag_dest_find_target (widget, context, NULL);
+    ///   if (target == GDK_NONE)
+    ///     gdk_drag_status (context, 0, time);
+    ///   else
+    ///    {
+    ///      private_data->pending_status
+    ///         = gdk_drag_context_get_suggested_action (context);
+    ///      gtk_drag_get_data (widget, context, target, time);
+    ///    }
+    ///
+    ///   return TRUE;
+    /// }
+    ///
+    /// static void
+    /// drag_data_received (GtkWidget        *widget,
+    ///                     GdkDragContext   *context,
+    ///                     gint              x,
+    ///                     gint              y,
+    ///                     GtkSelectionData *selection_data,
+    ///                     guint             info,
+    ///                     guint             time)
+    /// {
+    ///   PrivateData *private_data = GET_PRIVATE_DATA (widget);
+    ///
+    ///   if (private_data->suggested_action)
+    ///    {
+    ///      private_data->suggested_action = 0;
+    ///
+    ///      // We are getting this data due to a request in drag_motion,
+    ///      // rather than due to a request in drag_drop, so we are just
+    ///      // supposed to call gdk_drag_status(), not actually paste in
+    ///      // the data.
+    ///
+    ///      str = gtk_selection_data_get_text (selection_data);
+    ///      if (!data_is_acceptable (str))
+    ///        gdk_drag_status (context, 0, time);
+    ///      else
+    ///        gdk_drag_status (context,
+    ///                         private_data->suggested_action,
+    ///                         time);
+    ///    }
+    ///   else
+    ///    {
+    ///      // accept the drop
+    ///    }
+    /// }
+    /// ```
+    ///
+    ///
+    ///
+    ///
+    /// #### `draw`
+    ///  This signal is emitted when a widget is supposed to render itself.
+    /// The `widget`'s top left corner must be painted at the origin of
+    /// the passed in context and be sized to the values returned by
+    /// [`WidgetExtManual::allocated_width()`][crate::gtk::prelude::WidgetExtManual::allocated_width()] and
+    /// [`WidgetExtManual::allocated_height()`][crate::gtk::prelude::WidgetExtManual::allocated_height()].
+    ///
+    /// Signal handlers connected to this signal can modify the cairo
+    /// context passed as `cr` in any way they like and don't need to
+    /// restore it. The signal emission takes care of calling `cairo_save()`
+    /// before and `cairo_restore()` after invoking the handler.
+    ///
+    /// The signal handler will get a `cr` with a clip region already set to the
+    /// widget's dirty region, i.e. to the area that needs repainting. Complicated
+    /// widgets that want to avoid redrawing themselves completely can get the full
+    /// extents of the clip region with `gdk_cairo_get_clip_rectangle()`, or they can
+    /// get a finer-grained representation of the dirty region with
+    /// `cairo_copy_clip_rectangle_list()`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `enter-notify-event`
+    ///  The ::enter-notify-event will be emitted when the pointer enters
+    /// the `widget`'s window.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_ENTER_NOTIFY_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `event`
+    ///  The GTK+ main loop will emit three signals for each GDK event delivered
+    /// to a widget: one generic ::event signal, another, more specific,
+    /// signal that matches the type of event delivered (e.g.
+    /// [`key-press-event`][struct@crate::gtk::Widget#key-press-event]) and finally a generic
+    /// [`event-after`][struct@crate::gtk::Widget#event-after] signal.
+    ///
+    ///
+    ///
+    ///
+    /// #### `event-after`
+    ///  After the emission of the [`event`][struct@crate::gtk::Widget#event] signal and (optionally)
+    /// the second more specific signal, ::event-after will be emitted
+    /// regardless of the previous two signals handlers return values.
+    ///
+    ///
+    ///
+    ///
+    /// #### `focus`
+    ///
+    ///
+    ///
+    /// #### `focus-in-event`
+    ///  The ::focus-in-event signal will be emitted when the keyboard focus
+    /// enters the `widget`'s window.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_FOCUS_CHANGE_MASK` mask.
+    ///
+    ///
+    ///
+    ///
+    /// #### `focus-out-event`
+    ///  The ::focus-out-event signal will be emitted when the keyboard focus
+    /// leaves the `widget`'s window.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_FOCUS_CHANGE_MASK` mask.
+    ///
+    ///
+    ///
+    ///
+    /// #### `grab-broken-event`
+    ///  Emitted when a pointer or keyboard grab on a window belonging
+    /// to `widget` gets broken.
+    ///
+    /// On X11, this happens when the grab window becomes unviewable
+    /// (i.e. it or one of its ancestors is unmapped), or if the same
+    /// application grabs the pointer or keyboard again.
+    ///
+    ///
+    ///
+    ///
+    /// #### `grab-focus`
+    ///  Action
+    ///
+    ///
+    /// #### `grab-notify`
+    ///  The ::grab-notify signal is emitted when a widget becomes
+    /// shadowed by a GTK+ grab (not a pointer or keyboard grab) on
+    /// another widget, or when it becomes unshadowed due to a grab
+    /// being removed.
+    ///
+    /// A widget is shadowed by a [`WidgetExtManual::grab_add()`][crate::gtk::prelude::WidgetExtManual::grab_add()] when the topmost
+    /// grab widget in the grab stack of its window group is not
+    /// its ancestor.
+    ///
+    ///
+    ///
+    ///
+    /// #### `hide`
+    ///  The ::hide signal is emitted when `widget` is hidden, for example with
+    /// [`WidgetExtManual::hide()`][crate::gtk::prelude::WidgetExtManual::hide()].
+    ///
+    ///
+    ///
+    ///
+    /// #### `hierarchy-changed`
+    ///  The ::hierarchy-changed signal is emitted when the
+    /// anchored state of a widget changes. A widget is
+    /// “anchored” when its toplevel
+    /// ancestor is a [`gtk::Window`][crate::gtk::Window]. This signal is emitted when
+    /// a widget changes from un-anchored to anchored or vice-versa.
+    ///
+    ///
+    ///
+    ///
+    /// #### `key-press-event`
+    ///  The ::key-press-event signal is emitted when a key is pressed. The signal
+    /// emission will reoccur at the key-repeat rate when the key is kept pressed.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_KEY_PRESS_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `key-release-event`
+    ///  The ::key-release-event signal is emitted when a key is released.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_KEY_RELEASE_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `keynav-failed`
+    ///  Gets emitted if keyboard navigation fails.
+    /// See [`WidgetExtManual::keynav_failed()`][crate::gtk::prelude::WidgetExtManual::keynav_failed()] for details.
+    ///
+    ///
+    ///
+    ///
+    /// #### `leave-notify-event`
+    ///  The ::leave-notify-event will be emitted when the pointer leaves
+    /// the `widget`'s window.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_LEAVE_NOTIFY_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `map`
+    ///  The ::map signal is emitted when `widget` is going to be mapped, that is
+    /// when the widget is visible (which is controlled with
+    /// [`WidgetExtManual::set_visible()`][crate::gtk::prelude::WidgetExtManual::set_visible()]) and all its parents up to the toplevel widget
+    /// are also visible. Once the map has occurred, [`map-event`][struct@crate::gtk::Widget#map-event] will
+    /// be emitted.
+    ///
+    /// The ::map signal can be used to determine whether a widget will be drawn,
+    /// for instance it can resume an animation that was stopped during the
+    /// emission of [`unmap`][struct@crate::gtk::Widget#unmap].
+    ///
+    ///
+    ///
+    ///
+    /// #### `map-event`
+    ///  The ::map-event signal will be emitted when the `widget`'s window is
+    /// mapped. A window is mapped when it becomes visible on the screen.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable this mask
+    /// automatically for all new windows.
+    ///
+    ///
+    ///
+    ///
+    /// #### `mnemonic-activate`
+    ///  The default handler for this signal activates `widget` if `group_cycling`
+    /// is [`false`], or just makes `widget` grab focus if `group_cycling` is [`true`].
+    ///
+    ///
+    ///
+    ///
+    /// #### `motion-notify-event`
+    ///  The ::motion-notify-event signal is emitted when the pointer moves
+    /// over the widget's [`gdk::Window`][crate::gdk::Window].
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget
+    /// needs to enable the `GDK_POINTER_MOTION_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `move-focus`
+    ///  Action
+    ///
+    ///
+    /// #### `parent-set`
+    ///  The ::parent-set signal is emitted when a new parent
+    /// has been set on a widget.
+    ///
+    ///
+    ///
+    ///
+    /// #### `popup-menu`
+    ///  This signal gets emitted whenever a widget should pop up a context
+    /// menu. This usually happens through the standard key binding mechanism;
+    /// by pressing a certain key while a widget is focused, the user can cause
+    /// the widget to pop up a menu. For example, the [`gtk::Entry`][crate::gtk::Entry] widget creates
+    /// a menu with clipboard commands. See the
+    /// [Popup Menu Migration Checklist][checklist-popup-menu]
+    /// for an example of how to use this signal.
+    ///
+    /// Action
+    ///
+    ///
+    /// #### `property-notify-event`
+    ///  The ::property-notify-event signal will be emitted when a property on
+    /// the `widget`'s window has been changed or deleted.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_PROPERTY_CHANGE_MASK` mask.
+    ///
+    ///
+    ///
+    ///
+    /// #### `proximity-in-event`
+    ///  To receive this signal the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_PROXIMITY_IN_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `proximity-out-event`
+    ///  To receive this signal the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_PROXIMITY_OUT_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `query-tooltip`
+    ///  Emitted when [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip] is [`true`] and the hover timeout
+    /// has expired with the cursor hovering "above" `widget`; or emitted when `widget` got
+    /// focus in keyboard mode.
+    ///
+    /// Using the given coordinates, the signal handler should determine
+    /// whether a tooltip should be shown for `widget`. If this is the case
+    /// [`true`] should be returned, [`false`] otherwise. Note that if
+    /// `keyboard_mode` is [`true`], the values of `x` and `y` are undefined and
+    /// should not be used.
+    ///
+    /// The signal handler is free to manipulate `tooltip` with the therefore
+    /// destined function calls.
+    ///
+    ///
+    ///
+    ///
+    /// #### `realize`
+    ///  The ::realize signal is emitted when `widget` is associated with a
+    /// [`gdk::Window`][crate::gdk::Window], which means that [`WidgetExtManual::realize()`][crate::gtk::prelude::WidgetExtManual::realize()] has been called or the
+    /// widget has been mapped (that is, it is going to be drawn).
+    ///
+    ///
+    ///
+    ///
+    /// #### `screen-changed`
+    ///  The ::screen-changed signal gets emitted when the
+    /// screen of a widget has changed.
+    ///
+    ///
+    ///
+    ///
+    /// #### `scroll-event`
+    ///  The ::scroll-event signal is emitted when a button in the 4 to 7
+    /// range is pressed. Wheel mice are usually configured to generate
+    /// button press events for buttons 4 and 5 when the wheel is turned.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_SCROLL_MASK` mask.
+    ///
+    /// This signal will be sent to the grab widget if there is one.
+    ///
+    ///
+    ///
+    ///
+    /// #### `selection-clear-event`
+    ///  The ::selection-clear-event signal will be emitted when the
+    /// the `widget`'s window has lost ownership of a selection.
+    ///
+    ///
+    ///
+    ///
+    /// #### `selection-get`
+    ///
+    ///
+    ///
+    /// #### `selection-notify-event`
+    ///
+    ///
+    ///
+    /// #### `selection-received`
+    ///
+    ///
+    ///
+    /// #### `selection-request-event`
+    ///  The ::selection-request-event signal will be emitted when
+    /// another client requests ownership of the selection owned by
+    /// the `widget`'s window.
+    ///
+    ///
+    ///
+    ///
+    /// #### `show`
+    ///  The ::show signal is emitted when `widget` is shown, for example with
+    /// [`WidgetExtManual::show()`][crate::gtk::prelude::WidgetExtManual::show()].
+    ///
+    ///
+    ///
+    ///
+    /// #### `show-help`
+    ///  Action
+    ///
+    ///
+    /// #### `size-allocate`
+    ///
+    ///
+    ///
+    /// #### `state-changed`
+    ///  The ::state-changed signal is emitted when the widget state changes.
+    /// See `gtk_widget_get_state()`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `state-flags-changed`
+    ///  The ::state-flags-changed signal is emitted when the widget state
+    /// changes, see [`WidgetExtManual::state_flags()`][crate::gtk::prelude::WidgetExtManual::state_flags()].
+    ///
+    ///
+    ///
+    ///
+    /// #### `style-set`
+    ///  The ::style-set signal is emitted when a new style has been set
+    /// on a widget. Note that style-modifying functions like
+    /// `gtk_widget_modify_base()` also cause this signal to be emitted.
+    ///
+    /// Note that this signal is emitted for changes to the deprecated
+    /// `GtkStyle`. To track changes to the `GtkStyleContext` associated
+    /// with a widget, use the [`style-updated`][struct@crate::gtk::Widget#style-updated] signal.
+    ///
+    ///
+    ///
+    ///
+    /// #### `style-updated`
+    ///  The ::style-updated signal is a convenience signal that is emitted when the
+    /// `GtkStyleContext::changed` signal is emitted on the `widget`'s associated
+    /// `GtkStyleContext` as returned by [`WidgetExtManual::style_context()`][crate::gtk::prelude::WidgetExtManual::style_context()].
+    ///
+    /// Note that style-modifying functions like [`WidgetExtManual::override_color()`][crate::gtk::prelude::WidgetExtManual::override_color()] also
+    /// cause this signal to be emitted.
+    ///
+    ///
+    ///
+    ///
+    /// #### `touch-event`
+    ///
+    ///
+    ///
+    /// #### `unmap`
+    ///  The ::unmap signal is emitted when `widget` is going to be unmapped, which
+    /// means that either it or any of its parents up to the toplevel widget have
+    /// been set as hidden.
+    ///
+    /// As ::unmap indicates that a widget will not be shown any longer, it can be
+    /// used to, for example, stop an animation on the widget.
+    ///
+    ///
+    ///
+    ///
+    /// #### `unmap-event`
+    ///  The ::unmap-event signal will be emitted when the `widget`'s window is
+    /// unmapped. A window is unmapped when it becomes invisible on the screen.
+    ///
+    /// To receive this signal, the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable this mask
+    /// automatically for all new windows.
+    ///
+    ///
+    ///
+    ///
+    /// #### `unrealize`
+    ///  The ::unrealize signal is emitted when the [`gdk::Window`][crate::gdk::Window] associated with
+    /// `widget` is destroyed, which means that [`WidgetExtManual::unrealize()`][crate::gtk::prelude::WidgetExtManual::unrealize()] has been
+    /// called or the widget has been unmapped (that is, it is going to be
+    /// hidden).
+    ///
+    ///
+    ///
+    ///
+    /// #### `visibility-notify-event`
+    ///  The ::visibility-notify-event will be emitted when the `widget`'s
+    /// window is obscured or unobscured.
+    ///
+    /// To receive this signal the [`gdk::Window`][crate::gdk::Window] associated to the widget needs
+    /// to enable the `GDK_VISIBILITY_NOTIFY_MASK` mask.
+    ///
+    ///
+    ///
+    ///
+    /// #### `window-state-event`
+    ///  The ::window-state-event will be emitted when the state of the
+    /// toplevel window associated to the `widget` changes.
+    ///
+    /// To receive this signal the [`gdk::Window`][crate::gdk::Window] associated to the widget
+    /// needs to enable the `GDK_STRUCTURE_MASK` mask. GDK will enable
+    /// this mask automatically for all new windows.
+    ///
+    ///
+    /// </details>
+    /// <details><summary><h4>CellEditable</h4></summary>
+    ///
+    ///
+    /// #### `editing-done`
+    ///  This signal is a sign for the cell renderer to update its
+    /// value from the `cell_editable`.
+    ///
+    /// Implementations of `GtkCellEditable` are responsible for
+    /// emitting this signal when they are done editing, e.g.
+    /// [`gtk::Entry`][crate::gtk::Entry] emits this signal when the user presses Enter. Typical things to
+    /// do in a handler for ::editing-done are to capture the edited value,
+    /// disconnect the `cell_editable` from signals on the [`gtk::CellRenderer`][crate::gtk::CellRenderer], etc.
+    ///
+    /// `gtk_cell_editable_editing_done()` is a convenience method
+    /// for emitting `GtkCellEditable::editing-done`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `remove-widget`
+    ///  This signal is meant to indicate that the cell is finished
+    /// editing, and the `cell_editable` widget is being removed and may
+    /// subsequently be destroyed.
+    ///
+    /// Implementations of `GtkCellEditable` are responsible for
+    /// emitting this signal when they are done editing. It must
+    /// be emitted after the `GtkCellEditable::editing-done` signal,
+    /// to give the cell renderer a chance to update the cell's value
+    /// before the widget is removed.
+    ///
+    /// `gtk_cell_editable_remove_widget()` is a convenience method
+    /// for emitting `GtkCellEditable::remove-widget`.
+    ///
+    ///
+    /// </details>
+    /// <details><summary><h4>Editable</h4></summary>
+    ///
+    ///
+    /// #### `changed`
+    ///  The ::changed signal is emitted at the end of a single
+    /// user-visible operation on the contents of the `GtkEditable`.
+    ///
+    /// E.g., a paste operation that replaces the contents of the
+    /// selection will cause only one signal emission (even though it
+    /// is implemented by first deleting the selection, then inserting
+    /// the new content, and may cause multiple ::notify::text signals
+    /// to be emitted).
+    ///
+    ///
+    ///
+    ///
+    /// #### `delete-text`
+    ///  This signal is emitted when text is deleted from
+    /// the widget by the user. The default handler for
+    /// this signal will normally be responsible for deleting
+    /// the text, so by connecting to this signal and then
+    /// stopping the signal with `g_signal_stop_emission()`, it
+    /// is possible to modify the range of deleted text, or
+    /// prevent it from being deleted entirely. The `start_pos`
+    /// and `end_pos` parameters are interpreted as for
+    /// `gtk_editable_delete_text()`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `insert-text`
+    ///  This signal is emitted when text is inserted into
+    /// the widget by the user. The default handler for
+    /// this signal will normally be responsible for inserting
+    /// the text, so by connecting to this signal and then
+    /// stopping the signal with `g_signal_stop_emission()`, it
+    /// is possible to modify the inserted text, or prevent
+    /// it from being inserted entirely.
+    ///
+    ///
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::EntryExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpNumberPairEntry")]
     pub struct NumberPairEntry(Object<ffi::GimpNumberPairEntry, ffi::GimpNumberPairEntryClass>) @extends gtk::Entry, gtk::Widget, @implements gtk::Buildable;
 
@@ -22,6 +1759,35 @@ glib::wrapper! {
 }
 
 impl NumberPairEntry {
+    /// Creates a new [`NumberPairEntry`][crate::NumberPairEntry] widget, which is a GtkEntry that
+    /// accepts two numbers separated by a separator. Typical input example
+    /// with a 'x' separator: "377x233".
+    ///
+    /// The widget supports simplification of the entered ratio when the
+    /// input ends in '=', if "allow-simplification" is TRUE.
+    ///
+    /// The "separators" property contains a string of characters valid as
+    /// separators when parsing input. The first separator is used when
+    /// displaying the current values.
+    ///
+    /// It is possible to specify what range of values that shall be
+    /// considered as valid when parsing user input, by changing
+    /// "min-valid-value" and "max-valid-value".
+    ///
+    /// The first separator of `separators` is used to display the current
+    /// value.
+    /// ## `separators`
+    /// The allowed separators.
+    /// ## `allow_simplification`
+    /// Whether to do simplification on the entered term.
+    /// ## `min_valid_value`
+    /// The minimum allowed result value.
+    /// ## `max_valid_value`
+    /// The maximum allowed result value.
+    ///
+    /// # Returns
+    ///
+    /// The new [`NumberPairEntry`][crate::NumberPairEntry] widget.
     #[doc(alias = "gimp_number_pair_entry_new")]
     pub fn new(
         separators: &str,
@@ -40,6 +1806,11 @@ impl NumberPairEntry {
         }
     }
 
+    /// Gets the aspect of the ratio displayed by a [`NumberPairEntry`][crate::NumberPairEntry].
+    ///
+    /// # Returns
+    ///
+    /// The entry's current aspect.
     #[doc(alias = "gimp_number_pair_entry_get_aspect")]
     #[doc(alias = "get_aspect")]
     pub fn aspect(&self) -> AspectType {
@@ -50,6 +1821,11 @@ impl NumberPairEntry {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the string manually set to be shown,
+    ///  or [`None`] if values are shown in a normal fashion.
     #[doc(alias = "gimp_number_pair_entry_get_default_text")]
     #[doc(alias = "get_default_text")]
     #[doc(alias = "default-text")]
@@ -61,6 +1837,15 @@ impl NumberPairEntry {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    ///
+    /// ## `left`
+    /// Location to put the default left value, or [`None`].
+    ///
+    /// ## `right`
+    /// Location to put the default right value, or [`None`].
     #[doc(alias = "gimp_number_pair_entry_get_default_values")]
     #[doc(alias = "get_default_values")]
     pub fn default_values(&self) -> (f64, f64) {
@@ -76,12 +1861,21 @@ impl NumberPairEntry {
         }
     }
 
+    /// Retrieves the ratio of the numbers displayed by a [`NumberPairEntry`][crate::NumberPairEntry].
+    ///
+    /// # Returns
+    ///
+    /// The ratio value.
     #[doc(alias = "gimp_number_pair_entry_get_ratio")]
     #[doc(alias = "get_ratio")]
     pub fn ratio(&self) -> f64 {
         unsafe { ffi::gimp_number_pair_entry_get_ratio(self.to_glib_none().0) }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// Whether or not the the widget is in user overridden mode.
     #[doc(alias = "gimp_number_pair_entry_get_user_override")]
     #[doc(alias = "get_user_override")]
     #[doc(alias = "user-override")]
@@ -93,6 +1887,16 @@ impl NumberPairEntry {
         }
     }
 
+    /// Gets the numbers displayed by a [`NumberPairEntry`][crate::NumberPairEntry].
+    ///
+    /// # Returns
+    ///
+    ///
+    /// ## `left`
+    /// Location to store the left number (may be [`None`]).
+    ///
+    /// ## `right`
+    /// Location to store the right number (may be [`None`]).
     #[doc(alias = "gimp_number_pair_entry_get_values")]
     #[doc(alias = "get_values")]
     pub fn values(&self) -> (f64, f64) {
@@ -108,6 +1912,11 @@ impl NumberPairEntry {
         }
     }
 
+    /// Sets the aspect of the ratio by swapping the left_number and
+    /// right_number if necessary (or setting them to 1.0 in case that
+    /// `aspect` is [`AspectType::Square`][crate::AspectType::Square]).
+    /// ## `aspect`
+    /// The new aspect.
     #[doc(alias = "gimp_number_pair_entry_set_aspect")]
     #[doc(alias = "aspect")]
     pub fn set_aspect(&self, aspect: AspectType) {
@@ -116,6 +1925,15 @@ impl NumberPairEntry {
         }
     }
 
+    /// Causes the entry to show a given string when in automatic mode,
+    /// instead of the default numbers. The only thing this does is making
+    /// the [`NumberPairEntry`][crate::NumberPairEntry] showing this string, the internal state
+    /// and API calls are not affected.
+    ///
+    /// Set the default string to [`None`] to display default values as
+    /// normal.
+    /// ## `string`
+    /// Default string.
     #[doc(alias = "gimp_number_pair_entry_set_default_text")]
     #[doc(alias = "default-text")]
     pub fn set_default_text(&self, string: &str) {
@@ -127,6 +1945,10 @@ impl NumberPairEntry {
         }
     }
 
+    /// ## `left`
+    /// Default left value in the entry.
+    /// ## `right`
+    /// Default right value in the entry.
     #[doc(alias = "gimp_number_pair_entry_set_default_values")]
     pub fn set_default_values(&self, left: f64, right: f64) {
         unsafe {
@@ -134,6 +1956,14 @@ impl NumberPairEntry {
         }
     }
 
+    /// Sets the numbers of the [`NumberPairEntry`][crate::NumberPairEntry] to have the desired
+    /// ratio. If the new ratio is different than the previous ratio, the
+    /// "ratio-changed" signal is emitted.
+    ///
+    /// An attempt is made to convert the decimal number into a fraction
+    /// with left_number and right_number < 1000.
+    /// ## `ratio`
+    /// Ratio to set in the widget.
     #[doc(alias = "gimp_number_pair_entry_set_ratio")]
     #[doc(alias = "ratio")]
     pub fn set_ratio(&self, ratio: f64) {
@@ -142,6 +1972,12 @@ impl NumberPairEntry {
         }
     }
 
+    /// When the entry is not in user overridden mode, the values will
+    /// change when the default values are changed. When in user overridden
+    /// mode, setting default values will not affect the active values.
+    /// ## `user_override`
+    /// [`true`] sets the entry in user overridden mode,
+    ///  [`false`] disables.
     #[doc(alias = "gimp_number_pair_entry_set_user_override")]
     #[doc(alias = "user-override")]
     pub fn set_user_override(&self, user_override: bool) {
@@ -153,6 +1989,13 @@ impl NumberPairEntry {
         }
     }
 
+    /// Forces setting the numbers displayed by a [`NumberPairEntry`][crate::NumberPairEntry],
+    /// ignoring if the user has set their own value. The state of
+    /// user-override will not be changed.
+    /// ## `left`
+    /// Left number in the entry.
+    /// ## `right`
+    /// Right number in the entry.
     #[doc(alias = "gimp_number_pair_entry_set_values")]
     pub fn set_values(&self, left: f64, right: f64) {
         unsafe {

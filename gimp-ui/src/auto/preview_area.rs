@@ -12,6 +12,297 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    /// A general purpose preview widget which caches its pixel data.
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `check-custom-color1`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `check-custom-color2`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `check-size`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `check-type`
+    ///  Readable | Writeable
+    /// <details><summary><h4>Widget</h4></summary>
+    ///
+    ///
+    /// #### `app-paintable`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `can-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `composite-child`
+    ///  Readable
+    ///
+    ///
+    /// #### `double-buffered`
+    ///  Whether the widget is double buffered.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `events`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `expand`
+    ///  Whether to expand in both directions. Setting this sets both [`hexpand`][struct@crate::gtk::Widget#hexpand] and [`vexpand`][struct@crate::gtk::Widget#vexpand]
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `focus-on-click`
+    ///  Whether the widget should grab focus when it is clicked with the mouse.
+    ///
+    /// This property is only relevant for widgets that can take focus.
+    ///
+    /// Before 3.20, several widgets (GtkButton, GtkFileChooserButton,
+    /// GtkComboBox) implemented this property individually.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `halign`
+    ///  How to distribute horizontal space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `has-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `has-tooltip`
+    ///  Enables or disables the emission of [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] on `widget`.
+    /// A value of [`true`] indicates that `widget` can have a tooltip, in this case
+    /// the widget will be queried using [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] to determine
+    /// whether it will provide a tooltip or not.
+    ///
+    /// Note that setting this property to [`true`] for the first time will change
+    /// the event masks of the GdkWindows of this widget to include leave-notify
+    /// and motion-notify events. This cannot and will not be undone when the
+    /// property is set to [`false`] again.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `height-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand`
+    ///  Whether to expand horizontally. See [`WidgetExtManual::set_hexpand()`][crate::gtk::prelude::WidgetExtManual::set_hexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `hexpand-set`
+    ///  Whether to use the [`hexpand`][struct@crate::gtk::Widget#hexpand] property. See [`WidgetExtManual::is_hexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_hexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `is-focus`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `margin`
+    ///  Sets all four sides' margin at once. If read, returns max
+    /// margin on any side.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-bottom`
+    ///  Margin on bottom side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-end`
+    ///  Margin on end of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-left`
+    ///  Margin on left side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-right`
+    ///  Margin on right side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-start`
+    ///  Margin on start of widget, horizontally. This property supports
+    /// left-to-right and right-to-left text directions.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `margin-top`
+    ///  Margin on top side of widget.
+    ///
+    /// This property adds margin outside of the widget's normal size
+    /// request, the margin will be added in addition to the size from
+    /// [`WidgetExtManual::set_size_request()`][crate::gtk::prelude::WidgetExtManual::set_size_request()] for example.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `name`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `no-show-all`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `opacity`
+    ///  The requested opacity of the widget. See [`WidgetExtManual::set_opacity()`][crate::gtk::prelude::WidgetExtManual::set_opacity()] for
+    /// more details about window opacity.
+    ///
+    /// Before 3.8 this was only available in GtkWindow
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `parent`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `receives-default`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `scale-factor`
+    ///  The scale factor of the widget. See [`WidgetExtManual::scale_factor()`][crate::gtk::prelude::WidgetExtManual::scale_factor()] for
+    /// more details about widget scaling.
+    ///
+    /// Readable
+    ///
+    ///
+    /// #### `sensitive`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `style`
+    ///  The style of the widget, which contains information about how it will look (colors, etc).
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-markup`
+    ///  Sets the text of tooltip to be the given string, which is marked up
+    /// with the [Pango text markup language][PangoMarkupFormat].
+    /// Also see `gtk_tooltip_set_markup()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `tooltip-text`
+    ///  Sets the text of tooltip to be the given string.
+    ///
+    /// Also see `gtk_tooltip_set_text()`.
+    ///
+    /// This is a convenience property which will take care of getting the
+    /// tooltip shown if the given string is not [`None`]: [`has-tooltip`][struct@crate::gtk::Widget#has-tooltip]
+    /// will automatically be set to [`true`] and there will be taken care of
+    /// [`query-tooltip`][struct@crate::gtk::Widget#query-tooltip] in the default signal handler.
+    ///
+    /// Note that if both [`tooltip-text`][struct@crate::gtk::Widget#tooltip-text] and [`tooltip-markup`][struct@crate::gtk::Widget#tooltip-markup]
+    /// are set, the last one wins.
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `valign`
+    ///  How to distribute vertical space if widget gets extra space, see `GtkAlign`
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand`
+    ///  Whether to expand vertically. See [`WidgetExtManual::set_vexpand()`][crate::gtk::prelude::WidgetExtManual::set_vexpand()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `vexpand-set`
+    ///  Whether to use the [`vexpand`][struct@crate::gtk::Widget#vexpand] property. See [`WidgetExtManual::is_vexpand_set()`][crate::gtk::prelude::WidgetExtManual::is_vexpand_set()].
+    ///
+    /// Readable | Writeable
+    ///
+    ///
+    /// #### `visible`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `width-request`
+    ///  Readable | Writeable
+    ///
+    ///
+    /// #### `window`
+    ///  The widget's window if it is realized, [`None`] otherwise.
+    ///
+    /// Readable
+    /// </details>
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpPreviewArea")]
     pub struct PreviewArea(Object<ffi::GimpPreviewArea, ffi::GimpPreviewAreaClass>) @extends gtk::Widget, @implements gtk::Buildable;
 
@@ -21,6 +312,31 @@ glib::wrapper! {
 }
 
 impl PreviewArea {
+    /// Creates a new [`PreviewArea`][crate::PreviewArea] widget.
+    ///
+    /// If the preview area is used to draw an image with transparency, you
+    /// might want to default the checkboard size and colors to user-set
+    /// Preferences. To do this, you may set the following properties on the
+    /// newly created [`PreviewArea`][crate::PreviewArea]:
+    ///
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// g_object_set (area,
+    ///               "check-size",          gimp_check_size (),
+    ///               "check-type",          gimp_check_type (),
+    ///               "check-custom-color1", gimp_check_custom_color1 (),
+    ///               "check-custom-color2", gimp_check_custom_color2 (),
+    ///               NULL);
+    /// ```
+    ///
+    /// # Returns
+    ///
+    /// a new [`PreviewArea`][crate::PreviewArea] widget.
+    ///
+    /// Since GIMP 2.2
     #[doc(alias = "gimp_preview_area_new")]
     pub fn new() -> PreviewArea {
         unsafe { gtk::Widget::from_glib_none(ffi::gimp_preview_area_new()).unsafe_cast() }
@@ -36,6 +352,24 @@ impl PreviewArea {
     //    unsafe { TODO: call ffi:gimp_preview_area_draw() }
     //}
 
+    /// Fills the given rectangle of `self` in the given color and queues a
+    /// redraw.
+    ///
+    /// Since GIMP 2.2
+    /// ## `x`
+    /// x offset in preview
+    /// ## `y`
+    /// y offset in preview
+    /// ## `width`
+    /// width of the rectangle to fill
+    /// ## `height`
+    /// height of the rectangle to fill
+    /// ## `red`
+    /// red component of the fill color (0-255)
+    /// ## `green`
+    /// green component of the fill color (0-255)
+    /// ## `blue`
+    /// red component of the fill color (0-255)
     #[doc(alias = "gimp_preview_area_fill")]
     pub fn fill(&self, x: i32, y: i32, width: i32, height: i32, red: u8, green: u8, blue: u8) {
         unsafe {
@@ -52,6 +386,16 @@ impl PreviewArea {
         }
     }
 
+    /// Gets the preview area size
+    ///
+    /// # Returns
+    ///
+    ///
+    /// ## `width`
+    /// The preview areay width
+    ///
+    /// ## `height`
+    /// The preview areay height
     #[doc(alias = "gimp_preview_area_get_size")]
     #[doc(alias = "get_size")]
     pub fn size(&self) -> (i32, i32) {
@@ -72,6 +416,7 @@ impl PreviewArea {
     //    unsafe { TODO: call ffi:gimp_preview_area_mask() }
     //}
 
+    /// Reset any previous drawing done through [`PreviewArea`][crate::PreviewArea] functions.
     #[doc(alias = "gimp_preview_area_reset")]
     pub fn reset(&self) {
         unsafe {
@@ -79,6 +424,9 @@ impl PreviewArea {
         }
     }
 
+    /// Sets the color management configuration to use with this preview area.
+    /// ## `config`
+    /// a [`gimp::ColorConfig`][crate::gimp::ColorConfig] object.
     #[doc(alias = "gimp_preview_area_set_color_config")]
     pub fn set_color_config(&self, config: &gimp::ColorConfig) {
         unsafe {
@@ -91,6 +439,14 @@ impl PreviewArea {
     //    unsafe { TODO: call ffi:gimp_preview_area_set_colormap() }
     //}
 
+    /// Usually a [`PreviewArea`][crate::PreviewArea] fills the size that it is
+    /// allocated. This function allows you to limit the preview area to a
+    /// maximum size. If a larger size is allocated for the widget, the
+    /// preview will draw itself centered into the allocated area.
+    /// ## `width`
+    /// the maximum width in pixels or -1 to unset the limit
+    /// ## `height`
+    /// the maximum height in pixels or -1 to unset the limit
     #[doc(alias = "gimp_preview_area_set_max_size")]
     pub fn set_max_size(&self, width: i32, height: i32) {
         unsafe {
@@ -98,6 +454,12 @@ impl PreviewArea {
         }
     }
 
+    /// Sets the offsets of the previewed area. This information is used
+    /// when drawing the checkerboard and to determine the dither offsets.
+    /// ## `x`
+    /// horizontal offset
+    /// ## `y`
+    /// vertical offset
     #[doc(alias = "gimp_preview_area_set_offsets")]
     pub fn set_offsets(&self, x: i32, y: i32) {
         unsafe {

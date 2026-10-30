@@ -20,6 +20,41 @@ use glib::{
 use std::boxed::Box as Box_;
 
 glib::wrapper! {
+    ///
+    ///
+    /// ## Properties
+    ///
+    ///
+    /// #### `curve-type`
+    ///  The curve type.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    ///
+    /// #### `n-samples`
+    ///  The number of samples this [`CurveType::Free`][crate::CurveType::Free] curve is
+    /// split into.
+    ///
+    /// Readable | Writeable | Construct
+    ///
+    /// ## Signals
+    ///
+    ///
+    /// #### `points-changed`
+    ///  Emitted when any points are added, deleted, or edited in `curve`.
+    ///
+    ///
+    ///
+    ///
+    /// #### `samples-changed`
+    ///  Emitted when any sample is edited, or if the number of samples
+    /// changed, in `curve`.
+    ///
+    ///
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
     #[doc(alias = "GimpCurve")]
     pub struct Curve(Object<ffi::GimpCurve, ffi::GimpCurveClass>);
 
@@ -29,6 +64,12 @@ glib::wrapper! {
 }
 
 impl Curve {
+    /// Creates a new [`Curve`][crate::Curve] object, of type
+    /// [`CurveType::Smooth`][crate::CurveType::Smooth], with 0 points initially.
+    ///
+    /// # Returns
+    ///
+    /// a new curve.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_new")]
@@ -36,6 +77,25 @@ impl Curve {
         unsafe { from_glib_full(ffi::gimp_curve_new()) }
     }
 
+    /// Add a new point in a [`CurveType::Smooth`][crate::CurveType::Smooth] `self`, with
+    /// coordinates `(x, y)`. Any value outside the `[0.0, 1.0]` range will
+    /// be silently clamped.
+    ///
+    /// The returned identifier can later be used e.g. in
+    /// [`point()`][Self::point()] or other functions taking a `point` number
+    /// as argument.
+    ///
+    /// Calling this may change identifiers for other points and the total
+    /// number of points in this `self`. Any such information you currently
+    /// hold should be considered invalid once the curve is changed.
+    /// ## `x`
+    /// the point abscissa on a `[0.0, 1.0]` range.
+    /// ## `y`
+    /// the point ordinate on a `[0.0, 1.0]` range.
+    ///
+    /// # Returns
+    ///
+    /// a point identifier to be used in other functions.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_add_point")]
@@ -43,6 +103,9 @@ impl Curve {
         unsafe { ffi::gimp_curve_add_point(self.to_glib_none().0, x, y) }
     }
 
+    /// Deletes all points from a [`CurveType::Smooth`][crate::CurveType::Smooth] `self`.
+    ///
+    /// A subsequent call to [`n_points()`][Self::n_points()] will return 0.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_clear_points")]
@@ -52,6 +115,17 @@ impl Curve {
         }
     }
 
+    /// Deletes a specific `point` from a [`CurveType::Smooth`][crate::CurveType::Smooth] `self`.
+    ///
+    /// The `point` identifier must be between 0 and the value returned by
+    /// [`n_points()`][Self::n_points()].
+    ///
+    /// You may also use a point identifier as returned by
+    /// [`add_point()`][Self::add_point()], which will correspond to the same
+    /// point, unless you modified the `self` since (e.g. by calling
+    /// `gimp_curve_add_point` again, or by deleting or modifying a point).
+    /// ## `point`
+    /// a point identifier.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_delete_point")]
@@ -61,6 +135,10 @@ impl Curve {
         }
     }
 
+    ///
+    /// # Returns
+    ///
+    /// the `self` type.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_get_curve_type")]
@@ -70,6 +148,19 @@ impl Curve {
         unsafe { from_glib(ffi::gimp_curve_get_curve_type(self.to_glib_none().0)) }
     }
 
+    /// Gets the number of points in a [`CurveType::Smooth`][crate::CurveType::Smooth] curve. Note that it will always
+    /// be 0 for a [`CurveType::Free`][crate::CurveType::Free] curve.
+    ///
+    /// This can later be used e.g. in [`point()`][Self::point()] as points
+    /// are numbered from 0 (included) to the returned number (excluded).
+    ///
+    /// Note that the [`Curve`][crate::Curve] API is not thread-safe. So be careful that
+    /// the information on the number of points is still valid when you use
+    /// it (you may have added or removed points in particular).
+    ///
+    /// # Returns
+    ///
+    /// the number of points in a smooth curve.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_get_n_points")]
@@ -78,6 +169,11 @@ impl Curve {
         unsafe { ffi::gimp_curve_get_n_points(self.to_glib_none().0) }
     }
 
+    /// Gets the number of samples in a [`CurveType::Free`][crate::CurveType::Free] curve.
+    ///
+    /// # Returns
+    ///
+    /// the number of samples in a freehand curve.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_get_n_samples")]
@@ -87,6 +183,26 @@ impl Curve {
         unsafe { ffi::gimp_curve_get_n_samples(self.to_glib_none().0) }
     }
 
+    /// Gets the `point` coordinates for a [`CurveType::Smooth`][crate::CurveType::Smooth] `self`.
+    ///
+    /// The `point` identifier must be between 0 and the value returned by
+    /// [`n_points()`][Self::n_points()].
+    ///
+    /// You may also use a point identifier as returned by
+    /// [`add_point()`][Self::add_point()], which will correspond to the same
+    /// point, unless you modified the `self` since (e.g. by calling
+    /// `gimp_curve_add_point` again, or by deleting or modifying a point).
+    /// ## `point`
+    /// a point identifier.
+    ///
+    /// # Returns
+    ///
+    ///
+    /// ## `x`
+    /// the point abscissa on a `[0.0, 1.0]` range.
+    ///
+    /// ## `y`
+    /// the point ordinate on a `[0.0, 1.0]` range.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_get_point")]
@@ -100,6 +216,12 @@ impl Curve {
         }
     }
 
+    /// ## `point`
+    /// a point identifier.
+    ///
+    /// # Returns
+    ///
+    /// the `point` type of a [`CurveType::Smooth`][crate::CurveType::Smooth] `self`.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_get_point_type")]
@@ -108,6 +230,16 @@ impl Curve {
         unsafe { from_glib(ffi::gimp_curve_get_point_type(self.to_glib_none().0, point)) }
     }
 
+    /// Gets the ordinate `y` value corresponding to the passed `x` abscissa
+    /// value, in a [`CurveType::Free`][crate::CurveType::Free] `self`.
+    ///
+    /// Note that while the `y` coordinate will be stored exactly, the `x`
+    /// coordinate will be rounded to the closest curve sample on the
+    /// abscissa. The more sample was set with
+    /// [`set_n_samples()`][Self::set_n_samples()], the more precise the rounding will
+    /// be.
+    /// ## `x`
+    /// an abscissa on a `[0.0, 1.0]` range.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_get_sample")]
@@ -116,6 +248,12 @@ impl Curve {
         unsafe { ffi::gimp_curve_get_sample(self.to_glib_none().0, x) }
     }
 
+    /// If this function returns [`true`], then the curve maps each value to
+    /// itself. If it returns [`false`], then this assumption can not be made.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the curve is an identity mapping, [`false`] otherwise.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_is_identity")]
@@ -123,6 +261,17 @@ impl Curve {
         unsafe { from_glib(ffi::gimp_curve_is_identity(self.to_glib_none().0)) }
     }
 
+    /// Sets the curve type of `self`, as follows:
+    ///
+    /// - Nothing happens if the curve type is unchanged.
+    /// - If you change to [`CurveType::Smooth`][crate::CurveType::Smooth], it will create a
+    ///  non-specified number of points and will approximate their position
+    ///  along the freehand curve. All default points will be
+    ///  [`CurvePointType::Smooth`][crate::CurvePointType::Smooth].
+    /// - If you change to [`CurveType::Free`][crate::CurveType::Free], all existing points
+    ///  will be cleared.
+    /// ## `curve_type`
+    /// the new curve type.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_set_curve_type")]
@@ -133,6 +282,16 @@ impl Curve {
         }
     }
 
+    /// Sets the number of sample in a [`CurveType::Free`][crate::CurveType::Free] `self`.
+    ///
+    /// Samples will be positioned on the curve abscissa at regular interval.
+    /// The more samples, the more your curve will have details. Currently,
+    /// the value of `n_samples` is limited and must be between `2^8` and `2^12`.
+    ///
+    /// Note that changing the number of samples will reset the curve to an
+    /// identity curve.
+    /// ## `n_samples`
+    /// the number of samples.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_set_n_samples")]
@@ -143,6 +302,14 @@ impl Curve {
         }
     }
 
+    /// Sets the `point` coordinates in a [`CurveType::Smooth`][crate::CurveType::Smooth] `self`.
+    /// Any value outside the `[0.0, 1.0]` range will be silently clamped.
+    /// ## `point`
+    /// a point identifier.
+    /// ## `x`
+    /// the point abscissa on a `[0.0, 1.0]` range.
+    /// ## `y`
+    /// the point ordinate on a `[0.0, 1.0]` range.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_set_point")]
@@ -152,6 +319,11 @@ impl Curve {
         }
     }
 
+    /// Sets the `point` type in a [`CurveType::Smooth`][crate::CurveType::Smooth] `self`.
+    /// ## `point`
+    /// a point identifier.
+    /// ## `type_`
+    /// a point type.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_set_point_type")]
@@ -161,6 +333,18 @@ impl Curve {
         }
     }
 
+    /// Sets a sample in a [`CurveType::Free`][crate::CurveType::Free] `self`, with
+    /// coordinates `(x, y)`.
+    ///
+    /// Note that while the `y` coordinate will be stored exactly, the `x`
+    /// coordinate will be rounded to the closest curve sample on the
+    /// abscissa. The more sample was set with
+    /// [`set_n_samples()`][Self::set_n_samples()], the more precise the rounding will
+    /// be.
+    /// ## `x`
+    /// the point abscissa on a `[0.0, 1.0]` range.
+    /// ## `y`
+    /// the point ordinate on a `[0.0, 1.0]` range.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "gimp_curve_set_sample")]
@@ -170,6 +354,7 @@ impl Curve {
         }
     }
 
+    /// Emitted when any points are added, deleted, or edited in `curve`.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "points-changed")]
@@ -196,6 +381,8 @@ impl Curve {
         }
     }
 
+    /// Emitted when any sample is edited, or if the number of samples
+    /// changed, in `curve`.
     #[cfg(feature = "v3_2")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v3_2")))]
     #[doc(alias = "samples-changed")]

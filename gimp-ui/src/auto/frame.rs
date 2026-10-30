@@ -7,6 +7,11 @@ use crate::ffi;
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// A widget providing a HIG-compliant subclass of [`gtk::Frame`][crate::gtk::Frame].
+    ///
+    /// # Implements
+    ///
+    /// [`trait@gtk::prelude::FrameExt`], [`trait@gtk::prelude::BinExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`]
     #[doc(alias = "GimpFrame")]
     pub struct Frame(Object<ffi::GimpFrame, ffi::GimpFrameClass>) @extends gtk::Frame, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
 
@@ -18,6 +23,17 @@ glib::wrapper! {
 impl Frame {
     pub const NONE: Option<&'static Frame> = None;
 
+    /// Creates a [`Frame`][crate::Frame] widget. A [`Frame`][crate::Frame] is a HIG-compliant
+    /// variant of [`gtk::Frame`][crate::gtk::Frame]. It doesn't render a frame at all but
+    /// otherwise behaves like a frame. The frame's title is rendered in
+    /// bold and the frame content is indented four spaces as suggested by
+    /// the GNOME HIG (see https://developer.gnome.org/hig/stable/).
+    /// ## `label`
+    /// text to set as the frame's title label (or [`None`] for no title)
+    ///
+    /// # Returns
+    ///
+    /// a new [`Frame`][crate::Frame] widget
     #[doc(alias = "gimp_frame_new")]
     pub fn new(label: Option<&str>) -> Frame {
         unsafe {

@@ -7,6 +7,12 @@ use crate::{ffi, LabelSpin, Labeled, ScaleEntry};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
+    /// This widget is a subclass of [`ScaleEntry`][crate::ScaleEntry] showing a
+    /// [`ColorScale`][crate::ColorScale] instead of a `GtkScale`.
+    ///
+    /// # Implements
+    ///
+    /// [`ScaleEntryExt`][trait@crate::prelude::ScaleEntryExt], [`LabelSpinExt`][trait@crate::prelude::LabelSpinExt], [`LabeledExt`][trait@crate::prelude::LabeledExt], [`trait@gtk::prelude::GridExt`], [`trait@gtk::prelude::ContainerExt`], [`trait@gtk::prelude::WidgetExt`], [`trait@glib::ObjectExt`], [`trait@gtk::prelude::BuildableExt`], [`trait@gtk::prelude::OrientableExt`]
     #[doc(alias = "GimpColorScaleEntry")]
     pub struct ColorScaleEntry(Object<ffi::GimpColorScaleEntry, ffi::GimpColorScaleEntryClass>) @extends ScaleEntry, LabelSpin, Labeled, gtk::Grid, gtk::Container, gtk::Widget, @implements gtk::Buildable, gtk::Orientable;
 
@@ -16,6 +22,20 @@ glib::wrapper! {
 }
 
 impl ColorScaleEntry {
+    /// ## `text`
+    /// The text for the `GtkLabel`.
+    /// ## `value`
+    /// The initial value.
+    /// ## `lower`
+    /// The lower boundary.
+    /// ## `upper`
+    /// The upper boundary.
+    /// ## `digits`
+    /// The number of decimal digits.
+    ///
+    /// # Returns
+    ///
+    /// The new [`ColorScale`][crate::ColorScale] widget.
     #[doc(alias = "gimp_color_scale_entry_new")]
     pub fn new(text: &str, value: f64, lower: f64, upper: f64, digits: u32) -> ColorScaleEntry {
         unsafe {
