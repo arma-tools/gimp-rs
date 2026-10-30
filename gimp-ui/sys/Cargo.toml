@@ -40,6 +40,7 @@ libc = "0.2"
 workspace = true
 
 [dependencies.gexiv2-sys]
+package = "gimp-gexiv2-sys"
 path = "../../gexiv2/sys"
 version = "0.1"
 

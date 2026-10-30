@@ -1,4 +1,4 @@
-# gexiv2
+# gimp-gexiv2
 
 Rust bindings for [GExiv2](https://gitlab.gnome.org/GNOME/gexiv2), the GObject
 wrapper of [Exiv2](https://exiv2.org) for reading and writing Exif, IPTC and
@@ -7,7 +7,10 @@ XMP metadata. Generated from `GExiv2-0.10.gir` with
 
 This crate exists mainly because `GimpMetadata` is a subclass of
 `GExiv2Metadata`, and the [`gimp`](https://crates.io/crates/gimp) crate needs it
-as a parent type, but it can be used on its own as well.
+as a parent type, but it can be used on its own as well. The library is called
+`gexiv2`. It is unrelated to the hand-written
+[`gexiv2-sys`](https://crates.io/crates/gexiv2-sys) and
+[`rexiv2`](https://crates.io/crates/rexiv2) crates.
 
 The documentation of the generated API is taken from the GIR file, see also
 the [GExiv2 reference](https://gnome.pages.gitlab.gnome.org/gexiv2/docs/).
@@ -20,7 +23,7 @@ the `libgexiv2-devel` package on openSUSE, `gexiv2-devel` on Fedora,
 
 ```toml
 [dependencies]
-gexiv2 = "0.1"
+gimp-gexiv2 = "0.1"
 ```
 
 ## Features

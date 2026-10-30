@@ -1,7 +1,7 @@
 [package]
-name = "gexiv2-sys"
+name = "gimp-gexiv2-sys"
 version = "0.1.0"
-description = "GExiv2 FFI bindings"
+description = "GExiv2 FFI bindings, generated with gir (used by the gimp crate)"
 readme = "README.md"
 keywords = ["gexiv2", "exiv2", "ffi", "metadata", "exif"]
 categories = ["external-ffi-bindings", "multimedia::images"]

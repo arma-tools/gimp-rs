@@ -36,7 +36,7 @@ jobs:
       - name: Clippy
         run: >
           cargo clippy --workspace --locked
-          --exclude gimp-sys --exclude gimp-ui-sys --exclude gexiv2-sys
+          --exclude gimp-sys --exclude gimp-ui-sys --exclude gimp-gexiv2-sys
           -- -D warnings
 
       # Includes the sys crates' ABI tests against the C headers.

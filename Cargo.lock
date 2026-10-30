@@ -288,17 +288,33 @@ dependencies = [
 ]
 
 [[package]]
-name = "gexiv2"
+name = "gimp"
 version = "0.1.0"
 dependencies = [
- "gexiv2-sys",
+ "babl",
+ "cairo-rs",
+ "gdk-pixbuf",
+ "gegl",
+ "gimp-gexiv2",
+ "gimp-sys",
+ "gio",
+ "glib",
+ "libc",
+ "pango",
+]
+
+[[package]]
+name = "gimp-gexiv2"
+version = "0.1.0"
+dependencies = [
+ "gimp-gexiv2-sys",
  "gio",
  "glib",
  "libc",
 ]
 
 [[package]]
-name = "gexiv2-sys"
+name = "gimp-gexiv2-sys"
 version = "0.1.0"
 dependencies = [
  "gio-sys",
@@ -308,22 +324,6 @@ dependencies = [
  "shell-words",
  "system-deps 7.0.8",
  "tempfile",
-]
-
-[[package]]
-name = "gimp"
-version = "0.1.0"
-dependencies = [
- "babl",
- "cairo-rs",
- "gdk-pixbuf",
- "gegl",
- "gexiv2",
- "gimp-sys",
- "gio",
- "glib",
- "libc",
- "pango",
 ]
 
 [[package]]
@@ -343,7 +343,7 @@ dependencies = [
  "cairo-sys-rs",
  "gdk-pixbuf-sys",
  "gegl-sys",
- "gexiv2-sys",
+ "gimp-gexiv2-sys",
  "gio-sys",
  "glib-sys",
  "gobject-sys",
@@ -380,7 +380,7 @@ dependencies = [
  "gdk-pixbuf-sys",
  "gdk-sys",
  "gegl-sys",
- "gexiv2-sys",
+ "gimp-gexiv2-sys",
  "gimp-sys",
  "gio-sys",
  "glib-sys",

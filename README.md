@@ -10,7 +10,7 @@ and gegl-rs (`gegl`, `babl`) for all types from other libraries.
 |---|---|
 | [`gimp`](gimp) / `gimp-sys` | libgimp: plug-ins, procedures, images, drawables, ... |
 | [`gimp-ui`](gimp-ui) / `gimp-ui-sys` | libgimpui: procedure dialogs and widgets |
-| [`gexiv2`](gexiv2) / `gexiv2-sys` | GExiv2, needed as `GimpMetadata` is a `GExiv2Metadata` |
+| [`gimp-gexiv2`](gexiv2) / `gimp-gexiv2-sys` | GExiv2, needed as `GimpMetadata` is a `GExiv2Metadata` |
 | [`examples`](examples) | example plug-in |
 
 Requires GIMP 3 development files (`gimp-3.0.pc`, `gimpui-3.0.pc`).
@@ -43,7 +43,7 @@ wrong (constants built from `G_PARAM_USER_SHIFT`, the gimpui pkg-config name,
 constants with the C headers:
 
 ```sh
-cargo test -p gimp-sys -p gimp-ui-sys -p gexiv2-sys
+cargo test -p gimp-sys -p gimp-ui-sys -p gimp-gexiv2-sys
 ```
 
 ## Testing in GIMP

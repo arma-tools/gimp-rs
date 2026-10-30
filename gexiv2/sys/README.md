@@ -1,10 +1,12 @@
-# gexiv2-sys
+# gimp-gexiv2-sys
 
 FFI bindings for [GExiv2](https://gitlab.gnome.org/GNOME/gexiv2), generated
 from `GExiv2-0.10.gir` with [gir](https://github.com/gtk-rs/gir).
 
-These are the raw C declarations. For the safe bindings use the
-[`gexiv2`](https://crates.io/crates/gexiv2) crate.
+These are the raw C declarations, the library is called `gexiv2_sys`. For the
+safe bindings use the [`gimp-gexiv2`](https://crates.io/crates/gimp-gexiv2)
+crate. Unrelated to the hand-written
+[`gexiv2-sys`](https://crates.io/crates/gexiv2-sys) crate.
 
 ## Requirements
 
